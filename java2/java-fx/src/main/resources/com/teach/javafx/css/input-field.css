@@ -1,0 +1,26 @@
+.mfx-text-field {
+    -fx-border-color: #930e14;
+    -fx-border-radius: 20px;
+    -fx-font-size: 18px;
+}
+
+.mfx-text-field .floating-text {
+    -fx-font-family: 'Open Sans SemiBold';
+    -fx-font-size: 15px;
+    -fx-text-fill: #930e14;
+}
+
+
+
+#customField {
+    -fx-border-color: -common-gradient;
+}
+
+#customField .floating-text {
+    -fx-text-fill: -mfx-red;
+}
+
+.mainContainer {
+    -fx-background-image: url('../picture/sduCover.png');
+    -fx-background-size: cover;
+}

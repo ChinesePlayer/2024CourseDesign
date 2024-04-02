@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<!-- 用户登录对话框FXML配置文件 对应页面交互控制类 com.teach.javafx.controller.base.LoginController -->
+
+<VBox fx:id="vbox" alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teach.javafx.controller.base.">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <HBox style="-fx-background-image: url('shanda1.jpg')">
+        <children>
+            <ImageView fx:id="imageView" fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                <image>
+                    <Image url="@../picture/student.png" />
+                </image></ImageView>
+            <GridPane alignment="CENTER">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="ALWAYS" />
+                    <ColumnConstraints hgrow="ALWAYS" />
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints vgrow="ALWAYS" />
+                    <RowConstraints vgrow="ALWAYS" />
+                </rowConstraints>
+                <children>
+                    <Label alignment="CENTER" text="用户名" GridPane.columnIndex="0" GridPane.valignment="CENTER">
+                        <GridPane.margin>
+                            <Insets right="5.0" />
+                        </GridPane.margin></Label>
+
+                    <MFXTextField fx:id="usernameField" floatMode="ABOVE" floatingText="用户名" layoutX="161.0" layoutY="109.0" prefHeight="38.0" prefWidth="278.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                    <Label text="密码" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                        <GridPane.margin>
+                            <Insets right="5.0" />
+                        </GridPane.margin>
+                    </Label>
+                    <MFXPasswordField fx:id="passwordField" floatMode="BORDER" floatingText="密码" layoutX="161.0" layoutY="176.0" prefHeight="38.0" prefWidth="278.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                </children>
+            </GridPane>
+        </children>
+    </HBox>
+    <MFXButton fx:id="loginButton" onAction="#onLoginButtonClick" prefHeight="30" prefWidth="70" text="登录" />
+</VBox>
