@@ -1,0 +1,13 @@
+/* 用于登录页面的css */
+
+@import "login-side-background.css";
+@import "login-button.css";
+@import "login-text-field.css";
+
+#customField {
+    -fx-border-color: -common-gradient;
+}
+
+#customField .floating-text {
+    -fx-text-fill: -mfx-red;
+}

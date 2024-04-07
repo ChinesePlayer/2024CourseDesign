@@ -1,0 +1,5 @@
+.person-info-field{
+    -fx-border-color: lightgray;
+    -fx-border-radius: 5px;
+    -fx-font-size: 13px;
+}

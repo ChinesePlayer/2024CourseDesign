@@ -1,0 +1,6 @@
+/* 登录页面侧边的背景图片 */
+
+.sideColumn {
+    -fx-background-image: url('../picture/sduCover.png');
+    -fx-background-size: cover;
+}

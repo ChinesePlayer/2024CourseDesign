@@ -1,0 +1,8 @@
+@import "person-info-field.css";
+@import "save-button.css";
+@import "gender-combo-box.css";
+@import "birth-picker.css";
+
+.mainContainer{
+    -fx-background-color: #ffffff;
+}

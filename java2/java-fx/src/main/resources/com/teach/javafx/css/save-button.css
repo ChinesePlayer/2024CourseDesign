@@ -1,8 +1,6 @@
-/* 登录页面的登录按钮样式 */
-
-.login-button{
+.saveButton{
     -fx-background-color: #930e14;
+    -fx-text-fill: #ffffff;
     -fx-font-family: "Open Sans SemiBold";
     -fx-font-size: 17px;
-    -fx-text-fill: #ffffff;
 }
