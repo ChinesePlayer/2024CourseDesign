@@ -13,7 +13,7 @@ import java.util.List;
  * List<MenuInfo> findByUserTypeIdAndPid(Integer userTypeId, Integer pid);根据userTypeId和pid查询获得pid的所有子菜单List<MenuInfo>集合 命名规范
  */
 public interface MenuInfoRepository extends JpaRepository<MenuInfo,Integer> {
-    @Query(value=" from MenuInfo where (pid is null or pid='') and (?1='' or userTypeIds like %?1%)")
+    @Query(value=" from MenuInfo where (pid is null) and (?1='' or userTypeIds like %?1%)")
     List<MenuInfo> findByUserTypeIds(String userTypeIds);
     @Query(value=" from MenuInfo where pid =?2 and (?1='' or userTypeIds like %?1%)")
     List<MenuInfo> findByUserTypeIds(String userTypeIds, Integer pid);

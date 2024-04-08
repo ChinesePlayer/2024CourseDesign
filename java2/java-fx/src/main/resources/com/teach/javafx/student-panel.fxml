@@ -96,9 +96,6 @@
                             <RowConstraints minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
                         </rowConstraints>
                         <children>
-                            <ScrollBar>
-
-                            </ScrollBar>
                             <Label text="学号" GridPane.rowIndex="0" />
                             <MFXTextField fx:id="numField" floatMode="DISABLED" prefHeight="37.0" prefWidth="230.0" styleClass="person-info-field" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                             <Label text="姓名" GridPane.rowIndex="1" />
