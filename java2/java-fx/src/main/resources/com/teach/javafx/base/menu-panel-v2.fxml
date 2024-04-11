@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<HBox
+        prefHeight="400.0"
+        prefWidth="600.0"
+        xmlns="http://javafx.com/javafx/17.0.2-ea"
+        xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="com.teach.javafx.controller.base.MenuControllerV2"
+        stylesheets="@../css/pane-update-menu.css">
+    <TreeView fx:id="menuTreeView" prefHeight="200" prefWidth="200" />
+    <VBox fx:id="editView" minHeight="-Infinity" HBox.hgrow="ALWAYS">
+        <GridPane fx:id="editStatusView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="466.0" minWidth="10.0" prefWidth="71.66664632161459" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="362.3333435058594" minWidth="10.0" prefWidth="336.3333536783854" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="356.6666717529297" minWidth="0.0" prefWidth="6.000020345052064" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="390.6666666666666" minWidth="10.0" prefWidth="384.33331298828125" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints maxHeight="129.33334350585938" minHeight="10.0" prefHeight="86.99999618530273" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="129.33334350585938" minHeight="10.0" prefHeight="102.99999999999999" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="253.6666612625122" minHeight="10.0" prefHeight="102.33333333333331" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="169.6666208902995" minHeight="10.0" prefHeight="108.3333740234375" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="169.6666208902995" minHeight="10.0" prefHeight="108.3333740234375" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <Label text="父节点" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font></Label>
+                <Label text="菜单值" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font></Label>
+                <Label text="菜单名称" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font></Label>
+                <MFXTextField fx:id="valueField" floatMode="DISABLED" prefHeight="29.0" prefWidth="179.0" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
+                <MFXTextField fx:id="titleField" floatMode="DISABLED" prefHeight="29.0" prefWidth="177.0" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" />
+                <Label fx:id="pid" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                <Label fx:id="bigTitle" GridPane.columnSpan="4" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+               <font>
+                  <Font size="40.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets left="20.0" />
+               </GridPane.margin></Label>
+                <MFXButton fx:id="saveButton" prefHeight="43.0" prefWidth="119.0" text="保存" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" styleClass="menu-save-button">
+               <font>
+                  <Font size="25.0" />
+               </font></MFXButton>
+            </children>
+        </GridPane>
+    </VBox>
+
+</HBox>

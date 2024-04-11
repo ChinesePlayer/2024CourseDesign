@@ -169,7 +169,6 @@ public class MainFrameController {
         menuTree.setShowRoot(false);
         menuTree.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>(){
             public void handle(MouseEvent event){
-                Node node = event.getPickResult().getIntersectedNode();
                 TreeItem<MyTreeNode> treeItem = menuTree.getSelectionModel().getSelectedItem();
                 if(treeItem == null)
                     return;

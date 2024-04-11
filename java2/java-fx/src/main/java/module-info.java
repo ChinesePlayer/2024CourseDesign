@@ -9,6 +9,7 @@ module com.teach.javafx {
     requires java.net.http;
     requires spring.security.crypto;
     requires javafx.media;
+    requires MaterialFX;
 
     opens com.teach.javafx to javafx.fxml;
     opens com.teach.javafx.request to com.google.gson, javafx.fxml;
