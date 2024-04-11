@@ -62,9 +62,11 @@ public class MenuControllerV2 {
     private MFXButton saveButton;
     @FXML
     private Label bigTitle;
-    private Label authority;
+    @FXML
     private MFXCheckbox admin;
+    @FXML
     private MFXCheckbox student;
+    @FXML
     private MFXCheckbox teacher;
 
     //根节点(只能有一个)
@@ -128,11 +130,6 @@ public class MenuControllerV2 {
     }
 
     private void initEditStatusContent(){
-        admin = new MFXCheckbox();
-        student = new MFXCheckbox();
-        teacher = new MFXCheckbox();
-
-        authority = new Label("访问权限");
 
     }
 
@@ -141,6 +138,29 @@ public class MenuControllerV2 {
 
         editView.getChildren().addAll(tipText1, tipText2, addButton);
         editView.setAlignment(Pos.CENTER);
+    }
+
+    //根据选中的节点的访问权限设置复选框的选中状态
+    private void setCheckBoxStatus(){
+        if(currentItem == null || currentItem.getValue() == null){
+            return;
+        }
+        String userTypeStr = currentItem.getValue().getUserTypeIds();
+        String[] userTypes = userTypeStr.split(",");
+        for(String i : userTypes){
+            switch (i) {
+                case "1" -> admin.setSelected(true);
+                case "2" -> student.setSelected(true);
+                case "3" -> teacher.setSelected(true);
+            }
+        }
+    }
+
+    //取消所有复选框的选中状态
+    private void clearCheckBox(){
+        admin.setSelected(false);
+        student.setSelected(false);
+        teacher.setSelected(false);
     }
 
     //当某个节点被选中时，根据被选节点的数据加载编辑页面
@@ -152,11 +172,15 @@ public class MenuControllerV2 {
             pid.setText(""+currentItem.getParent().getValue().getLabel());
             valueField.setText(currentItem.getValue().getValue());
             titleField.setText(currentItem.getValue().getTitle());
+            //设置复选框的选中状态
+            clearCheckBox();
+            setCheckBoxStatus();
         }
         else {
             pid.setText(currentItem.getValue().getLabel());
             valueField.setText("");
             titleField.setText("");
+            clearCheckBox();
         }
         if(currentItem.isLeaf()){
             bigTitle.setText("编辑 " + currentItem.getValue().getTitle() + " : ");
