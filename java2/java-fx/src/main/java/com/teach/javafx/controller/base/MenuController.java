@@ -1,8 +1,6 @@
 package com.teach.javafx.controller.base;
 
 import com.teach.javafx.request.*;
-import io.github.palexdev.materialfx.controls.MFXCheckbox;
-import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -128,7 +126,7 @@ public class MenuController {
                 nodeIdField.setText("");
             else
                 nodeIdField.setText(editNode.getId().toString());
-            nodeNameField.setText(editNode.getValue());
+            nodeNameField.setText(editNode.getName());
             nodeTitleField.setText(editNode.getTitle());
         }
         setRoleCheckBox();
@@ -195,7 +193,7 @@ public class MenuController {
     @FXML
     protected void onSubmitButtonClick() {
         editNode.setId(Integer.parseInt(nodeIdField.getText()));
-        editNode.setValue(nodeNameField.getText());
+        editNode.setName(nodeNameField.getText());
         editNode.setTitle(nodeTitleField.getText());
         editNode.setPid(Integer.parseInt(nodeParentField.getText()));
         String str = null;

@@ -32,7 +32,7 @@ public class DictionaryController {
      */
     public void editCommitValue(TableColumn.CellEditEvent<MyTreeNode,String> editEvent){
         MyTreeNode node = editEvent.getRowValue();
-        node.setValue(editEvent.getNewValue());
+        node.setName(editEvent.getNewValue());
     }
     public void editCommitLabel(TableColumn.CellEditEvent<MyTreeNode,String> editEvent){
         MyTreeNode node = editEvent.getRowValue();
@@ -57,7 +57,7 @@ public class DictionaryController {
         });
         valueColumn.setOnEditCommit(e->{
             MyTreeNode node = e.getRowValue().getValue();
-            node.setValue(e.getNewValue());
+            node.setName(e.getNewValue());
         });
         titleColumn.setOnEditCommit(e->{
             MyTreeNode node = e.getRowValue().getValue();
@@ -153,7 +153,7 @@ public class DictionaryController {
         MyTreeNode node = selectedItem.getValue();
         DataRequest req = new DataRequest();
         req.add("id", node.getId());
-        req.add("value",node.getValue());
+        req.add("value",node.getName());
         req.add("title",node.getTitle());
         req.add("pid",node.getPid());
         DataResponse res = HttpRequestUtil.request("/api/base/dictionarySave", req);

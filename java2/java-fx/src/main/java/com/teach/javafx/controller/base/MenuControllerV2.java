@@ -1,34 +1,23 @@
 package com.teach.javafx.controller.base;
 
-import com.teach.javafx.MainApplication;
 import com.teach.javafx.request.HttpRequestUtil;
 import com.teach.javafx.request.MyTreeNode;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXCheckbox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
-import io.github.palexdev.materialfx.enums.FloatMode;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TreeCell;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
-import javafx.scene.control.skin.TreeViewSkin;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import org.fatmansoft.teach.payload.request.DataRequest;
+import org.fatmansoft.teach.payload.response.DataResponse;
 
-import javax.swing.plaf.IconUIResource;
-import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
@@ -43,7 +32,7 @@ public class MenuControllerV2 {
     @FXML
     private GridPane editStatusView;
 
-    //当前选中的树节点
+    //当前选中的节点
     private TreeItem<MyTreeNode> currentItem;
 
     //未选择任何页面时编辑视图显示的内容
@@ -53,7 +42,7 @@ public class MenuControllerV2 {
 
     //编辑视图进入编辑状态时的一系列组件
     @FXML
-    private Label pid;
+    private Label pidLabel;
     @FXML
     private MFXTextField valueField;
     @FXML
@@ -69,14 +58,24 @@ public class MenuControllerV2 {
     @FXML
     private MFXCheckbox teacher;
 
+    //上下文菜单的删除按钮
+    private MenuItem deleteContextMenu;
+
     //根节点(只能有一个)
     private TreeItem<MyTreeNode> root;
-    //子节点
-    private TreeItem<MyTreeNode> item;
+
+    //点击保存时要提交的节点数据
+    private MyTreeNode editNode;
+
+    //编辑类型
+    //0: 添加了根节点(即菜单)    1: 添加了叶子节点(即新页面)
+    //2: 编辑了某个页面
+    private Integer editType = 0;
 
     @FXML
     public void initialize(){
         MyTreeNode node = new MyTreeNode(null, "", "", 0);
+        editNode = new MyTreeNode(null, "", "", 0);
         root = new TreeItem<>(node);
         //设置根节点
         menuTreeView.setRoot(root);
@@ -96,7 +95,7 @@ public class MenuControllerV2 {
             public void handle(MouseEvent event){
                 //当检测到点击事件时，将被点击的节点传入到当前节点，以便于后续编辑
                 TreeCell<MyTreeNode> node = null;
-                //若当前电机的对象是TreeCell类型，则获取该TreeCell
+                //若当前点击的对象是TreeCell类型，则获取该TreeCell
                 if(event.getPickResult().getIntersectedNode() instanceof TreeCell<?>){
                     node = (TreeCell<MyTreeNode>) event.getPickResult().getIntersectedNode();
                 }
@@ -121,23 +120,100 @@ public class MenuControllerV2 {
                 }
             }
         });
+        ContextMenu contextMenu = new ContextMenu();
+        deleteContextMenu = new MenuItem("删除");
+        deleteContextMenu.setOnAction(this::onDeleteButtonPressed);
+        contextMenu.getItems().add(deleteContextMenu);
+        menuTreeView.setContextMenu(contextMenu);
+    }
+
+    private void onDeleteButtonPressed(ActionEvent event){
+        if(currentItem == null || currentItem.getValue() == null){
+            MessageDialog.showDialog("删除失败: 未选择任何菜单");
+            return;
+        }
+        if(currentItem.getParent() == null){
+            MessageDialog.showDialog("删除失败: 不能删除根节点");
+            return;
+        }
+        if(!currentItem.getChildren().isEmpty()){
+            int confirm = MessageDialog.choiceDialog("此操作会将 " + currentItem.getValue().getLabel() + " 中的所有子页面删除，你确定吗");
+            //若用户没有选择确定，则终止删除操作
+            if(confirm != MessageDialog.CHOICE_YES){
+                return;
+            }
+        }
+        TreeItem<MyTreeNode> parent = currentItem.getParent();
+        DataRequest req = new DataRequest();
+        req.add("id", currentItem.getValue().getId());
+        DataResponse res = HttpRequestUtil.request("/api/base/menuDelete", req);
+        assert res != null;
+        if(res.getCode() == 0){
+            //从UI中删除目标节点
+            parent.getChildren().remove(currentItem);
+            currentItem = new TreeItem<>();
+            MessageDialog.showDialog("删除成功!");
+        }
+        else {
+            MessageDialog.showDialog(res.getMsg());
+        }
+    }
+
+    private String getPidFromPidLabel(){
+        if(pidLabel.getText().isEmpty() || pidLabel.getText() == null){
+            return null;
+        }
+        String[] pidSplit = pidLabel.getText().split("-");
+        return pidSplit[0];
+    }
+
+    //添加按钮按下时触发的事件
+    private void onAddButtonPressed(ActionEvent event){
+        editNode = new MyTreeNode();
+        editType = 0;
+        setAddStatus();
     }
 
     private void initIdleStatusContent(){
         tipText1 = new Label("请选择左侧的菜单");
         tipText2 = new Label("或");
         addButton = new MFXButton("添加新菜单");
+        addButton.setOnAction(this::onAddButtonPressed);
+        addButton.setStyle("-fx-background-color: #930e14;\n" +
+                "    -fx-font-family: \"Open Sans SemiBold\";\n" +
+                "    -fx-font-size: 17px;\n" +
+                "    -fx-text-fill: #ffffff;");
     }
 
     private void initEditStatusContent(){
 
     }
 
-    private void setIdleStatus(){
-        clearEditView();
+    //判断当前选中的菜单是否为空
+    private boolean isMenuEmpty(){
+        ObservableList<TreeItem<MyTreeNode>> treeItems = currentItem.getChildren();
+        return treeItems.isEmpty();
+    }
 
-        editView.getChildren().addAll(tipText1, tipText2, addButton);
-        editView.setAlignment(Pos.CENTER);
+    //判断当前选择的菜单中是否有空对象
+    private boolean hasEmptyItem(){
+        ObservableList<TreeItem<MyTreeNode>> treeItems = currentItem.getChildren();
+        for(TreeItem<MyTreeNode> i : treeItems){
+            if(i.getValue() == null){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //删除所有空节点
+    private void deleteEmptyItems(){
+        ObservableList<TreeItem<MyTreeNode>> treeItems = currentItem.getChildren();
+        for(int i = 0; i < treeItems.size(); i++){
+            if(treeItems.get(i).getValue() == null){
+                currentItem.getChildren().remove(i);
+            }
+        }
     }
 
     //根据选中的节点的访问权限设置复选框的选中状态
@@ -163,33 +239,51 @@ public class MenuControllerV2 {
         teacher.setSelected(false);
     }
 
-    //当某个节点被选中时，根据被选节点的数据加载编辑页面
-    private void setEditStatus(){
-        //TODO: 在fxml布局文件中添加复选框
+    //当新增按钮按下时，将编辑视图设为准备添加新菜单的状态
+    private void setAddStatus(){
+        clearEditView();
+        bigTitle.setText("添加新菜单: ");
+        editType = 0;
+        titleField.setText("");
+        valueField.setText("");
+        pidLabel.setText("无");
+        clearCheckBox();
+
+        editView.getChildren().add(editStatusView);
+        editView.setAlignment(Pos.TOP_LEFT);
+    }
+
+    private void setIdleStatus(){
         clearEditView();
 
-        if(currentItem.isLeaf()){
-            pid.setText(""+currentItem.getParent().getValue().getLabel());
-            valueField.setText(currentItem.getValue().getValue());
+        editView.getChildren().addAll(tipText1, tipText2, addButton);
+        editView.setAlignment(Pos.CENTER);
+    }
+
+    //当某个节点被选中时，根据被选节点的数据加载编辑页面
+    private void setEditStatus(){
+        clearEditView();
+
+        editNode = new MyTreeNode();
+
+        if(!currentItem.getValue().getIsMenu()){
+            editType = 2;
+            pidLabel.setText(currentItem.getParent().getValue().getLabel());
+            valueField.setText(currentItem.getValue().getName());
             titleField.setText(currentItem.getValue().getTitle());
+            bigTitle.setText("编辑 " + currentItem.getValue().getTitle() + " : ");
             //设置复选框的选中状态
             clearCheckBox();
             setCheckBoxStatus();
         }
         else {
-            pid.setText(currentItem.getValue().getLabel());
+            editType = 1;
+            pidLabel.setText(currentItem.getValue().getLabel());
             valueField.setText("");
             titleField.setText("");
+            bigTitle.setText("为 " + currentItem.getValue().getTitle() + " 添加新页面: ");
             clearCheckBox();
         }
-        if(currentItem.isLeaf()){
-            bigTitle.setText("编辑 " + currentItem.getValue().getTitle() + " : ");
-            System.out.println("是叶子节点");
-        }
-        else{
-            bigTitle.setText("为 " + currentItem.getValue().getTitle() + " 添加新页面: ");
-        }
-
         editView.getChildren().add(editStatusView);
         editView.setAlignment(Pos.TOP_LEFT);
     }
@@ -208,6 +302,7 @@ public class MenuControllerV2 {
         }
         for(MyTreeNode i : children){
             //递归调用以获取所有子节点
+            i.setIsMenu(false);
             treeItem.getChildren().add(getChildren(i));
         }
         return treeItem;
@@ -216,12 +311,140 @@ public class MenuControllerV2 {
     public void updateTreeView(){
         DataRequest req = new DataRequest();
         List<MyTreeNode> treeNodes = HttpRequestUtil.requestTreeNodeList("/api/base/getMenuTreeNodeList", req);
+        System.out.println(treeNodes);
         if(treeNodes == null || treeNodes.isEmpty()){
             return;
         }
         for(MyTreeNode i : treeNodes){
             //加载所有节点并添加到根节点
+            i.setIsMenu(true);
             root.getChildren().add(getChildren(i));
         }
+    }
+
+    //获取某个菜单下叶节点的最大ID
+    //若指定的父节点不存在则返回null
+    //否则返回该父节点下最大的ID
+    private Integer getMaxIdFromPid(Integer pid){
+        ObservableList<TreeItem<MyTreeNode>> allMenu = menuTreeView.getRoot().getChildren();
+        TreeItem<MyTreeNode> targetParent = null;
+        for(TreeItem<MyTreeNode> i : allMenu){
+            if(Objects.equals(i.getValue().getId(), pid)){
+                targetParent = i;
+                break;
+            }
+        }
+        Integer maxId = 0;
+        if(targetParent == null){
+            return null;
+        }
+        if(hasEmptyItem()){
+            return 0;
+        }
+        System.out.println(targetParent.getChildren().size());
+        for(TreeItem<MyTreeNode> i : targetParent.getChildren()){
+            if(i.getValue().getId() > maxId){
+                maxId = i.getValue().getId();
+            }
+        }
+        return maxId;
+    }
+
+    //获取所有菜单中最大的ID
+    //若返回0，则说明不存在任何菜单
+    private Integer getMaxMenuId(){
+        ObservableList<TreeItem<MyTreeNode>> allMenu = menuTreeView.getRoot().getChildren();
+        Integer maxId = 0;
+        for(TreeItem<MyTreeNode> i : allMenu){
+            if(i.getValue().getId() > maxId){
+                maxId = i.getValue().getId();
+            }
+        }
+        return maxId;
+    }
+
+    //根据当前节点的状态计算ID
+    private Integer calcId(){
+        if(editType == 0){
+            return getMaxMenuId() + 1;
+        }
+        else if(editType == 1){
+            Integer maxItemId = getMaxIdFromPid(currentItem.getValue().getId());
+            if(maxItemId == null){
+                throw new RuntimeException("选择的父节点不存在!");
+            }
+            if(maxItemId == 0){
+                return Integer.parseInt(getPidFromPidLabel() + "1");
+            }
+            else{
+                return (maxItemId + 1);
+            }
+        }
+        //若不是以上两种情况，则说明当前是在编辑已有节点，直接返回当前节点本身的Id即可
+        return currentItem.getValue().getId();
+    }
+
+    //保存按钮按下时，将新的数据传到后端
+    public void onSaveButtonPressed(){
+        editNode.setName(valueField.getText());
+        editNode.setTitle(titleField.getText());
+        if(editType == 0){
+            editNode.setIsMenu(true);
+            editNode.setPid(null);
+        }
+        else{
+            editNode.setIsMenu(false);
+            editNode.setPid(Integer.parseInt(Objects.requireNonNull(getPidFromPidLabel())));
+        }
+        editNode.setId(calcId());
+        String str = null;
+        //构建用户访问权限字符串
+        //1: 允许管理员访问    2: 允许学生访问    3: 允许老师访问
+        if(admin.isSelected()) {
+            if(str == null)
+                str ="1";
+            else str +=",1";
+        }
+        if(student.isSelected()) {
+            if(str == null)
+                str ="2";
+            else str +=",2";
+        }
+        if(teacher.isSelected()) {
+            if(str == null)
+                str ="3";
+            else str +=",3";
+        }
+        editNode.setUserTypeIds(str);
+        editNode.setLabel(editNode.getId() + "-" + editNode.getTitle());
+        System.out.println("保存时value为: " + editNode.getName());
+        System.out.println("保存时pid为: " + editNode.getPid());
+        DataRequest req = new DataRequest();
+        req.add("editType", editType);
+        req.add("node", editNode);
+        DataResponse res = HttpRequestUtil.request("/api/base/menuSave",req);
+        assert res != null;
+        //操作成功后，进行UI更新操作
+        if(res.getCode() == 0){
+            //展示一个对话框来提示用户保存成功
+            MessageDialog.showDialog("保存成功!");
+            //关于editType不同值的含义，详见editType定义处
+            if(editType == 0){
+                TreeItem<MyTreeNode> newNode = new TreeItem<>(editNode);
+                root.getChildren().add(newNode);
+            }
+            else if(editType == 1){
+                currentItem.getChildren().add(new TreeItem<>(editNode));
+            }
+            else if(editType == 2){
+                //将当前编辑节点设为当前节点(此处是为了实现在数据更新后，UI能够立刻发生变化)
+                currentItem.setValue(editNode);
+            }
+        }
+        else {
+            MessageDialog.showDialog(res.getMsg());
+        }
+        //注意在提交结束后将当前编辑节点设为空，此处直接新建一个对象
+        editNode = new MyTreeNode();
     }
 }
