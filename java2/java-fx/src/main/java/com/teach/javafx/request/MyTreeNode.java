@@ -16,24 +16,40 @@ import java.util.Map;
  */
 public class MyTreeNode {
     private Integer id;
-    private String value;
+    private String name;
     private String label;
     private Integer pid;
     private Integer isLeaf;
     private String title;
     private String userTypeIds;
     private String parentTitle;
+    private boolean isMenu;
     private List<MyTreeNode> children;
     public MyTreeNode(){
         this.children= new ArrayList<MyTreeNode>();
     }
-    public MyTreeNode(Integer id, String value, String label,Integer isLeaf){
+    public MyTreeNode(Integer id, String name, String label, Integer isLeaf){
         this.id  = id;
-        this.value = value;
+        this.name = name;
         this.label = label;
         this.isLeaf = isLeaf;
         this.children= new ArrayList<MyTreeNode>();
     }
+
+    //将当前节点拷贝到另一个节点中
+    public MyTreeNode(MyTreeNode newNode){
+        this.isMenu = newNode.getIsMenu();
+        this.name = newNode.getName();
+        this.title = newNode.getTitle();
+        this.pid = newNode.getPid();
+        this.id = newNode.getId();
+        this.label = newNode.getLabel();
+        this.userTypeIds = newNode.getUserTypeIds();
+        this.children = newNode.getChildren();
+        this.isLeaf = newNode.getIsLeaf();
+        this.parentTitle = newNode.getParentTitle();
+    }
+
     public String toString(){
         return label;
     }
@@ -46,12 +62,12 @@ public class MyTreeNode {
         this.id = id;
     }
 
-    public String getValue() {
-        return value;
+    public String getName() {
+        return name;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getLabel() {
@@ -62,7 +78,11 @@ public class MyTreeNode {
         this.label = label;
     }
 
+    public boolean getIsMenu(){return this.isMenu;}
 
+    public void setIsMenu(boolean isMenu) {
+        this.isMenu = isMenu;
+    }
 
     public Integer getPid() {
         return pid;
@@ -114,7 +134,7 @@ public class MyTreeNode {
 
     public MyTreeNode(Map map){
         this.id  = CommonMethod.getInteger(map,"id");
-        this.value = CommonMethod.getString(map,"value");
+        this.name = CommonMethod.getString(map,"value");
         this.label = CommonMethod.getString(map,"label");
         this.title = CommonMethod.getString(map,"title");
         this.isLeaf = CommonMethod.getInteger(map,"isLeaf");

@@ -4,15 +4,12 @@ import com.teach.javafx.request.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 
-import java.lang.reflect.Method;
 import java.util.List;
-import java.util.Map;
 import java.util.StringTokenizer;
 
 /**
@@ -24,7 +21,7 @@ public class MenuController {
     @FXML
     private TreeView<MyTreeNode> menuTreeView;
     @FXML
-    private Label nodeParentLabel;
+    private TextField nodeParentField;
     @FXML
     private TextField nodeIdField;
     @FXML
@@ -49,6 +46,7 @@ public class MenuController {
         if (sList == null)
             return item;
         for (int i = 0; i < sList.size(); i++) {
+            //说明: 此处使用递归来添加层级菜单
             item.getChildren().add(getTreeItem(sList.get(i)));
         }
         return item;
@@ -128,7 +126,7 @@ public class MenuController {
                 nodeIdField.setText("");
             else
                 nodeIdField.setText(editNode.getId().toString());
-            nodeNameField.setText(editNode.getValue());
+            nodeNameField.setText(editNode.getName());
             nodeTitleField.setText(editNode.getTitle());
         }
         setRoleCheckBox();
@@ -195,8 +193,9 @@ public class MenuController {
     @FXML
     protected void onSubmitButtonClick() {
         editNode.setId(Integer.parseInt(nodeIdField.getText()));
-        editNode.setValue(nodeNameField.getText());
+        editNode.setName(nodeNameField.getText());
         editNode.setTitle(nodeTitleField.getText());
+        editNode.setPid(Integer.parseInt(nodeParentField.getText()));
         String str = null;
         if(nodeAdminCheckBox.isSelected()) {
             if(str == null)

@@ -9,7 +9,6 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
@@ -18,7 +17,6 @@ import org.fatmansoft.teach.payload.response.DataResponse;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -169,14 +167,13 @@ public class MainFrameController {
         menuTree.setShowRoot(false);
         menuTree.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>(){
             public void handle(MouseEvent event){
-                Node node = event.getPickResult().getIntersectedNode();
                 TreeItem<MyTreeNode> treeItem = menuTree.getSelectionModel().getSelectedItem();
                 if(treeItem == null)
                     return;
                 MyTreeNode menu = treeItem.getValue();
                 if(menu == null)
                     return;
-                String name = menu.getValue();
+                String name = menu.getName();
                 if(name == null || name.length() == 0)
                     return ;
                 if("logout".equals(name)) {

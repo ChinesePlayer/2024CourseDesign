@@ -23,6 +23,7 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.awt.*;
 import java.io.*;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
@@ -161,13 +162,12 @@ public class BaseController {
     @PreAuthorize("hasRole('ADMIN')")
     public DataResponse menuDelete(@Valid @RequestBody DataRequest dataRequest) {
         Integer id = dataRequest.getInteger("id");
-        int count  = menuInfoRepository.countMenuInfoByPid(id);
-        if(count > 0) {
-            return CommonMethod.getReturnMessageError("存在子菜单，不能删除！");
-        }
+        List<MenuInfo> children = menuInfoRepository.findMenuInfosByPid(id);
         Optional<MenuInfo> op = menuInfoRepository.findById(id);
-        if (op.isPresent())
+        if (op.isPresent()){
             menuInfoRepository.delete(op.get());
+            menuInfoRepository.deleteAll(children);
+        }
         return CommonMethod.getReturnMessageOK();
     }
 

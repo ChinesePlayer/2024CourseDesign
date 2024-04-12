@@ -57,6 +57,7 @@ public class LoginController {
             return;
         }
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("base/main-frame.fxml"));
+        System.out.println(MainApplication.class.getResource("base/main-frame.fxml"));
         try {
             Scene scene = new Scene(fxmlLoader.load(), -1, -1);
             AppStore.setMainFrameController((MainFrameController) fxmlLoader.getController());

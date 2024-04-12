@@ -25,83 +25,83 @@
        </HBox>
    </top>
    <center>
-       <SplitPane dividerPositions="0.29797979797979796" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-           <items>
-               <TreeView fx:id="menuTreeView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
-               <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="300.0" spacing="20.0">
-                   <padding>
-                       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                   </padding>
-                   <GridPane>
-                       <columnConstraints>
-                           <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="392.5" minWidth="10.0" prefWidth="84.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="729.5" minWidth="10.0" prefWidth="725.0" />
-                       </columnConstraints>
-                       <rowConstraints>
-                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                       </rowConstraints>
-                       <children>
-                           <Label text="父节点" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                               <GridPane.margin>
-                                   <Insets right="10.0" />
-                               </GridPane.margin>
-                           </Label>
-                           <Label fx:id= "nodeParentLabel" text="" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                           </Label>
-                           <Label text="主键ID" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                                <GridPane.margin>
-                                   <Insets right="10.0" />
-                                </GridPane.margin>
-                           </Label>
-                           <TextField fx:id="nodeIdField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                           <Label text="菜单名称" GridPane.columnIndex="0" GridPane.rowIndex="2">
-                               <GridPane.margin>
-                                   <Insets right="10.0" />
-                               </GridPane.margin>
-                           </Label>
-                           <TextField fx:id="nodeNameField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                           <Label text="菜单标题" GridPane.columnIndex="0" GridPane.rowIndex="3">
-                                <GridPane.margin>
-                                   <Insets right="10.0" />
-                                </GridPane.margin>
-                           </Label>
-                           <TextField fx:id="nodeTitleField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                           <Label text="角色" GridPane.columnIndex="0" GridPane.rowIndex="4">
-                               <GridPane.margin>
-                                   <Insets right="10.0" />
-                               </GridPane.margin>
-                           </Label>
-                             <HBox GridPane.columnIndex="1" GridPane.rowIndex="4">
-                                 <GridPane.margin>
-                                     <Insets top="3.0" />
-                                 </GridPane.margin>
-                                <children>
-                                   <CheckBox fx:id="nodeAdminCheckBox" mnemonicParsing="false" text="管理员" >
-                                       <padding>
-                                           <Insets left="10" />
-                                       </padding>
-                                   </CheckBox>
-                                   <CheckBox fx:id="nodeStudentCheckBox" mnemonicParsing="false" text="学生" >
-                                       <padding>
-                                           <Insets left="10" />
-                                       </padding>
-                                   </CheckBox>
-                                    <CheckBox fx:id="nodeTeacherCheckBox" mnemonicParsing="false" text="教师" >
-                                        <padding>
-                                            <Insets left="10" />
-                                        </padding>
-                                    </CheckBox>
-                                </children>
-                             </HBox>
-                       </children>
-                   </GridPane>
-                   <FlowPane alignment="CENTER" columnHalignment="CENTER" prefHeight="36.0">
-                       <Button onAction="#onSubmitButtonClick" text="保存" />
-                   </FlowPane>
-               </VBox>
-           </items>
+       <SplitPane dividerPositions="0.3" prefHeight="160.0" prefWidth="200.0"
+                  BorderPane.alignment="CENTER">
+           <TreeView fx:id="menuTreeView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER"/>
+           <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="300.0" spacing="20.0">
+               <padding>
+                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+               </padding>
+               <GridPane>
+                   <columnConstraints>
+                       <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="392.5" minWidth="10.0"
+                                          prefWidth="84.0"/>
+                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="729.5" minWidth="10.0" prefWidth="725.0"/>
+                   </columnConstraints>
+                   <rowConstraints>
+                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                   </rowConstraints>
+                   <children>
+                       <Label text="父节点" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                           <GridPane.margin>
+                               <Insets right="10.0"/>
+                           </GridPane.margin>
+                       </Label>
+                       <TextField fx:id="nodeParentField" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                       </TextField>
+                       <Label text="主键ID" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                               <Insets right="10.0"/>
+                           </GridPane.margin>
+                       </Label>
+                       <TextField fx:id="nodeIdField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                       <Label text="菜单名称" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                               <Insets right="10.0"/>
+                           </GridPane.margin>
+                       </Label>
+                       <TextField fx:id="nodeNameField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                       <Label text="菜单标题" GridPane.columnIndex="0" GridPane.rowIndex="3">
+                           <GridPane.margin>
+                               <Insets right="10.0"/>
+                           </GridPane.margin>
+                       </Label>
+                       <TextField fx:id="nodeTitleField" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                       <Label text="角色" GridPane.columnIndex="0" GridPane.rowIndex="4">
+                           <GridPane.margin>
+                               <Insets right="10.0"/>
+                           </GridPane.margin>
+                       </Label>
+                       <HBox GridPane.columnIndex="1" GridPane.rowIndex="4">
+                           <GridPane.margin>
+                               <Insets top="3.0"/>
+                           </GridPane.margin>
+                           <children>
+                               <CheckBox fx:id="nodeAdminCheckBox" mnemonicParsing="false" text="管理员">
+                                   <padding>
+                                       <Insets left="10"/>
+                                   </padding>
+                               </CheckBox>
+                               <CheckBox fx:id="nodeStudentCheckBox" mnemonicParsing="false" text="学生">
+                                   <padding>
+                                       <Insets left="10"/>
+                                   </padding>
+                               </CheckBox>
+                               <CheckBox fx:id="nodeTeacherCheckBox" mnemonicParsing="false" text="教师">
+                                   <padding>
+                                       <Insets left="10"/>
+                                   </padding>
+                               </CheckBox>
+                           </children>
+                       </HBox>
+                   </children>
+               </GridPane>
+               <FlowPane alignment="CENTER" columnHalignment="CENTER" prefHeight="36.0">
+                   <Button onAction="#onSubmitButtonClick" text="保存"/>
+               </FlowPane>
+           </VBox>
        </SplitPane>
    </center>
 </BorderPane>

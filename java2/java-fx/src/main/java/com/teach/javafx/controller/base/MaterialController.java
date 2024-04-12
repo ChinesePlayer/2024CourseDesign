@@ -70,11 +70,11 @@ public class MaterialController{
             MessageDialog.showDialog("选择为目录，不是文件，无法下载");
             return;
         }
-        String fileName =node.getValue();
+        String fileName =node.getName();
         int index = fileName.lastIndexOf(".");
         String suffix = fileName.substring(index+1,fileName.length());
         DataRequest req = new DataRequest();
-        String dir = selectedItem.getParent().getValue().getValue();
+        String dir = selectedItem.getParent().getValue().getName();
         String path= null;
         if(dir== null || dir.length()== 0) {
             path = "material/" + fileName;

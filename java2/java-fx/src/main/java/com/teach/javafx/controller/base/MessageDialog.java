@@ -92,6 +92,15 @@ public class MessageDialog {
         instance.messageController.showDialog(msg);
         MainApplication.setCanClose(false);
     }
+    public static int showTest(String msg) {
+        if(instance == null)
+            return 1;
+        if(instance.messageController == null)
+            return 2;
+        instance.messageController.showDialog(msg);
+        MainApplication.setCanClose(false);
+        return 123;
+    }
     /**
      * choiceDialog 显示提示信息和是 否 取消按钮， 用户可选择
      * 点击 是 返回 CHOICE_YES = 3;
