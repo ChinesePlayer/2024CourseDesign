@@ -1,5 +1,6 @@
 package org.fatmansoft.teach.repository;
 
+import org.fatmansoft.teach.models.Course;
 import org.fatmansoft.teach.models.Student;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,4 +32,8 @@ public interface StudentRepository extends JpaRepository<Student,Integer> {
     @Query(value = "from Student where ?1='' or person.num like %?1% or person.name like %?1% ",
             countQuery = "SELECT count(studentId) from Student where ?1='' or person.num like %?1% or person.name like %?1% ")
     Page<Student> findStudentPageByNumName(String numName,  Pageable pageable);
+
+    //根据学生ID来查找该学生选择的所有课程
+    @Query("select s.courses from Student s where s.studentId=?1")
+    List<Course> findCoursesByStudentId(Integer studentId);
 }

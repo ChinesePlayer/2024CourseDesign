@@ -2,12 +2,16 @@ package org.fatmansoft.teach.controllers;
 
 import org.fatmansoft.teach.models.Course;
 import org.fatmansoft.teach.models.Score;
+import org.fatmansoft.teach.models.Student;
+import org.fatmansoft.teach.models.User;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.repository.CourseRepository;
 import org.fatmansoft.teach.repository.PersonRepository;
+import org.fatmansoft.teach.repository.StudentRepository;
 import org.fatmansoft.teach.util.CommonMethod;
 import org.fatmansoft.teach.util.JsonConvertUtil;
+import org.openxmlformats.schemas.spreadsheetml.x2006.main.CommentsDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +19,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
+import javax.swing.text.html.Option;
 import javax.validation.Valid;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -31,6 +36,8 @@ public class CourseController {
     private CourseRepository courseRepository;
     @Autowired
     private PersonRepository personRepository;
+    @Autowired
+    private StudentRepository studentRepository;
 
     @PostMapping("/getCourseList")
     public DataResponse getCourseList(@Valid @RequestBody DataRequest dataRequest) {
@@ -51,9 +58,12 @@ public class CourseController {
             pc =c.getPreCourse();
             if(pc != null) {
                 m.put("preCourse",pc.getName());
-                m.put("preCourseId",pc.getCourseId());
+                //此处应该改在pc.getCourseId()之后再加一个""空字符串来讲preCourseId转化为字符串类型，否则会导致前端
+                //在从json数据转化为Object数据时将该数据解析为Double
+                m.put("preCourseId",pc.getCourseId()+"");
             }
             dataList.add(m);
+            System.out.println("当前的课程打包信息: " + m.toString());
         }
         return CommonMethod.getReturnData(dataList);
     }
@@ -103,5 +113,22 @@ public class CourseController {
             }
         }
         return CommonMethod.getReturnMessageOK();
+    }
+
+    @PostMapping("/getStudentCourseList")
+    @PreAuthorize("hasRole('ROLE_STUDENT')")
+    public DataResponse getStudentCourseList(@Valid @RequestBody DataRequest dataRequest){
+        Integer user = CommonMethod.getUserId();
+        if(user == null){
+            return CommonMethod.getReturnMessageError("当前用户不存在! ");
+        }
+        Optional<Student> studentOp = studentRepository.findByUserId(user);
+        if(!studentOp.isPresent()){
+            return CommonMethod.getReturnMessageError("当前学生不存在! ");
+        }
+        Student student = studentOp.get();
+        //通过学生ID来找到该学生选择的所有课程
+        List<Course> courseList = studentRepository.findCoursesByStudentId(student.getStudentId());
+        return CommonMethod.getReturnData(courseList);
     }
 }

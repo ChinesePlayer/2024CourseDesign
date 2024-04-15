@@ -108,7 +108,7 @@ public class StudentController extends ToolController {
         if(res != null && res.getCode()== 0) {
             studentList = (ArrayList<Map>)res.getData();
         }
-        numColumn.setCellValueFactory(new MapValueFactory<>("num"));  //设置列值工程属性
+        numColumn.setCellValueFactory(new MapValueFactory<>("num"));  //设置列值工厂属性
         nameColumn.setCellValueFactory(new MapValueFactory<>("name"));
         deptColumn.setCellValueFactory(new MapValueFactory<>("dept"));
         majorColumn.setCellValueFactory(new MapValueFactory<>("major"));

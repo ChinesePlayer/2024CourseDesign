@@ -38,7 +38,7 @@ public class CourseController {
     private void onQueryButtonClick(){
         DataResponse res;
         DataRequest req =new DataRequest();
-        res = HttpRequestUtil.request("/api/course/getCourseList",req); //从后台获取所有学生信息列表集合
+        res = HttpRequestUtil.request("/api/course/getCourseList",req); //从后台获取所有课程信息列表集合
         if(res != null && res.getCode()== 0) {
             courseList = (ArrayList<Map>)res.getData();
         }
