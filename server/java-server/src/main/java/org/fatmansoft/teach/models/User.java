@@ -1,8 +1,5 @@
 package org.fatmansoft.teach.models;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -17,8 +14,6 @@ import java.util.Date;
  *
  */
 
-@Getter
-@Setter
 @Entity
 @Table(	name = "user",
         uniqueConstraints = {

@@ -20,4 +20,8 @@ public interface CourseRepository extends JpaRepository<Course,Integer> {
 
     Optional<Course> findByNum(String num);
     List<Course> findByName(String name);
+
+    //根据课程ID来查找所有选择了该课程的学生
+    @Query("select c.students from Course c where c.courseId=?1")
+    List<Student> findStudentsByCourseId(Integer courseId);
 }

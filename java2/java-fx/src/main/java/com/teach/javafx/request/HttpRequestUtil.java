@@ -103,7 +103,7 @@ public class HttpRequestUtil {
                 HttpResponse<String> response = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
                 System.out.println("url=" + url +"    response.statusCode="+response.statusCode());
                 if (response.statusCode() == 200) {
-                    //                System.out.println(response.body());
+                                    System.out.println(response.body());
                     DataResponse dataResponse = gson.fromJson(response.body(), DataResponse.class);
                     return dataResponse;
                 }

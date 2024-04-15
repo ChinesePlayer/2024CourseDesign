@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Student学生表实体类 保存每个学生的信息，
@@ -32,6 +34,9 @@ public class Student {
 
     @Size(max = 50)
     private String className;
+
+    @ManyToMany(mappedBy = "students")
+    private List<Course> courses = new ArrayList<>();
 
     public Integer getStudentId() {
         return studentId;

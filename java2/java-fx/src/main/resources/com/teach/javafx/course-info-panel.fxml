@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<!-- 该页面用于查看学生修读的课程 -->
+
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.teach.javafx.controller.CourseInfoController"
+            prefHeight="400.0" prefWidth="600.0">
+    <top>
+        <HBox>
+            <MFXTextField fx:id="searchField"/>
+            <MFXButton fx:id="searchButton" />
+        </HBox>
+    </top>
+    <center>
+        <TableView fx:id="courseTableView">
+            <columns>
+                <TableColumn fx:id="courseName" />
+                <TableColumn fx:id="courseNum" />
+                <TableColumn fx:id="credit" />
+                <TableColumn fx:id="preCourse" />
+            </columns>
+        </TableView>
+    </center>
+
+</BorderPane>

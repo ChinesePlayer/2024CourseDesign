@@ -4,6 +4,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Course 课程表实体类  保存课程的的基本信息信息，
@@ -33,6 +35,12 @@ public class Course implements Serializable {
     private Course preCourse;
     @Size(max = 12)
     private String coursePath;
+
+    @ManyToMany
+    @JoinTable(name = "course_student",
+    joinColumns = @JoinColumn(name = "course_id"),
+    inverseJoinColumns = @JoinColumn(name = "student_id"))
+    private List<Student> students = new ArrayList<>();
 
     public Integer getCourseId() {
         return courseId;
