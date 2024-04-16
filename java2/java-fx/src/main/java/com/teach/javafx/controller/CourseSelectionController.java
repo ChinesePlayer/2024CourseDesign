@@ -55,12 +55,17 @@ public class CourseSelectionController {
         courseTableView.setItems(observableList);
     }
 
-    //通过网络请求获得所有课程
+    //通过网络请求获得所有课程, 并且将已选课程放入chosenCourse列表中
     public void getCourses() {
         DataRequest req = new DataRequest();
         DataResponse res = HttpRequestUtil.request("/api/course/getCourseChoices", req);
         if (res != null && res.getCode() == 0) {
             courses = (ArrayList<Map>) res.getData();
+        }
+        for(Map m : courses){
+            if((Boolean) m.get("isChosen")){
+                chosenCourse.add(m);
+            }
         }
     }
 

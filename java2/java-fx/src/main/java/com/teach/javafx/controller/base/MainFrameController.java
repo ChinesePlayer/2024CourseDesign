@@ -214,9 +214,9 @@ public class MainFrameController {
     }
 
     protected void logout(){
-        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("base/login-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("base/custom-login-view.fxml"));
         try {
-            Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+            Scene scene = new Scene(fxmlLoader.load(), 700, 400);
             MainApplication.loginStage("Login", scene);
         } catch (IOException e) {
             throw new RuntimeException(e);

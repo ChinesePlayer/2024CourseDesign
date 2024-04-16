@@ -195,6 +195,7 @@ public class CourseController {
         return CommonMethod.getReturnMessageOK();
     }
 
+    //查找当前学生所选的所有课程
     @PostMapping("/getStudentCourseList")
     @PreAuthorize("hasRole('ROLE_STUDENT')")
     public DataResponse getStudentCourseList(@Valid @RequestBody DataRequest dataRequest){
