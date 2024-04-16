@@ -89,4 +89,12 @@ public class Course implements Serializable {
     public void setCoursePath(String coursePath) {
         this.coursePath = coursePath;
     }
+
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
+    }
 }

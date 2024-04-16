@@ -74,4 +74,11 @@ public class Student {
         return person.getNum()+"-" + person.getName();
     }
 
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
+    }
 }
