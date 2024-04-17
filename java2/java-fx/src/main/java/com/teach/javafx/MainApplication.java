@@ -5,7 +5,9 @@ import com.teach.javafx.request.HttpRequestUtil;
 import com.teach.javafx.request.SQLiteJDBC;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -26,7 +28,22 @@ public class MainApplication extends Application {
     public static double stageMinHeight = 700.0;
     public static double stageMinWidth = 1000.0;
 
+    public static double loginStageMinWidth = 700;
+    public static double loginStageMinHeight = 400;
+
     private static boolean canClose=true;
+
+    public static double getScreenWidth(){
+        Screen screen = Screen.getPrimary();
+        Rectangle2D bounds = screen.getBounds();
+        return bounds.getWidth();
+    }
+
+    public static double getScreenHeight(){
+        Screen screen = Screen.getPrimary();
+        Rectangle2D bounds = screen.getBounds();
+        return bounds.getHeight();
+    }
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -70,16 +87,19 @@ public class MainApplication extends Application {
     }
 
     public static void loginStage(String name, Scene scene) {
-        stageWidth = mainStage.getWidth();
-        stageHeight = mainStage.getHeight();
+        double screenWidth = getScreenWidth();
+        double screenHeight = getScreenHeight();
+        double windowWidth = scene.getWidth();
+        double windowHeight = scene.getHeight();
+        System.out.println(screenWidth + ", " + screenHeight);
+        System.out.println(windowWidth + ", " + windowHeight);
+        mainStage.setX((screenWidth - windowWidth)/2.0);
+        mainStage.setY((screenHeight - windowHeight)/2.0);
+        mainStage.setResizable(false);
         mainStage.setTitle(name);
         mainStage.setScene(scene);
-        double x = (stageWidth-320)/2;
-        double y = (stageHeight-240)/2;
-        mainStage.setX(x);
-        mainStage.setY(y);
-        mainStage.setWidth(320);
-        mainStage.setHeight(240);
+        mainStage.setMinWidth(loginStageMinWidth);
+        mainStage.setMinHeight(loginStageMinHeight);
         mainStage.show();
     }
 

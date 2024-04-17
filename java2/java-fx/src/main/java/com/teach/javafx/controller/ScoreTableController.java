@@ -151,10 +151,13 @@ public class ScoreTableController {
             scene = new Scene(fxmlLoader.load(), 260, 140);
             stage = new Stage();
             stage.initOwner(MainApplication.getMainStage());
-            stage.initModality(Modality.NONE);
+            //设置当前对话框的模态: 即当对话框关闭前，用户无法与其父窗口进行交互
+            stage.initModality(Modality.WINDOW_MODAL);
+            //将其永远置于顶层
             stage.setAlwaysOnTop(true);
             stage.setScene(scene);
             stage.setTitle("成绩录入对话框！");
+            //回调函数，当窗口关闭时会调用，当然，是在窗口被关闭的那一瞬间之前调用
             stage.setOnCloseRequest(event ->{
                 MainApplication.setCanClose(true);
             });

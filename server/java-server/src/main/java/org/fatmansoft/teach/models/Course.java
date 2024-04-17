@@ -6,6 +6,7 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Course 课程表实体类  保存课程的的基本信息信息，
@@ -41,6 +42,24 @@ public class Course implements Serializable {
     joinColumns = @JoinColumn(name = "course_id"),
     inverseJoinColumns = @JoinColumn(name = "student_id"))
     private List<Student> students = new ArrayList<>();
+
+    @Override
+    public boolean equals(Object o){
+        if(o == null){
+            return false;
+        }
+        if(o.getClass() != this.getClass()){
+            return false;
+        }
+        if(o == this){
+            return true;
+        }
+        Course that = (Course)o;
+        if(Objects.equals(that.getCourseId(), this.getCourseId())){
+            return true;
+        }
+        return false;
+    }
 
     public Integer getCourseId() {
         return courseId;
@@ -88,5 +107,13 @@ public class Course implements Serializable {
 
     public void setCoursePath(String coursePath) {
         this.coursePath = coursePath;
+    }
+
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
     }
 }

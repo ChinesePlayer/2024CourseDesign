@@ -8,7 +8,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.Window;
+
 /**
  * ChoiceController 登录交互控制类 对应 base/choice-dialog.fxml
  *  @FXML  属性 对应fxml文件中的
@@ -20,7 +23,7 @@ public class ChoiceController {
 
     private Text text;
     private Stage stage;
-    private int choice;
+    private int choice = MessageDialog.CHOICE_CANCEL;
     /**
      * 页面加载对象创建完成初始话方法，页面中控件属性的设置，初始数据显示等初始操作都在这里完成，其他代码都事件处理方法里
      */
@@ -59,7 +62,7 @@ public class ChoiceController {
 
     public void close(){
         MainApplication.setCanClose(true);
-        stage.close();
+        this.stage.close();
     }
     public Stage getStage() {
         return stage;
@@ -69,7 +72,8 @@ public class ChoiceController {
         this.stage = stage;
     }
 
-    public int  choiceDialog(String msg) {
+    public int choiceDialog(String msg) {
+        this.choice = MessageDialog.CHOICE_CANCEL;
         text.setText(msg);
         this.stage.showAndWait();
         return choice;

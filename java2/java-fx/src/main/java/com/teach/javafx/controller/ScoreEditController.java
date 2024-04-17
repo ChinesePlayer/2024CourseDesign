@@ -27,6 +27,7 @@ public class ScoreEditController {
     private TextField markField;
     private ScoreTableController scoreTableController= null;
     private Integer scoreId= null;
+
     @FXML
     public void initialize() {
     }
