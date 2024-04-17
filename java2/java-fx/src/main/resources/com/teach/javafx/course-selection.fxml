@@ -6,10 +6,21 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.geometry.Insets?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.teach.javafx.controller.CourseSelectionController"
             >
+    <top>
+        <HBox>
+            <MFXButton fx:id="checkChosenButton" text="查看已选课程" onAction="#onCheckChosenButtonPressed">
+                <HBox.margin>
+                    <Insets left="10.0" right="10.0" top="10.0" bottom="10.0" />
+                </HBox.margin>
+            </MFXButton>
+        </HBox>
+    </top>
     <center>
         <TableView fx:id="courseTableView">
             <columns>

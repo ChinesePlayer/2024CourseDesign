@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 
 import javax.swing.text.html.Option;
 import javax.validation.Valid;
+import javax.xml.crypto.Data;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,7 +32,6 @@ import java.util.*;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/course")
-
 public class CourseController {
     @Autowired
     private CourseRepository courseRepository;
@@ -71,9 +71,13 @@ public class CourseController {
         return CommonMethod.getReturnData(dataList);
     }
 
+    @PostMapping("/cancelCourse")
+    public DataResponse cancelCourse(@Valid @RequestBody DataRequest request){
+        return courseService.cancelCourse(request);
+    }
+
     //获取选课课程列表
     @PostMapping("/getCourseChoices")
-    @PreAuthorize("hasRole('ROLE_STUDENT')")
     public DataResponse getCourseChoices(@Valid @RequestBody DataRequest dataRequest) {
         String numName = dataRequest.getString("numName");
         Integer userId = CommonMethod.getUserId();
@@ -129,6 +133,7 @@ public class CourseController {
         if(!studentOptional.isPresent()){
             return CommonMethod.getReturnMessageError("学生不存在!");
         }
+        Student student = studentOptional.get();
         //从请求获取课程ID
         Integer courseId = Integer.parseInt(String.valueOf(dataRequest.getData().get("courseId")));
         if(courseId == null){
@@ -138,8 +143,11 @@ public class CourseController {
         if(!courseOptional.isPresent()){
             return CommonMethod.getReturnMessageError("该课程不存在, 课程ID: " + courseId);
         }
+        List<Course> chosenCourse = studentRepository.findCoursesByStudentId(student.getStudentId());
         Course course = courseOptional.get();
-        Student student = studentOptional.get();
+        if(chosenCourse.contains(course)){
+            return CommonMethod.getReturnMessageError("当前课程已选中! ");
+        }
 
         student.getCourses().add(course);
         course.getStudents().add(student);
