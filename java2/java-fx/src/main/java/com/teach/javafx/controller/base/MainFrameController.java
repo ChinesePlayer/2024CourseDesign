@@ -4,6 +4,7 @@ import com.teach.javafx.AppStore;
 import com.teach.javafx.MainApplication;
 import com.teach.javafx.request.HttpRequestUtil;
 import com.teach.javafx.request.MyTreeNode;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -12,6 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 
@@ -42,6 +44,8 @@ public class MainFrameController {
     private TreeView<MyTreeNode> menuTree;
     @FXML
     protected TabPane contentTabPane;
+    @FXML
+    private MFXButton urlTest;
 
     private ChangePanelHandler handler= null;
 
@@ -381,5 +385,20 @@ public class MainFrameController {
     }
     public ToolController getToolController(String name){
         return  controlMap.get(name);
+    }
+
+    public void onTestButton(){
+        FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("base/response-test.fxml"));
+        try {
+            Scene scene = new Scene(loader.load(), 700, 400);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.setTitle("URL测试窗口");
+            stage.show();
+        }
+        catch (IOException e){
+            System.out.println("无法加载页面: " + e.getMessage());
+        }
     }
 }

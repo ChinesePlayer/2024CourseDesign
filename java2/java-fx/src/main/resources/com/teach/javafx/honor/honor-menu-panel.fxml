@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.teach.javafx.controller.honor.HonorMenuController"
+            prefHeight="400.0" prefWidth="600.0">
+    <MFXButton fx:id="openHonorWindow" text="查看荣誉窗口" onAction="#onOpenWindow" />
+
+</AnchorPane>
