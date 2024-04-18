@@ -11,6 +11,7 @@
 <?import javafx.scene.text.Font?>
 <!-- 前端应用主框架FXML配置文件 对应页面交互控制类 com.teach.javafx.controller.base.MainFrameController -->
 <?import javafx.scene.control.TreeView?>
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teach.javafx.controller.base.MainFrameController">
   <top>
     <MenuBar fx:id="menuBar" />
@@ -32,4 +33,7 @@
       </padding>
     </HBox>
   </bottom>
+  <right>
+    <MFXButton fx:id="urlTest" text="URL测试" onAction="#onTestButton"/>
+  </right>
 </BorderPane>

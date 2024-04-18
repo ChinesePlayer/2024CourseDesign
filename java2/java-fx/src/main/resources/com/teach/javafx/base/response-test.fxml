@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox
+        minWidth="Infinity"
+        minHeight="Infinity"
+        xmlns="http://javafx.com/javafx/17.0.2-ea"
+        xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="com.teach.javafx.controller.base.ResponseTestController"
+        spacing="40">
+   <children>
+       <MFXButton fx:id="launRequest" onAction="#onRequest" prefHeight="25.0" prefWidth="75.0" text="发起请求" />
+       <MFXTextField fx:id="urlField" floatMode="ABOVE" floatingText="请求URL" prefHeight="32.0" prefWidth="248.0" />
+       <Label fx:id="resField" prefHeight="57.0" prefWidth="119.0" minWidth="Infinity" />
+   </children>
+</VBox>

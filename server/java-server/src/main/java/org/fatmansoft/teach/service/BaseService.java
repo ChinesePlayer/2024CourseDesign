@@ -6,9 +6,12 @@ import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.fatmansoft.teach.models.DictionaryInfo;
 import org.fatmansoft.teach.models.MenuInfo;
+import org.fatmansoft.teach.models.Student;
 import org.fatmansoft.teach.payload.response.MyTreeNode;
 import org.fatmansoft.teach.repository.DictionaryInfoRepository;
 import org.fatmansoft.teach.repository.MenuInfoRepository;
+import org.fatmansoft.teach.repository.StudentRepository;
+import org.fatmansoft.teach.util.CommonMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -22,6 +25,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * BaseService 系统菜单、数据字典等处理的功能和方法
@@ -35,6 +39,8 @@ public class BaseService {
     private MenuInfoRepository menuInfoRepository;  //菜单数据操作自动注入
     @Autowired
     private ResourceLoader resourceLoader;  //资源装在服务对象自动注入
+    @Autowired
+    private StudentRepository studentRepository;
 
     private FSDefaultCacheStore fSDefaultCacheStore = new FSDefaultCacheStore();
 
@@ -147,6 +153,19 @@ public class BaseService {
         }
     }
 
-
+    /*
+     * 根据当前登录的用户来查询学生
+     * */
+    public Student getStudent(){
+        Integer userId = CommonMethod.getUserId();
+        if(userId == null){
+            return null;
+        }
+        Optional<Student> studentOptional = studentRepository.findByUserId(userId);
+        if(!studentOptional.isPresent()){
+            return null;
+        }
+        return studentOptional.get();
+    }
 
 }

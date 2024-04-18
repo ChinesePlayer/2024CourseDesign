@@ -1,6 +1,7 @@
 package org.fatmansoft.teach.repository;
 
 import org.fatmansoft.teach.models.Course;
+import org.fatmansoft.teach.models.Honor;
 import org.fatmansoft.teach.models.Student;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

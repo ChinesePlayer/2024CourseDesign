@@ -1,6 +1,8 @@
 package org.fatmansoft.teach.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -15,6 +17,8 @@ import java.util.List;
  * String className 班级
  *
  */
+@Getter
+@Setter
 @Entity
 @Table(	name = "student",
         uniqueConstraints = {
@@ -37,6 +41,9 @@ public class Student {
 
     @ManyToMany(mappedBy = "students")
     private List<Course> courses = new ArrayList<>();
+
+    @OneToMany(mappedBy = "student")
+    private List<Honor> honors = new ArrayList<>();
 
     public Integer getStudentId() {
         return studentId;
