@@ -147,6 +147,7 @@ public class HonorCheckController {
             filterStage.initOwner(getStage());
             filterStage.initModality(Modality.WINDOW_MODAL);
             filterStage.setOnCloseRequest(windowEvent -> filterStage = null);
+            filterStage.setResizable(false);
             filterStage.show();
         }
         catch (IOException o){

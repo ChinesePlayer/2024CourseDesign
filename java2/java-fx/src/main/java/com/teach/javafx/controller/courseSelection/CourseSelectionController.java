@@ -1,4 +1,4 @@
-package com.teach.javafx.controller;
+package com.teach.javafx.controller.courseSelection;
 
 import com.teach.javafx.MainApplication;
 import com.teach.javafx.controller.base.MessageDialog;
@@ -229,7 +229,7 @@ public class CourseSelectionController {
         if(this.stage != null){
             return;
         }
-        FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("check-chosen-course-dialog.fxml"));
+        FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("courseSelection/check-chosen-course-dialog.fxml"));
         try{
             Scene scene = new Scene(loader.load(), 700, 400);
             checkChosenCourseDialogController = (CheckChosenCourseDialogController) loader.getController();

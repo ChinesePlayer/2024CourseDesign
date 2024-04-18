@@ -1,6 +1,7 @@
-package com.teach.javafx.controller;
+package com.teach.javafx.controller.courseSelection;
 
 import com.teach.javafx.controller.base.MessageDialog;
+import com.teach.javafx.controller.courseSelection.CourseSelectionController;
 import com.teach.javafx.request.HttpRequestUtil;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.collections.FXCollections;

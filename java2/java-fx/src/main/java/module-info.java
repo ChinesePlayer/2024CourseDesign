@@ -28,5 +28,7 @@ module com.teach.javafx {
     opens com.teach.javafx.models to com.google.gson, javafx.base;
     exports com.teach.javafx.controller.honor;
     opens com.teach.javafx.controller.honor to com.google.gson, javafx.fxml;
+    exports com.teach.javafx.controller.courseSelection;
+    opens com.teach.javafx.controller.courseSelection to com.google.gson, javafx.fxml;
 
 }
