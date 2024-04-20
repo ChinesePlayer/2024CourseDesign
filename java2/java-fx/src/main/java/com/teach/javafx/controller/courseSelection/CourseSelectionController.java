@@ -171,7 +171,10 @@ public class CourseSelectionController {
                 return new SimpleStringProperty("无");
             }
             Integer preCourseId = Integer.parseInt((String) value.get("preCourseId"));
-            Map preCourse = findCourseById(preCourseId);
+            if(preCourseId == null){
+                return new SimpleStringProperty("无");
+            }
+            Map preCourse = getPreCourse(preCourseId);
             if (preCourse == null) {
                 return new SimpleStringProperty("无");
             }

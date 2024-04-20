@@ -197,7 +197,7 @@ public class CourseService {
         }
         //检查其前序课程是否修读，若未修读，则不允许选课
         Course preCourse = course.getPreCourse();
-        if(!chosenCourse.contains(preCourse)){
+        if(!chosenCourse.contains(preCourse) && preCourse != null){
             return CommonMethod.getReturnMessageError("你尚未修读其前序课程: " + preCourse.getNum() + "-" + preCourse.getName() + " 无法选课! ");
         }
         student.getCourses().add(course);
