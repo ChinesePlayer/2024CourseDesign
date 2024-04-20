@@ -1,5 +1,6 @@
 package org.fatmansoft.teach.models;
 
+import java.util.List;
 import java.util.Map;
 
 public class Course {
@@ -10,6 +11,10 @@ public class Course {
     private String num;
     private String credit;
     private String coursePath;
+    //课程节次
+    private List<Integer> section;
+    //课程是星期几
+    private List<Integer> day;
 
     public Course(){
 

@@ -13,6 +13,11 @@ public class CourseTable extends GridPane {
 
     }
 
+    //课程需要有上课星期，节次，以此来定位
+    public CourseTable(List<Course> courses){
+
+    }
+
 //    public void setGrid(List<>){
 //
 //    }
