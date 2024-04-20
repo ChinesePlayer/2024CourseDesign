@@ -128,6 +128,7 @@ public class CourseSelectionController {
         req.add("id", turnId);
         DataResponse res = HttpRequestUtil.request("/api/course/getCourseChoices", req);
         if (res != null && res.getCode() == 0) {
+            System.out.println("当前课程数据: " + res.getData());
             courses = (ArrayList<Map>) res.getData();
         }
         //将已选课程添加到chosenCourse中

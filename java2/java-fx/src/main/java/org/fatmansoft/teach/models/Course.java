@@ -27,6 +27,18 @@ public class Course {
         this.credit = credit;
     }
 
+    public Course(Map m){
+        String idStr = String.valueOf(m.get("courseId"));
+        int pointPos = idStr.indexOf(".");
+        Integer id = Integer.parseInt(idStr.substring(0,pointPos));
+
+        this.name = (String)m.get("name");
+        this.num = (String)m.get("num");
+        this.courseId = id;
+        this.credit = (String) m.get("credit");
+        this.preCourseName = (String) m.get("preCourseName");
+    }
+
     //从Map创建Course
     //这个Map中必须有的属性: name, courseId, num, credit
     public static Course fromMap(Map mapCourse){
