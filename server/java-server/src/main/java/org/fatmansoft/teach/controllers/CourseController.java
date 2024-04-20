@@ -84,7 +84,6 @@ public class CourseController {
     //根据ID返回某个课程的信息
     @PostMapping("/getCourse")
     public DataResponse getCourse(@Valid @RequestBody DataRequest req){
-        System.out.println(req.getData());
         return courseService.getCourse(req);
     }
 }
