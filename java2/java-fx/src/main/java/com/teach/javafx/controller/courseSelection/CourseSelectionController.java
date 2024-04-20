@@ -2,6 +2,7 @@ package com.teach.javafx.controller.courseSelection;
 
 import com.teach.javafx.MainApplication;
 import com.teach.javafx.controller.base.MessageDialog;
+import com.teach.javafx.customWidget.CourseTable;
 import com.teach.javafx.request.HttpRequestUtil;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.beans.property.SimpleStringProperty;
@@ -45,6 +46,11 @@ public class CourseSelectionController {
     public TableColumn<Map, String> preCourse;
     @FXML
     public TableColumn<Map, MFXButton> action;
+    @FXML
+    public CourseTable courseTable;
+
+    //当前选课轮次的ID
+    private Integer turnId= null;
 
     private List<Map> courses = new ArrayList<>();
     private List<Map> chosenCourse = new ArrayList<>();
@@ -119,6 +125,7 @@ public class CourseSelectionController {
     //通过网络请求获得所有课程, 并且将已选课程放入chosenCourse列表中
     public void getCourses() {
         DataRequest req = new DataRequest();
+        req.add("id", turnId);
         DataResponse res = HttpRequestUtil.request("/api/course/getCourseChoices", req);
         if (res != null && res.getCode() == 0) {
             courses = (ArrayList<Map>) res.getData();
@@ -135,6 +142,11 @@ public class CourseSelectionController {
                 unchosenCourse.add(m);
             }
         }
+    }
+
+    public void update(){
+        getCourses();
+        setTableViewData();
     }
 
     public Map findCourseById(Integer id) {
@@ -188,9 +200,6 @@ public class CourseSelectionController {
                 return cell;
             }
         });
-
-        getCourses();
-        setTableViewData(ChosenFilter.UNCHOSEN);
     }
 
     public void onChooseButton(ActionEvent event){
@@ -271,5 +280,26 @@ public class CourseSelectionController {
             }
         }
 
+    }
+
+    public Integer getTurnId() {
+        return turnId;
+    }
+
+    public void setTurnId(Integer turnId) {
+        this.turnId = turnId;
+    }
+
+    //请求前序课程信息，返回的数据中包含：前序课程名称，前序课程num号
+    private Map getPreCourse(Integer preCourseId){
+        DataRequest req = new DataRequest();
+        req.add("courseId", preCourseId);
+        DataResponse res = HttpRequestUtil.request("/api/course/getCourse", req);
+        if(res != null && res.getCode() == 0){
+            return (Map) res.getData();
+        }
+        else {
+            return null;
+        }
     }
 }
