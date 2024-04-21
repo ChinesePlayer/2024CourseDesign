@@ -1,5 +1,8 @@
 package org.fatmansoft.teach.models;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -16,32 +19,67 @@ import java.util.Objects;
  * Integer credit 学分
  * Course preCourse 前序课程 pre_course_id 关联前序课程的主键 course_id
  */
+@Getter
+@Setter
 @Entity
 @Table(	name = "course",
         uniqueConstraints = {
         })
 public class Course implements Serializable {
+    @Setter
+    @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer courseId;
+    @Setter
+    @Getter
     @NotBlank
     @Size(max = 20)
     private String num;
 
+    @Setter
+    @Getter
     @Size(max = 50)
     private String name;
+    @Setter
+    @Getter
     private Integer credit;
+
+    //上课星期
+    @Size(min = 1, max = 7)
+    private Integer day;
+
+    //上课节次
+    @Size(min = 1, max = 5)
+    private Integer session;
+
+    //上课地点
+    @Column(length = 30)
+    private String location;
+
+    @Getter
+    @Setter
     @ManyToOne
     @JoinColumn(name="pre_course_id")
     private Course preCourse;
+    @Setter
+    @Getter
     @Size(max = 12)
     private String coursePath;
 
+    @Setter
+    @Getter
     @ManyToMany
     @JoinTable(name = "course_student",
     joinColumns = @JoinColumn(name = "course_id"),
     inverseJoinColumns = @JoinColumn(name = "student_id"))
     private List<Student> students = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(name = "course_turn",
+    joinColumns = @JoinColumn(name = "course_id"),
+    inverseJoinColumns = @JoinColumn(name = "turn_id"))
+    private List<CourseSelectionTurn> turns;
 
     @Override
     public boolean equals(Object o){
@@ -61,59 +99,4 @@ public class Course implements Serializable {
         return false;
     }
 
-    public Integer getCourseId() {
-        return courseId;
-    }
-
-    public void setCourseId(Integer courseId) {
-        this.courseId = courseId;
-    }
-
-    public String getNum() {
-        return num;
-    }
-
-    public void setNum(String num) {
-        this.num = num;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getCredit() {
-        return credit;
-    }
-
-    public void setCredit(Integer credit) {
-        this.credit = credit;
-    }
-
-    public Course getPreCourse() {
-        return preCourse;
-    }
-
-    public void setPreCourse(Course preCourse) {
-        this.preCourse = preCourse;
-    }
-
-    public String getCoursePath() {
-        return coursePath;
-    }
-
-    public void setCoursePath(String coursePath) {
-        this.coursePath = coursePath;
-    }
-
-    public List<Student> getStudents() {
-        return students;
-    }
-
-    public void setStudents(List<Student> students) {
-        this.students = students;
-    }
 }

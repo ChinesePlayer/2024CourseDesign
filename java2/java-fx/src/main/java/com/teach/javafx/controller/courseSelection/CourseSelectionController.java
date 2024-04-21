@@ -1,7 +1,8 @@
-package com.teach.javafx.controller;
+package com.teach.javafx.controller.courseSelection;
 
 import com.teach.javafx.MainApplication;
 import com.teach.javafx.controller.base.MessageDialog;
+import com.teach.javafx.customWidget.CourseTable;
 import com.teach.javafx.request.HttpRequestUtil;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.beans.property.SimpleStringProperty;
@@ -19,6 +20,7 @@ import javafx.scene.control.cell.MapValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import org.fatmansoft.teach.models.Course;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 
@@ -34,35 +36,36 @@ enum ChosenFilter {
 
 public class CourseSelectionController {
     @FXML
-    public TableView<Map> courseTableView;
+    public TableView<Course> courseTableView;
     @FXML
-    public TableColumn<Map, String> courseName;
+    public TableColumn<Course, String> courseName;
     @FXML
-    public TableColumn<Map, String> courseNum;
+    public TableColumn<Course, String> courseNum;
     @FXML
-    public TableColumn<Map, String> credit;
+    public TableColumn<Course, String> credit;
     @FXML
-    public TableColumn<Map, String> preCourse;
+    public TableColumn<Course, String> preCourse;
     @FXML
-    public TableColumn<Map, MFXButton> action;
+    public TableColumn<Course, MFXButton> action;
+    @FXML
+    public CourseTable courseTable;
 
-    private List<Map> courses = new ArrayList<>();
-    private List<Map> chosenCourse = new ArrayList<>();
-    private List<Map> unchosenCourse = new ArrayList<>();
+    //当前选课轮次的ID
+    private Integer turnId= null;
+
+    private List<Course> courses = new ArrayList<>();
+    private List<Course> chosenCourse = new ArrayList<>();
+    private List<Course> unchosenCourse = new ArrayList<>();
     //用于储存全部课程列表
-    private ObservableList<Map> observableList = FXCollections.observableArrayList();
+    private ObservableList<Course> observableList = FXCollections.observableArrayList();
     //用于储存筛选后的课程列表
-    private ObservableList<Map> filteredObservableList = FXCollections.observableArrayList();
+    private ObservableList<Course> filteredObservableList = FXCollections.observableArrayList();
     private CheckChosenCourseDialogController checkChosenCourseDialogController;
     private Stage stage = null;
 
-    public void sortList(List<Map> list){
-        list.sort(new Comparator<Map>() {
-            @Override
-            public int compare(Map o1, Map o2) {
-                return ((String) o1.get("num")).compareTo((String) o2.get("num"));
-            }
-        });
+    //根据课程num对课程进行排序
+    public void sortList(List<Course> list){
+        list.sort(Comparator.comparing(Course::getNum));
     }
 
     public void sortCourse(){
@@ -85,24 +88,13 @@ public class CourseSelectionController {
 
     //将该学生未选的课程展示出来
     public void setTableViewData() {
-        observableList.clear();
-//        for (Map m : courses) {
-//            if(chosenCourse.contains(m)){
-//                continue;
-//            }
-//            MFXButton button = new MFXButton("选课");
-//            button.setOnAction(this::onChooseButton);
-//            m.put("action", button);
-//            observableList.addAll(FXCollections.observableArrayList(m));
-//        }
-        observableList.addAll(FXCollections.observableArrayList(unchosenCourse));
-        courseTableView.setItems(observableList);
+        setTableViewData(ChosenFilter.UNCHOSEN);
     }
 
     //根据筛选条件进行显示
     public void setTableViewData(ChosenFilter chosenFilter) {
         observableList.clear();
-        List<Map> readyToShowCourseList = new ArrayList<>();
+        List<Course> readyToShowCourseList = new ArrayList<>();
         if(chosenFilter == ChosenFilter.CHOSEN){
             readyToShowCourseList = chosenCourse;
         }
@@ -116,62 +108,68 @@ public class CourseSelectionController {
         courseTableView.setItems(observableList);
     }
 
-    //通过网络请求获得所有课程, 并且将已选课程放入chosenCourse列表中
+    //通过网络请求获得所有课程,
     public void getCourses() {
         DataRequest req = new DataRequest();
+        req.add("id", turnId);
         DataResponse res = HttpRequestUtil.request("/api/course/getCourseChoices", req);
         if (res != null && res.getCode() == 0) {
-            courses = (ArrayList<Map>) res.getData();
-        }
-        //将已选课程添加到chosenCourse中
-        for(Map m : courses){
-            MFXButton button = new MFXButton("选课");
-            button.setOnAction(this::onChooseButton);
-            m.put("action", button);
-            if((Boolean) m.get("isChosen")){
-                chosenCourse.add(m);
-            }
-            else {
-                unchosenCourse.add(m);
+            System.out.println("当前课程数据: " + res.getData());
+            List<Map> rowData = (ArrayList<Map>)res.getData();
+            for(Map m : rowData){
+                Course c = new Course(m);
+                MFXButton button = new MFXButton("选课");
+                button.setOnAction(this::onChooseButton);
+                c.setAction(button);
+                courses.add(c);
+                //根据是否选中将课程分配到已选和未选两个List中
+                if(c.getChosen()){
+                    chosenCourse.add(c);
+                }
+                else {
+                    unchosenCourse.add(c);
+                }
             }
         }
     }
 
-    public Map findCourseById(Integer id) {
-        for (Map c : courses) {
-            if (c.get("courseId").equals(String.valueOf(id))) {
-                return c;
-            }
-        }
-        return null;
+    public void update(){
+        getCourses();
+        setTableViewData();
     }
 
     @FXML
     public void initialize() {
-        courseName.setCellValueFactory(new MapValueFactory<>("name"));
-        courseNum.setCellValueFactory(new MapValueFactory<>("num"));
-        preCourse.setCellValueFactory(cellData -> {
-            if (cellData == null) {
-                return null;
-            }
-            Map value = (Map) cellData.getValue();
-            if (value.get("preCourseId") == null) {
-                return new SimpleStringProperty("无");
-            }
-            Integer preCourseId = Integer.parseInt((String) value.get("preCourseId"));
-            Map preCourse = findCourseById(preCourseId);
-            if (preCourse == null) {
-                return new SimpleStringProperty("无");
-            }
-            return new SimpleStringProperty(preCourse.get("num") + "-" + preCourse.get("name"));
-        });
-        credit.setCellValueFactory(new MapValueFactory<>("credit"));
-        action.setCellValueFactory(new MapValueFactory<>("action"));
+        courseName.setCellValueFactory(new CourseValueFactory());
+        courseNum.setCellValueFactory(new CourseValueFactory());
+        preCourse.setCellValueFactory(new CourseValueFactory());
+        credit.setCellValueFactory(new CourseValueFactory());
+        action.setCellValueFactory(new CourseActionValueFactory());
         //设置按钮所在单元格为居中显示
+//        action.setCellFactory(new Callback<>() {
+//            @Override
+//            public TableCell<Map, MFXButton> call(TableColumn<Map, MFXButton> mapButtonTableColumn) {
+//                TableCell<Map, MFXButton> cell = new TableCell<>() {
+//                    @Override
+//                    protected void updateItem(MFXButton item, boolean empty) {
+//                        super.updateItem(item, empty);
+//                        if (item == null || empty) {
+//                            setText(null);
+//                            setGraphic(null);
+//                            return;
+//                        }
+//                        setText(null);
+//                        setGraphic(item);
+//                    }
+//                };
+//                cell.setAlignment(Pos.CENTER);
+//                return cell;
+//            }
+//        });
         action.setCellFactory(new Callback<>() {
             @Override
-            public TableCell<Map, MFXButton> call(TableColumn<Map, MFXButton> mapButtonTableColumn) {
-                TableCell<Map, MFXButton> cell = new TableCell<>() {
+            public TableCell<Course, MFXButton> call(TableColumn<Course, MFXButton> courseMFXButtonTableColumn) {
+                TableCell<Course, MFXButton> cell = new TableCell<>() {
                     @Override
                     protected void updateItem(MFXButton item, boolean empty) {
                         super.updateItem(item, empty);
@@ -188,24 +186,21 @@ public class CourseSelectionController {
                 return cell;
             }
         });
-
-        getCourses();
-        setTableViewData(ChosenFilter.UNCHOSEN);
     }
 
     public void onChooseButton(ActionEvent event){
         MFXButton button = (MFXButton) event.getTarget();
-        TableCell<Map,MFXButton> cell = (TableCell<Map, MFXButton>) button.getParent();
+        TableCell<Course,MFXButton> cell = (TableCell<Course, MFXButton>) button.getParent();
         int rowIndex = cell.getIndex();
         //获取所点击的按钮对应的行的所有数据
-        Map m = observableList.get(rowIndex);
-        int ret = MessageDialog.choiceDialog("你确定要选择: " + m.get("name") + " 吗");
+        Course c = observableList.get(rowIndex);
+        int ret = MessageDialog.choiceDialog("你确定要选择: " + c.getName() + " 吗");
         System.out.println("选择的结果: " + ret);
         if(ret != MessageDialog.CHOICE_YES){
             System.out.println("取消选课了");
             return;
         }
-        Integer courseId = Integer.parseInt((String)m.get("courseId"));
+        Integer courseId = c.getCourseId();
         //向后端发送网络请求，后端根据课程ID为该学生选课并返回是否选课成功
         DataRequest req = new DataRequest();
         req.add("courseId", courseId);
@@ -213,9 +208,9 @@ public class CourseSelectionController {
         if(res != null && res.getCode() == 0){
             MessageDialog.showDialog("选课成功! ");
             //将该数据加入到已选课程中
-            chosenCourse.add(m);
+            chosenCourse.add(c);
             //从未选课程中移除
-            unchosenCourse.remove(m);
+            unchosenCourse.remove(c);
             //更新列表
             setTableViewData();
         }
@@ -229,7 +224,7 @@ public class CourseSelectionController {
         if(this.stage != null){
             return;
         }
-        FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("check-chosen-course-dialog.fxml"));
+        FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("courseSelection/check-chosen-course-dialog.fxml"));
         try{
             Scene scene = new Scene(loader.load(), 700, 400);
             checkChosenCourseDialogController = (CheckChosenCourseDialogController) loader.getController();
@@ -251,7 +246,7 @@ public class CourseSelectionController {
         }
     }
 
-    public List<Map> getChosenCourse(){
+    public List<Course> getChosenCourse(){
         sortChosen();
         return this.chosenCourse;
     }
@@ -261,15 +256,36 @@ public class CourseSelectionController {
 
     public void onHasCanceledCourse(Integer courseId){
         System.out.println("当前退选的Id: "+courseId);
-        for(Map m : chosenCourse){
-            if(Objects.equals(Integer.parseInt((String) m.get("courseId")), courseId)){
-                chosenCourse.remove(m);
-                unchosenCourse.add(m);
+        for(Course c : chosenCourse){
+            if(Objects.equals(c.getCourseId(), courseId)){
+                chosenCourse.remove(c);
+                unchosenCourse.add(c);
                 sortAll();
                 setTableViewData();
                 break;
             }
         }
 
+    }
+
+    public Integer getTurnId() {
+        return turnId;
+    }
+
+    public void setTurnId(Integer turnId) {
+        this.turnId = turnId;
+    }
+
+    //请求前序课程信息，返回的数据中包含：前序课程名称，前序课程num号
+    private Map getPreCourse(Integer preCourseId){
+        DataRequest req = new DataRequest();
+        req.add("courseId", preCourseId);
+        DataResponse res = HttpRequestUtil.request("/api/course/getCourse", req);
+        if(res != null && res.getCode() == 0){
+            return (Map) res.getData();
+        }
+        else {
+            return null;
+        }
     }
 }
