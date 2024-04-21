@@ -5,7 +5,6 @@ import com.teach.javafx.controller.base.MessageDialog;
 import com.teach.javafx.customWidget.CourseTable;
 import com.teach.javafx.request.HttpRequestUtil;
 import io.github.palexdev.materialfx.controls.MFXButton;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,11 +15,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.MapValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.fatmansoft.teach.models.Course;
+import org.fatmansoft.teach.models.CourseTime;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 
@@ -49,10 +48,13 @@ public class CourseSelectionController {
     public TableColumn<Course, MFXButton> action;
     @FXML
     public CourseTable courseTable;
+    @FXML
+    public TableColumn<Course, String> days;
+    @FXML
+    public TableColumn<Course, String> sections;
 
     //当前选课轮次的ID
     private Integer turnId= null;
-
     private List<Course> courses = new ArrayList<>();
     private List<Course> chosenCourse = new ArrayList<>();
     private List<Course> unchosenCourse = new ArrayList<>();
@@ -144,6 +146,8 @@ public class CourseSelectionController {
         courseNum.setCellValueFactory(new CourseValueFactory());
         preCourse.setCellValueFactory(new CourseValueFactory());
         credit.setCellValueFactory(new CourseValueFactory());
+        days.setCellValueFactory(new CourseTimeValueFactory());
+        sections.setCellValueFactory(new CourseTimeValueFactory());
         action.setCellValueFactory(new CourseActionValueFactory());
         //设置按钮所在单元格为居中显示
 //        action.setCellFactory(new Callback<>() {

@@ -6,6 +6,7 @@ import javafx.scene.control.TableColumn;
 import javafx.util.Callback;
 import org.fatmansoft.teach.models.Course;
 
+
 public class CourseValueFactory implements Callback<TableColumn.CellDataFeatures<Course, String>, ObservableValue<String>> {
     @Override
     public ObservableValue<String> call(TableColumn.CellDataFeatures<Course, String> param) {

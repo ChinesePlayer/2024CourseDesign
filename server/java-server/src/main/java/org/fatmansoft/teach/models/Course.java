@@ -81,6 +81,9 @@ public class Course implements Serializable {
     inverseJoinColumns = @JoinColumn(name = "turn_id"))
     private List<CourseSelectionTurn> turns;
 
+    @OneToMany(mappedBy = "course")
+    private List<CourseTime> courseTimes;
+
     @Override
     public boolean equals(Object o){
         if(o == null){

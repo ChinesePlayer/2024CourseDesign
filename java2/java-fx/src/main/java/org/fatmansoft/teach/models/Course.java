@@ -5,6 +5,7 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,10 +17,7 @@ public class Course {
     private String num;
     private String credit;
     private String coursePath;
-    //课程节次
-    private List<Integer> section;
-    //课程是星期几
-    private List<Integer> day;
+    private List<CourseTime> courseTimes;
     //对课程可执行的操作
     private MFXButton action;
     //是否已选该课程
@@ -49,6 +47,14 @@ public class Course {
         this.credit = String.valueOf(m.get("credit"));
         this.isChosen = (Boolean) m.get("isChosen");
         this.coursePath = (String) m.get("coursePath");
+        this.courseTimes = new ArrayList<>();
+        List<Map> timeMaps = (ArrayList<Map>) m.get("times");
+        System.out.println("从Map构建Course: " + m.get("times"));
+        if(timeMaps != null){
+            for(Map tm : timeMaps){
+                this.courseTimes.add(new CourseTime(tm));
+            }
+        }
         if(m.get("preCourseId") != null){
             Integer preCourseId = Integer.parseInt((String) m.get("preCourseId"));
             DataRequest req = new DataRequest();
@@ -73,8 +79,7 @@ public class Course {
         this.isChosen = c.getChosen();
         this.credit = c.getCredit();
         this.action = c.getAction();
-        this.day = c.getDay();
-        this.section = c.getSection();
+        this.courseTimes = c.getCourseTimes();
         this.preCourse = c.getPreCourse();
     }
 
@@ -157,27 +162,19 @@ public class Course {
         this.action = action;
     }
 
-    public List<Integer> getSection() {
-        return section;
-    }
-
-    public void setSection(List<Integer> section) {
-        this.section = section;
-    }
-
-    public List<Integer> getDay() {
-        return day;
-    }
-
-    public void setDay(List<Integer> day) {
-        this.day = day;
-    }
-
     public Boolean getChosen() {
         return isChosen;
     }
 
     public void setChosen(Boolean chosen) {
         isChosen = chosen;
+    }
+
+    public List<CourseTime> getCourseTimes() {
+        return courseTimes;
+    }
+
+    public void setCourseTimes(List<CourseTime> courseTimes) {
+        this.courseTimes = courseTimes;
     }
 }
