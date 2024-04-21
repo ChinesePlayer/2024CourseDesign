@@ -158,10 +158,12 @@ public class CourseService {
             m.put("coursePath",c.getCoursePath());
             pc =c.getPreCourse();
             if(pc != null) {
-                m.put("preCourse",pc.getName());
                 //此处应该改在pc.getCourseId()之后再加一个""空字符串来讲preCourseId转化为字符串类型，否则会导致前端
                 //在从json数据转化为Object数据时将该数据解析为Double
                 m.put("preCourseId",pc.getCourseId()+"");
+            }
+            else{
+                m.put("preCourseId",null);
             }
             dataList.add(m);
             System.out.println("当前的课程打包信息: " + m.toString());
@@ -298,9 +300,17 @@ public class CourseService {
         }
         Course course = courseOptional.get();
         Map map = new HashMap();
-        map.put("courseId", course.getCourseId());
+        map.put("courseId", course.getCourseId()+"");
         map.put("name", course.getName());
         map.put("num", course.getNum());
+        map.put("credit",course.getCredit());
+        map.put("coursePath", course.getCoursePath());
+        if(course.getPreCourse() != null){
+            map.put("preCourseId", course.getPreCourse().getCourseId()+"");
+        }
+        else{
+            map.put("preCourseId", null);
+        }
         return CommonMethod.getReturnData(map);
     }
 
