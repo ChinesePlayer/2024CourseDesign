@@ -7,14 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CourseTable extends GridPane {
-    List<List<Course>> courseCell = new ArrayList<>();
+    List<List<CourseCell>> courseCell = new ArrayList<>();
 
     public CourseTable(){
 
     }
 
     //课程需要有上课星期，节次，以此来定位
-    public CourseTable(List<Course> courses){
+    public CourseTable(List<Course> course){
 
     }
 

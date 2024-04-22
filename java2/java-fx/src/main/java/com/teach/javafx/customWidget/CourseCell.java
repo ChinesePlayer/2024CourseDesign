@@ -4,6 +4,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import org.fatmansoft.teach.models.Course;
 
 
 public class CourseCell extends Pane {
@@ -44,6 +45,16 @@ public class CourseCell extends Pane {
         this.location = location;
         setPrefHeight(50.0);
         setPrefWidth(50.0);
+    }
+
+    public CourseCell(Course course, Color color){
+        this.backgroundColor = color;
+        this.courseName = course.getName();
+        this.teacherName = course.getTeacher();
+    }
+
+    public CourseCell(Course course){
+
     }
 
     public String getTeacherName() {
