@@ -17,4 +17,7 @@ public class CourseLocation {
 
     @OneToMany(mappedBy = "location")
     private List<Course> courses;
+
+    @Column(length = 50)
+    private String value;
 }

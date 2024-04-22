@@ -6,7 +6,6 @@ import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +17,7 @@ public class Course {
     private String credit;
     private String coursePath;
     private String teacher;
+    private String location;
     private List<CourseTime> courseTimes;
     //对课程可执行的操作
     private MFXButton action;
@@ -49,6 +49,7 @@ public class Course {
         this.teacher = (String) m.get("teacher");
         this.isChosen = (Boolean) m.get("isChosen");
         this.coursePath = (String) m.get("coursePath");
+        this.location = (String) m.get("location");
         this.courseTimes = new ArrayList<>();
         List<Map> timeMaps = (ArrayList<Map>) m.get("times");
         System.out.println("从Map构建Course: " + m.get("times"));
@@ -84,6 +85,7 @@ public class Course {
         this.courseTimes = c.getCourseTimes();
         this.preCourse = c.getPreCourse();
         this.teacher = c.getTeacher();
+        this.location = c.getLocation();
     }
 
     //从Map创建Course
@@ -107,6 +109,18 @@ public class Course {
             credit = String.valueOf((Integer) mapCourse.get("credit"));
         }
         return new Course(name, courseId, num, credit);
+    }
+
+    @Override
+    public String toString(){
+        String res = "";
+        res += "课程信息: \n";
+        res += "名称: " + this.name;
+        res += "编号: " + this.num;
+        res += "教师: " + this.teacher;
+        res += "地点: " + this.location;
+        res += "学分: " + this.credit;
+        return res;
     }
 
     public String getName() {
@@ -187,5 +201,13 @@ public class Course {
 
     public void setTeacher(String teacher) {
         this.teacher = teacher;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }

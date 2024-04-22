@@ -158,6 +158,12 @@ public class CourseService {
             m.put("name",c.getName());
             m.put("credit",c.getCredit());
             m.put("coursePath",c.getCoursePath());
+            if(c.getLocation() != null){
+                m.put("location", c.getLocation().getValue());
+            }
+            else{
+                m.put("location", null);
+            }
             List<CourseTime> cts = c.getCourseTimes();
             List<Map> times = new ArrayList<>();
             for(CourseTime ct : cts){

@@ -19,7 +19,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.fatmansoft.teach.models.Course;
-import org.fatmansoft.teach.models.CourseTime;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 
@@ -45,15 +44,16 @@ public class CourseSelectionController {
     @FXML
     public TableColumn<Course, String> preCourse;
     @FXML
-    public TableColumn<Course, MFXButton> action;
+    public TableColumn<Course, String> loc;
     @FXML
-    public CourseTable courseTable;
+    public TableColumn<Course, MFXButton> action;
     @FXML
     public TableColumn<Course, String> days;
     @FXML
     public TableColumn<Course, String> sections;
     @FXML
     public TableColumn<Course, String> teacher;
+
 
     //当前选课轮次的ID
     private Integer turnId= null;
@@ -126,6 +126,7 @@ public class CourseSelectionController {
                 button.setOnAction(this::onChooseButton);
                 c.setAction(button);
                 courses.add(c);
+                System.out.println(c);
                 //根据是否选中将课程分配到已选和未选两个List中
                 if(c.getChosen()){
                     chosenCourse.add(c);
@@ -148,31 +149,11 @@ public class CourseSelectionController {
         courseNum.setCellValueFactory(new CourseValueFactory());
         preCourse.setCellValueFactory(new CourseValueFactory());
         credit.setCellValueFactory(new CourseValueFactory());
+        loc.setCellValueFactory(new CourseValueFactory());
         days.setCellValueFactory(new CourseTimeValueFactory());
         sections.setCellValueFactory(new CourseTimeValueFactory());
         teacher.setCellValueFactory(new CourseValueFactory());
         action.setCellValueFactory(new CourseActionValueFactory());
-        //设置按钮所在单元格为居中显示
-//        action.setCellFactory(new Callback<>() {
-//            @Override
-//            public TableCell<Map, MFXButton> call(TableColumn<Map, MFXButton> mapButtonTableColumn) {
-//                TableCell<Map, MFXButton> cell = new TableCell<>() {
-//                    @Override
-//                    protected void updateItem(MFXButton item, boolean empty) {
-//                        super.updateItem(item, empty);
-//                        if (item == null || empty) {
-//                            setText(null);
-//                            setGraphic(null);
-//                            return;
-//                        }
-//                        setText(null);
-//                        setGraphic(item);
-//                    }
-//                };
-//                cell.setAlignment(Pos.CENTER);
-//                return cell;
-//            }
-//        });
         action.setCellFactory(new Callback<>() {
             @Override
             public TableCell<Course, MFXButton> call(TableColumn<Course, MFXButton> courseMFXButtonTableColumn) {

@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import javafx.geometry.Insets?>
-<?import com.teach.javafx.customWidget.CourseTable?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.teach.javafx.controller.courseSelection.CourseSelectionController"
@@ -32,6 +28,7 @@
                     <TableColumn fx:id="days" text="星期" />
                     <TableColumn fx:id="sections" text="节次" />
                     <TableColumn fx:id="teacher" text="教师" />
+                    <TableColumn fx:id="loc" text="上课地点" />
                     <TableColumn fx:id="preCourse" text="前序课程" />
                     <TableColumn fx:id="action" text="操作" />
                 </columns>
