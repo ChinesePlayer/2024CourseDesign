@@ -30,6 +30,14 @@ public class CourseValueFactory implements Callback<TableColumn.CellDataFeatures
         else if(id.equals("credit")){
             return new SimpleStringProperty(c.getCredit());
         }
+        else if(id.equals("teacher")){
+            if(c.getTeacher() == null || c.getTeacher().equals("")){
+                return new SimpleStringProperty("暂未公布");
+            }
+            else {
+                return new SimpleStringProperty(c.getTeacher());
+            }
+        }
         return new SimpleStringProperty("----");
     }
 }

@@ -52,6 +52,8 @@ public class CourseSelectionController {
     public TableColumn<Course, String> days;
     @FXML
     public TableColumn<Course, String> sections;
+    @FXML
+    public TableColumn<Course, String> teacher;
 
     //当前选课轮次的ID
     private Integer turnId= null;
@@ -148,6 +150,7 @@ public class CourseSelectionController {
         credit.setCellValueFactory(new CourseValueFactory());
         days.setCellValueFactory(new CourseTimeValueFactory());
         sections.setCellValueFactory(new CourseTimeValueFactory());
+        teacher.setCellValueFactory(new CourseValueFactory());
         action.setCellValueFactory(new CourseActionValueFactory());
         //设置按钮所在单元格为居中显示
 //        action.setCellFactory(new Callback<>() {

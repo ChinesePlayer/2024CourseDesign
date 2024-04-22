@@ -84,6 +84,10 @@ public class Course implements Serializable {
     @OneToMany(mappedBy = "course")
     private List<CourseTime> courseTimes;
 
+    @ManyToOne
+    @JoinColumn(name = "teacher_id")
+    private Teacher teacher;
+
     @Override
     public boolean equals(Object o){
         if(o == null){

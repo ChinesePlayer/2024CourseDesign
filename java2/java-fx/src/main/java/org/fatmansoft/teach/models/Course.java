@@ -17,6 +17,7 @@ public class Course {
     private String num;
     private String credit;
     private String coursePath;
+    private String teacher;
     private List<CourseTime> courseTimes;
     //对课程可执行的操作
     private MFXButton action;
@@ -45,6 +46,7 @@ public class Course {
         this.num = (String)m.get("num");
         this.courseId = id;
         this.credit = String.valueOf(m.get("credit"));
+        this.teacher = (String) m.get("teacher");
         this.isChosen = (Boolean) m.get("isChosen");
         this.coursePath = (String) m.get("coursePath");
         this.courseTimes = new ArrayList<>();
@@ -81,6 +83,7 @@ public class Course {
         this.action = c.getAction();
         this.courseTimes = c.getCourseTimes();
         this.preCourse = c.getPreCourse();
+        this.teacher = c.getTeacher();
     }
 
     //从Map创建Course
@@ -176,5 +179,13 @@ public class Course {
 
     public void setCourseTimes(List<CourseTime> courseTimes) {
         this.courseTimes = courseTimes;
+    }
+
+    public String getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(String teacher) {
+        this.teacher = teacher;
     }
 }
