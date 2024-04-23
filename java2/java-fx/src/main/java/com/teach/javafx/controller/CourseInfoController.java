@@ -57,7 +57,7 @@ public class CourseInfoController {
     public void initialize(){
         courseName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
         courseNum.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNum()));
-        credit.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCredit()));
+        credit.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getCredit())));
         preCourse.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPreCourse().getNum() + "-" + cellData.getValue().getPreCourse().getName()));
         //设置只能选中一个
         courseTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);

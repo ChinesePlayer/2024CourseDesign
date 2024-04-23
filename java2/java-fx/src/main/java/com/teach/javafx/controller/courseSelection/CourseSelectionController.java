@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -56,9 +57,15 @@ public class CourseSelectionController {
     @FXML
     public CourseTable courseTable;
 
+    //显示总学分的字段
+    @FXML
+    public Label allCredit;
+
 
     //当前选课轮次的ID
     private Integer turnId= null;
+    //学分数，暂时用整数实现
+    private double creditDouble = 0;
     private List<Course> courses = new ArrayList<>();
     private List<Course> chosenCourse = new ArrayList<>();
     private List<Course> unchosenCourse = new ArrayList<>();
@@ -144,6 +151,18 @@ public class CourseSelectionController {
     public void update(){
         getCourses();
         setTableViewData();
+        //计算所选总学分
+        calcCredit();
+    }
+
+    //计算所选课程的总学分
+    public double calcCredit(){
+        creditDouble = 0;
+        for(Course c : chosenCourse){
+            creditDouble += c.getCredit();
+        }
+        allCredit.setText("你已选择 " + creditDouble + " 学分");
+        return creditDouble;
     }
 
     @FXML
@@ -177,6 +196,10 @@ public class CourseSelectionController {
                 return cell;
             }
         });
+        //设置无可程可选时的占位组件
+        Label placeholder = new Label("暂无可选课程 ¯\\_(ツ)_/¯");
+        placeholder.setStyle("-fx-font-size: 30px");
+        courseTableView.setPlaceholder(placeholder);
     }
 
     public void onChooseButton(ActionEvent event){
@@ -206,6 +229,8 @@ public class CourseSelectionController {
             setTableViewData();
             //更新课程表
             courseTable.addCourse(c, null);
+            //计算学分
+            calcCredit();
         }
         else {
             MessageDialog.showDialog(res.getMsg());
@@ -254,6 +279,7 @@ public class CourseSelectionController {
                 chosenCourse.remove(c);
                 unchosenCourse.add(c);
                 courseTable.removeCourse(c);
+                calcCredit();
                 sortAll();
                 setTableViewData();
                 break;

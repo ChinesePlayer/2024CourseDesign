@@ -14,7 +14,7 @@ public class Course {
     private Integer courseId;
     private Course preCourse;
     private String num;
-    private String credit;
+    private double credit;
     private String coursePath;
     private String teacher;
     private String location;
@@ -28,7 +28,7 @@ public class Course {
 
     }
 
-    public Course(String name, Integer courseId, String num, String credit){
+    public Course(String name, Integer courseId, String num, double credit){
         this.name =name;
         this.courseId = courseId;
         this.num = num;
@@ -45,7 +45,7 @@ public class Course {
         this.name = (String)m.get("name");
         this.num = (String)m.get("num");
         this.courseId = id;
-        this.credit = String.valueOf(m.get("credit"));
+        this.credit = (double)m.get("credit");
         this.teacher = (String) m.get("teacher");
         this.isChosen = (Boolean) m.get("isChosen");
         this.coursePath = (String) m.get("coursePath");
@@ -132,11 +132,11 @@ public class Course {
         this.num = num;
     }
 
-    public String getCredit() {
+    public double getCredit() {
         return credit;
     }
 
-    public void setCredit(String credit) {
+    public void setCredit(double credit) {
         this.credit = credit;
     }
 
