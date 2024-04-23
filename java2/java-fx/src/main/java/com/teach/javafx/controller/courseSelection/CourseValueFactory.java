@@ -28,7 +28,7 @@ public class CourseValueFactory implements Callback<TableColumn.CellDataFeatures
             return new SimpleStringProperty(c.getPreCourse().getNum() + "-" + c.getPreCourse().getName());
         }
         else if(id.equals("credit")){
-            return new SimpleStringProperty(c.getCredit());
+            return new SimpleStringProperty(String.valueOf(c.getCredit()));
         }
         else if(id.equals("teacher")){
             if(c.getTeacher() == null || c.getTeacher().isEmpty()){

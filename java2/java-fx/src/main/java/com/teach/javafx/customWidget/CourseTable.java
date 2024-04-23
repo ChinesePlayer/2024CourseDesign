@@ -36,7 +36,6 @@ public class CourseTable extends GridPane {
     //课程需要有上课星期，节次，以此来定位
     public CourseTable(List<Course> course){
         super();
-        System.out.println("正在初始化课程表");;
         //初始化一个6 x 8的二维数组
         for (int i = 0; i < 6; i++){
             List<CourseCell> innerList = new ArrayList<>();
@@ -45,8 +44,6 @@ public class CourseTable extends GridPane {
             }
             courseCell.add(innerList);
         }
-        System.out.println("当前行数: " + courseCell.size());
-        System.out.println("当前列数: " + courseCell.get(0).size());
         for(Course c : course){
             if(c.getCourseTimes().isEmpty()){
                 continue;
@@ -62,7 +59,6 @@ public class CourseTable extends GridPane {
         for(int i = 1; i < courseCell.size(); i++){
             for(int j = 1 ; j < courseCell.get(0).size(); j++){
                 add(courseCell.get(i).get(j), j, i);
-                System.out.println("已成功添加一个节点");
             }
         }
         for (int i = 0; i < courseCell.get(0).size(); i++){
@@ -123,7 +119,6 @@ public class CourseTable extends GridPane {
         for(int i = 1; i < courseCell.size(); i++){
             for(int j = 1 ; j < courseCell.get(0).size(); j++){
                 add(courseCell.get(i).get(j), j, i);
-                System.out.println("已成功添加一个节点");
             }
         }
     }

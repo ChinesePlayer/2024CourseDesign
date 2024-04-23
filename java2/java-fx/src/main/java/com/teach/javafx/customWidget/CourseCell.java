@@ -58,7 +58,26 @@ public class CourseCell extends StackPane {
         this.courseName = course.getName();
         this.teacherName = course.getTeacher();
         this.loc = course.getLocation();
-        this.textLabel = new Label(courseName + "-" + loc + "-" + teacherName);
+        String labelStr = "";
+        if(courseName == null || courseName.isEmpty()){
+            labelStr += "无法获取课程名 -";
+        }
+        else {
+            labelStr += courseName + " - ";
+        }
+        if(loc == null || loc.isEmpty()){
+            labelStr += "暂未公布 - ";
+        }
+        else{
+            labelStr += loc + " - ";
+        }
+        if(teacherName == null || teacherName.isEmpty()){
+            labelStr += "暂未公布";
+        }
+        else{
+            labelStr += teacherName;
+        }
+        this.textLabel = new Label(labelStr);
         Tooltip tooltip = new Tooltip(textLabel.getText());
         Tooltip.install(textLabel, tooltip);
         textLabel.setWrapText(true);
