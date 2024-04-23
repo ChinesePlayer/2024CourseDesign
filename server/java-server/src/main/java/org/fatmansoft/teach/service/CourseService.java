@@ -2,14 +2,13 @@ package org.fatmansoft.teach.service;
 
 import org.apache.commons.compress.harmony.pack200.NewAttributeBands;
 import org.apache.tomcat.jni.Local;
-import org.fatmansoft.teach.models.Course;
-import org.fatmansoft.teach.models.CourseSelectionTurn;
-import org.fatmansoft.teach.models.Student;
+import org.fatmansoft.teach.models.*;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.repository.CourseRepository;
 import org.fatmansoft.teach.repository.CourseSelectionTurnRepository;
 import org.fatmansoft.teach.repository.StudentRepository;
+import org.fatmansoft.teach.repository.TeacherRepository;
 import org.fatmansoft.teach.util.CommonMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +26,8 @@ public class CourseService {
     private CourseRepository courseRepository;
     @Autowired
     private CourseSelectionTurnRepository turnRepository;
+    @Autowired
+    private TeacherRepository teacherRepository;
 
     //根据学生已选课程和来标记每个课程是否已被该学生选中
     //注意该方法会修改第一个参数!
@@ -146,6 +147,7 @@ public class CourseService {
         //查询学生已选课程
         List<Course> chosenCourse = studentRepository.findCoursesByStudentId(studentId);
 
+
         List<Map> dataList = new ArrayList();
         Map m;
         Course pc;
@@ -156,6 +158,36 @@ public class CourseService {
             m.put("name",c.getName());
             m.put("credit",c.getCredit());
             m.put("coursePath",c.getCoursePath());
+            if(c.getLocation() != null){
+                m.put("location", c.getLocation().getValue());
+            }
+            else{
+                m.put("location", null);
+            }
+            List<CourseTime> cts = c.getCourseTimes();
+            List<Map> times = new ArrayList<>();
+            for(CourseTime ct : cts){
+                Map ctm = new HashMap<>();
+                //统一转换成字符串
+                ctm.put("id", ct.getCourseTimeId()+"");
+                ctm.put("day",ct.getDay()+"");
+                ctm.put("section", ct.getSection()+"");
+                times.add(ctm);
+            }
+            m.put("times", times);
+            if(c.getTeacher() != null){
+                Optional<Teacher> teacherOptional = teacherRepository.findById(c.getTeacher().getTeacherId());
+                if(teacherOptional.isPresent()){
+                    Teacher teacher = teacherOptional.get();
+                    m.put("teacher", teacher.getPerson().getName());
+                }
+                else {
+                    m.put("teacher",null);
+                }
+            }
+            else{
+                m.put("teacher", null);
+            }
             pc =c.getPreCourse();
             if(pc != null) {
                 //此处应该改在pc.getCourseId()之后再加一个""空字符串来讲preCourseId转化为字符串类型，否则会导致前端

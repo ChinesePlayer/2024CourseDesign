@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.LoadException;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -137,7 +138,8 @@ public class CourseSelectionMenuController {
                 System.out.println("选课页面已显示");
             }
             catch (IOException o){
-                System.out.println("加载选课页面失败: " + o.getMessage());
+                System.out.println("加载选课页面失败: " + o.getCause());
+                o.printStackTrace();
             }
         }
         else {

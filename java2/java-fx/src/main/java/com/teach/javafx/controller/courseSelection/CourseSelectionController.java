@@ -5,7 +5,6 @@ import com.teach.javafx.controller.base.MessageDialog;
 import com.teach.javafx.customWidget.CourseTable;
 import com.teach.javafx.request.HttpRequestUtil;
 import io.github.palexdev.materialfx.controls.MFXButton;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,7 +15,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.MapValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -46,13 +44,21 @@ public class CourseSelectionController {
     @FXML
     public TableColumn<Course, String> preCourse;
     @FXML
+    public TableColumn<Course, String> loc;
+    @FXML
     public TableColumn<Course, MFXButton> action;
+    @FXML
+    public TableColumn<Course, String> days;
+    @FXML
+    public TableColumn<Course, String> sections;
+    @FXML
+    public TableColumn<Course, String> teacher;
     @FXML
     public CourseTable courseTable;
 
+
     //当前选课轮次的ID
     private Integer turnId= null;
-
     private List<Course> courses = new ArrayList<>();
     private List<Course> chosenCourse = new ArrayList<>();
     private List<Course> unchosenCourse = new ArrayList<>();
@@ -122,6 +128,7 @@ public class CourseSelectionController {
                 button.setOnAction(this::onChooseButton);
                 c.setAction(button);
                 courses.add(c);
+                System.out.println(c);
                 //根据是否选中将课程分配到已选和未选两个List中
                 if(c.getChosen()){
                     chosenCourse.add(c);
@@ -130,6 +137,7 @@ public class CourseSelectionController {
                     unchosenCourse.add(c);
                 }
             }
+            courseTable.addAllCourse(chosenCourse, null);
         }
     }
 
@@ -144,28 +152,11 @@ public class CourseSelectionController {
         courseNum.setCellValueFactory(new CourseValueFactory());
         preCourse.setCellValueFactory(new CourseValueFactory());
         credit.setCellValueFactory(new CourseValueFactory());
+        loc.setCellValueFactory(new CourseValueFactory());
+        days.setCellValueFactory(new CourseTimeValueFactory());
+        sections.setCellValueFactory(new CourseTimeValueFactory());
+        teacher.setCellValueFactory(new CourseValueFactory());
         action.setCellValueFactory(new CourseActionValueFactory());
-        //设置按钮所在单元格为居中显示
-//        action.setCellFactory(new Callback<>() {
-//            @Override
-//            public TableCell<Map, MFXButton> call(TableColumn<Map, MFXButton> mapButtonTableColumn) {
-//                TableCell<Map, MFXButton> cell = new TableCell<>() {
-//                    @Override
-//                    protected void updateItem(MFXButton item, boolean empty) {
-//                        super.updateItem(item, empty);
-//                        if (item == null || empty) {
-//                            setText(null);
-//                            setGraphic(null);
-//                            return;
-//                        }
-//                        setText(null);
-//                        setGraphic(item);
-//                    }
-//                };
-//                cell.setAlignment(Pos.CENTER);
-//                return cell;
-//            }
-//        });
         action.setCellFactory(new Callback<>() {
             @Override
             public TableCell<Course, MFXButton> call(TableColumn<Course, MFXButton> courseMFXButtonTableColumn) {
@@ -213,6 +204,8 @@ public class CourseSelectionController {
             unchosenCourse.remove(c);
             //更新列表
             setTableViewData();
+            //更新课程表
+            courseTable.addCourse(c, null);
         }
         else {
             MessageDialog.showDialog(res.getMsg());
@@ -234,7 +227,7 @@ public class CourseSelectionController {
             stage.setTitle("已选课程");
             stage.setScene(scene);
             stage.setResizable(false);
-            stage.initOwner(MainApplication.getMainStage());
+            stage.initOwner(courseTableView.getScene().getWindow());
             stage.initModality(Modality.WINDOW_MODAL);
             stage.setOnCloseRequest(windowEvent -> {
                 stage = null;
@@ -260,6 +253,7 @@ public class CourseSelectionController {
             if(Objects.equals(c.getCourseId(), courseId)){
                 chosenCourse.remove(c);
                 unchosenCourse.add(c);
+                courseTable.removeCourse(c);
                 sortAll();
                 setTableViewData();
                 break;

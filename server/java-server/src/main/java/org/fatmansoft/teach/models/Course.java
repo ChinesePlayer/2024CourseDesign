@@ -53,10 +53,6 @@ public class Course implements Serializable {
     @Size(min = 1, max = 5)
     private Integer session;
 
-    //上课地点
-    @Column(length = 30)
-    private String location;
-
     @Getter
     @Setter
     @ManyToOne
@@ -80,6 +76,17 @@ public class Course implements Serializable {
     joinColumns = @JoinColumn(name = "course_id"),
     inverseJoinColumns = @JoinColumn(name = "turn_id"))
     private List<CourseSelectionTurn> turns;
+
+    @OneToMany(mappedBy = "course")
+    private List<CourseTime> courseTimes;
+
+    @ManyToOne
+    @JoinColumn(name = "teacher_id")
+    private Teacher teacher;
+
+    @ManyToOne
+    @JoinColumn(name = "location_id")
+    private CourseLocation location;
 
     @Override
     public boolean equals(Object o){

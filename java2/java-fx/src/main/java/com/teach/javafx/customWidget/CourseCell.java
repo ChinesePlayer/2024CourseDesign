@@ -1,49 +1,79 @@
 package com.teach.javafx.customWidget;
 
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import org.fatmansoft.teach.models.Course;
 
 
-public class CourseCell extends Pane {
+public class CourseCell extends StackPane {
     //课程名字
     private String courseName = "";
     //老师名字
     private String teacherName = "";
     //上课地点
-    private String location = "";
+    private String loc = "";
     //默认Label组件，用于显示文本
-    private Label textLabel = new Label(courseName + "-" + location + "-" + teacherName);
+    private Label textLabel;
     //背景默认颜色为白色
     private Color backgroundColor = Color.WHITE;
     //默认边框样式
-    private BorderStroke borderStroke = new BorderStroke(backgroundColor, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT);
+    private BorderStroke borderStroke = new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT);
     private Border border = new Border(borderStroke);
+    private double height = 80.0;
+    private double width = 80.0;
+
     public CourseCell(){
-        setPrefHeight(50.0);
-        setPrefWidth(50.0);
+        super();
+        this.textLabel = new Label();
+        textLabel.setWrapText(true);
+        getChildren().add(textLabel);
+        BackgroundFill bFill = new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY);
+        Background background = new Background(bFill);
+        setBackground(background);
+        setBorder(border);
+        setPrefWidth(width);
+        setPrefHeight(height);
     }
 
-    public CourseCell(Color backgroundColor){
-        this.backgroundColor = backgroundColor;
-        setPrefHeight(50.0);
-        setPrefWidth(50.0);
+    public CourseCell(Label label){
+        super();
+        this.textLabel = label;
+        textLabel.setWrapText(true);
+        getChildren().add(textLabel);
+        BackgroundFill bFill = new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY);
+        Background background = new Background(bFill);
+        setBackground(background);
+        setBorder(border);
+        setPrefWidth(width);
+        setPrefHeight(height);
     }
 
-    public CourseCell(Color backgroundColor, Double preHeight, Double preWidth){
-        this.backgroundColor = backgroundColor;
-        setPrefHeight(preHeight);
-        setPrefWidth(preWidth);
+    public CourseCell(Course course, Color color){
+        super();
+        this.backgroundColor = color;
+        this.courseName = course.getName();
+        this.teacherName = course.getTeacher();
+        this.loc = course.getLocation();
+        this.textLabel = new Label(courseName + "-" + loc + "-" + teacherName);
+        Tooltip tooltip = new Tooltip(textLabel.getText());
+        Tooltip.install(textLabel, tooltip);
+        textLabel.setWrapText(true);
+        getChildren().add(textLabel);
+        setAlignment(Pos.CENTER);
+        BackgroundFill bFill = new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY);
+        Background background = new Background(bFill);
+        setBackground(background);
+        setBorder(border);
+        setPrefWidth(width);
+        setPrefHeight(height);
     }
 
-    public CourseCell(Color backgroundColor, String courseName, String teacherName, String location){
-        this.backgroundColor = backgroundColor;
-        this.courseName = courseName;
-        this.teacherName = teacherName;
-        this.location = location;
-        setPrefHeight(50.0);
-        setPrefWidth(50.0);
+    public CourseCell(Course course){
+
     }
 
     public String getTeacherName() {
@@ -54,12 +84,12 @@ public class CourseCell extends Pane {
         this.teacherName = teacherName;
     }
 
-    public String getLocation() {
-        return location;
+    public String getLoc() {
+        return loc;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setLoc(String loc) {
+        this.loc = loc;
     }
 
     public String getCourseName() {
@@ -76,6 +106,13 @@ public class CourseCell extends Pane {
 
     public BorderStroke getBorderStroke(){
         return this.borderStroke;
+    }
+    public Label getTextLabel(){
+        return this.textLabel;
+    }
+
+    public void setTextLabel(Label label){
+        this.textLabel = label;
     }
 
     @Override
@@ -94,7 +131,7 @@ public class CourseCell extends Pane {
         }
         if(((CourseCell) that).getCourseName().equals(this.courseName) &&
                 ((CourseCell) that).getTeacherName().equals(this.teacherName) &&
-                ((CourseCell) that).getLocation().equals(this.location)){
+                ((CourseCell) that).getLoc().equals(this.loc)){
             return true;
         }
         return false;

@@ -2,6 +2,7 @@ package org.fatmansoft.teach.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 /**
  * Student学生表实体类 保存每个学生的信息，
@@ -29,6 +30,9 @@ public class Teacher {
 
     @Size(max = 20)
     private String degree;
+
+    @OneToMany(mappedBy = "teacher")
+    private List<Course> course;
 
     public Integer getTeacherId() {
         return teacherId;

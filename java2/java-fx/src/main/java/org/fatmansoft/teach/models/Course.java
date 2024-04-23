@@ -5,7 +5,7 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,10 +16,9 @@ public class Course {
     private String num;
     private String credit;
     private String coursePath;
-    //课程节次
-    private List<Integer> section;
-    //课程是星期几
-    private List<Integer> day;
+    private String teacher;
+    private String location;
+    private List<CourseTime> courseTimes = new ArrayList<>();
     //对课程可执行的操作
     private MFXButton action;
     //是否已选该课程
@@ -47,8 +46,18 @@ public class Course {
         this.num = (String)m.get("num");
         this.courseId = id;
         this.credit = String.valueOf(m.get("credit"));
+        this.teacher = (String) m.get("teacher");
         this.isChosen = (Boolean) m.get("isChosen");
         this.coursePath = (String) m.get("coursePath");
+        this.location = (String) m.get("location");
+        this.courseTimes = new ArrayList<>();
+        List<Map> timeMaps = (ArrayList<Map>) m.get("times");
+        System.out.println("从Map构建Course: " + m.get("times"));
+        if(timeMaps != null){
+            for(Map tm : timeMaps){
+                this.courseTimes.add(new CourseTime(tm));
+            }
+        }
         if(m.get("preCourseId") != null){
             Integer preCourseId = Integer.parseInt((String) m.get("preCourseId"));
             DataRequest req = new DataRequest();
@@ -73,32 +82,22 @@ public class Course {
         this.isChosen = c.getChosen();
         this.credit = c.getCredit();
         this.action = c.getAction();
-        this.day = c.getDay();
-        this.section = c.getSection();
+        this.courseTimes = c.getCourseTimes();
         this.preCourse = c.getPreCourse();
+        this.teacher = c.getTeacher();
+        this.location = c.getLocation();
     }
 
-    //从Map创建Course
-    //这个Map中必须有的属性: name, courseId, num, credit
-    public static Course fromMap(Map mapCourse){
-        String name =(String) mapCourse.get("name");
-        Integer courseId = null;
-        String num = (String) mapCourse.get("num");
-        String credit = "";
-        if(mapCourse.get("courseId") instanceof Integer){
-            courseId =(Integer) mapCourse.get("courseId");
-        }
-        else if(mapCourse.get("courseId") instanceof String){
-            courseId = Integer.parseInt((String) mapCourse.get("courseId"));
-        }
-
-        if(mapCourse.get("credit") instanceof String){
-            credit = (String) mapCourse.get("credit");
-        }
-        else if(mapCourse.get("credit") instanceof Integer){
-            credit = String.valueOf((Integer) mapCourse.get("credit"));
-        }
-        return new Course(name, courseId, num, credit);
+    @Override
+    public String toString(){
+        String res = "";
+        res += "课程信息: \n";
+        res += "名称: " + this.name;
+        res += "编号: " + this.num;
+        res += "教师: " + this.teacher;
+        res += "地点: " + this.location;
+        res += "学分: " + this.credit;
+        return res;
     }
 
     public String getName() {
@@ -157,27 +156,35 @@ public class Course {
         this.action = action;
     }
 
-    public List<Integer> getSection() {
-        return section;
-    }
-
-    public void setSection(List<Integer> section) {
-        this.section = section;
-    }
-
-    public List<Integer> getDay() {
-        return day;
-    }
-
-    public void setDay(List<Integer> day) {
-        this.day = day;
-    }
-
     public Boolean getChosen() {
         return isChosen;
     }
 
     public void setChosen(Boolean chosen) {
         isChosen = chosen;
+    }
+
+    public List<CourseTime> getCourseTimes() {
+        return courseTimes;
+    }
+
+    public void setCourseTimes(List<CourseTime> courseTimes) {
+        this.courseTimes = courseTimes;
+    }
+
+    public String getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(String teacher) {
+        this.teacher = teacher;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }
