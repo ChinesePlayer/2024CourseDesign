@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import org.fatmansoft.teach.models.Course;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 
@@ -21,13 +22,13 @@ import java.util.Map;
  */
 public class CourseController {
     @FXML
-    private TableView<Map> dataTableView;
+    private TableView<Course> dataTableView;
     @FXML
-    private TableColumn<Map,String> numColumn;
+    private TableColumn<Course,String> numColumn;
     @FXML
-    private TableColumn<Map,String> nameColumn;
+    private TableColumn<Course,String> nameColumn;
     @FXML
-    private TableColumn<Map,Integer> creditColumn;
+    private TableColumn<Course,Integer> creditColumn;
     @FXML
     private TableColumn<Map,String> preCourseColumn;
 

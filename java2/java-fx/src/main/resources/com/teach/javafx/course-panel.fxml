@@ -2,7 +2,6 @@
 
 <?import javafx.scene.layout.BorderPane?>
 
-<!-- 学生个人简历界面 FXML配置文件 对应页面交互控制类 com.teach.javafx.controller.StudentIntroduceController -->
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TableColumn?>
 <BorderPane  maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
