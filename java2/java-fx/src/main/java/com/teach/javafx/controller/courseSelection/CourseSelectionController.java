@@ -127,15 +127,13 @@ public class CourseSelectionController {
         req.add("id", turnId);
         DataResponse res = HttpRequestUtil.request("/api/course/getCourseChoices", req);
         if (res != null && res.getCode() == 0) {
-            System.out.println("当前课程数据: " + res.getData());
-            List<Map> rowData = (ArrayList<Map>)res.getData();
-            for(Map m : rowData){
+            List<Map> rawData = (ArrayList<Map>)res.getData();
+            for(Map m : rawData){
                 Course c = new Course(m);
                 MFXButton button = new MFXButton("选课");
                 button.setOnAction(this::onChooseButton);
                 c.setAction(button);
                 courses.add(c);
-                System.out.println(c);
                 //根据是否选中将课程分配到已选和未选两个List中
                 if(c.getChosen()){
                     chosenCourse.add(c);

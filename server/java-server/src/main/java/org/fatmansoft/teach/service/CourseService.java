@@ -91,24 +91,8 @@ public class CourseService {
             numName = "";
         List<Course> cList = courseRepository.findCourseListByNumName(numName);  //数据库查询操作
         List dataList = new ArrayList();
-        Map m;
-        Course pc;
         for (Course c : cList) {
-            m = new HashMap();
-            m.put("courseId", c.getCourseId()+"");
-            m.put("num",c.getNum());
-            m.put("name",c.getName());
-            m.put("credit",c.getCredit());
-            m.put("coursePath",c.getCoursePath());
-            pc =c.getPreCourse();
-            if(pc != null) {
-                m.put("preCourse",pc.getName());
-                //此处应该改在pc.getCourseId()之后再加一个""空字符串来讲preCourseId转化为字符串类型，否则会导致前端
-                //在从json数据转化为Object数据时将该数据解析为Double
-                m.put("preCourseId",pc.getCourseId()+"");
-            }
-            dataList.add(m);
-            System.out.println("当前的课程打包信息: " + m.toString());
+            dataList.add(loadCourseInfo(c));
         }
         return CommonMethod.getReturnData(dataList);
     }
@@ -146,59 +130,9 @@ public class CourseService {
         Integer studentId = student.getStudentId();
         //查询学生已选课程
         List<Course> chosenCourse = studentRepository.findCoursesByStudentId(studentId);
-
-
         List<Map> dataList = new ArrayList();
-        Map m;
-        Course pc;
         for (Course c : cList) {
-            m = new HashMap();
-            m.put("courseId", c.getCourseId()+"");
-            m.put("num",c.getNum());
-            m.put("name",c.getName());
-            m.put("credit",c.getCredit());
-            m.put("coursePath",c.getCoursePath());
-            if(c.getLocation() != null){
-                m.put("location", c.getLocation().getValue());
-            }
-            else{
-                m.put("location", null);
-            }
-            List<CourseTime> cts = c.getCourseTimes();
-            List<Map> times = new ArrayList<>();
-            for(CourseTime ct : cts){
-                Map ctm = new HashMap<>();
-                //统一转换成字符串
-                ctm.put("id", ct.getCourseTimeId()+"");
-                ctm.put("day",ct.getDay()+"");
-                ctm.put("section", ct.getSection()+"");
-                times.add(ctm);
-            }
-            m.put("times", times);
-            if(c.getTeacher() != null){
-                Optional<Teacher> teacherOptional = teacherRepository.findById(c.getTeacher().getTeacherId());
-                if(teacherOptional.isPresent()){
-                    Teacher teacher = teacherOptional.get();
-                    m.put("teacher", teacher.getPerson().getName());
-                }
-                else {
-                    m.put("teacher",null);
-                }
-            }
-            else{
-                m.put("teacher", null);
-            }
-            pc =c.getPreCourse();
-            if(pc != null) {
-                //此处应该改在pc.getCourseId()之后再加一个""空字符串来讲preCourseId转化为字符串类型，否则会导致前端
-                //在从json数据转化为Object数据时将该数据解析为Double
-                m.put("preCourseId",pc.getCourseId()+"");
-            }
-            else{
-                m.put("preCourseId",null);
-            }
-            dataList.add(m);
-            System.out.println("当前的课程打包信息: " + m.toString());
+            dataList.add(loadCourseInfo(c));
         }
         labelChosenCourse(dataList, chosenCourse);
         return CommonMethod.getReturnData(dataList);
@@ -355,6 +289,57 @@ public class CourseService {
             return true;
         }
         return false;
+    }
+
+    //装填课程信息至一个Map
+    private Map loadCourseInfo(Course c){
+        Course pc;
+        Map m = new HashMap<>();
+        m.put("courseId", c.getCourseId()+"");
+        m.put("num",c.getNum());
+        m.put("name",c.getName());
+        m.put("credit",c.getCredit());
+        m.put("coursePath",c.getCoursePath());
+        if(c.getLocation() != null){
+            m.put("location", c.getLocation().getValue());
+        }
+        else{
+            m.put("location", null);
+        }
+        List<CourseTime> cts = c.getCourseTimes();
+        List<Map> times = new ArrayList<>();
+        for(CourseTime ct : cts){
+            Map ctm = new HashMap<>();
+            //统一转换成字符串
+            ctm.put("id", ct.getCourseTimeId()+"");
+            ctm.put("day",ct.getDay()+"");
+            ctm.put("section", ct.getSection()+"");
+            times.add(ctm);
+        }
+        m.put("times", times);
+        if(c.getTeacher() != null){
+            Optional<Teacher> teacherOptional = teacherRepository.findById(c.getTeacher().getTeacherId());
+            if(teacherOptional.isPresent()){
+                Teacher teacher = teacherOptional.get();
+                m.put("teacher", teacher.getPerson().getName());
+            }
+            else {
+                m.put("teacher",null);
+            }
+        }
+        else{
+            m.put("teacher", null);
+        }
+        pc =c.getPreCourse();
+        if(pc != null) {
+            //此处应该改在pc.getCourseId()之后再加一个""空字符串来讲preCourseId转化为字符串类型，否则会导致前端
+            //在从json数据转化为Object数据时将该数据解析为Double
+            m.put("preCourseId",pc.getCourseId()+"");
+        }
+        else{
+            m.put("preCourseId",null);
+        }
+        return m;
     }
 
 }

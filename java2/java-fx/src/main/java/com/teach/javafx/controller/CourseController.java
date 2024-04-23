@@ -1,6 +1,6 @@
 package com.teach.javafx.controller;
 
-import javafx.scene.control.cell.MapValueFactory;
+import com.teach.javafx.controller.courseSelection.CourseValueFactory;
 import com.teach.javafx.request.HttpRequestUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,16 +24,16 @@ public class CourseController {
     @FXML
     private TableView<Course> dataTableView;
     @FXML
-    private TableColumn<Course,String> numColumn;
+    private TableColumn<Course,String> courseNum;
     @FXML
-    private TableColumn<Course,String> nameColumn;
+    private TableColumn<Course,String> courseName;
     @FXML
-    private TableColumn<Course,Integer> creditColumn;
+    private TableColumn<Course,String> credit;
     @FXML
-    private TableColumn<Map,String> preCourseColumn;
+    private TableColumn<Course,String> preCourse;
 
-    private List<Map> courseList = new ArrayList();  // 学生信息列表数据
-    private ObservableList<Map> observableList= FXCollections.observableArrayList();  // TableView渲染列表
+    private List<Course> courseList = new ArrayList();  // 课程信息列表数据
+    private ObservableList<Course> observableList= FXCollections.observableArrayList();  // TableView渲染列表
 
     @FXML
     private void onQueryButtonClick(){
@@ -41,7 +41,11 @@ public class CourseController {
         DataRequest req =new DataRequest();
         res = HttpRequestUtil.request("/api/course/getCourseList",req); //从后台获取所有课程信息列表集合
         if(res != null && res.getCode()== 0) {
-            courseList = (ArrayList<Map>)res.getData();
+            List<Map> rawData = (ArrayList<Map>) res.getData();
+            for(Map m : rawData){
+                Course c = new Course(m);
+                courseList.add(c);
+            }
         }
         setTableViewData();
     }
@@ -55,10 +59,10 @@ public class CourseController {
     }
     @FXML
     public void initialize() {
-        numColumn.setCellValueFactory(new MapValueFactory("num"));  //设置列值工程属性
-        nameColumn.setCellValueFactory(new MapValueFactory("name"));
-        creditColumn.setCellValueFactory(new MapValueFactory("credit"));
-        preCourseColumn.setCellValueFactory(new MapValueFactory("preCourse"));
+        courseNum.setCellValueFactory(new CourseValueFactory());  //设置列值工程属性
+        courseName.setCellValueFactory(new CourseValueFactory());
+        credit.setCellValueFactory(new CourseValueFactory());
+        preCourse.setCellValueFactory(new CourseValueFactory());
         onQueryButtonClick();
     }
 
