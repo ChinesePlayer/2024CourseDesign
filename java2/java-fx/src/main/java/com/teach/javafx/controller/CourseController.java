@@ -1,5 +1,6 @@
 package com.teach.javafx.controller;
 
+import com.teach.javafx.controller.courseSelection.CourseTimeValueFactory;
 import com.teach.javafx.controller.courseSelection.CourseValueFactory;
 import com.teach.javafx.request.HttpRequestUtil;
 import javafx.collections.FXCollections;
@@ -21,6 +22,14 @@ import java.util.Map;
  *  @FXML 方法 对应于fxml文件中的 on***Click的属性
  */
 public class CourseController {
+    @FXML
+    public TableColumn<Course, String> days;
+    @FXML
+    public TableColumn<Course, String> sections;
+    @FXML
+    public TableColumn<Course, String> teacher;
+    @FXML
+    public TableColumn<Course, String> loc;
     @FXML
     private TableView<Course> dataTableView;
     @FXML
@@ -63,6 +72,10 @@ public class CourseController {
         courseName.setCellValueFactory(new CourseValueFactory());
         credit.setCellValueFactory(new CourseValueFactory());
         preCourse.setCellValueFactory(new CourseValueFactory());
+        loc.setCellValueFactory(new CourseValueFactory());
+        days.setCellValueFactory(new CourseTimeValueFactory());
+        sections.setCellValueFactory(new CourseTimeValueFactory());
+        teacher.setCellValueFactory(new CourseValueFactory());
         onQueryButtonClick();
     }
 
