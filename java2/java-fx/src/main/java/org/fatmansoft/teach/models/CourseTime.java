@@ -30,6 +30,11 @@ public class CourseTime {
         this.section = ct.getSection();
     }
 
+    public CourseTime(int day, int section){
+        this.day = day;
+        this.section = section;
+    }
+
     public Integer getCourseTimeId() {
         return courseTimeId;
     }

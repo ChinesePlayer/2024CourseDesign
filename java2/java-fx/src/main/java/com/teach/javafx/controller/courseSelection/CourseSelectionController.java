@@ -53,6 +53,8 @@ public class CourseSelectionController {
     public TableColumn<Course, String> sections;
     @FXML
     public TableColumn<Course, String> teacher;
+    @FXML
+    public CourseTable courseTable;
 
 
     //当前选课轮次的ID
@@ -135,6 +137,7 @@ public class CourseSelectionController {
                     unchosenCourse.add(c);
                 }
             }
+            courseTable.addAllCourse(chosenCourse, null);
         }
     }
 
@@ -201,6 +204,8 @@ public class CourseSelectionController {
             unchosenCourse.remove(c);
             //更新列表
             setTableViewData();
+            //更新课程表
+            courseTable.addCourse(c, null);
         }
         else {
             MessageDialog.showDialog(res.getMsg());
@@ -222,7 +227,7 @@ public class CourseSelectionController {
             stage.setTitle("已选课程");
             stage.setScene(scene);
             stage.setResizable(false);
-            stage.initOwner(MainApplication.getMainStage());
+            stage.initOwner(courseTableView.getScene().getWindow());
             stage.initModality(Modality.WINDOW_MODAL);
             stage.setOnCloseRequest(windowEvent -> {
                 stage = null;
@@ -248,6 +253,7 @@ public class CourseSelectionController {
             if(Objects.equals(c.getCourseId(), courseId)){
                 chosenCourse.remove(c);
                 unchosenCourse.add(c);
+                courseTable.removeCourse(c);
                 sortAll();
                 setTableViewData();
                 break;

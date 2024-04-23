@@ -5,6 +5,8 @@
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import javafx.geometry.Insets?>
+<?import com.teach.javafx.customWidget.CourseTable?>
+<?import io.github.palexdev.materialfx.controls.cell.MFXListCell?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.teach.javafx.controller.courseSelection.CourseSelectionController"
@@ -20,6 +22,7 @@
     </top>
     <center>
         <VBox>
+            <CourseTable fx:id="courseTable" prefWidth="400" prefHeight="400" />
             <TableView fx:id="courseTableView">
                 <columns>
                     <TableColumn fx:id="courseName" text="课程名称" />
@@ -33,6 +36,7 @@
                     <TableColumn fx:id="action" text="操作" />
                 </columns>
             </TableView>
+
         </VBox>
     </center>
 

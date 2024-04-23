@@ -18,7 +18,7 @@ public class Course {
     private String coursePath;
     private String teacher;
     private String location;
-    private List<CourseTime> courseTimes;
+    private List<CourseTime> courseTimes = new ArrayList<>();
     //对课程可执行的操作
     private MFXButton action;
     //是否已选该课程
@@ -86,29 +86,6 @@ public class Course {
         this.preCourse = c.getPreCourse();
         this.teacher = c.getTeacher();
         this.location = c.getLocation();
-    }
-
-    //从Map创建Course
-    //这个Map中必须有的属性: name, courseId, num, credit
-    public static Course fromMap(Map mapCourse){
-        String name =(String) mapCourse.get("name");
-        Integer courseId = null;
-        String num = (String) mapCourse.get("num");
-        String credit = "";
-        if(mapCourse.get("courseId") instanceof Integer){
-            courseId =(Integer) mapCourse.get("courseId");
-        }
-        else if(mapCourse.get("courseId") instanceof String){
-            courseId = Integer.parseInt((String) mapCourse.get("courseId"));
-        }
-
-        if(mapCourse.get("credit") instanceof String){
-            credit = (String) mapCourse.get("credit");
-        }
-        else if(mapCourse.get("credit") instanceof Integer){
-            credit = String.valueOf((Integer) mapCourse.get("credit"));
-        }
-        return new Course(name, courseId, num, credit);
     }
 
     @Override
