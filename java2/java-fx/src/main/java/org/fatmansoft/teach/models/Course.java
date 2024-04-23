@@ -187,4 +187,17 @@ public class Course {
     public void setLocation(String location) {
         this.location = location;
     }
+
+    //判断两个课程是否冲突
+    public static boolean isConflict(Course c1, Course c2){
+        if((c1.getCourseTimes() == null || c1.getCourseTimes().isEmpty()) || (c2.getCourseTimes() == null || c2.getCourseTimes().isEmpty())){
+            return false;
+        }
+        for(CourseTime ct1 : c1.getCourseTimes()){
+            if(c2.getCourseTimes().contains(ct1)){
+                return true;
+            }
+        }
+        return false;
+    }
 }

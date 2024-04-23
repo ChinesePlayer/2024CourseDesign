@@ -144,6 +144,7 @@ public class CourseSelectionController {
                     unchosenCourse.add(c);
                 }
             }
+            updateButtonStatus();
             courseTable.addAllCourse(chosenCourse, null);
         }
     }
@@ -202,6 +203,46 @@ public class CourseSelectionController {
         courseTableView.setPlaceholder(placeholder);
     }
 
+    //返回参数课程与哪个已选课程冲突
+    //若无冲突，则返回null
+    public Course conflictOf(Course c){
+        for(Course c1 : chosenCourse){
+            if(Course.isConflict(c1, c)){
+                return c1;
+            }
+        }
+        return null;
+    }
+
+    public void updateButtonStatus(){
+        //将冲突课程的选课按钮的文本改变, 并且设为不可用状态
+        for(Course c : unchosenCourse){
+            Course cfltCourse = conflictOf(c);
+            if(cfltCourse != null){
+                setButtonCantChoose(c, cfltCourse);
+            }
+            else {
+                setButtonCanChoose(c);
+            }
+        }
+    }
+
+    public void setButtonCantChoose(Course c, Course cfltCourse){
+        if(cfltCourse == null){
+            c.getAction().setText("课程冲突，不能选课");
+            c.getAction().setDisable(true);
+        }
+        else {
+            c.getAction().setText("与 " + cfltCourse.getName() + " 冲突, 不能选课");
+            c.getAction().setDisable(true);
+        }
+    }
+
+    public void setButtonCanChoose(Course c){
+        c.getAction().setText("选课");
+        c.getAction().setDisable(false);
+    }
+
     public void onChooseButton(ActionEvent event){
         MFXButton button = (MFXButton) event.getTarget();
         TableCell<Course,MFXButton> cell = (TableCell<Course, MFXButton>) button.getParent();
@@ -212,6 +253,11 @@ public class CourseSelectionController {
         System.out.println("选择的结果: " + ret);
         if(ret != MessageDialog.CHOICE_YES){
             System.out.println("取消选课了");
+            return;
+        }
+        Course cfltCourse =  conflictOf(c);
+        if(cfltCourse != null){
+            MessageDialog.showDialog("该课程与 " + cfltCourse.getName() + " 冲突, 不能选择! ");
             return;
         }
         Integer courseId = c.getCourseId();
@@ -231,6 +277,8 @@ public class CourseSelectionController {
             courseTable.addCourse(c, null);
             //计算学分
             calcCredit();
+            //更新选课按钮们的状态
+            updateButtonStatus();
         }
         else {
             MessageDialog.showDialog(res.getMsg());
@@ -280,6 +328,8 @@ public class CourseSelectionController {
                 unchosenCourse.add(c);
                 courseTable.removeCourse(c);
                 calcCredit();
+                //更新选课按钮们的状态
+                updateButtonStatus();
                 sortAll();
                 setTableViewData();
                 break;

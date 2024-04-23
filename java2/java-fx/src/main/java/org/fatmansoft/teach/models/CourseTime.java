@@ -1,6 +1,7 @@
 package org.fatmansoft.teach.models;
 
 import java.util.Map;
+import java.util.Objects;
 
 public class CourseTime {
     private Integer courseTimeId;
@@ -33,6 +34,19 @@ public class CourseTime {
     public CourseTime(int day, int section){
         this.day = day;
         this.section = section;
+    }
+
+    //重载课程时间是否相等的方法
+    //只要day和section相等，则相等
+    @Override
+    public boolean equals(Object that){
+        if(!(that instanceof CourseTime)){
+            return false;
+        }
+        if(that == this){
+            return true;
+        }
+        return Objects.equals(((CourseTime) that).getDay(), this.day) && Objects.equals(((CourseTime) that).getSection(), this.section);
     }
 
     public Integer getCourseTimeId() {
