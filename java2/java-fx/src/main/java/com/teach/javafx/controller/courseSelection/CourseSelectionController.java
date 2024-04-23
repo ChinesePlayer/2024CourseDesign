@@ -196,6 +196,7 @@ public class CourseSelectionController {
                 return cell;
             }
         });
+        //设置无可程可选时的占位组件
         Label placeholder = new Label("暂无可选课程 ¯\\_(ツ)_/¯");
         placeholder.setStyle("-fx-font-size: 30px");
         courseTableView.setPlaceholder(placeholder);
