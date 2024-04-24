@@ -1,17 +1,25 @@
 package com.teach.javafx.controller;
 
+import com.teach.javafx.controller.courseSelection.CourseAdminActionValueFactory;
 import com.teach.javafx.controller.courseSelection.CourseTimeValueFactory;
 import com.teach.javafx.controller.courseSelection.CourseValueFactory;
 import com.teach.javafx.request.HttpRequestUtil;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.stage.Stage;
+import javafx.util.Callback;
 import org.fatmansoft.teach.models.Course;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +39,8 @@ public class CourseController {
     @FXML
     public TableColumn<Course, String> loc;
     @FXML
+    public TableColumn<Course, MFXButton> action;
+    @FXML
     private TableView<Course> dataTableView;
     @FXML
     private TableColumn<Course,String> courseNum;
@@ -40,6 +50,9 @@ public class CourseController {
     private TableColumn<Course,String> credit;
     @FXML
     private TableColumn<Course,String> preCourse;
+
+    //编辑页面的Stage
+    private Stage editStage = null;
 
     private List<Course> courseList = new ArrayList();  // 课程信息列表数据
     private ObservableList<Course> observableList= FXCollections.observableArrayList();  // TableView渲染列表
@@ -53,6 +66,8 @@ public class CourseController {
             List<Map> rawData = (ArrayList<Map>) res.getData();
             for(Map m : rawData){
                 Course c = new Course(m);
+                MFXButton button = new MFXButton("编辑");
+                c.setAction(button);
                 courseList.add(c);
             }
         }
@@ -66,9 +81,10 @@ public class CourseController {
         }
         dataTableView.setItems(observableList);
     }
+
     @FXML
     public void initialize() {
-        courseNum.setCellValueFactory(new CourseValueFactory());  //设置列值工程属性
+        courseNum.setCellValueFactory(new CourseValueFactory());
         courseName.setCellValueFactory(new CourseValueFactory());
         credit.setCellValueFactory(new CourseValueFactory());
         preCourse.setCellValueFactory(new CourseValueFactory());
@@ -76,8 +92,34 @@ public class CourseController {
         days.setCellValueFactory(new CourseTimeValueFactory());
         sections.setCellValueFactory(new CourseTimeValueFactory());
         teacher.setCellValueFactory(new CourseValueFactory());
+        action.setCellValueFactory(new CourseAdminActionValueFactory());
+        //设置按钮为居中显示
+        action.setCellFactory(new Callback<>() {
+            @Override
+            public TableCell<Course, MFXButton> call(TableColumn<Course, MFXButton> courseMFXButtonTableColumn) {
+                TableCell<Course, MFXButton> cell = new TableCell<>() {
+                    @Override
+                    protected void updateItem(MFXButton item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (item == null || empty) {
+                            setText(null);
+                            setGraphic(null);
+                            return;
+                        }
+                        setText(null);
+                        setGraphic(item);
+                    }
+                };
+                cell.setAlignment(Pos.CENTER);
+                return cell;
+            }
+        });
         onQueryButtonClick();
     }
 
-
+    public void onEditButtonClick(ActionEvent event){
+        TableCell<Course, MFXButton> cell = (TableCell<Course, MFXButton>) ((MFXButton)event.getTarget()).getParent();
+        int rowIndex = cell.getIndex();
+        Course c = observableList.get(rowIndex);
+    }
 }

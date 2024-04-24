@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import io.github.palexdev.materialfx.controls.MFXSpinner?>
+<?import com.teach.javafx.customWidget.TimeSelector?>
+<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.teach.javafx.controller.adminCoursePanel.EditCourseController"
+            prefHeight="400.0" prefWidth="600.0">
+    <center>
+        <VBox>
+            <MFXTextField fx:id="name" floatMode="ABOVE" floatingText="课程名称" />
+            <MFXSpinner fx:id="credit" />
+            <VBox fx:id="timeGroup" />
+            <MFXComboBox fx:id="teacher" />
+            <MFXComboBox fx:id="loc" />
+            <MFXComboBox fx:id="preCourse" />
+        </VBox>
+    </center>
+
+</BorderPane>

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="CustomWidget">
+    <output-path>$PROJECT_DIR$/out/artifacts/CustomWidget</output-path>
+    <root id="archive" name="CustomWidget.jar">
+      <element id="artifact" artifact-name="customWidget" />
+    </root>
+  </artifact>
+</component>
