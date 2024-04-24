@@ -16,7 +16,7 @@ public class Course {
     private String num;
     private double credit;
     private String coursePath;
-    private String teacher;
+    private Teacher teacher;
     private String location;
     private List<CourseTime> courseTimes = new ArrayList<>();
     //对课程可执行的操作
@@ -46,7 +46,18 @@ public class Course {
         this.num = (String)m.get("num");
         this.courseId = id;
         this.credit = (double)m.get("credit");
-        this.teacher = (String) m.get("teacher");
+
+
+        Map teacherMap = (Map)m.get("teacher");
+        if(teacherMap != null){
+            Teacher t = new Teacher();
+            t.setName((String) teacherMap.get("name"));
+            t.setTeacherId(Integer.parseInt((String) teacherMap.get("id")));
+            this.teacher = t;
+        }
+        else {
+            this.teacher = null;
+        }
         this.isChosen = (Boolean) m.get("isChosen");
         this.coursePath = (String) m.get("coursePath");
         this.location = (String) m.get("location");
@@ -172,11 +183,11 @@ public class Course {
         this.courseTimes = courseTimes;
     }
 
-    public String getTeacher() {
+    public Teacher getTeacher() {
         return teacher;
     }
 
-    public void setTeacher(String teacher) {
+    public void setTeacher(Teacher teacher) {
         this.teacher = teacher;
     }
 

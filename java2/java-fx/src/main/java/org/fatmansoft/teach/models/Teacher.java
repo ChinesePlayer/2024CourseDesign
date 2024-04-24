@@ -3,6 +3,7 @@ package org.fatmansoft.teach.models;
 public class Teacher {
     private Integer teacherId;
     private Person person;
+    private String name;
     private String title;
     private String degree;
 
@@ -36,5 +37,13 @@ public class Teacher {
 
     public void setDegree(String degree) {
         this.degree = degree;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

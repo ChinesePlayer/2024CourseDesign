@@ -31,11 +31,11 @@ public class CourseValueFactory implements Callback<TableColumn.CellDataFeatures
             return new SimpleStringProperty(String.valueOf(c.getCredit()));
         }
         else if(id.equals("teacher")){
-            if(c.getTeacher() == null || c.getTeacher().isEmpty()){
+            if(c.getTeacher() == null){
                 return new SimpleStringProperty("暂未公布");
             }
             else {
-                return new SimpleStringProperty(c.getTeacher());
+                return new SimpleStringProperty(c.getTeacher().getName());
             }
         }
         else if(id.equals("loc")){

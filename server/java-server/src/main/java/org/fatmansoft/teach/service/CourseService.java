@@ -320,8 +320,11 @@ public class CourseService {
         if(c.getTeacher() != null){
             Optional<Teacher> teacherOptional = teacherRepository.findById(c.getTeacher().getTeacherId());
             if(teacherOptional.isPresent()){
+                Map tm = new HashMap<>();
                 Teacher teacher = teacherOptional.get();
-                m.put("teacher", teacher.getPerson().getName());
+                tm.put("name", teacher.getPerson().getName());
+                tm.put("id", teacher.getTeacherId()+"");
+                m.put("teacher", tm);
             }
             else {
                 m.put("teacher",null);

@@ -50,19 +50,19 @@ public class EditCourseController {
         this.course = course;
     }
 
-    public Teacher getCurrentTeacher() {
-        return currentTeacher;
-    }
-
-    public void setCurrentTeacher(Teacher currentTeacher) {
-        this.currentTeacher = currentTeacher;
-    }
-
-    public List<Teacher> getTeachers() {
-        return teachers;
-    }
-
-    public void setTeachers(List<Teacher> teachers) {
-        this.teachers = teachers;
-    }
+//    public Teacher getCurrentTeacher() {
+//        return currentTeacher;
+//    }
+//
+//    public void setCurrentTeacher(Teacher currentTeacher) {
+//        this.currentTeacher = currentTeacher;
+//    }
+//
+//    public List<Teacher> getTeachers() {
+//        return teachers;
+//    }
+//
+//    public void setTeachers(List<Teacher> teachers) {
+//        this.teachers = teachers;
+//    }
 }

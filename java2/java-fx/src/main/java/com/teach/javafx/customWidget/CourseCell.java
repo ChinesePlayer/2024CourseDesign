@@ -56,7 +56,7 @@ public class CourseCell extends StackPane {
         super();
         this.backgroundColor = color;
         this.courseName = course.getName();
-        this.teacherName = course.getTeacher();
+        this.teacherName = course.getTeacher().getName();
         this.loc = course.getLocation();
         String labelStr = "";
         if(courseName == null || courseName.isEmpty()){
