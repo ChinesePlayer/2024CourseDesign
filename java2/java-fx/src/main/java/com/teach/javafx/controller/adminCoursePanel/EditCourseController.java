@@ -4,7 +4,10 @@ import com.teach.javafx.controller.CourseController;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXSpinner;
 import io.github.palexdev.materialfx.controls.MFXTextField;
+import io.github.palexdev.materialfx.controls.models.spinner.DoubleSpinnerModel;
 import javafx.fxml.FXML;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.VBox;
 import org.fatmansoft.teach.models.Course;
 import org.fatmansoft.teach.models.Teacher;
@@ -15,7 +18,7 @@ public class EditCourseController {
     @FXML
     public MFXTextField name;
     @FXML
-    public MFXSpinner credit;
+    public MFXSpinner<Double> credit;
     @FXML
     public VBox timeGroup;
     @FXML
@@ -30,7 +33,15 @@ public class EditCourseController {
 
     @FXML
     public void initialize(){
+        //设置学分增长步长为0.5
+        DoubleSpinnerModel model = new DoubleSpinnerModel();
+        model.setIncrement(0.5);
+        credit.setSpinnerModel(model);
+    }
 
+    public void initData(Course c){
+        name.setText(c.getName());
+        credit.setValue(c.getCredit());
     }
 
 

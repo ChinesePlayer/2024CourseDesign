@@ -1,5 +1,7 @@
 package com.teach.javafx.controller;
 
+import com.teach.javafx.MainApplication;
+import com.teach.javafx.controller.adminCoursePanel.EditCourseController;
 import com.teach.javafx.controller.courseSelection.CourseAdminActionValueFactory;
 import com.teach.javafx.controller.courseSelection.CourseTimeValueFactory;
 import com.teach.javafx.controller.courseSelection.CourseValueFactory;
@@ -8,18 +10,24 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 import org.fatmansoft.teach.models.Course;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 
 import javax.swing.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -121,5 +129,26 @@ public class CourseController {
         TableCell<Course, MFXButton> cell = (TableCell<Course, MFXButton>) ((MFXButton)event.getTarget()).getParent();
         int rowIndex = cell.getIndex();
         Course c = observableList.get(rowIndex);
+        FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("adminCoursePanel/edit-course.fxml"));
+        try{
+            Scene scene = new Scene(loader.load(), 500, 600);
+            EditCourseController editCourseController = (EditCourseController) loader.getController();
+
+            editStage = new Stage();
+            editStage.setScene(scene);
+            editStage.setResizable(false);
+            editStage.initOwner(dataTableView.getScene().getWindow());
+            editStage.initModality(Modality.WINDOW_MODAL);
+            editStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                @Override
+                public void handle(WindowEvent windowEvent) {
+                    editStage = null;
+                }
+            });
+            editStage.show();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }

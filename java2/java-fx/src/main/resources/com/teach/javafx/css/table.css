@@ -1,0 +1,29 @@
+.table-view{
+    -fx-background-color:#EC9896;
+    -fx-radius:5px;
+    -fx-padding:0px;
+}
+
+.table-view .column-header-background{
+    -fx-background-color:#4395d4;
+    -fx-background-insets:0 0 0 0;
+    -fx-background-radius:5px 5px 0px 0px;
+
+}
+
+.table-view .table-column{
+    -fx-alignment:CENTER;
+}
+
+.table-view .column-header, .filter{
+    -fx-background-color:transparent;
+    -fx-size:40px;
+}
+
+.table-view .column-header .label{
+    -fx-text-fill:#FFFFFF;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: #aeb0b6;
+}
