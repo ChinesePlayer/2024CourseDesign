@@ -39,11 +39,11 @@ public class CourseValueFactory implements Callback<TableColumn.CellDataFeatures
             }
         }
         else if(id.equals("loc")){
-            if(c.getLocation() == null || c.getLocation().isEmpty()){
+            if(c.getLocation() == null){
                 return new SimpleStringProperty("暂未公布");
             }
             else {
-                return new SimpleStringProperty(c.getLocation());
+                return new SimpleStringProperty(c.getLocation().getValue());
             }
         }
         return new SimpleStringProperty("----");

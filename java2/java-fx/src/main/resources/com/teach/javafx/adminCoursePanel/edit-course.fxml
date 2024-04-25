@@ -10,6 +10,7 @@
 <?import io.github.palexdev.materialfx.controls.MFXSpinner?>
 <?import com.teach.javafx.customWidget.TimeSelector?>
 <?import io.github.palexdev.materialfx.controls.MFXComboBox?>
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.teach.javafx.controller.adminCoursePanel.EditCourseController"
@@ -18,7 +19,9 @@
         <VBox>
             <MFXTextField fx:id="name" floatMode="ABOVE" floatingText="课程名称" />
             <MFXSpinner fx:id="credit" />
-            <VBox fx:id="timeGroup" />
+            <VBox fx:id="timeGroup">
+                <MFXButton fx:id="addTimeSelectorButton" text="+" onAction="#addTimeSelector" />
+            </VBox>
             <MFXComboBox fx:id="teacher" />
             <MFXComboBox fx:id="loc" />
             <MFXComboBox fx:id="preCourse" />

@@ -301,7 +301,10 @@ public class CourseService {
         m.put("credit",c.getCredit());
         m.put("coursePath",c.getCoursePath());
         if(c.getLocation() != null){
-            m.put("location", c.getLocation().getValue());
+            Map locationMap = new HashMap<>();
+            locationMap.put("locationId", c.getLocation().getLocationId() + "");
+            locationMap.put("value", c.getLocation().getValue());
+            m.put("location", locationMap);
         }
         else{
             m.put("location", null);
