@@ -18,6 +18,8 @@ public class SQLiteIdentityColumnSupport extends IdentityColumnSupportImpl {
 
     @Override
     public String getIdentityColumnString(int type) throws MappingException {
+//        return "integer";
+        //应该改为返回空字符串
         return "";
     }
 }
