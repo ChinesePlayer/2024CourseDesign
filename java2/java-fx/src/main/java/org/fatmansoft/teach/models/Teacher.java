@@ -76,7 +76,7 @@ public class Teacher {
         if(o == this){
             return true;
         }
-        if(((Teacher) o).getTeacherId() == this.teacherId){
+        if(Objects.equals(((Teacher) o).getTeacherId(), this.teacherId)){
             return true;
         }
         return false;

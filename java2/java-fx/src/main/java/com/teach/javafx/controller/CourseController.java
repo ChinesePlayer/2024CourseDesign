@@ -75,6 +75,7 @@ public class CourseController {
             for(Map m : rawData){
                 Course c = new Course(m);
                 MFXButton button = new MFXButton("编辑");
+                button.setOnAction(this::onEditButtonClick);
                 c.setAction(button);
                 courseList.add(c);
             }
@@ -133,7 +134,7 @@ public class CourseController {
         try{
             Scene scene = new Scene(loader.load(), 500, 600);
             EditCourseController editCourseController = (EditCourseController) loader.getController();
-
+            editCourseController.initData(c);
             editStage = new Stage();
             editStage.setScene(scene);
             editStage.setResizable(false);
@@ -150,5 +151,9 @@ public class CourseController {
         catch (IOException e){
             e.printStackTrace();
         }
+    }
+
+    public void onHasSavedCourse(Course c){
+
     }
 }

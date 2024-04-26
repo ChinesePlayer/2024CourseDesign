@@ -5,10 +5,7 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Course {
     private String name;
@@ -72,7 +69,6 @@ public class Course {
 
         this.courseTimes = new ArrayList<>();
         List<Map> timeMaps = (ArrayList<Map>) m.get("times");
-        System.out.println("从Map构建Course: " + m.get("times"));
         if(timeMaps != null){
             for(Map tm : timeMaps){
                 this.courseTimes.add(new CourseTime(tm));
@@ -111,6 +107,20 @@ public class Course {
     @Override
     public String toString(){
         return num + " - " + name;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if(!(o instanceof Course)){
+            return false;
+        }
+        if(o == this){
+            return true;
+        }
+        if(Objects.equals(((Course) o).getCourseId(), this.courseId)){
+            return true;
+        }
+        return false;
     }
 
     public String getName() {

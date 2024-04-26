@@ -4,6 +4,7 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXSpinner;
 import io.github.palexdev.materialfx.controls.models.spinner.IntegerSpinnerModel;
 import io.github.palexdev.materialfx.controls.models.spinner.SpinnerModel;
+import javafx.geometry.Pos;
 import javafx.scene.layout.VBox;
 
 import java.awt.*;
@@ -12,8 +13,9 @@ import java.util.Map;
 
 //用于管理员编辑课程时选择课程的上课时间
 public class TimeSelector extends VBox {
-    private MFXSpinner<Integer> day;
-    private MFXSpinner<Integer> section;
+    private Integer courseTimeId;
+    private MFXSpinner<Integer> day = new MFXSpinner<>();
+    private MFXSpinner<Integer> section = new MFXSpinner<>();
 
     //用于外部对该对象执行一些操作
     private MFXButton action = null;
@@ -24,13 +26,16 @@ public class TimeSelector extends VBox {
         integerSpinnerModel.setIncrement(1);
         integerSpinnerModel.setMax(7);
         integerSpinnerModel .setMin(1);
-        day.setSpinnerModel(integerSpinnerModel);
+        this.day.setSpinnerModel(integerSpinnerModel);
 
         integerSpinnerModel = new IntegerSpinnerModel();
         integerSpinnerModel.setIncrement(1);
         integerSpinnerModel.setMax(5);
         integerSpinnerModel.setMin(1);
-        section.setSpinnerModel(integerSpinnerModel);
+        this.section.setSpinnerModel(integerSpinnerModel);
+
+        getChildren().addAll(this.day, this.section);
+        setAlignment(Pos.TOP_CENTER);
     }
 
     public TimeSelector(MFXButton action){
@@ -40,19 +45,22 @@ public class TimeSelector extends VBox {
         integerSpinnerModel.setMax(7);
         integerSpinnerModel .setMin(1);
         this.day.setSpinnerModel(integerSpinnerModel);
-        this.day.setValue(1);
 
         integerSpinnerModel = new IntegerSpinnerModel();
         integerSpinnerModel.setIncrement(1);
         integerSpinnerModel.setMax(5);
         integerSpinnerModel.setMin(1);
         this.section.setSpinnerModel(integerSpinnerModel);
-        this.section.setValue(1);
 
+        this.day.setValue(1);
+        this.section.setValue(1);
         this.action = action;
+        getChildren().addAll(this.action, this.day, this.section);
+        setAlignment(Pos.TOP_CENTER);
     }
 
     public TimeSelector(int day, int section, MFXButton action){
+        setStyle("-fx-padding: 20px");
         //设置星期和节次的选择模型
         IntegerSpinnerModel integerSpinnerModel = new IntegerSpinnerModel();
         integerSpinnerModel.setIncrement(1);
@@ -71,6 +79,7 @@ public class TimeSelector extends VBox {
         this.action = action;
 
         getChildren().addAll(this.action, this.day, this.section);
+        setAlignment(Pos.TOP_CENTER);
     }
 
     public Map toMap(){
@@ -102,5 +111,13 @@ public class TimeSelector extends VBox {
 
     public void setAction(MFXButton action) {
         this.action = action;
+    }
+
+    public Integer getCourseTimeId() {
+        return courseTimeId;
+    }
+
+    public void setCourseTimeId(Integer courseTimeId) {
+        this.courseTimeId = courseTimeId;
     }
 }

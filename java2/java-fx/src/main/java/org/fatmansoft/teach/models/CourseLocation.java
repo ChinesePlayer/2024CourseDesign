@@ -1,6 +1,7 @@
 package org.fatmansoft.teach.models;
 
 import java.util.Map;
+import java.util.Objects;
 
 public class CourseLocation {
     private String value;
@@ -29,5 +30,24 @@ public class CourseLocation {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    @Override
+    public String toString(){
+        return value;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if(!(o instanceof CourseLocation)){
+            return false;
+        }
+        if(o == this){
+            return true;
+        }
+        if(Objects.equals(((CourseLocation) o).getId(), this.id)){
+            return true;
+        }
+        return false;
     }
 }

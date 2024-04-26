@@ -5,10 +5,7 @@ import org.apache.tomcat.jni.Local;
 import org.fatmansoft.teach.models.*;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
-import org.fatmansoft.teach.repository.CourseRepository;
-import org.fatmansoft.teach.repository.CourseSelectionTurnRepository;
-import org.fatmansoft.teach.repository.StudentRepository;
-import org.fatmansoft.teach.repository.TeacherRepository;
+import org.fatmansoft.teach.repository.*;
 import org.fatmansoft.teach.util.CommonMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +25,10 @@ public class CourseService {
     private CourseSelectionTurnRepository turnRepository;
     @Autowired
     private TeacherRepository teacherRepository;
+    @Autowired
+    private LocationRepository locationRepository;
+    @Autowired
+    private CourseTimeRepository courseTimeRepository;
 
     //根据学生已选课程和来标记每个课程是否已被该学生选中
     //注意该方法会修改第一个参数!
@@ -178,10 +179,13 @@ public class CourseService {
     public DataResponse courseSave(@Valid @RequestBody DataRequest dataRequest) {
         Integer courseId = dataRequest.getInteger("courseId");
         String num = dataRequest.getString("num");
-        String name = dataRequest.getString("name");
+        String name = dataRequest.getString("courseName");
         String coursePath = dataRequest.getString("coursePath");
         Integer credit = dataRequest.getInteger("credit");
         Integer preCourseId = dataRequest.getInteger("preCourseId");
+        Integer teacherId = dataRequest.getInteger("teacherId");
+        Integer locationId = dataRequest.getInteger("locationId");
+        List<Map> courseTimes = (ArrayList<Map>)dataRequest.get("times");
         Optional<Course> op;
         Course c= null;
 
@@ -198,13 +202,59 @@ public class CourseService {
             if(op.isPresent())
                 pc = op.get();
         }
+
+        Teacher teacher = null;
+        if(teacherId != null){
+            Optional<Teacher> teacherOpn = teacherRepository.findById(teacherId);
+            if(teacherOpn.isPresent()){
+                teacher = teacherOpn.get();
+            }
+        }
+
+        CourseLocation location = null;
+        if(locationId != null){
+            Optional<CourseLocation> lOp = locationRepository.findById(locationId);
+            if(lOp.isPresent()){
+                location = lOp.get();
+            }
+        }
+
+        if(!courseTimes.isEmpty()){
+            List<CourseTime> cts;
+            if(courseId != null){
+                cts = courseTimeRepository.findCourseTimeByCourseId(courseId);
+                for(Map m : courseTimes){
+                    CourseTime ct = new CourseTime(m);
+                    if(cts.contains(ct)){
+                        continue;
+                    }
+                    else {
+                        ct.setCourse(c);
+                        c.getCourseTimes().add(ct);
+                    }
+                }
+            }
+            else{
+                for(Map m : courseTimes){
+                    CourseTime ct = new CourseTime(m);
+                    ct.setCourse(c);
+                    c.getCourseTimes().add(ct);
+                }
+            }
+        }
+
         c.setNum(num);
         c.setName(name);
         c.setCredit(credit);
         c.setCoursePath(coursePath);
         c.setPreCourse(pc);
+        c.setTeacher(teacher);
+        c.setLocation(location);
         courseRepository.save(c);
-        return CommonMethod.getReturnMessageOK();
+        Integer newId = c.getCourseId();
+        Map m = new HashMap<>();
+        m.put("courseId", newId+"");
+        return CommonMethod.getReturnData(m);
     }
 
     public DataResponse courseDelete(@Valid @RequestBody DataRequest dataRequest) {
@@ -347,5 +397,7 @@ public class CourseService {
         }
         return m;
     }
+
+
 
 }

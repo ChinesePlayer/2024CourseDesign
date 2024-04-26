@@ -8,23 +8,24 @@
 
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import io.github.palexdev.materialfx.controls.MFXSpinner?>
-<?import com.teach.javafx.customWidget.TimeSelector?>
 <?import io.github.palexdev.materialfx.controls.MFXComboBox?>
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.teach.javafx.controller.adminCoursePanel.EditCourseController"
-            prefHeight="400.0" prefWidth="600.0">
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.teach.javafx.controller.adminCoursePanel.EditCourseController">
     <center>
-        <VBox>
+        <VBox alignment="TOP_CENTER">
             <MFXTextField fx:id="name" floatMode="ABOVE" floatingText="课程名称" />
+            <MFXTextField fx:id="num" floatMode="ABOVE" floatingText="课序号" />
             <MFXSpinner fx:id="credit" />
-            <VBox fx:id="timeGroup">
+            <VBox fx:id="timeGroup" alignment="TOP_CENTER">
                 <MFXButton fx:id="addTimeSelectorButton" text="+" onAction="#addTimeSelector" />
             </VBox>
-            <MFXComboBox fx:id="teacher" />
-            <MFXComboBox fx:id="loc" />
-            <MFXComboBox fx:id="preCourse" />
+            <ComboBox fx:id="teacher" />
+            <ComboBox fx:id="loc" />
+            <ComboBox fx:id="preCourse" />
+            <MFXButton fx:id="save" text="保存" />
+            <MFXButton fx:id="cancel" text="取消" onAction="#onCancelButton" />
         </VBox>
     </center>
 
