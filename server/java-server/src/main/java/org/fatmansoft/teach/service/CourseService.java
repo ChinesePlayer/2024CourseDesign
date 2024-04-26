@@ -186,6 +186,7 @@ public class CourseService {
         Integer teacherId = dataRequest.getInteger("teacherId");
         Integer locationId = dataRequest.getInteger("locationId");
         List<Map> courseTimes = (ArrayList<Map>)dataRequest.get("times");
+        System.out.println("Times: " + courseTimes);
         Optional<Course> op;
         Course c= null;
 
@@ -199,8 +200,28 @@ public class CourseService {
         Course pc =null;
         if(preCourseId != null) {
             op = courseRepository.findById(preCourseId);
-            if(op.isPresent())
+            if(op.isPresent()){
                 pc = op.get();
+                //检查课程链是否闭合，若闭合则拒绝修改
+                if(!canSetPreCourse(c, pc)){
+                    return CommonMethod.getReturnMessageError("前序课程不合法: 课程链形成闭环! ");
+                }
+//                String pCoursePath = pc.getCoursePath();
+//                if(pCoursePath != null && !pCoursePath.isEmpty()){
+//                    String[] strings = pCoursePath.split(",");
+//                    List<Integer> preIds = new ArrayList<>();
+//                    for(String s : strings){
+//                        preIds.add(Integer.parseInt(s));
+//                    }
+//                    if(preIds.contains(courseId)){
+//                        return CommonMethod.getReturnMessageError("前序课程不合法: 课程链形成闭环! ");
+//                    }
+//                    coursePath = pCoursePath + "," + pc.getCourseId();
+//                }
+//                else{
+//                    coursePath = "" + pc.getCourseId();
+//                }
+            }
         }
 
         Teacher teacher = null;
@@ -219,29 +240,22 @@ public class CourseService {
             }
         }
 
-        if(!courseTimes.isEmpty()){
-            List<CourseTime> cts;
-            if(courseId != null){
-                cts = courseTimeRepository.findCourseTimeByCourseId(courseId);
-                for(Map m : courseTimes){
-                    CourseTime ct = new CourseTime(m);
-                    if(cts.contains(ct)){
-                        continue;
-                    }
-                    else {
-                        ct.setCourse(c);
-                        c.getCourseTimes().add(ct);
-                    }
-                }
-            }
-            else{
-                for(Map m : courseTimes){
-                    CourseTime ct = new CourseTime(m);
-                    ct.setCourse(c);
-                    c.getCourseTimes().add(ct);
-                }
-            }
+        List<CourseTime> cts = courseTimeRepository.findCourseTimeByCourseId(courseId);
+        courseTimeRepository.deleteAll(cts);
+        courseTimeRepository.flush();
+        List<CourseTime> newCts = new ArrayList<>();
+        for(Map m : courseTimes){
+            CourseTime ct = new CourseTime();
+            ct.setDay((Integer) m.get("day"));
+            ct.setSection((Integer) m.get("section"));
+            ct.setCourse(c);
+            c.getCourseTimes().add(ct);
+            newCts.add(ct);
+
         }
+        courseTimeRepository.saveAllAndFlush(newCts);
+
+
 
         c.setNum(num);
         c.setName(name);
@@ -398,6 +412,14 @@ public class CourseService {
         return m;
     }
 
-
+    public boolean canSetPreCourse(Course c, Course preCourse){
+        if(preCourse == null){
+            return true;
+        }
+        if(Objects.equals(c.getCourseId(), preCourse.getCourseId())){
+            return false;
+        }
+        return canSetPreCourse(c, preCourse.getPreCourse());
+    }
 
 }

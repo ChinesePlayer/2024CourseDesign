@@ -11,6 +11,7 @@ import io.github.palexdev.materialfx.controls.MFXSpinner;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import io.github.palexdev.materialfx.controls.models.spinner.DoubleSpinnerModel;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -27,10 +28,7 @@ import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 
 import java.sql.Time;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class EditCourseController {
     @FXML
@@ -57,6 +55,8 @@ public class EditCourseController {
     private List<Teacher> teacherList = new ArrayList<>();
     private List<CourseLocation> locationList = new ArrayList<>();
     private List<Course> preCourseList = new ArrayList<>();
+
+
 
     @FXML
     public void initialize(){
@@ -87,7 +87,6 @@ public class EditCourseController {
             //在第一位加入一个为ID为-1的空课程
             Course emptyCourse = new Course();
             emptyCourse.setCourseId(-1);
-            emptyCourse.setName("无");
             preCourseList.add(emptyCourse);
             List<Map> maps = (ArrayList<Map>) res.getData();
             for(Map m : maps){
@@ -116,7 +115,7 @@ public class EditCourseController {
         }
     }
 
-    public void initData(Course c){
+    public void initData(Course c, CourseController courseController){
         course = c;
         name.setText(c.getName());
         credit.setValue(c.getCredit());
@@ -146,6 +145,7 @@ public class EditCourseController {
                 timeGroup.setAlignment(Pos.TOP_CENTER);
             }
         }
+        setCourseController(courseController);
 
     }
 
@@ -201,9 +201,15 @@ public class EditCourseController {
     public void updateCourseFromForm(){
         course.setName(name.getText());
         course.setCredit(credit.getValue());
-        course.setPreCourse(preCourse.getValue());
+        if(Objects.equals(preCourse.getValue().getCourseId(), -1)){
+            course.setPreCourse(null);
+        }
+        else{
+            course.setPreCourse(preCourse.getValue());
+        }
         course.setTeacher(teacher.getValue());
         course.setLocation(loc.getValue());
+        course.setNum(num.getText());
         List<CourseTime> cts = new ArrayList<>();
         for(Node n : timeGroup.getChildren()){
             TimeSelector ts = (TimeSelector) n;
@@ -215,10 +221,29 @@ public class EditCourseController {
 
     //判断新输入的数据是否合法
     public boolean isDataValid(){
-
+        List<TimeSelector> tss = new ArrayList<>();
+        //将节点转移到tss数组中
+        for(Node n : timeGroup.getChildren()){
+            tss.add((TimeSelector) n);
+        }
+        for(int i = 0 ; i < tss.size() ; i++){
+            for(int j = 0 ; j < tss.size(); j++){
+                if(i == j){
+                    continue;
+                }
+                if(tss.get(i).equals(tss.get(j))){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public void onSaveButton(){
+        if(!isDataValid()){
+            MessageDialog.showDialog("上课时间有重复，请检查!");
+            return;
+        }
         DataRequest req = new DataRequest();
         req.add("courseId", course.getCourseId());
         //注意此处的名字为新名字
@@ -227,7 +252,12 @@ public class EditCourseController {
         req.add("locationId", loc.getValue().getId());
         req.add("teacherId", teacher.getValue().getTeacherId());
         req.add("credit", credit.getValue());
-        req.add("preCourseId", preCourse.getValue().getCourseId());
+        if(preCourse.getValue() == null){
+            req.add("preCourseId", null);
+        }
+        else{
+            req.add("preCourseId", preCourse.getValue().getCourseId());
+        }
         List<Map> timeMapList = new ArrayList<>();
         for(Node n : timeGroup.getChildren()){
             TimeSelector ts = (TimeSelector) n;
@@ -240,9 +270,16 @@ public class EditCourseController {
         DataResponse res = HttpRequestUtil.request("/api/course/courseSave", req);
         if(res != null && res.getCode() == 0){
             Map returnData = (Map) res.getData();
-            Integer courseId = () returnData.get("courseId");
+            Integer courseId = Integer.parseInt((String) returnData.get("courseId"));
+            updateCourseFromForm();
+            courseController.onHasSavedCourse(course);
+            System.out.println("修改的课程ID: " + courseId);
+            //关闭窗口
+            onCancelButton();
         }
-        updateCourseFromForm();
+        else {
+            MessageDialog.showDialog(res.getMsg());
+        }
     }
 
 }

@@ -56,6 +56,7 @@ public class Course {
         else {
             this.teacher = null;
         }
+
         this.isChosen = (Boolean) m.get("isChosen");
         this.coursePath = (String) m.get("coursePath");
 
@@ -106,6 +107,9 @@ public class Course {
 
     @Override
     public String toString(){
+        if(Objects.equals(courseId, -1)){
+            return "无";
+        }
         return num + " - " + name;
     }
 

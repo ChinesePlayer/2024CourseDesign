@@ -134,7 +134,7 @@ public class CourseController {
         try{
             Scene scene = new Scene(loader.load(), 500, 600);
             EditCourseController editCourseController = (EditCourseController) loader.getController();
-            editCourseController.initData(c);
+            editCourseController.initData(c, this);
             editStage = new Stage();
             editStage.setScene(scene);
             editStage.setResizable(false);
@@ -154,6 +154,6 @@ public class CourseController {
     }
 
     public void onHasSavedCourse(Course c){
-
+        setTableViewData();
     }
 }

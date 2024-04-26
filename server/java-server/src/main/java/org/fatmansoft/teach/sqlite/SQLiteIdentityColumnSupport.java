@@ -18,6 +18,6 @@ public class SQLiteIdentityColumnSupport extends IdentityColumnSupportImpl {
 
     @Override
     public String getIdentityColumnString(int type) throws MappingException {
-        return "integer";
+        return "";
     }
 }

@@ -5,6 +5,11 @@ bezkoder:
     jwtExpirationMs: 86400000
 server:
   port: 9090
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
 spring:
   datasource:
     url: jdbc:sqlite:/Project/2024CourseDesign/teach/java2/data.db
@@ -15,6 +20,7 @@ spring:
     database-platform: org.fatmansoft.teach.sqlite.SQLDialect
     generate-ddl: true
     hibernate.ddl-auto: update
+    show-sql: true
   servlet:
     multipart:
       max-file-size: 200MB
@@ -31,16 +37,11 @@ spring:
       mail:
         smtp:
           auth: true
-          connectiontimeout: 5000
+          connection timeout: 5000
           timeout: 5000
-          writetimeout: 5000
+          write timeout: 5000
           starttls:
             enable: true
-  http:
-    encoding:
-      charset: UTF-8
-      enabled: true
-      force: true
 attach:
   folder: /teach/
 logging:
