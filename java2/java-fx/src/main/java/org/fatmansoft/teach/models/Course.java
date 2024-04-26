@@ -5,9 +5,7 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Course {
     private String name;
@@ -16,8 +14,8 @@ public class Course {
     private String num;
     private double credit;
     private String coursePath;
-    private String teacher;
-    private String location;
+    private Teacher teacher;
+    private CourseLocation location;
     private List<CourseTime> courseTimes = new ArrayList<>();
     //对课程可执行的操作
     private MFXButton action;
@@ -46,13 +44,32 @@ public class Course {
         this.num = (String)m.get("num");
         this.courseId = id;
         this.credit = (double)m.get("credit");
-        this.teacher = (String) m.get("teacher");
+
+
+        Map teacherMap = (Map)m.get("teacher");
+        if(teacherMap != null){
+            Teacher t = new Teacher();
+            t.setName((String) teacherMap.get("name"));
+            t.setTeacherId(Integer.parseInt((String) teacherMap.get("id")));
+            this.teacher = t;
+        }
+        else {
+            this.teacher = null;
+        }
+
         this.isChosen = (Boolean) m.get("isChosen");
         this.coursePath = (String) m.get("coursePath");
-        this.location = (String) m.get("location");
+
+        Map locationMap = (Map) m.get("location");
+        if(locationMap != null){
+            this.location = new CourseLocation(locationMap);
+        }
+        else {
+            this.location = null;
+        }
+
         this.courseTimes = new ArrayList<>();
         List<Map> timeMaps = (ArrayList<Map>) m.get("times");
-        System.out.println("从Map构建Course: " + m.get("times"));
         if(timeMaps != null){
             for(Map tm : timeMaps){
                 this.courseTimes.add(new CourseTime(tm));
@@ -90,14 +107,24 @@ public class Course {
 
     @Override
     public String toString(){
-        String res = "";
-        res += "课程信息: \n";
-        res += "名称: " + this.name;
-        res += "编号: " + this.num;
-        res += "教师: " + this.teacher;
-        res += "地点: " + this.location;
-        res += "学分: " + this.credit;
-        return res;
+        if(Objects.equals(courseId, -1)){
+            return "无";
+        }
+        return num + " - " + name;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if(!(o instanceof Course)){
+            return false;
+        }
+        if(o == this){
+            return true;
+        }
+        if(Objects.equals(((Course) o).getCourseId(), this.courseId)){
+            return true;
+        }
+        return false;
     }
 
     public String getName() {
@@ -172,19 +199,32 @@ public class Course {
         this.courseTimes = courseTimes;
     }
 
-    public String getTeacher() {
+    public Teacher getTeacher() {
         return teacher;
     }
 
-    public void setTeacher(String teacher) {
+    public void setTeacher(Teacher teacher) {
         this.teacher = teacher;
     }
 
-    public String getLocation() {
+    public CourseLocation getLocation() {
         return location;
     }
 
-    public void setLocation(String location) {
+    public void setLocation(CourseLocation location) {
         this.location = location;
+    }
+
+    //判断两个课程是否冲突
+    public static boolean isConflict(Course c1, Course c2){
+        if((c1.getCourseTimes() == null || c1.getCourseTimes().isEmpty()) || (c2.getCourseTimes() == null || c2.getCourseTimes().isEmpty())){
+            return false;
+        }
+        for(CourseTime ct1 : c1.getCourseTimes()){
+            if(c2.getCourseTimes().contains(ct1)){
+                return true;
+            }
+        }
+        return false;
     }
 }

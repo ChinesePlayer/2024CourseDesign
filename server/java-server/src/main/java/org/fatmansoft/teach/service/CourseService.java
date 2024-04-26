@@ -5,10 +5,7 @@ import org.apache.tomcat.jni.Local;
 import org.fatmansoft.teach.models.*;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
-import org.fatmansoft.teach.repository.CourseRepository;
-import org.fatmansoft.teach.repository.CourseSelectionTurnRepository;
-import org.fatmansoft.teach.repository.StudentRepository;
-import org.fatmansoft.teach.repository.TeacherRepository;
+import org.fatmansoft.teach.repository.*;
 import org.fatmansoft.teach.util.CommonMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +25,10 @@ public class CourseService {
     private CourseSelectionTurnRepository turnRepository;
     @Autowired
     private TeacherRepository teacherRepository;
+    @Autowired
+    private LocationRepository locationRepository;
+    @Autowired
+    private CourseTimeRepository courseTimeRepository;
 
     //根据学生已选课程和来标记每个课程是否已被该学生选中
     //注意该方法会修改第一个参数!
@@ -91,24 +92,8 @@ public class CourseService {
             numName = "";
         List<Course> cList = courseRepository.findCourseListByNumName(numName);  //数据库查询操作
         List dataList = new ArrayList();
-        Map m;
-        Course pc;
         for (Course c : cList) {
-            m = new HashMap();
-            m.put("courseId", c.getCourseId()+"");
-            m.put("num",c.getNum());
-            m.put("name",c.getName());
-            m.put("credit",c.getCredit());
-            m.put("coursePath",c.getCoursePath());
-            pc =c.getPreCourse();
-            if(pc != null) {
-                m.put("preCourse",pc.getName());
-                //此处应该改在pc.getCourseId()之后再加一个""空字符串来讲preCourseId转化为字符串类型，否则会导致前端
-                //在从json数据转化为Object数据时将该数据解析为Double
-                m.put("preCourseId",pc.getCourseId()+"");
-            }
-            dataList.add(m);
-            System.out.println("当前的课程打包信息: " + m.toString());
+            dataList.add(loadCourseInfo(c));
         }
         return CommonMethod.getReturnData(dataList);
     }
@@ -146,59 +131,9 @@ public class CourseService {
         Integer studentId = student.getStudentId();
         //查询学生已选课程
         List<Course> chosenCourse = studentRepository.findCoursesByStudentId(studentId);
-
-
         List<Map> dataList = new ArrayList();
-        Map m;
-        Course pc;
         for (Course c : cList) {
-            m = new HashMap();
-            m.put("courseId", c.getCourseId()+"");
-            m.put("num",c.getNum());
-            m.put("name",c.getName());
-            m.put("credit",c.getCredit());
-            m.put("coursePath",c.getCoursePath());
-            if(c.getLocation() != null){
-                m.put("location", c.getLocation().getValue());
-            }
-            else{
-                m.put("location", null);
-            }
-            List<CourseTime> cts = c.getCourseTimes();
-            List<Map> times = new ArrayList<>();
-            for(CourseTime ct : cts){
-                Map ctm = new HashMap<>();
-                //统一转换成字符串
-                ctm.put("id", ct.getCourseTimeId()+"");
-                ctm.put("day",ct.getDay()+"");
-                ctm.put("section", ct.getSection()+"");
-                times.add(ctm);
-            }
-            m.put("times", times);
-            if(c.getTeacher() != null){
-                Optional<Teacher> teacherOptional = teacherRepository.findById(c.getTeacher().getTeacherId());
-                if(teacherOptional.isPresent()){
-                    Teacher teacher = teacherOptional.get();
-                    m.put("teacher", teacher.getPerson().getName());
-                }
-                else {
-                    m.put("teacher",null);
-                }
-            }
-            else{
-                m.put("teacher", null);
-            }
-            pc =c.getPreCourse();
-            if(pc != null) {
-                //此处应该改在pc.getCourseId()之后再加一个""空字符串来讲preCourseId转化为字符串类型，否则会导致前端
-                //在从json数据转化为Object数据时将该数据解析为Double
-                m.put("preCourseId",pc.getCourseId()+"");
-            }
-            else{
-                m.put("preCourseId",null);
-            }
-            dataList.add(m);
-            System.out.println("当前的课程打包信息: " + m.toString());
+            dataList.add(loadCourseInfo(c));
         }
         labelChosenCourse(dataList, chosenCourse);
         return CommonMethod.getReturnData(dataList);
@@ -244,10 +179,14 @@ public class CourseService {
     public DataResponse courseSave(@Valid @RequestBody DataRequest dataRequest) {
         Integer courseId = dataRequest.getInteger("courseId");
         String num = dataRequest.getString("num");
-        String name = dataRequest.getString("name");
+        String name = dataRequest.getString("courseName");
         String coursePath = dataRequest.getString("coursePath");
         Integer credit = dataRequest.getInteger("credit");
         Integer preCourseId = dataRequest.getInteger("preCourseId");
+        Integer teacherId = dataRequest.getInteger("teacherId");
+        Integer locationId = dataRequest.getInteger("locationId");
+        List<Map> courseTimes = (ArrayList<Map>)dataRequest.get("times");
+        System.out.println("Times: " + courseTimes);
         Optional<Course> op;
         Course c= null;
 
@@ -261,16 +200,75 @@ public class CourseService {
         Course pc =null;
         if(preCourseId != null) {
             op = courseRepository.findById(preCourseId);
-            if(op.isPresent())
+            if(op.isPresent()){
                 pc = op.get();
+                //检查课程链是否闭合，若闭合则拒绝修改
+                if(!canSetPreCourse(c, pc)){
+                    return CommonMethod.getReturnMessageError("前序课程不合法: 课程链形成闭环! ");
+                }
+//                String pCoursePath = pc.getCoursePath();
+//                if(pCoursePath != null && !pCoursePath.isEmpty()){
+//                    String[] strings = pCoursePath.split(",");
+//                    List<Integer> preIds = new ArrayList<>();
+//                    for(String s : strings){
+//                        preIds.add(Integer.parseInt(s));
+//                    }
+//                    if(preIds.contains(courseId)){
+//                        return CommonMethod.getReturnMessageError("前序课程不合法: 课程链形成闭环! ");
+//                    }
+//                    coursePath = pCoursePath + "," + pc.getCourseId();
+//                }
+//                else{
+//                    coursePath = "" + pc.getCourseId();
+//                }
+            }
         }
+
+        Teacher teacher = null;
+        if(teacherId != null){
+            Optional<Teacher> teacherOpn = teacherRepository.findById(teacherId);
+            if(teacherOpn.isPresent()){
+                teacher = teacherOpn.get();
+            }
+        }
+
+        CourseLocation location = null;
+        if(locationId != null){
+            Optional<CourseLocation> lOp = locationRepository.findById(locationId);
+            if(lOp.isPresent()){
+                location = lOp.get();
+            }
+        }
+
+        List<CourseTime> cts = courseTimeRepository.findCourseTimeByCourseId(courseId);
+        courseTimeRepository.deleteAll(cts);
+        courseTimeRepository.flush();
+        List<CourseTime> newCts = new ArrayList<>();
+        for(Map m : courseTimes){
+            CourseTime ct = new CourseTime();
+            ct.setDay((Integer) m.get("day"));
+            ct.setSection((Integer) m.get("section"));
+            ct.setCourse(c);
+            c.getCourseTimes().add(ct);
+            newCts.add(ct);
+
+        }
+        courseTimeRepository.saveAllAndFlush(newCts);
+
+
+
         c.setNum(num);
         c.setName(name);
         c.setCredit(credit);
         c.setCoursePath(coursePath);
         c.setPreCourse(pc);
+        c.setTeacher(teacher);
+        c.setLocation(location);
         courseRepository.save(c);
-        return CommonMethod.getReturnMessageOK();
+        Integer newId = c.getCourseId();
+        Map m = new HashMap<>();
+        m.put("courseId", newId+"");
+        return CommonMethod.getReturnData(m);
     }
 
     public DataResponse courseDelete(@Valid @RequestBody DataRequest dataRequest) {
@@ -355,6 +353,73 @@ public class CourseService {
             return true;
         }
         return false;
+    }
+
+    //装填课程信息至一个Map
+    private Map loadCourseInfo(Course c){
+        Course pc;
+        Map m = new HashMap<>();
+        m.put("courseId", c.getCourseId()+"");
+        m.put("num",c.getNum());
+        m.put("name",c.getName());
+        m.put("credit",c.getCredit());
+        m.put("coursePath",c.getCoursePath());
+        if(c.getLocation() != null){
+            Map locationMap = new HashMap<>();
+            locationMap.put("locationId", c.getLocation().getLocationId() + "");
+            locationMap.put("value", c.getLocation().getValue());
+            m.put("location", locationMap);
+        }
+        else{
+            m.put("location", null);
+        }
+        List<CourseTime> cts = c.getCourseTimes();
+        List<Map> times = new ArrayList<>();
+        for(CourseTime ct : cts){
+            Map ctm = new HashMap<>();
+            //统一转换成字符串
+            ctm.put("id", ct.getCourseTimeId()+"");
+            ctm.put("day",ct.getDay()+"");
+            ctm.put("section", ct.getSection()+"");
+            times.add(ctm);
+        }
+        m.put("times", times);
+        if(c.getTeacher() != null){
+            Optional<Teacher> teacherOptional = teacherRepository.findById(c.getTeacher().getTeacherId());
+            if(teacherOptional.isPresent()){
+                Map tm = new HashMap<>();
+                Teacher teacher = teacherOptional.get();
+                tm.put("name", teacher.getPerson().getName());
+                tm.put("id", teacher.getTeacherId()+"");
+                m.put("teacher", tm);
+            }
+            else {
+                m.put("teacher",null);
+            }
+        }
+        else{
+            m.put("teacher", null);
+        }
+        pc =c.getPreCourse();
+        if(pc != null) {
+            //此处应该改在pc.getCourseId()之后再加一个""空字符串来讲preCourseId转化为字符串类型，否则会导致前端
+            //在从json数据转化为Object数据时将该数据解析为Double
+            m.put("preCourseId",pc.getCourseId()+"");
+        }
+        else{
+            m.put("preCourseId",null);
+        }
+        return m;
+    }
+
+    public boolean canSetPreCourse(Course c, Course preCourse){
+        if(preCourse == null){
+            return true;
+        }
+        if(Objects.equals(c.getCourseId(), preCourse.getCourseId())){
+            return false;
+        }
+        return canSetPreCourse(c, preCourse.getPreCourse());
     }
 
 }

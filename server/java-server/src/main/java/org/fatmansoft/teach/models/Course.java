@@ -45,19 +45,13 @@ public class Course implements Serializable {
     @Getter
     private Integer credit;
 
-    //上课星期
-    @Size(min = 1, max = 7)
-    private Integer day;
-
-    //上课节次
-    @Size(min = 1, max = 5)
-    private Integer session;
-
     @Getter
     @Setter
     @ManyToOne
     @JoinColumn(name="pre_course_id")
     private Course preCourse;
+
+    //逗号分隔的课程路径，用于记录前序课程，若无前序课程则为null
     @Setter
     @Getter
     @Size(max = 12)
