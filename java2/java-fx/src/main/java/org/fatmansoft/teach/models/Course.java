@@ -21,6 +21,8 @@ public class Course {
     private MFXButton action;
     //是否已选该课程
     private Boolean isChosen;
+    //完成状态，0：修读中，1：已及格，2：不及格
+    private Integer status;
 
     public Course(){
 
@@ -43,6 +45,9 @@ public class Course {
         this.num = (String)m.get("num");
         this.courseId = id;
         this.credit = (double)m.get("credit");
+        if(m.get("status") != null){
+            this.status = Integer.parseInt((String) m.get("status"));
+        }
 
         Map teacherMap = (Map)m.get("teacher");
         if(teacherMap != null){
@@ -224,5 +229,13 @@ public class Course {
             }
         }
         return false;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }
