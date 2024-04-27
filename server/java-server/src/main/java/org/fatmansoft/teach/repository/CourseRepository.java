@@ -24,4 +24,7 @@ public interface CourseRepository extends JpaRepository<Course,Integer> {
     //根据课程ID来查找所有选择了该课程的学生
     @Query("select c.students from Course c where c.courseId=?1")
     List<Student> findStudentsByCourseId(Integer courseId);
+
+    @Query("select c from Course c where c.preCourse.courseId=?1")
+    List<Course> findCoursesByPreCourseId(Integer preCourseId);
 }

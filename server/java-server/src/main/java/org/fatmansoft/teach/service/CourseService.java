@@ -1,7 +1,5 @@
 package org.fatmansoft.teach.service;
 
-import org.apache.commons.compress.harmony.pack200.NewAttributeBands;
-import org.apache.tomcat.jni.Local;
 import org.fatmansoft.teach.models.*;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
@@ -203,24 +201,9 @@ public class CourseService {
             if(op.isPresent()){
                 pc = op.get();
                 //检查课程链是否闭合，若闭合则拒绝修改
-                if(!canSetPreCourse(c, pc)){
+                if(!isRecycleCourseChain(c, pc)){
                     return CommonMethod.getReturnMessageError("前序课程不合法: 课程链形成闭环! ");
                 }
-//                String pCoursePath = pc.getCoursePath();
-//                if(pCoursePath != null && !pCoursePath.isEmpty()){
-//                    String[] strings = pCoursePath.split(",");
-//                    List<Integer> preIds = new ArrayList<>();
-//                    for(String s : strings){
-//                        preIds.add(Integer.parseInt(s));
-//                    }
-//                    if(preIds.contains(courseId)){
-//                        return CommonMethod.getReturnMessageError("前序课程不合法: 课程链形成闭环! ");
-//                    }
-//                    coursePath = pCoursePath + "," + pc.getCourseId();
-//                }
-//                else{
-//                    coursePath = "" + pc.getCourseId();
-//                }
             }
         }
 
@@ -253,9 +236,6 @@ public class CourseService {
             newCts.add(ct);
 
         }
-        courseTimeRepository.saveAllAndFlush(newCts);
-
-
 
         c.setNum(num);
         c.setName(name);
@@ -265,6 +245,7 @@ public class CourseService {
         c.setTeacher(teacher);
         c.setLocation(location);
         courseRepository.save(c);
+        courseTimeRepository.saveAllAndFlush(newCts);
         Integer newId = c.getCourseId();
         Map m = new HashMap<>();
         m.put("courseId", newId+"");
@@ -279,10 +260,18 @@ public class CourseService {
             op = courseRepository.findById(courseId);
             if(op.isPresent()) {
                 c = op.get();
+                //找到哪些课程将该课程设为了前序课程
+                List<Course> nextCourses = courseRepository.findCoursesByPreCourseId(c.getCourseId());
+                for(Course nextCourse : nextCourses){
+                    //将它们的前序课程设为空
+                    nextCourse.setPreCourse(null);
+                }
+                courseRepository.saveAll(nextCourses);
                 courseRepository.delete(c);
+                return CommonMethod.getReturnMessageOK();
             }
         }
-        return CommonMethod.getReturnMessageOK();
+        return CommonMethod.getReturnMessageError("课程不存在，无法删除! ");
     }
 
     //查询当前学生所选的所有课程
@@ -412,14 +401,14 @@ public class CourseService {
         return m;
     }
 
-    public boolean canSetPreCourse(Course c, Course preCourse){
+    public boolean isRecycleCourseChain(Course c, Course preCourse){
         if(preCourse == null){
             return true;
         }
         if(Objects.equals(c.getCourseId(), preCourse.getCourseId())){
             return false;
         }
-        return canSetPreCourse(c, preCourse.getPreCourse());
+        return isRecycleCourseChain(c, preCourse.getPreCourse());
     }
 
 }
