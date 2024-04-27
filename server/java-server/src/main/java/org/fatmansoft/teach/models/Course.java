@@ -69,10 +69,10 @@ public class Course implements Serializable {
     @JoinTable(name = "course_turn",
     joinColumns = @JoinColumn(name = "course_id"),
     inverseJoinColumns = @JoinColumn(name = "turn_id"))
-    private List<CourseSelectionTurn> turns;
+    private List<CourseSelectionTurn> turns = new ArrayList<>();
 
     @OneToMany(mappedBy = "course")
-    private List<CourseTime> courseTimes;
+    private List<CourseTime> courseTimes = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "teacher_id")

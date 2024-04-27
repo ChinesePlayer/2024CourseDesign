@@ -4,10 +4,14 @@
 
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TableColumn?>
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
 <BorderPane
         xmlns="http://javafx.com/javafx/17"
         xmlns:fx="http://javafx.com/fxml/1"
         fx:controller="com.teach.javafx.controller.CourseController">
+   <top>
+      <MFXButton fx:id="addNewCourse" text="添加新课程" onAction="#onAddNewCourse" />
+   </top>
    <center>
       <TableView fx:id="dataTableView"  >
          <columns>

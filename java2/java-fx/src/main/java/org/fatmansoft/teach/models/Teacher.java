@@ -65,6 +65,9 @@ public class Teacher {
 
     @Override
     public String toString(){
+        if(teacherId == null || teacherId == -1){
+            return "无";
+        }
         return teacherId + " - " + name;
     }
 

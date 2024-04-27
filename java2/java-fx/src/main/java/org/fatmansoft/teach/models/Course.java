@@ -35,7 +35,6 @@ public class Course {
 
     //从Map构建课程对象的代码
     public Course(Map m){
-        System.out.println("当前正在转化的Map数据: " + m);
         String str = String.valueOf(m.get("courseId"));
         int pos = str.indexOf(".");
         Integer id = Integer.parseInt(String.valueOf(m.get("courseId")));
@@ -44,7 +43,6 @@ public class Course {
         this.num = (String)m.get("num");
         this.courseId = id;
         this.credit = (double)m.get("credit");
-
 
         Map teacherMap = (Map)m.get("teacher");
         if(teacherMap != null){

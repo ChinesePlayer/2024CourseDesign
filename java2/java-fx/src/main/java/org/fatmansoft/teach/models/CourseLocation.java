@@ -34,6 +34,9 @@ public class CourseLocation {
 
     @Override
     public String toString(){
+        if(id == -1 || id == null){
+            return "无";
+        }
         return value;
     }
 

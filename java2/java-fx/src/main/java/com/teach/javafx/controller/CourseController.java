@@ -23,6 +23,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 import org.fatmansoft.teach.models.Course;
+import org.fatmansoft.teach.models.CourseLocation;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 
@@ -31,6 +32,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * CourseController 登录交互控制类 对应 course-panel.fxml
@@ -48,6 +50,8 @@ public class CourseController {
     public TableColumn<Course, String> loc;
     @FXML
     public TableColumn<Course, MFXButton> action;
+    @FXML
+    public MFXButton addNewCourse;
     @FXML
     private TableView<Course> dataTableView;
     @FXML
@@ -130,23 +134,8 @@ public class CourseController {
         TableCell<Course, MFXButton> cell = (TableCell<Course, MFXButton>) ((MFXButton)event.getTarget()).getParent();
         int rowIndex = cell.getIndex();
         Course c = observableList.get(rowIndex);
-        FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("adminCoursePanel/edit-course.fxml"));
         try{
-            Scene scene = new Scene(loader.load(), 500, 600);
-            EditCourseController editCourseController = (EditCourseController) loader.getController();
-            editCourseController.initData(c, this);
-            editStage = new Stage();
-            editStage.setScene(scene);
-            editStage.setResizable(false);
-            editStage.initOwner(dataTableView.getScene().getWindow());
-            editStage.initModality(Modality.WINDOW_MODAL);
-            editStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-                @Override
-                public void handle(WindowEvent windowEvent) {
-                    editStage = null;
-                }
-            });
-            editStage.show();
+            openEditWindow(c);
         }
         catch (IOException e){
             e.printStackTrace();
@@ -154,6 +143,57 @@ public class CourseController {
     }
 
     public void onHasSavedCourse(Course c){
+        if(!courseList.contains(c)){
+            courseList.add(c);
+            MFXButton button = new MFXButton("编辑");
+            button.setOnAction(this::onEditButtonClick);
+            c.setAction(button);
+        }
         setTableViewData();
+    }
+    public void onHasDeleteCourse(Course c){
+        if(courseList.contains(c)){
+            courseList.remove(c);
+            //找到哪些课程将删除的课程设为了前序课程
+            //将它们的前序课程设为空
+            for(Course nextCourse : courseList){
+                if(nextCourse.getPreCourse() != null && nextCourse.getPreCourse().equals(c)){
+                    nextCourse.setPreCourse(null);
+                }
+            }
+            setTableViewData();
+        }
+    }
+
+    public void onAddNewCourse(){
+        Course nCourse = new Course();
+        nCourse.setNum("");
+        nCourse.setName("");
+        nCourse.setCredit(1.0);
+        try{
+            openEditWindow(nCourse);
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void openEditWindow(Course c) throws IOException {
+        FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("adminCoursePanel/edit-course.fxml"));
+        Scene scene = new Scene(loader.load(), 500, 600);
+        EditCourseController editCourseController = (EditCourseController) loader.getController();
+        editCourseController.initData(c, this);
+        editStage = new Stage();
+        editStage.setScene(scene);
+        editStage.setResizable(false);
+        editStage.initOwner(dataTableView.getScene().getWindow());
+        editStage.initModality(Modality.WINDOW_MODAL);
+        editStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent windowEvent) {
+                editStage = null;
+            }
+        });
+        editStage.show();
     }
 }
