@@ -72,7 +72,21 @@ public class ScoreController {
             m.put("courseNum",s.getCourse().getNum());
             m.put("courseName",s.getCourse().getName());
             m.put("credit",""+s.getCourse().getCredit());
-            m.put("mark",""+s.getMark());
+            if(s.getMark() == null){
+                m.put("mark", null);
+            }
+            else{
+                m.put("mark", s.getMark()+"");
+
+            }
+            m.put("status", s.getStatus()+"");
+            if(s.getRank() == null){
+                m.put("rank", null);
+            }
+            else{
+                m.put("rank", s.getRank()+"");
+            }
+            m.put("gpa", s.calcGpa());
             dataList.add(m);
         }
         return CommonMethod.getReturnData(dataList);

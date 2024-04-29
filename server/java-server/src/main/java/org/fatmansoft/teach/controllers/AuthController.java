@@ -10,6 +10,7 @@ import org.fatmansoft.teach.models.*;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.repository.*;
+import org.fatmansoft.teach.service.AuthService;
 import org.fatmansoft.teach.service.EmailService;
 import org.fatmansoft.teach.util.CommonMethod;
 import org.fatmansoft.teach.util.DateTimeTool;
@@ -70,6 +71,8 @@ public class AuthController {
     private StudentRepository studentRepository;
     @Autowired
     private TeacherRepository teacherRepository;
+    @Autowired
+    private AuthService authService;
     /**
      *  用户登录
      * @param loginRequest   username 登录名  password 密码
@@ -88,6 +91,7 @@ public class AuthController {
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
+        Integer roleId = null;
         Optional<User> op= userRepository.findByUserName(loginRequest.getUsername());
         if(op.isPresent()) {
             User user= op.get();
@@ -97,13 +101,15 @@ public class AuthController {
                 count = 1;
             else count += 1;
             user.setLoginCount(count);
+            roleId = authService.getRoleId(user);
             userRepository.save(user);
         }
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getPerName(),
-                roles.get(0)));
+                roles.get(0),
+                roleId));
     }
 
     /**

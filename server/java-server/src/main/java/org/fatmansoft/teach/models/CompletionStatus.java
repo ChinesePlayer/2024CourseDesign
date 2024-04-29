@@ -14,11 +14,11 @@ public class CompletionStatus {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer statusId;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "student_id")
     private Student student;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course;
 

@@ -77,6 +77,7 @@ public class MainApplication extends Application {
             mainStage.setY(0);
 
         }
+        scene.getStylesheets().add(MainApplication.class.getResource("css/theme-normal.css").toExternalForm());
         mainStage.setTitle(name);
         mainStage.setScene(scene);
         mainStage.setResizable(true);

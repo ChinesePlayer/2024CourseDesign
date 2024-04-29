@@ -499,7 +499,7 @@
     </routine>
     <schema id="191" parent="1" name="main">
       <Current>1</Current>
-      <LastIntrospectionLocalTimestamp>2024-04-27.07:27:40</LastIntrospectionLocalTimestamp>
+      <LastIntrospectionLocalTimestamp>2024-04-28.08:40:39</LastIntrospectionLocalTimestamp>
     </schema>
     <argument id="192" parent="16">
       <ArgumentDirection>R</ArgumentDirection>
@@ -2089,197 +2089,201 @@
       <DasType>integer|0s</DasType>
       <Position>4</Position>
     </column>
-    <column id="695" parent="574" name="ranking">
-      <DasType>INTEGER|0s</DasType>
+    <column id="695" parent="574" name="gpa">
+      <DasType>double|0s</DasType>
       <Position>5</Position>
     </column>
-    <column id="696" parent="574" name="gpa">
-      <DasType>double|0s</DasType>
+    <column id="696" parent="574" name="is_evaluated">
+      <DasType>integer|0s</DasType>
       <Position>6</Position>
     </column>
-    <column id="697" parent="574" name="is_evaluated">
+    <column id="697" parent="574" name="is_teaching">
       <DasType>integer|0s</DasType>
       <Position>7</Position>
     </column>
-    <column id="698" parent="574" name="is_teaching">
+    <column id="698" parent="574" name="select_count">
       <DasType>integer|0s</DasType>
       <Position>8</Position>
     </column>
-    <column id="699" parent="574" name="select_count">
+    <column id="699" parent="574" name="status">
       <DasType>integer|0s</DasType>
       <Position>9</Position>
     </column>
-    <key id="700" parent="574">
+    <column id="700" parent="574" name="rank">
+      <DasType>integer|0s</DasType>
+      <Position>10</Position>
+    </column>
+    <key id="701" parent="574">
       <ColNames>score_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="701" parent="575" name="type">
+    <column id="702" parent="575" name="type">
       <DasType>TEXT|0s</DasType>
       <Position>1</Position>
     </column>
-    <column id="702" parent="575" name="name">
+    <column id="703" parent="575" name="name">
       <DasType>TEXT|0s</DasType>
       <Position>2</Position>
     </column>
-    <column id="703" parent="575" name="tbl_name">
+    <column id="704" parent="575" name="tbl_name">
       <DasType>TEXT|0s</DasType>
       <Position>3</Position>
     </column>
-    <column id="704" parent="575" name="rootpage">
+    <column id="705" parent="575" name="rootpage">
       <DasType>INT|0s</DasType>
       <Position>4</Position>
     </column>
-    <column id="705" parent="575" name="sql">
+    <column id="706" parent="575" name="sql">
       <DasType>TEXT|0s</DasType>
       <Position>5</Position>
     </column>
-    <column id="706" parent="576" name="day">
+    <column id="707" parent="576" name="day">
       <DasType>varchar|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="707" parent="576" name="login_count">
+    <column id="708" parent="576" name="login_count">
       <DasType>integer|0s</DasType>
       <Position>2</Position>
     </column>
-    <column id="708" parent="576" name="request_count">
+    <column id="709" parent="576" name="request_count">
       <DasType>integer|0s</DasType>
       <Position>3</Position>
     </column>
-    <column id="709" parent="576" name="create_count">
+    <column id="710" parent="576" name="create_count">
       <DasType>integer|0s</DasType>
       <Position>4</Position>
     </column>
-    <column id="710" parent="576" name="modify_count">
+    <column id="711" parent="576" name="modify_count">
       <DasType>integer|0s</DasType>
       <Position>5</Position>
     </column>
-    <index id="711" parent="576" name="sqlite_autoindex_statistics_day_1">
+    <index id="712" parent="576" name="sqlite_autoindex_statistics_day_1">
       <ColNames>day</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <key id="712" parent="576">
+    <key id="713" parent="576">
       <ColNames>day</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>sqlite_autoindex_statistics_day_1</UnderlyingIndexName>
     </key>
-    <column id="713" parent="577" name="student_id">
+    <column id="714" parent="577" name="student_id">
       <DasType>integer|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="714" parent="577" name="person_id">
+    <column id="715" parent="577" name="person_id">
       <DasType>INTEGER|0s</DasType>
       <Position>2</Position>
     </column>
-    <column id="715" parent="577" name="major">
+    <column id="716" parent="577" name="major">
       <DasType>varchar|0s</DasType>
       <Position>3</Position>
     </column>
-    <column id="716" parent="577" name="class_name">
+    <column id="717" parent="577" name="class_name">
       <DasType>varchar|0s</DasType>
       <Position>4</Position>
     </column>
-    <key id="717" parent="577">
+    <key id="718" parent="577">
       <ColNames>student_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="718" parent="578" name="id">
+    <column id="719" parent="578" name="id">
       <DasType>integer integer|0s</DasType>
       <Position>1</Position>
     </column>
-    <column id="719" parent="578" name="des">
+    <column id="720" parent="578" name="des">
       <DasType>varchar|0s</DasType>
       <Position>2</Position>
     </column>
-    <column id="720" parent="578" name="name">
+    <column id="721" parent="578" name="name">
       <DasType>varchar|0s</DasType>
       <Position>3</Position>
     </column>
-    <column id="721" parent="578" name="value">
+    <column id="722" parent="578" name="value">
       <DasType>varchar|0s</DasType>
       <Position>4</Position>
     </column>
-    <index id="722" parent="578" name="sqlite_autoindex_system_info_1">
+    <index id="723" parent="578" name="sqlite_autoindex_system_info_1">
       <ColNames>id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <key id="723" parent="578">
+    <key id="724" parent="578">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>sqlite_autoindex_system_info_1</UnderlyingIndexName>
     </key>
-    <column id="724" parent="579" name="teacher_id">
+    <column id="725" parent="579" name="teacher_id">
       <DasType>INTEGER|0s</DasType>
       <Position>1</Position>
     </column>
-    <column id="725" parent="579" name="degree">
+    <column id="726" parent="579" name="degree">
       <DasType>varchar|0s</DasType>
       <Position>2</Position>
     </column>
-    <column id="726" parent="579" name="title">
+    <column id="727" parent="579" name="title">
       <DasType>varchar|0s</DasType>
       <Position>3</Position>
     </column>
-    <column id="727" parent="579" name="person_id">
+    <column id="728" parent="579" name="person_id">
       <DasType>integer|0s</DasType>
       <Position>4</Position>
     </column>
-    <key id="728" parent="579">
+    <key id="729" parent="579">
       <ColNames>teacher_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="729" parent="580" name="user_id">
+    <column id="730" parent="580" name="user_id">
       <DasType>INTEGER|0s</DasType>
       <Position>1</Position>
     </column>
-    <column id="730" parent="580" name="user_name">
+    <column id="731" parent="580" name="user_name">
       <DasType>varchar|0s</DasType>
       <Position>2</Position>
     </column>
-    <column id="731" parent="580" name="password">
+    <column id="732" parent="580" name="password">
       <DasType>varchar|0s</DasType>
       <Position>3</Position>
     </column>
-    <column id="732" parent="580" name="person_id">
+    <column id="733" parent="580" name="person_id">
       <DasType>integer|0s</DasType>
       <Position>4</Position>
     </column>
-    <column id="733" parent="580" name="user_type_id">
+    <column id="734" parent="580" name="user_type_id">
       <DasType>integer|0s</DasType>
       <Position>5</Position>
     </column>
-    <column id="734" parent="580" name="last_login_time">
+    <column id="735" parent="580" name="last_login_time">
       <DasType>varchar|0s</DasType>
       <Position>6</Position>
     </column>
-    <column id="735" parent="580" name="login_count">
+    <column id="736" parent="580" name="login_count">
       <DasType>integer|0s</DasType>
       <Position>7</Position>
     </column>
-    <column id="736" parent="580" name="create_time">
+    <column id="737" parent="580" name="create_time">
       <DasType>varchar|0s</DasType>
       <Position>8</Position>
     </column>
-    <column id="737" parent="580" name="creator_id">
+    <column id="738" parent="580" name="creator_id">
       <DasType>integer|0s</DasType>
       <Position>9</Position>
     </column>
-    <key id="738" parent="580">
+    <key id="739" parent="580">
       <ColNames>user_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="739" parent="581" name="id">
+    <column id="740" parent="581" name="id">
       <DasType>INTEGER|0s</DasType>
       <Position>1</Position>
     </column>
-    <column id="740" parent="581" name="name">
+    <column id="741" parent="581" name="name">
       <DasType>varchar|0s</DasType>
       <Position>2</Position>
     </column>
-    <key id="741" parent="581">
+    <key id="742" parent="581">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>

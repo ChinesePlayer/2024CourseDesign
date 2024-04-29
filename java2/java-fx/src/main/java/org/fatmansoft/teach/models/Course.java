@@ -48,6 +48,9 @@ public class Course {
         if(m.get("status") != null){
             this.status = Integer.parseInt((String) m.get("status"));
         }
+        else{
+            this.status = null;
+        }
 
         Map teacherMap = (Map)m.get("teacher");
         if(teacherMap != null){

@@ -1,27 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.teach.javafx.controller.studentScore.CourseScore"
+            fx:controller="com.teach.javafx.controller.studentScore.StudentScoreController"
             prefHeight="400.0" prefWidth="600.0">
+    <top>
+        <MFXButton fx:id="gpaCalc" text="计算平均绩点" onAction="#showGpa" />
+    </top>
     <center>
         <TableView fx:id="scoreTableView">
             <columns>
                 <TableColumn fx:id="courseName" text="课程名称" />
                 <TableColumn fx:id="courseNum" text="课程编号" />
+                <TableColumn fx:id="mark" text="分数" />
+                <TableColumn fx:id="rank" text="排名" />
                 <TableColumn fx:id="credit" text="学分" />
-                <TableColumn fx:id="days" text="星期" />
-                <TableColumn fx:id="sections" text="节次" />
-                <TableColumn fx:id="teacher" text="教师" />
-                <TableColumn fx:id="loc" text="上课地点" />
-                <TableColumn fx:id="preCourse" text="前序课程" />
-                <TableColumn fx:id="action" text="操作" />
+                <TableColumn fx:id="gpa" text="课程绩点" />
+                <TableColumn fx:id="status" text="课程状态" />
             </columns>
         </TableView>
     </center>

@@ -14,6 +14,7 @@ public class JwtResponse {
     private String username;
     private String accessToken;
     private String roles;
+    private Integer roleId;
 
     public String getTokenType() {
         return tokenType;
@@ -54,5 +55,13 @@ public class JwtResponse {
 
     public void setRoles(String roles) {
         this.roles = roles;
+    }
+
+    public Integer getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
     }
 }

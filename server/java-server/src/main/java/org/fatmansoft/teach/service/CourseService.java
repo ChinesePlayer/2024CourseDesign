@@ -31,6 +31,8 @@ public class CourseService {
     private CourseTimeRepository courseTimeRepository;
     @Autowired
     private CompletionStatusRepository completionStatusRepository;
+    @Autowired
+    private CourseInfoFactory courseInfoFactory;
 
     //根据学生已选课程和来标记每个课程是否已被该学生选中
     //注意该方法会修改第一个参数!
@@ -186,7 +188,7 @@ public class CourseService {
         String num = dataRequest.getString("num");
         String name = dataRequest.getString("courseName");
         String coursePath = dataRequest.getString("coursePath");
-        Integer credit = dataRequest.getInteger("credit");
+        Double credit = dataRequest.getDouble("credit");
         Integer preCourseId = dataRequest.getInteger("preCourseId");
         Integer teacherId = dataRequest.getInteger("teacherId");
         Integer locationId = dataRequest.getInteger("locationId");
@@ -304,9 +306,8 @@ public class CourseService {
         //通过学生ID来找到该学生选择的所有课程
         List<Course> courseList = studentRepository.findCoursesByStudentId(student.getStudentId());
         List<Map> dataList = new ArrayList<>();
-        CourseInfoFactory ciFactory = new CourseInfoFactory();
         for(Course c : courseList){
-            Map m = ciFactory.createCourseInfo("student", c);
+            Map m = courseInfoFactory.createCourseInfo("student", c);
             dataList.add(m);
         }
         return CommonMethod.getReturnData(dataList);
