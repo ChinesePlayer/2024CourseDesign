@@ -4,6 +4,7 @@ import com.teach.javafx.MainApplication;
 import com.teach.javafx.controller.base.MessageDialog;
 import com.teach.javafx.request.HttpRequestUtil;
 import com.teach.javafx.request.OptionItem;
+import org.fatmansoft.teach.models.Score;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.util.CommonMethod;
@@ -24,27 +25,27 @@ import java.util.Map;
 
 public class ScoreTableController {
     @FXML
-    private TableView<Map> dataTableView;
+    private TableView<Score> dataTableView;
     @FXML
-    private TableColumn<Map,String> studentNumColumn;
+    private TableColumn<Score,String> studentNumColumn;
     @FXML
-    private TableColumn<Map,String> studentNameColumn;
+    private TableColumn<Score,String> studentNameColumn;
     @FXML
-    private TableColumn<Map,String> classNameColumn;
+    private TableColumn<Score,String> classNameColumn;
     @FXML
-    private TableColumn<Map,String> courseNumColumn;
+    private TableColumn<Score,String> courseNumColumn;
     @FXML
-    private TableColumn<Map,String> courseNameColumn;
+    private TableColumn<Score,String> courseNameColumn;
     @FXML
-    private TableColumn<Map,String> creditColumn;
+    private TableColumn<Score,String> creditColumn;
     @FXML
-    private TableColumn<Map,String> markColumn;
+    private TableColumn<Score,String> markColumn;
     @FXML
-    private TableColumn<Map, Button> editColumn;
+    private TableColumn<Score, Button> editColumn;
 
 
-    private ArrayList<Map> scoreList = new ArrayList();  // 学生信息列表数据
-    private ObservableList<Map> observableList= FXCollections.observableArrayList();  // TableView渲染列表
+    private ArrayList<Score> scoreList = new ArrayList();  // 学生信息列表数据
+    private ObservableList<Score> observableList= FXCollections.observableArrayList();  // TableView渲染列表
 
     @FXML
     private ComboBox<OptionItem> studentComboBox;
