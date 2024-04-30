@@ -25,6 +25,24 @@ public class StudentScoreValueFactory implements Callback<TableColumn.CellDataFe
                 }
                 return new SimpleStringProperty(s.getCourseNum());
             }
+            case "studentName"->{
+                if(s.getStudentName() == null || s.getStudentName().isEmpty()){
+                    return new SimpleStringProperty("----");
+                }
+                return new SimpleStringProperty(s.getStudentName());
+            }
+            case "studentNum"->{
+                if(s.getStudentNum() == null || s.getStudentNum().isEmpty()){
+                    return new SimpleStringProperty("----");
+                }
+                return new SimpleStringProperty(s.getStudentNum());
+            }
+            case "className"->{
+                if(s.getClassName() == null || s.getClassName().isEmpty()){
+                    return new SimpleStringProperty("----");
+                }
+                return new SimpleStringProperty(s.getClassName());
+            }
             case "credit"->{
                 if(s.getCredit() == null){
                     return new SimpleStringProperty("----");

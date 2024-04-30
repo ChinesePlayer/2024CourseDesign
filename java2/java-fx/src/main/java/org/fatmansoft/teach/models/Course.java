@@ -37,13 +37,14 @@ public class Course {
 
     //从Map构建课程对象的代码
     public Course(Map m){
-        String str = String.valueOf(m.get("courseId"));
-        int pos = str.indexOf(".");
-        Integer id = Integer.parseInt(String.valueOf(m.get("courseId")));
-
-        this.name = (String)m.get("name");
-        this.num = (String)m.get("num");
-        this.courseId = id;
+        this.name = (String)m.get("courseName");
+        this.num = (String)m.get("courseNum");
+        if(m.get("courseId") != null){
+            this.courseId = Integer.parseInt((String) m.get("courseId"));
+        }
+        else{
+            this.courseId = null;
+        }
         this.credit = (double)m.get("credit");
         if(m.get("status") != null){
             this.status = Integer.parseInt((String) m.get("status"));
@@ -113,7 +114,7 @@ public class Course {
 
     @Override
     public String toString(){
-        if(Objects.equals(courseId, -1)){
+        if(isEmptyCourse()){
             return "无";
         }
         return num + " - " + name;
@@ -131,6 +132,12 @@ public class Course {
             return true;
         }
         return false;
+    }
+
+    //返回当前课程对象是否为空课程
+    //若ID小于等于0或为null，则为空课程
+    public boolean isEmptyCourse(){
+        return courseId == null || courseId <= 0;
     }
 
     public String getName() {

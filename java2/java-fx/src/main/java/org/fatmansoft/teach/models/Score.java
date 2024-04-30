@@ -1,5 +1,7 @@
 package org.fatmansoft.teach.models;
 
+import org.fatmansoft.teach.util.CommonMethod;
+
 import java.util.Map;
 
 public class Score {
@@ -10,6 +12,7 @@ public class Score {
     private String studentName;
     private String courseNum;
     private String courseName;
+    private String className;
     private Double credit;
     private Double mark;
     private Integer rank;
@@ -31,11 +34,12 @@ public class Score {
         else {
             this.mark = null;
         }
-        this.status = Integer.parseInt((String) m.get("status"));
+        this.status = CommonMethod.getInteger(m, "status");
         this.courseName = (String) m.get("courseName");
         this.courseNum = (String) m.get("courseNum");
         this.studentName = (String) m.get("studentName");
         this.studentNum = (String) m.get("studentNum");
+        this.className = (String) m.get("className");
         if(m.get("rank") != null){
             this.rank = Integer.parseInt((String) m.get("rank"));
         }
@@ -139,5 +143,13 @@ public class Score {
 
     public void setGpa(Double gpa) {
         this.gpa = gpa;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
     }
 }

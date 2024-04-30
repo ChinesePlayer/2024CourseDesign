@@ -372,8 +372,8 @@ public class CourseService {
         Course pc;
         Map m = new HashMap<>();
         m.put("courseId", c.getCourseId()+"");
-        m.put("num",c.getNum());
-        m.put("name",c.getName());
+        m.put("courseNum",c.getNum());
+        m.put("courseName",c.getName());
         m.put("credit",c.getCredit());
         m.put("coursePath",c.getCoursePath());
         if(c.getLocation() != null){

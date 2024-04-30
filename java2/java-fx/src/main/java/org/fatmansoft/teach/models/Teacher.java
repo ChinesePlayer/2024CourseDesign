@@ -16,11 +16,29 @@ public class Teacher {
     }
 
     public Teacher(Map m){
-        this.teacherId = Integer.parseInt((String) m.get("teacherId"));
+        if(m.get("teacherId") != null){
+            this.teacherId = Integer.parseInt((String) m.get("teacherId"));
+        }
+        else{
+            this.teacherId = null;
+        }
         Map personMap = (Map) m.get("person");
-        this.name = (String) personMap.get("name");
-        this.title = (String) m.get("title");
-        this.degree = (String) m.get("degree");
+        if(personMap != null){
+            this.name = (String) personMap.get("name");
+            this.title = (String) m.get("title");
+            this.degree = (String) m.get("degree");
+        }
+        else{
+            this.name = null;
+            this.title = null;
+            this.degree = null;
+        }
+    }
+
+    //判断当前对象是否为空老师
+    //teacherId小于等于0或null时则为空老师
+    public boolean isEmptyTeacher(){
+        return teacherId == null || teacherId <= 0;
     }
 
     public Person getPerson() {

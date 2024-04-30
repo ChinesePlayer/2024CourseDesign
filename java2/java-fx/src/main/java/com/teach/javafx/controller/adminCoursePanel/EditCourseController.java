@@ -77,7 +77,7 @@ public class EditCourseController {
             teacherList.clear();
             //在第一位加入一个空老师
             emptyTeacher = new Teacher();
-            emptyTeacher.setTeacherId(-1);
+            emptyTeacher.setTeacherId(0);
             teacherList.add(emptyTeacher);
             for(Teacher m : res){
                 m.setName(m.getPerson().getName());
@@ -93,7 +93,7 @@ public class EditCourseController {
             preCourseList.clear();
             //在第一位加入一个为ID为-1的空课程
             emptyCourse = new Course();
-            emptyCourse.setCourseId(-1);
+            emptyCourse.setCourseId(0);
             preCourseList.add(emptyCourse);
             List<Map> maps = (ArrayList<Map>) res.getData();
             for(Map m : maps){
@@ -229,21 +229,21 @@ public class EditCourseController {
         course.setName(name.getText());
         course.setCredit(credit.getValue());
         //更新表格中前序课程的显示
-        if(Objects.equals(preCourse.getValue().getCourseId(), -1)){
+        if(preCourse.getValue().isEmptyCourse()){
             course.setPreCourse(null);
         }
         else{
             course.setPreCourse(preCourse.getValue());
         }
         //更新表格中老师的显示
-        if(teacher.getValue().getTeacherId() == -1){
+        if(teacher.getValue().isEmptyTeacher()){
             course.setTeacher(null);
         }
         else{
             course.setTeacher(teacher.getValue());
         }
         //更新表格中上课地点的显示
-        if(loc.getValue().getId() == -1){
+        if(loc.getValue().isEmptyLocation()){
             course.setLocation(null);
         }
         else{
@@ -312,7 +312,7 @@ public class EditCourseController {
         req.add("locationId", loc.getValue().getId());
         req.add("teacherId", teacher.getValue().getTeacherId());
         req.add("credit", credit.getValue());
-        //此处preCourseId可能为-1，这样后端在查找数据库时就找不到数据，就可以被设为null
+        //此处preCourseId可能小于0，这样后端在查找数据库时就找不到数据，就可以被设为null
         req.add("preCourseId", preCourse.getValue().getCourseId());
         List<Map> timeMapList = new ArrayList<>();
         for(Node n : timeGroup.getChildren()){

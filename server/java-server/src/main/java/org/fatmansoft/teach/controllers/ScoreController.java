@@ -10,6 +10,7 @@ import org.fatmansoft.teach.payload.response.OptionItemList;
 import org.fatmansoft.teach.repository.CourseRepository;
 import org.fatmansoft.teach.repository.ScoreRepository;
 import org.fatmansoft.teach.repository.StudentRepository;
+import org.fatmansoft.teach.service.ScoreService;
 import org.fatmansoft.teach.util.CommonMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,16 +28,27 @@ public class ScoreController {
     private ScoreRepository scoreRepository;
     @Autowired
     private StudentRepository studentRepository;
+    @Autowired
+    private ScoreService scoreService;
 
     @PostMapping("/getStudentItemOptionList")
     public OptionItemList getStudentItemOptionList(@Valid @RequestBody DataRequest dataRequest) {
         List<Student> sList = studentRepository.findStudentListByNumName("");  //数据库查询操作
-        OptionItem item;
         List<OptionItem> itemList = new ArrayList();
         for (Student s : sList) {
             itemList.add(new OptionItem( s.getStudentId(),s.getStudentId()+"", s.getPerson().getNum()+"-"+s.getPerson().getName()));
         }
         return new OptionItemList(0, itemList);
+    }
+
+    @PostMapping("/getStudentList")
+    public DataResponse getStudentList(@Valid @RequestBody DataRequest req){
+        return scoreService.getStudentList(req);
+    }
+
+    @PostMapping("/getCourseList")
+    public DataResponse getCourseList(@Valid @RequestBody DataRequest req){
+        return scoreService.getCourseList(req);
     }
 
     @PostMapping("/getCourseItemOptionList")

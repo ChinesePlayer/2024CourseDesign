@@ -2,6 +2,8 @@ package com.teach.javafx.models;
 
 import org.fatmansoft.teach.models.Person;
 
+import java.util.Map;
+
 public class Student {
     private Integer studentId;
     private Integer personId;
@@ -26,6 +28,36 @@ public class Student {
         this.num = num;
         this.name = name;
     }
+
+    public Student(Map m){
+        this.studentId = Integer.parseInt((String) m.get("studentId"));
+        if(m.get("personId") != null){
+            this.personId = Integer.parseInt((String) m.get("personId"));
+        }
+        else{
+            this.personId = null;
+        }
+        this.num = (String) m.get("studentNum");
+        this.name = (String) m.get("studentName");
+        this.className = (String) m.get("className");
+    }
+
+    @Override
+    public String toString(){
+        if(isEmptyStudent()){
+            return "无";
+        }
+        else {
+            return num + " - " + name;
+        }
+    }
+
+    //判断当前学生是否为空学生
+    //若id小于等于0或为null，则为空学生
+    public boolean isEmptyStudent(){
+        return studentId == null || studentId <= 0;
+    }
+
     public Integer getStudentId() {
         return studentId;
     }
@@ -155,7 +187,4 @@ public class Student {
         this.introduce = introduce;
     }
 
-    public String toString(){
-        return num+"-" + name;
-    }
 }
