@@ -43,7 +43,7 @@ public class Course implements Serializable {
     private String name;
     @Setter
     @Getter
-    private Integer credit;
+    private Double credit;
 
     @Getter
     @Setter

@@ -1,5 +1,8 @@
 package org.fatmansoft.teach.models;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 /**
  * Score 成绩表实体类  保存成绩的的基本信息信息，
@@ -9,6 +12,8 @@ import javax.persistence.*;
  * Integer mark 成绩
  * Integer ranking 排名
  */
+@Getter
+@Setter
 @Entity
 @Table(	name = "score",
         uniqueConstraints = {
@@ -27,46 +32,15 @@ public class Score {
     private Course course;
 
     private Integer mark;
-    private Integer ranking;
+    private Integer rank;
 
+    //完成状态，0：修读中，1：已及格，2：不及格
+    private Integer status;
 
-    public Integer getScoreId() {
-        return scoreId;
-    }
-
-    public void setScoreId(Integer scoreId) {
-        this.scoreId = scoreId;
-    }
-
-    public Student getStudent() {
-        return student;
-    }
-
-    public void setStudent(Student student) {
-        this.student = student;
-    }
-
-    public Course getCourse() {
-        return course;
-    }
-
-    public void setCourse(Course course) {
-        this.course = course;
-    }
-
-    public Integer getMark() {
-        return mark;
-    }
-
-    public void setMark(Integer mark) {
-        this.mark = mark;
-    }
-
-    public Integer getRanking() {
-        return ranking;
-    }
-
-    public void setRanking(Integer ranking) {
-        this.ranking = ranking;
+    public Double calcGpa(){
+        if(mark != null){
+            return mark/10.0-5.0;
+        }
+        return null;
     }
 }

@@ -1,0 +1,59 @@
+/* 默认主题文件 */
+
+/* 取消行分割线 */
+.table-view .table-row-cell{
+    -fx-background-insets: 0;
+}
+
+/* 取消列分割线，并使内容居中 */
+.table-view .table-row-cell .table-cell{
+    -fx-border-width: 0px;
+    -fx-alignment: center;
+}
+
+.table-row-cell:odd{
+    -fx-background-color: #FAFAFA;
+}
+
+.table-row-cell:odd:selected{
+    -fx-background-color: lightblue;
+}
+
+.table-row-cell:even{
+    -fx-background-color: #ffffff;
+}
+
+.table-row-cell:even:selected{
+    -fx-background-color: lightblue;
+}
+
+.table-row-cell:hover{
+    -fx-background-color: #F1F1F1;
+}
+
+.table-row-cell:hover:selected{
+    -fx-background-color: lightblue;
+}
+
+.table-view:focused .table-row-cell:selected{
+    -fx-background: lightblue;
+}
+
+/* 调整列标题字重 */
+.table-view .column-header{
+    -fx-font-weight: lighter;
+    -fx-background-color: #EBEBEB;
+}
+
+/* 改变无数据列的列头背景 */
+.table-view .filler{
+    -fx-background-color: #EBEBEB;
+}
+
+/* 所有元素被选中时的焦点边框颜色 */
+*{
+    -fx-focus-color: lightblue;
+}
+
+
+

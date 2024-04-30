@@ -20,7 +20,7 @@ spring:
     database-platform: org.fatmansoft.teach.sqlite.SQLDialect
     generate-ddl: true
     hibernate.ddl-auto: update
-    show-sql: true
+    show-sql: false
   servlet:
     multipart:
       max-file-size: 200MB

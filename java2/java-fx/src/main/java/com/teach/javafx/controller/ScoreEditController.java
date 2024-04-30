@@ -1,6 +1,9 @@
 package com.teach.javafx.controller;
 
+import com.teach.javafx.models.Student;
 import com.teach.javafx.request.OptionItem;
+import org.fatmansoft.teach.models.Course;
+import org.fatmansoft.teach.models.Score;
 import org.fatmansoft.teach.util.CommonMethod;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
@@ -18,11 +21,11 @@ import java.util.Map;
 
 public class ScoreEditController {
     @FXML
-    private ComboBox<OptionItem> studentComboBox;
-    private List<OptionItem> studentList;
+    private ComboBox<Student> studentComboBox;
+    private List<Student> studentList;
     @FXML
-    private ComboBox<OptionItem> courseComboBox;
-    private List<OptionItem> courseList;
+    private ComboBox<Course> courseComboBox;
+    private List<Course> courseList;
     @FXML
     private TextField markField;
     private ScoreTableController scoreTableController= null;
@@ -35,14 +38,14 @@ public class ScoreEditController {
     @FXML
     public void okButtonClick(){
         Map data = new HashMap();
-        OptionItem op;
+        Student op;
         op = studentComboBox.getSelectionModel().getSelectedItem();
-        if(op != null) {
-            data.put("studentId",Integer.parseInt(op.getValue()));
+        if(!op.isEmptyStudent()) {
+            data.put("studentId",op.getStudentId());
         }
-        op = courseComboBox.getSelectionModel().getSelectedItem();
-        if(op != null) {
-            data.put("courseId", Integer.parseInt(op.getValue()));
+        Course course = courseComboBox.getSelectionModel().getSelectedItem();
+        if(!course.isEmptyCourse()) {
+            data.put("courseId", course.getCourseId());
         }
         data.put("scoreId",scoreId);
         data.put("mark",markField.getText());
@@ -59,10 +62,29 @@ public class ScoreEditController {
     public void init(){
         studentList =scoreTableController.getStudentList();
         courseList = scoreTableController.getCourseList();
-        studentComboBox.getItems().addAll(studentList );
+        studentComboBox.getItems().addAll(studentList);
         courseComboBox.getItems().addAll(courseList);
     }
-    public void showDialog(Map data){
+
+    public int getStudentIndexById(int id){
+        for(int i = 0; i < studentList.size(); i++){
+            if(studentList.get(i).getStudentId() == id){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public int getCourseIndexById(int id){
+        for(int i = 0; i < courseList.size(); i++){
+            if(courseList.get(i).getCourseId() == id){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public void showDialog(Score data){
         if(data == null) {
             scoreId = null;
             studentComboBox.getSelectionModel().select(-1);
@@ -71,12 +93,17 @@ public class ScoreEditController {
             courseComboBox.setDisable(false);
             markField.setText("");
         }else {
-            scoreId = CommonMethod.getInteger(data,"scoreId");
-            studentComboBox.getSelectionModel().select(CommonMethod.getOptionItemIndexByValue(studentList, CommonMethod.getString(data, "studentId")));
-            courseComboBox.getSelectionModel().select(CommonMethod.getOptionItemIndexByValue(courseList, CommonMethod.getString(data, "courseId")));
+            scoreId = data.getScoreId();
+            studentComboBox.getSelectionModel().select(getStudentIndexById(data.getStudentId()));
+            courseComboBox.getSelectionModel().select(getCourseIndexById(data.getCourseId()));
             studentComboBox.setDisable(true);
             courseComboBox.setDisable(true);
-            markField.setText(CommonMethod.getString(data, "mark"));
+            if(data.getMark() != null){
+                markField.setText(data.getMark()+"");
+            }
+            else{
+                markField.setText("");
+            }
         }
     }
 }

@@ -2,8 +2,20 @@ package com.teach.javafx.controller;
 
 import com.teach.javafx.MainApplication;
 import com.teach.javafx.controller.base.MessageDialog;
+import com.teach.javafx.controller.studentScore.StudentScoreValueFactory;
+import com.teach.javafx.models.Student;
 import com.teach.javafx.request.HttpRequestUtil;
 import com.teach.javafx.request.OptionItem;
+import io.github.palexdev.materialfx.controls.MFXButton;
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.chart.PieChart;
+import javafx.util.Callback;
+import org.fatmansoft.teach.models.Course;
+import org.fatmansoft.teach.models.Score;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.util.CommonMethod;
@@ -24,46 +36,94 @@ import java.util.Map;
 
 public class ScoreTableController {
     @FXML
-    private TableView<Map> dataTableView;
+    private TableView<Score> dataTableView;
     @FXML
-    private TableColumn<Map,String> studentNumColumn;
+    private TableColumn<Score,String> studentNum;
     @FXML
-    private TableColumn<Map,String> studentNameColumn;
+    private TableColumn<Score,String> studentName;
     @FXML
-    private TableColumn<Map,String> classNameColumn;
+    private TableColumn<Score,String> className;
     @FXML
-    private TableColumn<Map,String> courseNumColumn;
+    private TableColumn<Score,String> courseNum;
     @FXML
-    private TableColumn<Map,String> courseNameColumn;
+    private TableColumn<Score,String> courseName;
     @FXML
-    private TableColumn<Map,String> creditColumn;
+    private TableColumn<Score,String> credit;
     @FXML
-    private TableColumn<Map,String> markColumn;
+    private TableColumn<Score,String> mark;
     @FXML
-    private TableColumn<Map, Button> editColumn;
+    private TableColumn<Score, Button> editColumn;
 
 
-    private ArrayList<Map> scoreList = new ArrayList();  // 学生信息列表数据
-    private ObservableList<Map> observableList= FXCollections.observableArrayList();  // TableView渲染列表
+    private ArrayList<Score> scoreList = new ArrayList();  // 学生信息列表数据
+    private ObservableList<Score> observableList= FXCollections.observableArrayList();  // TableView渲染列表
 
     @FXML
-    private ComboBox<OptionItem> studentComboBox;
+    private ComboBox<Student> studentComboBox;
 
 
-    private List<OptionItem> studentList;
+    private List<Student> studentList = new ArrayList<>();
     @FXML
-    private ComboBox<OptionItem> courseComboBox;
+    private ComboBox<Course> courseComboBox;
 
 
-    private List<OptionItem> courseList;
+    private List<Course> courseList = new ArrayList<>();
 
     private ScoreEditController scoreEditController = null;
     private Stage stage = null;
-    public List<OptionItem> getStudentList() {
+    private Student emptyStudent;
+    private Course emptyCourse;
+
+    public List<Student> getStudentList() {
         return studentList;
     }
-    public List<OptionItem> getCourseList() {
+    public List<Course> getCourseList() {
         return courseList;
+    }
+
+    public void getCourseFromNet(){
+        DataRequest req = new DataRequest();
+        DataResponse res = HttpRequestUtil.request("/api/score/getCourseList", req);
+        if(res != null && res.getCode() == 0){
+            List<Map> rawData = (ArrayList<Map>) res.getData();
+            //创建一个空课程
+            emptyCourse = new Course();
+            emptyCourse.setCourseId(0);
+            courseList.add(emptyCourse);
+            for(Map m : rawData){
+                Course c = new Course(m);
+                courseList.add(c);
+            }
+        }
+    }
+
+    public void getStudentFromNet(){
+        DataRequest req = new DataRequest();
+        DataResponse res = HttpRequestUtil.request("/api/score/getStudentList", req);
+        if(res != null && res.getCode() == 0){
+            List<Map> rawData = (ArrayList<Map>) res.getData();
+            //添加一个空学生
+            emptyStudent = new Student();
+            emptyStudent.setStudentId(0);
+            studentList.add(emptyStudent);
+            for(Map m : rawData){
+                Student s = new Student(m);
+                studentList.add(s);
+            }
+        }
+    }
+
+    public void setStudentComboBox(){
+        studentComboBox.setItems(FXCollections.observableArrayList(studentList));
+    }
+
+    public void setCourseComboBox(){
+        courseComboBox.setItems(FXCollections.observableArrayList(courseList));
+    }
+
+    public void setQueryComboBox(){
+        setStudentComboBox();
+        setCourseComboBox();
     }
 
 
@@ -71,73 +131,81 @@ public class ScoreTableController {
     private void onQueryButtonClick(){
         Integer studentId = 0;
         Integer courseId = 0;
-        OptionItem op;
-        op = studentComboBox.getSelectionModel().getSelectedItem();
-        if(op != null)
-            studentId = Integer.parseInt(op.getValue());
-        op = courseComboBox.getSelectionModel().getSelectedItem();
-        if(op != null)
-            courseId = Integer.parseInt(op.getValue());
+        Student student;
+        student = studentComboBox.getValue();
+        if(student != null && student.getStudentId() != -1)
+            studentId = student.getStudentId();
+        Course course = courseComboBox.getValue();
+        if(course != null && course.getCourseId() != -1)
+            courseId =course.getCourseId();
         DataResponse res;
         DataRequest req =new DataRequest();
         req.add("studentId",studentId);
         req.add("courseId",courseId);
         res = HttpRequestUtil.request("/api/score/getScoreList",req); //从后台获取所有学生信息列表集合
         if(res != null && res.getCode()== 0) {
-            scoreList = (ArrayList<Map>)res.getData();
+            scoreList.clear();
+            List<Map> rawData = (ArrayList<Map>) res.getData();
+            for(Map m : rawData){
+                Score s = new Score(m);
+                scoreList.add(s);
+            }
         }
         setTableViewData();
     }
 
+
     private void setTableViewData() {
         observableList.clear();
-        Map map;
-        Button editButton;
-        for (int j = 0; j < scoreList.size(); j++) {
-            map = scoreList.get(j);
-            editButton = new Button("编辑");
-            editButton.setId("edit"+j);
-            editButton.setOnAction(e->{
-                editItem(((Button)e.getSource()).getId());
-            });
-            map.put("edit",editButton);
-            observableList.addAll(FXCollections.observableArrayList(map));
-        }
+        observableList.addAll(FXCollections.observableArrayList(scoreList));
         dataTableView.setItems(observableList);
     }
-    public void editItem(String name){
-        if(name == null)
-            return;
-        int j = Integer.parseInt(name.substring(4,name.length()));
-        Map data = scoreList.get(j);
+
+    public void setPanelData(){
+        setTableViewData();
+        setQueryComboBox();
+    }
+
+    public void editItem(ActionEvent event){
+        MFXButton target = (MFXButton) event.getTarget();
+        TableCell<Course, String> cell = (TableCell<Course, String>) target.getParent();
+        int rowIndex = cell.getIndex();
+        Score s = dataTableView.getItems().get(rowIndex);
         initDialog();
-        scoreEditController.showDialog(data);
+        scoreEditController.showDialog(s);
         MainApplication.setCanClose(false);
         stage.showAndWait();
 
     }
+
+    public void updateData(){
+        getCourseFromNet();
+        getStudentFromNet();
+        setPanelData();
+    }
+
     @FXML
     public void initialize() {
+        studentNum.setCellValueFactory(new StudentScoreValueFactory());  //设置列值工程属性
+        studentName.setCellValueFactory(new StudentScoreValueFactory());
+        className.setCellValueFactory(new StudentScoreValueFactory());
+        courseNum.setCellValueFactory(new StudentScoreValueFactory());
+        courseName.setCellValueFactory(new StudentScoreValueFactory());
+        credit.setCellValueFactory(new StudentScoreValueFactory());
+        mark.setCellValueFactory(new StudentScoreValueFactory());
+        editColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Score, Button>, ObservableValue<Button>>() {
+            @Override
+            public ObservableValue<Button> call(TableColumn.CellDataFeatures<Score, Button> data) {
+                if(data == null){
+                    return null;
+                }
+                MFXButton button = new MFXButton("编辑");
+                button.setOnAction(event -> editItem(event));
+                return new ReadOnlyObjectWrapper<>(button);
+            }
+        });
 
-
-        studentNumColumn.setCellValueFactory(new MapValueFactory("studentNum"));  //设置列值工程属性
-        studentNameColumn.setCellValueFactory(new MapValueFactory<>("studentName"));
-        classNameColumn.setCellValueFactory(new MapValueFactory<>("className"));
-        courseNumColumn.setCellValueFactory(new MapValueFactory<>("courseNum"));
-        courseNameColumn.setCellValueFactory(new MapValueFactory<>("courseName"));
-        creditColumn.setCellValueFactory(new MapValueFactory<>("credit"));
-        markColumn.setCellValueFactory(new MapValueFactory<>("mark"));
-        editColumn.setCellValueFactory(new MapValueFactory<>("edit"));
-
-        DataRequest req =new DataRequest();
-        studentList = HttpRequestUtil.requestOptionItemList("/api/score/getStudentItemOptionList",req); //从后台获取所有学生信息列表集合
-        courseList = HttpRequestUtil.requestOptionItemList("/api/score/getCourseItemOptionList",req); //从后台获取所有学生信息列表集合
-        OptionItem item = new OptionItem(null,"0","请选择");
-        studentComboBox.getItems().addAll(item);
-        studentComboBox.getItems().addAll(studentList);
-        courseComboBox.getItems().addAll(item);
-        courseComboBox.getItems().addAll(courseList);
-        dataTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        updateData();
         onQueryButtonClick();
     }
 
@@ -156,7 +224,7 @@ public class ScoreTableController {
             //将其永远置于顶层
             stage.setAlwaysOnTop(true);
             stage.setScene(scene);
-            stage.setTitle("成绩录入对话框！");
+            stage.setTitle("成绩录入对话框");
             //回调函数，当窗口关闭时会调用，当然，是在窗口被关闭的那一瞬间之前调用
             stage.setOnCloseRequest(event ->{
                 MainApplication.setCanClose(true);
@@ -205,7 +273,8 @@ public class ScoreTableController {
     @FXML
     private void onEditButtonClick() {
 //        dataTableView.getSelectionModel().getSelectedItems();
-        Map data = dataTableView.getSelectionModel().getSelectedItem();
+
+        Score data = dataTableView.getSelectionModel().getSelectedItem();
         if(data == null) {
             MessageDialog.showDialog("没有选中，不能修改！");
             return;
@@ -217,7 +286,7 @@ public class ScoreTableController {
     }
     @FXML
     private void onDeleteButtonClick() {
-        Map form = dataTableView.getSelectionModel().getSelectedItem();
+        Score form = dataTableView.getSelectionModel().getSelectedItem();
         if(form == null) {
             MessageDialog.showDialog("没有选择，不能删除");
             return;
@@ -226,7 +295,7 @@ public class ScoreTableController {
         if(ret != MessageDialog.CHOICE_YES) {
             return;
         }
-        Integer scoreId = CommonMethod.getInteger(form,"scoreId");
+        Integer scoreId = form.getScoreId();
         DataRequest req = new DataRequest();
         req.add("scoreId", scoreId);
         DataResponse res = HttpRequestUtil.request("/api/score/scoreDelete",req);

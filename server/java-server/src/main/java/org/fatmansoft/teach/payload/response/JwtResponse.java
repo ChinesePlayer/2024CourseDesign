@@ -16,6 +16,7 @@ public class JwtResponse {
     private String username;
     private String perName;
     private String role;
+    private Integer roleId;
 
     public JwtResponse(String accessToken, Integer id, String username, String perName,String role) {
         this.token = accessToken;
@@ -23,6 +24,15 @@ public class JwtResponse {
         this.username = username;
         this.perName = perName;
         this.role = role;
+    }
+
+    public JwtResponse(String accessToken, Integer id, String username, String perName,String role, Integer roleId) {
+        this.token = accessToken;
+        this.id = id;
+        this.username = username;
+        this.perName = perName;
+        this.role = role;
+        this.roleId = roleId;
     }
 
     public String getAccessToken() {
@@ -68,5 +78,13 @@ public class JwtResponse {
 
     public void setPerName(String perName) {
         this.perName = perName;
+    }
+
+    public Integer getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
     }
 }

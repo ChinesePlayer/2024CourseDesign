@@ -29,10 +29,7 @@ import org.fatmansoft.teach.payload.response.DataResponse;
 
 import javax.swing.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * CourseController 登录交互控制类 对应 course-panel.fxml
@@ -89,10 +86,15 @@ public class CourseController {
 
     private void setTableViewData() {
         observableList.clear();
+        sortAll();
         for (int j = 0; j < courseList.size(); j++) {
             observableList.addAll(FXCollections.observableArrayList(courseList.get(j)));
         }
         dataTableView.setItems(observableList);
+    }
+
+    public void sortAll(){
+        courseList.sort(Comparator.comparing(Course::getNum));
     }
 
     @FXML

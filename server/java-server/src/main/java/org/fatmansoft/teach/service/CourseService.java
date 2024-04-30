@@ -1,5 +1,6 @@
 package org.fatmansoft.teach.service;
 
+import org.fatmansoft.teach.factory.CourseInfoFactory;
 import org.fatmansoft.teach.models.*;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
@@ -7,6 +8,7 @@ import org.fatmansoft.teach.repository.*;
 import org.fatmansoft.teach.util.CommonMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
@@ -27,6 +29,10 @@ public class CourseService {
     private LocationRepository locationRepository;
     @Autowired
     private CourseTimeRepository courseTimeRepository;
+    @Autowired
+    private CompletionStatusRepository completionStatusRepository;
+    @Autowired
+    private CourseInfoFactory courseInfoFactory;
 
     //根据学生已选课程和来标记每个课程是否已被该学生选中
     //注意该方法会修改第一个参数!
@@ -84,6 +90,8 @@ public class CourseService {
     }
 
     //获取所有课程列表
+    //使用数据库事务提高性能
+    @Transactional
     public DataResponse getCourseList(DataRequest dataRequest){
         String numName = dataRequest.getString("numName");
         if(numName == null)
@@ -97,6 +105,7 @@ public class CourseService {
     }
 
     //获取选课的课程列表
+    @Transactional
     public DataResponse getCourseChoices(DataRequest dataRequest){
         //查询学生
         String numName = dataRequest.getString("numName");
@@ -179,7 +188,7 @@ public class CourseService {
         String num = dataRequest.getString("num");
         String name = dataRequest.getString("courseName");
         String coursePath = dataRequest.getString("coursePath");
-        Integer credit = dataRequest.getInteger("credit");
+        Double credit = dataRequest.getDouble("credit");
         Integer preCourseId = dataRequest.getInteger("preCourseId");
         Integer teacherId = dataRequest.getInteger("teacherId");
         Integer locationId = dataRequest.getInteger("locationId");
@@ -187,6 +196,15 @@ public class CourseService {
         System.out.println("Times: " + courseTimes);
         Optional<Course> op;
         Course c= null;
+
+        //判断num课序号是否重复，若重复则拒绝修改
+        //判断是新增课程还是修改课程，新增课程才执行num是否重复的判断
+        if(courseId == null){
+            Optional<Course> numCourse = courseRepository.findByNum(num);
+            if(numCourse.isPresent()){
+                return CommonMethod.getReturnMessageError("课序号已存在，请另设! ");
+            }
+        }
 
         if(courseId != null) {
             op = courseRepository.findById(courseId);
@@ -287,7 +305,12 @@ public class CourseService {
         Student student = studentOp.get();
         //通过学生ID来找到该学生选择的所有课程
         List<Course> courseList = studentRepository.findCoursesByStudentId(student.getStudentId());
-        return CommonMethod.getReturnData(courseList);
+        List<Map> dataList = new ArrayList<>();
+        for(Course c : courseList){
+            Map m = courseInfoFactory.createCourseInfo("student", c);
+            dataList.add(m);
+        }
+        return CommonMethod.getReturnData(dataList);
     }
 
     //查询所有选课轮次
@@ -349,8 +372,8 @@ public class CourseService {
         Course pc;
         Map m = new HashMap<>();
         m.put("courseId", c.getCourseId()+"");
-        m.put("num",c.getNum());
-        m.put("name",c.getName());
+        m.put("courseNum",c.getNum());
+        m.put("courseName",c.getName());
         m.put("credit",c.getCredit());
         m.put("coursePath",c.getCoursePath());
         if(c.getLocation() != null){

@@ -1,31 +1,12 @@
 package org.fatmansoft.teach.controllers;
 
-import org.fatmansoft.teach.models.*;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
-import org.fatmansoft.teach.repository.CourseRepository;
-import org.fatmansoft.teach.repository.CourseSelectionTurnRepository;
-import org.fatmansoft.teach.repository.PersonRepository;
-import org.fatmansoft.teach.repository.StudentRepository;
 import org.fatmansoft.teach.service.CourseService;
-import org.fatmansoft.teach.util.CommonMethod;
-import org.fatmansoft.teach.util.JsonConvertUtil;
-import org.openxmlformats.schemas.spreadsheetml.x2006.main.CommentsDocument;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
-
-import javax.swing.text.html.Option;
 import javax.validation.Valid;
-import javax.xml.crypto.Data;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.ObjectOutputStream;
-import java.util.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController

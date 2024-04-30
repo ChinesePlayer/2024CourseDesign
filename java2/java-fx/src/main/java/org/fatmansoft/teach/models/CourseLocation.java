@@ -34,7 +34,7 @@ public class CourseLocation {
 
     @Override
     public String toString(){
-        if(id == -1 || id == null){
+        if(isEmptyLocation()){
             return "无";
         }
         return value;
@@ -52,5 +52,11 @@ public class CourseLocation {
             return true;
         }
         return false;
+    }
+
+    //判断当前地点是否为空地点
+    //id为null或小于等于0是则为空地点
+    public boolean isEmptyLocation(){
+        return id == null || id <= 0;
     }
 }
