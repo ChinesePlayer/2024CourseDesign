@@ -289,6 +289,7 @@ public class StudentController {
         Course c;
         for (Score s : sList) {
             c = s.getCourse();
+
             if (s.getMark() >= 90)
                 count[0]++;
             else if (s.getMark() >= 80)

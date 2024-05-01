@@ -43,6 +43,8 @@
 .table-view .column-header{
     -fx-font-weight: lighter;
     -fx-background-color: #EBEBEB;
+    -fx-border-width: 0px 1px 0px 0px;
+    -fx-border-color: #e0e0e0;
 }
 
 /* 改变无数据列的列头背景 */
