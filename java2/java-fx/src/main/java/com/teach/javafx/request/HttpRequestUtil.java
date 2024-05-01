@@ -315,9 +315,10 @@ public class HttpRequestUtil {
             Path file = Path.of(fileName);
             HttpClient client = HttpClient.newBuilder().build();
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(serverUrl+uri+"?uploader=HttpTestApp&remoteFile="+remoteFile + "&fileName="
-                            + file.getFileName()))
+                    .uri(URI.create(serverUrl+uri+"?remoteFile="+remoteFile))
                     .POST(HttpRequest.BodyPublishers.ofFile(file))
+                    .headers("Content-Type", "application/json")
+                    .headers("Authorization", "Bearer " + AppStore.getJwt().getAccessToken())
                     .build();
             HttpResponse<String>  response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if(response.statusCode() == 200) {

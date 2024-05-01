@@ -36,7 +36,7 @@ public class Score {
         this.studentNum = (String) m.get("studentNum");
         this.className = (String) m.get("className");
         this.rank = CommonMethod.getInteger(m, "rank");
-        this.gpa = (Double) m.get("gpa");
+        this.gpa = CommonMethod.getDouble(m,"gpa");
     }
 
     public Integer getScoreId() {

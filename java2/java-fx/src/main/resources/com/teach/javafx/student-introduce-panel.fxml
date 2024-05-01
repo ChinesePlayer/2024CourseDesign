@@ -28,7 +28,7 @@
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.teach.javafx.controller.StudentIntroduceController">
     <center>
-        <ScrollPane BorderPane.alignment="TOP_CENTER" fitToWidth="true">
+        <ScrollPane fitToWidth="true" prefHeight="700">
             <VBox alignment="TOP_CENTER" spacing="20.0">
                 <padding>
                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
@@ -119,4 +119,5 @@
             </VBox>
         </ScrollPane>
     </center>
+
 </BorderPane>
