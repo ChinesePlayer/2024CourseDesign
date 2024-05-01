@@ -24,28 +24,18 @@ public class Score {
     }
 
     public Score(Map m){
-        this.scoreId = Integer.parseInt((String) m.get("scoreId"));
-        this.studentId = Integer.parseInt((String) m.get("studentId"));
-        this.courseId = Integer.parseInt((String) m.get("courseId"));
-        this.credit = Double.parseDouble((String) m.get("credit"));
-        if(m.get("mark") != null){
-            this.mark = Double.parseDouble((String) m.get("mark"));
-        }
-        else {
-            this.mark = null;
-        }
+        this.scoreId = CommonMethod.getInteger(m,"scoreId");
+        this.studentId = CommonMethod.getInteger(m, "studentId");
+        this.courseId = CommonMethod.getInteger(m, "courseId");
+        this.credit = CommonMethod.getDouble(m,"credit");
+        this.mark = CommonMethod.getDouble(m,"mark");
         this.status = CommonMethod.getInteger(m, "status");
         this.courseName = (String) m.get("courseName");
         this.courseNum = (String) m.get("courseNum");
         this.studentName = (String) m.get("studentName");
         this.studentNum = (String) m.get("studentNum");
         this.className = (String) m.get("className");
-        if(m.get("rank") != null){
-            this.rank = Integer.parseInt((String) m.get("rank"));
-        }
-        else {
-            this.rank = null;
-        }
+        this.rank = CommonMethod.getInteger(m, "rank");
         this.gpa = (Double) m.get("gpa");
     }
 

@@ -2,7 +2,9 @@ package com.teach.javafx.controller;
 
 import com.teach.javafx.controller.base.MessageDialog;
 import com.teach.javafx.controller.base.ToolController;
+import com.teach.javafx.controller.studentScore.StudentScoreValueFactory;
 import com.teach.javafx.request.HttpRequestUtil;
+import org.fatmansoft.teach.models.Score;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.util.CommonMethod;
@@ -19,6 +21,7 @@ import javafx.stage.FileChooser;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 /**
@@ -30,7 +33,8 @@ import java.util.Map;
  */
 public class StudentIntroduceController extends ToolController {
     private ImageView photoImageView;
-    private ObservableList<Map> observableList= FXCollections.observableArrayList();
+    private ObservableList<Score> observableList= FXCollections.observableArrayList();
+    private List<Score> scoreList = new ArrayList<>();
 
     @FXML
     private HTMLEditor introduceHtml; //个人简历HTML编辑器
@@ -59,17 +63,17 @@ public class StudentIntroduceController extends ToolController {
     @FXML
     private Label address; //地址标签
     @FXML
-    private TableView<Map> scoreTable;  //成绩表TableView
+    private TableView<Score> scoreTable;  //成绩表TableView
     @FXML
-    private TableColumn<Map,String> courseNumColumn;  //课程号列
+    private TableColumn<Score,String> courseNum;  //课程号列
     @FXML
-    private TableColumn<Map,String> courseNameColumn; //课程名列
+    private TableColumn<Score,String> courseName; //课程名列
     @FXML
-    private TableColumn<Map,String> creditColumn; //学分列
+    private TableColumn<Score,String> credit; //学分列
     @FXML
-    private TableColumn<Map,String> markColumn; //成绩列
+    private TableColumn<Score,String> mark; //成绩列
     @FXML
-    private TableColumn<Map,String> rankingColumn; //排名列
+    private TableColumn<Score,String> rank; //排名列
 
     @FXML
     private BarChart<String,Number> barChart;  //消费直方图控件
@@ -87,14 +91,29 @@ public class StudentIntroduceController extends ToolController {
         photoImageView.setFitHeight(100);
         photoImageView.setFitWidth(100);
         photoButton.setGraphic(photoImageView);
-        courseNumColumn.setCellValueFactory(new MapValueFactory("courseNum"));
-        courseNameColumn.setCellValueFactory(new MapValueFactory<>("courseName"));
-        creditColumn.setCellValueFactory(new MapValueFactory<>("credit"));
-        markColumn.setCellValueFactory(new MapValueFactory<>("mark"));
-        rankingColumn.setCellValueFactory(new MapValueFactory<>("ranking"));
+        courseNum.setCellValueFactory(new StudentScoreValueFactory());
+        courseName.setCellValueFactory(new StudentScoreValueFactory());
+        credit.setCellValueFactory(new StudentScoreValueFactory());
+        mark.setCellValueFactory(new StudentScoreValueFactory());
+        rank.setCellValueFactory(new StudentScoreValueFactory());
 
         getIntroduceData();
     }
+
+    public void initScoreList(List<Map> rawData){
+        scoreList.clear();
+        for(Map m : rawData){
+            Score s = new Score(m);
+            scoreList.add(s);
+        }
+    }
+
+    public void setScoreTable(){
+        observableList.clear();
+        observableList.addAll(FXCollections.observableArrayList(scoreList));
+        scoreTable.setItems(observableList);
+    }
+
 
     /**
      * getIntroduceData 从后天获取当前学生的所有信息，不传送的面板各个组件中
@@ -103,8 +122,8 @@ public class StudentIntroduceController extends ToolController {
         DataRequest req = new DataRequest();
         DataResponse res;
         res = HttpRequestUtil.request("/api/student/getStudentIntroduceData",req);
-        if(res.getCode() != 0)
-            return;
+        if(res == null || res.getCode() != 0)
+            MessageDialog.showDialog("无法获取学生信息");
         Map data =(Map)res.getData();
         Map info = (Map)data.get("info");
         studentId = CommonMethod.getInteger(info,"studentId");
@@ -121,21 +140,18 @@ public class StudentIntroduceController extends ToolController {
         phone.setText(CommonMethod.getString(info,"phone"));
         address.setText(CommonMethod.getString(info,"address"));
         introduceHtml.setHtmlText(CommonMethod.getString(info,"introduce"));
-        List<Map> scoreList= (List)data.get("scoreList");
-        List<Map>markList = (List)data.get("markList");
-        List<Map>feeList = (List)data.get("feeList");
-        for (Map m: scoreList) {
-            observableList.addAll(FXCollections.observableArrayList(m));
-        }
-        scoreTable.setItems(observableList);  // 成绩表数据显示
 
+        initScoreList((List) data.get("scoreList"));
+        setScoreTable();
 
+        List<Map> markList = (List)data.get("markList");
         ObservableList<PieChart.Data> chartData = FXCollections.observableArrayList();
         for(Map m:markList) {
             chartData.add(new PieChart.Data(m.get("title").toString(),Double.parseDouble(m.get("value").toString())));
         }
         pieChart.setData(chartData);  //成绩分类表显示
 
+        List<Map> feeList = (List)data.get("feeList");
         XYChart.Series<String, Number> seriesFee = new XYChart.Series<>();
         seriesFee.setName("日常消费");
         for(Map m:feeList)

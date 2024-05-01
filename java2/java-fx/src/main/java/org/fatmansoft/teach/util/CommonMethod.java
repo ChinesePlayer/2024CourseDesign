@@ -100,6 +100,7 @@ public class CommonMethod {
         try {
             return (int)Double.parseDouble(str);
         }catch(Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
