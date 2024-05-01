@@ -30,6 +30,8 @@ public class MainApplication extends Application {
 
     public static double loginStageMinWidth = 700;
     public static double loginStageMinHeight = 400;
+    public static double loginStageWidth = 700;
+    public static double loginStageHeight = 400;
 
     private static boolean canClose=true;
 
@@ -48,7 +50,7 @@ public class MainApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("base/custom-login-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 700, 400);
+        Scene scene = new Scene(fxmlLoader.load(), loginStageWidth, loginStageHeight);
         //scene.getStylesheets().add(getClass().getResource("css/styles.css").toExternalForm());
         stage.setTitle("登录");
         stage.setScene(scene);
@@ -70,6 +72,8 @@ public class MainApplication extends Application {
      * @param scene 新的场景对象
      */
     public static void resetStage(String name, Scene scene) {
+        closeCurrentStage();
+        mainStage = new Stage();
         if(stageWidth > 0) {
             mainStage.setWidth(stageWidth);
             mainStage.setHeight(stageHeight);
@@ -88,6 +92,7 @@ public class MainApplication extends Application {
     }
 
     public static void loginStage(String name, Scene scene) {
+        mainStage = new Stage();
         double screenWidth = getScreenWidth();
         double screenHeight = getScreenHeight();
         double windowWidth = scene.getWidth();
@@ -99,6 +104,8 @@ public class MainApplication extends Application {
         mainStage.setResizable(false);
         mainStage.setTitle(name);
         mainStage.setScene(scene);
+        mainStage.setWidth(loginStageMinWidth);
+        mainStage.setHeight(loginStageMinHeight);
         mainStage.setMinWidth(loginStageMinWidth);
         mainStage.setMinHeight(loginStageMinHeight);
         mainStage.show();
@@ -114,5 +121,13 @@ public class MainApplication extends Application {
 
     public static void setCanClose(boolean canClose) {
         MainApplication.canClose = canClose;
+    }
+
+    //关闭当前窗口
+    public static void closeCurrentStage(){
+        if(mainStage != null){
+            mainStage.close();
+            mainStage = null;
+        }
     }
 }

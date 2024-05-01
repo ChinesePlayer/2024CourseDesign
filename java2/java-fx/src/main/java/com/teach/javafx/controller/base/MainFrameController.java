@@ -221,6 +221,9 @@ public class MainFrameController {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("base/custom-login-view.fxml"));
         try {
             Scene scene = new Scene(fxmlLoader.load(), 700, 400);
+            //关闭当前窗口
+            MainApplication.closeCurrentStage();
+            //显示登录窗口
             MainApplication.loginStage("Login", scene);
         } catch (IOException e) {
             throw new RuntimeException(e);

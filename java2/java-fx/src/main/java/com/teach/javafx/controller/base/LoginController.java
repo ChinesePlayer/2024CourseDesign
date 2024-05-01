@@ -61,6 +61,10 @@ public class LoginController {
         try {
             Scene scene = new Scene(fxmlLoader.load(), -1, -1);
             AppStore.setMainFrameController((MainFrameController) fxmlLoader.getController());
+
+            //关闭登录窗口
+            MainApplication.closeCurrentStage();
+            //打开新窗口
             MainApplication.resetStage("教学管理系统", scene);
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -343,8 +343,8 @@ public class CourseService {
         Course course = courseOptional.get();
         Map map = new HashMap();
         map.put("courseId", course.getCourseId()+"");
-        map.put("name", course.getName());
-        map.put("num", course.getNum());
+        map.put("courseName", course.getName());
+        map.put("courseNum", course.getNum());
         map.put("credit",course.getCredit());
         map.put("coursePath", course.getCoursePath());
         if(course.getPreCourse() != null){
