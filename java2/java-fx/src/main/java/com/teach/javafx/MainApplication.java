@@ -88,7 +88,6 @@ public class MainApplication extends Application {
             mainStage.setY(0);
 
         }
-        scene.getStylesheets().add(MainApplication.class.getResource("css/default-theme.css").toExternalForm());
         mainStage.setTitle(name);
         mainStage.setScene(scene);
         mainStage.setResizable(true);
@@ -100,7 +99,6 @@ public class MainApplication extends Application {
 
     public static void loginStage(String name, Scene scene) {
         mainStage = new Stage();
-        scene.getStylesheets().add(MainApplication.class.getResource("css/default-theme.css").toExternalForm());
         double screenWidth = getScreenWidth();
         double screenHeight = getScreenHeight();
         double windowWidth = scene.getWidth();
