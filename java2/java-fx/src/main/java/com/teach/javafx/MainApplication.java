@@ -10,6 +10,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 
@@ -50,6 +51,11 @@ public class MainApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        //初始化主题管理器
+        ThemeManager.init();
+        //初始化窗口管理器
+        WindowsManager.init();
+
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("base/custom-login-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), loginStageWidth, loginStageHeight);
         //scene.getStylesheets().add(getClass().getResource("css/styles.css").toExternalForm());
@@ -82,7 +88,7 @@ public class MainApplication extends Application {
             mainStage.setY(0);
 
         }
-        scene.getStylesheets().add(MainApplication.class.getResource("css/theme-normal.css").toExternalForm());
+        scene.getStylesheets().add(MainApplication.class.getResource("css/default-theme.css").toExternalForm());
         mainStage.setTitle(name);
         mainStage.setScene(scene);
         mainStage.setResizable(true);
@@ -94,6 +100,7 @@ public class MainApplication extends Application {
 
     public static void loginStage(String name, Scene scene) {
         mainStage = new Stage();
+        scene.getStylesheets().add(MainApplication.class.getResource("css/default-theme.css").toExternalForm());
         double screenWidth = getScreenWidth();
         double screenHeight = getScreenHeight();
         double windowWidth = scene.getWidth();

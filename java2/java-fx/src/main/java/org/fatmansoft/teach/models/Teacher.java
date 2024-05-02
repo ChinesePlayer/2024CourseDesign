@@ -83,7 +83,7 @@ public class Teacher {
 
     @Override
     public String toString(){
-        if(teacherId == null || teacherId == -1){
+        if(teacherId == null || teacherId <= 0){
             return "无";
         }
         return teacherId + " - " + name;

@@ -155,7 +155,8 @@ ComboBox样式
 *****************************/
 
 .combo-box{
-    -fx-background-color: #ffffff;
+    -fx-background-color: lightblue;
+    -fx-background-radius: 6 6 6 6;
 }
 
 .combo-box .list-cell:hover, .combo-box .combo-box-popup .list-cell:focused{
@@ -226,5 +227,16 @@ VBox样式
 *****************************/
 
 VBox {
+    -fx-background-color: #effdff;
+}
+
+
+/***************************
+
+AnchorPane样式
+
+*****************************/
+
+AnchorPane {
     -fx-background-color: #effdff;
 }
