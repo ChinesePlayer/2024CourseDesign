@@ -80,6 +80,9 @@ public class StudentScoreController {
             for(Map m : rawData){
                 Score s = new Score(m);
                 scoreList.add(s);
+                if(s.getStatus() == null){
+                    continue;
+                }
                 if(s.getStatus() == 0){
                     readingList.add(s);
                 }

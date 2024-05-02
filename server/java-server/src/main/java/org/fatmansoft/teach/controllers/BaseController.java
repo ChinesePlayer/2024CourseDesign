@@ -343,17 +343,16 @@ public class BaseController {
      *
      * @return
      */
-    @PostMapping(path = "/uploadPhoto")
+    @PostMapping("/uploadPhoto")
     public DataResponse uploadPhoto(@RequestBody byte[] barr,
-                                    @RequestParam(name = "uploader") String uploader,
-                                    @RequestParam(name = "remoteFile") String remoteFile,
-                                    @RequestParam(name = "fileName") String fileName) {
+                                    @RequestParam(name = "remoteFile") String remoteFile) {
         try {
-            OutputStream os = new FileOutputStream(new File(attachFolder + remoteFile));
+            OutputStream os = new FileOutputStream(attachFolder + "photo/" + remoteFile);
             os.write(barr);
             os.close();
             return CommonMethod.getReturnMessageOK();
         } catch (Exception e) {
+            System.out.println("错误!");
             return CommonMethod.getReturnMessageError("上传错误");
         }
     }

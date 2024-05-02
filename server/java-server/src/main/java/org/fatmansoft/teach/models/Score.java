@@ -39,6 +39,9 @@ public class Score {
 
     public Double calcGpa(){
         if(mark != null){
+            if(mark < 60){
+                return null;
+            }
             return mark/10.0-5.0;
         }
         return null;

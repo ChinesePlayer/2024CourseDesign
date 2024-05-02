@@ -23,6 +23,7 @@ public class CourseValueFactory implements Callback<TableColumn.CellDataFeatures
                 if (c.getPreCourse() == null) {
                     return new SimpleStringProperty("无");
                 }
+                System.out.println("前序课程为: " + c.getPreCourse().getName());
                 return new SimpleStringProperty(c.getPreCourse().getNum() + "-" + c.getPreCourse().getName());
             }
             case "credit" -> {

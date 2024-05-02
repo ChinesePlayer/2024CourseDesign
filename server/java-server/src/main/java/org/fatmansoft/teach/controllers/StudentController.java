@@ -262,12 +262,12 @@ public class StudentController {
             m = new HashMap();
             c = s.getCourse();
             m.put("studentNum", s.getStudent().getPerson().getNum());
-            m.put("scoreId", s.getScoreId());
+            m.put("scoreId", s.getScoreId()+"");
             m.put("courseNum", c.getNum());
             m.put("courseName", c.getName());
             m.put("credit", c.getCredit());
             m.put("mark", s.getMark());
-            m.put("ranking", s.getRank());
+            m.put("rank", s.getRank());
             list.add(m);
         }
         return list;
@@ -285,10 +285,12 @@ public class StudentController {
         List list = new ArrayList();
         if (sList == null || sList.size() == 0)
             return list;
-        Map m;
         Course c;
         for (Score s : sList) {
             c = s.getCourse();
+            if(s.getMark() == null){
+                continue;
+            }
             if (s.getMark() >= 90)
                 count[0]++;
             else if (s.getMark() >= 80)
@@ -301,12 +303,13 @@ public class StudentController {
                 count[4]++;
         }
         for (int i = 0; i < 5; i++) {
-            m = new HashMap();
+            Map m = new HashMap<>();
             m.put("name", title[i]);
             m.put("title", title[i]);
             m.put("value", count[i]);
             list.add(m);
         }
+
         return list;
     }
 

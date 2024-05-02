@@ -129,7 +129,7 @@ public class CommonMethod {
             return (Double)obj;
         String str = obj.toString();
         try {
-            return 0d;
+            return Double.parseDouble(str);
         }catch(Exception e) {
             return null;
         }

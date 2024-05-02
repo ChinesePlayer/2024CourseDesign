@@ -4,6 +4,7 @@ import com.teach.javafx.request.HttpRequestUtil;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
+import org.fatmansoft.teach.util.CommonMethod;
 
 import java.util.*;
 
@@ -83,7 +84,7 @@ public class Course {
             }
         }
         if(m.get("preCourseId") != null){
-            Integer preCourseId = Integer.parseInt((String) m.get("preCourseId"));
+            Integer preCourseId = CommonMethod.getInteger(m, "preCourseId");
             DataRequest req = new DataRequest();
             req.add("courseId", preCourseId);
             DataResponse res = HttpRequestUtil.request("/api/course/getCourse",req);
@@ -94,6 +95,9 @@ public class Course {
             else{
                 System.out.println("在构建课程对象时请求前序课程失败");
             }
+        }
+        else{
+            preCourse = null;
         }
     }
 
