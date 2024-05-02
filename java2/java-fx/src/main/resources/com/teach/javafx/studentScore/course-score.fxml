@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<BorderPane xmlns="http://javafx.com/javafx"
+<BorderPane xmlns="http://javafx.com/javafx/17"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.teach.javafx.controller.studentScore.StudentScoreController"
             prefHeight="400.0" prefWidth="600.0">

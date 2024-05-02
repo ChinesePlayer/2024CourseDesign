@@ -1,5 +1,6 @@
 package com.teach.javafx;
 
+import com.teach.javafx.controller.base.MainFrameController;
 import com.teach.javafx.controller.base.MessageDialog;
 import com.teach.javafx.request.HttpRequestUtil;
 import com.teach.javafx.request.SQLiteJDBC;
@@ -109,6 +110,49 @@ public class MainApplication extends Application {
         mainStage.setMinWidth(loginStageMinWidth);
         mainStage.setMinHeight(loginStageMinHeight);
         mainStage.show();
+    }
+
+    //打开主页面
+    public static void openMainContent(){
+        //获取登录的角色类型
+        String role = AppStore.getJwt().getRoles();
+        if(role == null || role.isEmpty()){
+            MessageDialog.showDialog("权限错误! ");
+            return;
+        }
+        try{
+            String appTitle = "教学管理系统";
+            if(role.equals("ROLE_ADMIN")){
+                FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("base/main-frame.fxml"));
+                Scene scene = new Scene(fxmlLoader.load(), -1, -1);
+                AppStore.setMainFrameController((MainFrameController) fxmlLoader.getController());
+                //关闭当前窗口
+                MainApplication.closeCurrentStage();
+                resetStage(appTitle, scene);
+            }
+            else if(role.equals("ROLE_STUDENT")){
+                FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("base/main-frame.fxml"));
+                Scene scene = new Scene(fxmlLoader.load(), -1, -1);
+                AppStore.setMainFrameController((MainFrameController) fxmlLoader.getController());
+                //关闭当前窗口
+                MainApplication.closeCurrentStage();
+                resetStage(appTitle, scene);
+            }
+            else if(role.equals("ROLE_TEACHER")){
+                FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("base/main-frame.fxml"));
+                Scene scene = new Scene(fxmlLoader.load(), -1, -1);
+                AppStore.setMainFrameController((MainFrameController) fxmlLoader.getController());
+                //关闭当前窗口
+                MainApplication.closeCurrentStage();
+                resetStage(appTitle, scene);
+            }
+            else {
+                MessageDialog.showDialog("权限错误! ");
+            }
+        }
+        catch (IOException e){
+            MessageDialog.showDialog("无法打开主页面!\n 异常信息: " + e.getMessage());
+        }
     }
 
     public static void main(String[] args) {

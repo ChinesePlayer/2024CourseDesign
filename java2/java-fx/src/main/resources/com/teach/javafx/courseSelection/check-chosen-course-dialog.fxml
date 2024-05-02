@@ -8,7 +8,7 @@
 <BorderPane
         prefHeight="400.0"
         prefWidth="403.0"
-        xmlns="http://javafx.com/javafx/19"
+        xmlns="http://javafx.com/javafx/17"
         xmlns:fx="http://javafx.com/fxml/1"
         fx:controller="com.teach.javafx.controller.courseSelection.CheckChosenCourseDialogController"
         stylesheets="@../css/table.css">
