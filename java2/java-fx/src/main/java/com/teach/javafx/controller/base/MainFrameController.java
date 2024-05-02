@@ -5,6 +5,10 @@ import com.teach.javafx.MainApplication;
 import com.teach.javafx.request.HttpRequestUtil;
 import com.teach.javafx.request.MyTreeNode;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import javafx.beans.property.ReadOnlyProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -14,6 +18,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 
@@ -152,8 +157,69 @@ public class MainFrameController {
 
     public void initMenuTree(List<Map> mList) {
         String role = AppStore.getJwt().getRoles();
+        PseudoClass treeViewSubItem = PseudoClass.getPseudoClass("sub-tree-item");
         MyTreeNode node = new MyTreeNode(null, null,"菜单",0);
         TreeItem<MyTreeNode> root = new TreeItem<>(node);
+        menuTree.setRoot(root);
+        menuTree.setShowRoot(false);
+        menuTree.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<>() {
+            public void handle(MouseEvent event) {
+                TreeItem<MyTreeNode> treeItem = menuTree.getSelectionModel().getSelectedItem();
+                if (treeItem == null)
+                    return;
+                MyTreeNode menu = treeItem.getValue();
+                if (menu == null)
+                    return;
+                String name = menu.getName();
+                if (name == null || name.length() == 0)
+                    return;
+                if ("logout".equals(name)) {
+                    logout();
+                } else if (name.endsWith("Command")) {
+                    try {
+                        Method m = this.getClass().getMethod(name);
+                        m.invoke(this);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    changeContent(name, menu.getLabel());
+                }
+            }
+        });
+        menuTree.setCellFactory(new Callback<TreeView<MyTreeNode>, TreeCell<MyTreeNode>>() {
+            @Override
+            public TreeCell<MyTreeNode> call(TreeView<MyTreeNode> myTreeNodeTreeView) {
+                TreeCell<MyTreeNode> cell = new TreeCell<>(){
+                    @Override
+                    public void updateItem(MyTreeNode myTreeNode, boolean isEmpty){
+                        //调用父类的更新方法更新基本状态
+                        super.updateItem(myTreeNode, isEmpty);
+                        if(isEmpty){
+                            setText("");
+                            setGraphic(null);
+                        }
+                        else{
+                            setText(myTreeNode.getLabel());
+                        }
+                    }
+                };
+                //父节点不是根节点的节点展开时的样式
+                cell.treeItemProperty().addListener((observableValue, oldItem, newItem) -> cell.pseudoClassStateChanged(treeViewSubItem, newItem != null && newItem.getParent() != cell.getTreeView().getRoot()));
+                return cell;
+            }
+        });
+        ChangeListener<Boolean> expandedListener = (observableValue, wasExpanded, isNowExpanded) -> {
+            if(isNowExpanded){
+                ReadOnlyProperty<?> expandedProperty = (ReadOnlyProperty<?>) observableValue;
+                Object itemThatWasJustExpanded = expandedProperty.getBean();
+                for(TreeItem<MyTreeNode> item : menuTree.getRoot().getChildren()){
+                    if(item != itemThatWasJustExpanded){
+                        item.setExpanded(false);
+                    }
+                }
+            }
+        };
         TreeItem<MyTreeNode>  menu;
         int i,j;
         Map m;
@@ -162,38 +228,14 @@ public class MainFrameController {
             m = mList.get(i);
             sList = (List<Map>)m.get("sList");
             menu = new TreeItem<>(new MyTreeNode(null, (String)m.get("name"), (String)m.get("title"), (Integer)m.get("isLeft")));
+            menu.expandedProperty().addListener(expandedListener);
             if(sList != null && sList.size()> 0) {
                 addMenuItems(menu,sList);
             }
             root.getChildren().add(menu);
         }
-        menuTree.setRoot(root);
-        menuTree.setShowRoot(false);
-        menuTree.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>(){
-            public void handle(MouseEvent event){
-                TreeItem<MyTreeNode> treeItem = menuTree.getSelectionModel().getSelectedItem();
-                if(treeItem == null)
-                    return;
-                MyTreeNode menu = treeItem.getValue();
-                if(menu == null)
-                    return;
-                String name = menu.getName();
-                if(name == null || name.length() == 0)
-                    return ;
-                if("logout".equals(name)) {
-                    logout();
-                }else if(name.endsWith("Command")){
-                    try {
-                        Method m = this.getClass().getMethod(name);
-                        m.invoke(this);
-                    }catch(Exception e) {
-                        e.printStackTrace();
-                    }
-                }else {
-                    changeContent(name,menu.getLabel());
-                }
-            }
-        });
+
+
     }
     @FXML
     public void initialize() {

@@ -1,7 +1,101 @@
 /* 默认主题文件 */
 
+/*******************************
+
+整体样式，配色
+
+**********************************/
+
+/* 取消所有元素被选中时的焦点边框颜色 */
+.root{
+    -fx-focus-color: transparent;
+}
+
+
+/*******************************
+
+树形菜单样式
+
+**********************************/
+
+/* 注意sub-tree-item是在代码中自定义的伪类，此处IDEA无法识别，并不是错误! */
+
+.tree-view .tree-cell{
+    -fx-background-color: lightblue;
+    -fx-padding: 1.4em;
+}
+
+.tree-view .tree-cell:sub-tree-item{
+    -fx-background-color: #6f8693;
+}
+
+.tree-view .tree-cell .tree-disclosure-node .arrow{
+    -fx-background-color: #000000;
+}
+
+.tree-view .tree-cell:selected:expanded, .tree-view .tree-cell:sub-tree-item:selected, .tree-view .tree-cell:expanded{
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+}
+
+.tree-view .tree-cell:selected{
+    -fx-text-fill: #000000;
+}
+
+.tree-view .tree-cell:expanded .tree-disclosure-node .arrow{
+    -fx-background-color: #ffffff;
+}
+
+.tree-view{
+    -fx-effect: innershadow(gaussian, #6f8693, 10.0, 0, 0, 0);
+}
+
+/*******************************
+
+顶部菜单栏样式
+
+**********************************/
+
+.menu-bar {
+    -fx-background-color: #a1c0de;
+    -fx-text-fill: #ffffff;
+    -fx-effect: dropshadow(gaussian, #6f8693, 20.0, 0,0,0);
+}
+
+.menu-button:hover, .menu-button:focused, .menu-button:showing {
+    -fx-background: black ;
+    -fx-opacity: 0.5;
+    -fx-text-fill: white;
+}
+
+/*******************************
+
+上下文菜单样式
+
+**********************************/
+
+.context-menu{
+    -fx-background-color:lightblue ;
+    -fx-background-insets: 0.0;
+    -fx-background-radius: 0.0 6.0 6.0 6.0;
+    -fx-padding: 0.0;
+}
+
+.context-menu .menu-item:hover, .context-menu .menu-item:focused{
+    -fx-background-color: #6f8693;
+    -fx-background-radius: 0.0 6.0 6.0 6.0;
+}
+
+
+
+/*******************************
+
+ TableView样式
+
+ ********************************/
+
 /* 取消行分割线 */
-.table-view .table-row-cell{
+.table-row-cell{
     -fx-background-insets: 0;
 }
 
@@ -11,51 +105,126 @@
     -fx-alignment: center;
 }
 
-.table-row-cell:odd{
-    -fx-background-color: #FAFAFA;
+/* 奇数行的颜色 */
+.table-view .table-row-cell:odd{
+    -fx-background-color: #eafbfd;
 }
 
-.table-row-cell:odd:selected{
-    -fx-background-color: lightblue;
+/* 偶数行的颜色 */
+.table-view .table-row-cell:even{
+    -fx-background-color: #effdff;
 }
 
-.table-row-cell:even{
-    -fx-background-color: #ffffff;
+/* 被选中行的颜色 */
+.table-view .table-row-cell:odd:selected, .table-view .table-row-cell:even:selected{
+    -fx-background-color: #B9D4EE;
 }
 
-.table-row-cell:even:selected{
-    -fx-background-color: lightblue;
+/* 鼠标所在行的颜色 */
+.table-view .table-row-cell:hover{
+    -fx-background-color: #dffaff;
 }
 
-.table-row-cell:hover{
-    -fx-background-color: #F1F1F1;
-}
-
-.table-row-cell:hover:selected{
-    -fx-background-color: lightblue;
-}
-
-.table-view:focused .table-row-cell:selected{
-    -fx-background: lightblue;
+/* 被选中的行的颜色 用于覆盖JavaFX的默认行为 */
+.table-view:focused .table-row-cell:selected, .table-row-cell:hover:selected{
+    -fx-background: #B9D4EE;
 }
 
 /* 调整列标题字重 */
 .table-view .column-header{
     -fx-font-weight: lighter;
-    -fx-background-color: #EBEBEB;
+    -fx-background-color: #799ba1;
     -fx-border-width: 0px 1px 0px 0px;
-    -fx-border-color: #e0e0e0;
+    -fx-border-color: #afafaf;
+}
+
+/* 列头文字颜色 */
+.table-view .column-header .label{
+    -fx-text-fill: #ffffff;
 }
 
 /* 改变无数据列的列头背景 */
 .table-view .filler{
-    -fx-background-color: #EBEBEB;
+    -fx-background-color: #799ba1;
 }
 
-/* 所有元素被选中时的焦点边框颜色 */
-*{
-    -fx-focus-color: lightblue;
+/***************************
+
+ComboBox样式
+
+*****************************/
+
+.combo-box{
+    -fx-background-color: #ffffff;
 }
 
+.combo-box .list-cell:hover, .combo-box .combo-box-popup .list-cell:focused{
+    -fx-background-color: lightblue;
+    -fx-background-radius: 6 6 6 6;
+    -fx-text-fill: #000000;
+}
 
+.combo-box .combo-box-popup .list-view{
+    -fx-background-radius: 0 8 8 8;
+    -fx-padding: 5 5 5 5;
+}
 
+.combo-box .combo-box-popup .list-view .list-cell{
+    -fx-padding: 5;
+}
+
+/***************************
+
+TabPane样式
+
+*****************************/
+.tab-pane .tab{
+    -fx-background-color: #c8d1ec;
+    -fx-background-radius: 10;
+    -fx-effect: innershadow(gaussian, grey, 10, 0,0,0);
+}
+
+.tab-pane .tab:selected{
+    -fx-background-color: #a1aad0;
+    -fx-focus-color: #ffffff;
+}
+
+.tab-pane .tab:selected .tab-label{
+    -fx-text-fill: #ffffff;
+}
+
+.tab-pane .tab-header-area .tab-header-background{
+    -fx-background-color: #effdff;
+}
+
+/***************************
+
+Button样式
+
+*****************************/
+
+.button {
+    -fx-background-color: linear-gradient(to top, lightblue, white);
+    -fx-padding: 10;
+    -fx-font-weight: lighter;
+}
+
+/***************************
+
+BorderPane样式
+
+*****************************/
+
+BorderPane {
+    -fx-background-color: #effdff;
+}
+
+/***************************
+
+VBox样式
+
+*****************************/
+
+VBox {
+    -fx-background-color: #effdff;
+}

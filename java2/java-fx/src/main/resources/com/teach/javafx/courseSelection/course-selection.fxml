@@ -7,7 +7,7 @@
 <?import javafx.geometry.Insets?>
 <?import com.teach.javafx.customWidget.CourseTable?>
 <?import io.github.palexdev.materialfx.controls.cell.MFXListCell?>
-<BorderPane xmlns="http://javafx.com/javafx"
+<BorderPane xmlns="http://javafx.com/javafx/17"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.teach.javafx.controller.courseSelection.CourseSelectionController"
             stylesheets="@../css/pane-course-selection.css">
