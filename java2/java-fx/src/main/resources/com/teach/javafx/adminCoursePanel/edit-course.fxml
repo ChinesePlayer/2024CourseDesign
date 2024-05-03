@@ -8,10 +8,11 @@
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <BorderPane xmlns="http://javafx.com/javafx/17"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.teach.javafx.controller.adminCoursePanel.EditCourseController">
+            fx:controller="com.teach.javafx.controller.adminCoursePanel.EditCourseController"
+            styleClass="borderpane-container">
 
     <center>
-        <ScrollPane BorderPane.alignment="TOP_CENTER" fitToWidth="true">
+        <ScrollPane BorderPane.alignment="TOP_CENTER" fitToWidth="true" fitToHeight="true">
             <VBox  alignment="TOP_CENTER" spacing="10">
                 <MFXTextField fx:id="name" floatMode="ABOVE" floatingText="课程名称" />
                 <MFXTextField fx:id="num" floatMode="ABOVE" floatingText="课序号" />

@@ -10,6 +10,7 @@
 <BorderPane xmlns="http://javafx.com/javafx/17"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.teach.javafx.controller.courseSelection.CourseSelectionController"
+            styleClass="borderpane-container"
             stylesheets="@../css/pane-course-selection.css">
     <top>
         <HBox>

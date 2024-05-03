@@ -62,7 +62,7 @@ public class MenuController {
      */
     @FXML
     public void initialize() {
-        MyTreeNode  node  = new MyTreeNode(null, "", "",0);
+        MyTreeNode  node  = new MyTreeNode(null, "", "",0,null);
         root = new TreeItem<>(node);
         menuTreeView.setRoot(root);
         menuTreeView.setShowRoot(false);

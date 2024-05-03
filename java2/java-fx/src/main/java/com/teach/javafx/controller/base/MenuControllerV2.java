@@ -74,8 +74,8 @@ public class MenuControllerV2 {
 
     @FXML
     public void initialize(){
-        MyTreeNode node = new MyTreeNode(null, "", "", 0);
-        editNode = new MyTreeNode(null, "", "", 0);
+        MyTreeNode node = new MyTreeNode(null, "", "", 0,null);
+        editNode = new MyTreeNode(null, "", "", 0,null);
         root = new TreeItem<>(node);
         //设置根节点
         menuTreeView.setRoot(root);

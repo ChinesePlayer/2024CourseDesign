@@ -10,6 +10,14 @@ module com.teach.javafx {
     requires spring.security.crypto;
     requires javafx.media;
     requires MaterialFX;
+    requires javafx.graphics;
+    requires javafx.base;
+    requires batik.rasterizer;
+    requires batik.svgrasterizer;
+    requires batik.svggen;
+    requires javafx.svg;
+
+
 
     opens com.teach.javafx to javafx.fxml;
     opens com.teach.javafx.request to com.google.gson, javafx.fxml;
@@ -28,10 +36,10 @@ module com.teach.javafx {
     exports com.teach.javafx.customWidget;
     exports com.teach.javafx.controller.studentScore;
     exports com.teach.javafx.controller.adminCoursePanel;
+    exports com.teach.javafx.mySkin;
     opens com.teach.javafx.models to com.google.gson, javafx.base;
     exports com.teach.javafx.controller.honor;
     opens com.teach.javafx.controller.honor to com.google.gson, javafx.fxml;
     exports com.teach.javafx.controller.courseSelection;
     opens com.teach.javafx.controller.courseSelection to com.google.gson, javafx.fxml;
-
 }

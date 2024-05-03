@@ -8,6 +8,7 @@
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.teach.javafx.controller.courseSelection.CourseSelectionMenuController"
             prefHeight="400.0" prefWidth="600.0"
+            styleClass="borderpane-container"
             stylesheets="@../css/pane-course-selection-menu.css">
     <top>
         <MFXButton fx:id="refreshButton" text="刷新" onAction="#onRefresh">

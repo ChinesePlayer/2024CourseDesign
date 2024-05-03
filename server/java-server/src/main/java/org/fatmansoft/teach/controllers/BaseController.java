@@ -82,6 +82,12 @@ public class BaseController {
                 ms.put("id", info.getId());
                 ms.put("name", info.getName());
                 ms.put("title", info.getTitle());
+                if(info.getSvgImage() != null){
+                    ms.put("svgPath", info.getSvgImage().getSvgPath());
+                }
+                else{
+                    ms.put("svgPath", null);
+                }
                 ms.put("sList", getMenuList(userTypeId, info.getId()));
                 sList.add(ms);
             }
@@ -107,6 +113,12 @@ public class BaseController {
             m.put("id", info.getId());
             m.put("name", info.getName());
             m.put("title", info.getTitle());
+            if(info.getSvgImage() != null){
+                m.put("svgPath", info.getSvgImage().getSvgPath());
+            }
+            else{
+                m.put("svgPath", null);
+            }
             sList = getMenuList(userTypeId, info.getId());
             m.put("sList", sList);
             dataList.add(m);
