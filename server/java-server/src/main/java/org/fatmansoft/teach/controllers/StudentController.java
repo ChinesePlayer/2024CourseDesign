@@ -814,4 +814,10 @@ public class StudentController {
         return CommonMethod.getReturnMessageError("上传错误！");
     }
 
+    @PostMapping("/getStudentDashboardInfo")
+    @PreAuthorize("hasRole('ROLE_STUDENT')")
+    public DataResponse getStudentDashboardInfo(@Valid @RequestBody DataRequest req){
+        return studentService.getStudentDashboardInfo(req);
+    }
+
 }

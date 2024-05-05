@@ -3,9 +3,68 @@
 
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.ScrollPane?>
+<?import com.teach.javafx.customWidget.CourseTable?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.teach.javafx.controller.StudentDashboardController"
-            prefHeight="400.0" prefWidth="600.0">
+            prefHeight="400.0" prefWidth="600.0"
+            styleClass="borderpane-container">
+
+    <center>
+        <ScrollPane fitToHeight="true" fitToWidth="true">
+            <VBox>
+                <padding>
+                    <Insets top="20" bottom="20" left="20" right="20" />
+                </padding>
+                <HBox alignment="CENTER_LEFT" spacing="50" styleClass="simple-info">
+                    <VBox.margin>
+                        <Insets bottom="30"/>
+                    </VBox.margin>
+                    <ImageView fx:id="avatar"/>
+                    <VBox spacing="5" alignment="CENTER_LEFT" styleClass="student-dashboard-info">
+                        <Label fx:id="studentName"/>
+                        <Label fx:id="studentNum" />
+                        <Label fx:id="studentDept"/>
+                    </VBox>
+                    <Label fx:id="greetings" styleClass="greetings-label">
+                        <HBox.margin>
+                            <Insets left="100" />
+                        </HBox.margin>
+                    </Label>
+                </HBox>
+                <HBox spacing="20">
+                    <VBox maxWidth="400" maxHeight="500" styleClass="simple-info">
+                        <Label text="统计数据" style="-fx-font-size: 20px" />
+                        <BarChart fx:id="costBarChart">
+                            <xAxis>
+                                <CategoryAxis label="日期" side="BOTTOM" />
+                            </xAxis>
+                            <yAxis>
+                                <NumberAxis label="金额" side="LEFT" />
+                            </yAxis>
+                        </BarChart>
+                        <PieChart fx:id="markPieChart"/>
+                    </VBox>
+                    <VBox styleClass="simple-info">
+                        <Label text="本周课表" style="-fx-font-size: 20px"/>
+                        <CourseTable fx:id="courseTable" prefWidth="480" prefHeight="360" />
+                    </VBox>
+                </HBox>
+
+
+
+            </VBox>
+        </ScrollPane>
+
+    </center>
+
 
 </BorderPane>

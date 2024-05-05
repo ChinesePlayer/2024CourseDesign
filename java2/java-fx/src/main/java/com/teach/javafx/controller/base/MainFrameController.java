@@ -286,6 +286,13 @@ public class MainFrameController {
         handler =new ChangePanelHandler();
         DataResponse res = HttpRequestUtil.request("/api/base/getMenuList",new DataRequest());
         List<Map> mList = (List<Map>)res.getData();
+        //若有仪表盘，则将仪表盘移动到第一位
+        for(Map m : mList){
+            if(m.get("title").equals("仪表盘")){
+                mList.remove(m);
+                mList.add(0, m);
+            }
+        }
         initMenuBar(mList);
         initMenuTree(mList);
         contentTabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);

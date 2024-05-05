@@ -156,8 +156,7 @@ public class StudentIntroduceController extends ToolController {
         seriesFee.setName("日常消费");
         for(Map m:feeList)
             seriesFee.getData().add(new XYChart.Data<>(m.get("title").toString(),Double.parseDouble(m.get("value").toString())));
-        ObservableList<XYChart.Series<String, Number>> barData =
-                FXCollections.<XYChart.Series<String, Number>>observableArrayList();
+        ObservableList<XYChart.Series<String, Number>> barData = FXCollections.observableArrayList();
         barData.add(seriesFee);
         barChart.setData(barData); //消费数据直方图展示
         displayPhoto();
