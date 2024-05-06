@@ -69,6 +69,16 @@
             <artifactId>materialfx</artifactId>
             <version>11.13.5</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.xmlgraphics</groupId>
+            <artifactId>batik-rasterizer</artifactId>
+            <version>1.14</version>
+        </dependency>
+        <dependency>
+            <groupId>de.bixilon.javafx</groupId>
+            <artifactId>javafx-svg</artifactId>
+            <version>0.2</version>
+        </dependency>
     </dependencies>
 
     <build>

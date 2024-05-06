@@ -24,17 +24,43 @@ public class MyTreeNode {
     private String userTypeIds;
     private String parentTitle;
     private boolean isMenu;
+    private SvgImage svg;
     private List<MyTreeNode> children;
     public MyTreeNode(){
         this.children= new ArrayList<MyTreeNode>();
     }
-    public MyTreeNode(Integer id, String name, String label, Integer isLeaf){
+    public MyTreeNode(Integer id, String name, String label, Integer isLeaf, SvgImage svg){
         this.id  = id;
         this.name = name;
         this.label = label;
         this.isLeaf = isLeaf;
         this.children= new ArrayList<MyTreeNode>();
+        this.svg = svg;
     }
+
+    public MyTreeNode(Map map){
+        this.id  = CommonMethod.getInteger(map,"id");
+        this.name = CommonMethod.getString(map,"value");
+        this.label = CommonMethod.getString(map,"label");
+        this.title = CommonMethod.getString(map,"title");
+        this.isLeaf = CommonMethod.getInteger(map,"isLeaf");
+        this.pid = CommonMethod.getInteger(map,"pid");
+        this.userTypeIds = CommonMethod.getString(map,"userTypeIds");
+        this.parentTitle = CommonMethod.getString(map,"parentTitle");
+        if(map.get("svgPath") != null){
+            this.svg = new SvgImage((String) map.get("svgPath"));
+        }
+        else{
+            this.svg = null;
+        }
+        this.children= new ArrayList<MyTreeNode>();
+        List children = CommonMethod.getList(map,"children");
+        if(children != null && children.size() > 0) {
+            for(int i = 0; i < children.size();i++)
+                this.children.add(new MyTreeNode((Map)children.get(i)));
+        }
+    }
+
 
     //将当前节点拷贝到另一个节点中
     public MyTreeNode(MyTreeNode newNode){
@@ -132,21 +158,12 @@ public class MyTreeNode {
         this.children = children;
     }
 
-    public MyTreeNode(Map map){
-        this.id  = CommonMethod.getInteger(map,"id");
-        this.name = CommonMethod.getString(map,"value");
-        this.label = CommonMethod.getString(map,"label");
-        this.title = CommonMethod.getString(map,"title");
-        this.isLeaf = CommonMethod.getInteger(map,"isLeaf");
-        this.pid = CommonMethod.getInteger(map,"pid");
-        this.userTypeIds = CommonMethod.getString(map,"userTypeIds");
-        this.parentTitle = CommonMethod.getString(map,"parentTitle");
-        this.children= new ArrayList<MyTreeNode>();
-        List children = CommonMethod.getList(map,"children");
-        if(children != null && children.size() > 0) {
-            for(int i = 0; i < children.size();i++)
-            this.children.add(new MyTreeNode((Map)children.get(i)));
-        }
+
+    public SvgImage getSvg() {
+        return svg;
     }
 
+    public void setSvg(SvgImage svg) {
+        this.svg = svg;
+    }
 }

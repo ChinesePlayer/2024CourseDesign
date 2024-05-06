@@ -21,12 +21,23 @@
 /* 注意sub-tree-item是在代码中自定义的伪类，此处IDEA无法识别，并不是错误! */
 
 .tree-view .tree-cell{
-    -fx-background-color: lightblue;
+    -fx-background-color: transparent;
     -fx-padding: 1.4em;
 }
 
+.tree-view {
+    -fx-background-color: linear-gradient(to bottom, lightblue, white);
+    -fx-effect: innershadow(gaussian, #6f8693, 10.0, 0, 0, 0);
+}
+
+.tree-view .tree-cell{
+    -fx-font-size: 15px;
+}
+
 .tree-view .tree-cell:sub-tree-item{
-    -fx-background-color: #6f8693;
+    -fx-background-color: transparent;
+
+    -fx-text-alignment: center;
 }
 
 .tree-view .tree-cell .tree-disclosure-node .arrow{
@@ -46,9 +57,6 @@
     -fx-background-color: #ffffff;
 }
 
-.tree-view{
-    -fx-effect: innershadow(gaussian, #6f8693, 10.0, 0, 0, 0);
-}
 
 /*******************************
 
@@ -210,13 +218,29 @@ Button样式
     -fx-font-weight: lighter;
 }
 
+.button:hover{
+    -fx-background-color: linear-gradient(to top, #8abfd0, white);
+    -fx-effect: dropshadow(gaussian, grey, 10,0,0,0);
+}
+
+.login-button{
+    -fx-skin: 'com.teach.javafx.mySkin.MyButtonSkin';
+}
+
+.login-button:hover{
+    -fx-skin: 'com.teach.javafx.mySkin.MyButtonSkin';
+    -fx-background-color: #930f15;
+}
+
+
+
 /***************************
 
 BorderPane样式
 
 *****************************/
 
-BorderPane {
+.borderpane-container {
     -fx-background-color: #effdff;
 }
 
@@ -230,7 +254,6 @@ VBox {
     -fx-background-color: #effdff;
 }
 
-
 /***************************
 
 AnchorPane样式
@@ -239,4 +262,40 @@ AnchorPane样式
 
 AnchorPane {
     -fx-background-color: #effdff;
+}
+
+/***************************
+
+ImageView样式
+
+*****************************/
+
+.image-view{
+    -fx-effect: dropshadow(gaussian, black,15,0,0,0);
+}
+
+/***************************
+
+一些自定义选择类
+
+*****************************/
+
+.simple-info .student-dashboard-info{
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+.greetings-label{
+    -fx-font-size: 30px;
+    -fx-text-fill: #2f4a52;
+    -fx-effect: dropshadow(gaussian, lightblue, 10,0,0,0);
+    -fx-font-weight: lighter;
+}
+
+.simple-info{
+    -fx-border-style: solid;
+    -fx-border-color: grey;
+    -fx-border-width: 3 3 5 3;
+    -fx-border-radius: 10;
+    -fx-padding: 20px;
 }

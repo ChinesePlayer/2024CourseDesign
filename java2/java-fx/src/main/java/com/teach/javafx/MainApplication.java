@@ -2,15 +2,16 @@ package com.teach.javafx;
 
 import com.teach.javafx.controller.base.MainFrameController;
 import com.teach.javafx.controller.base.MessageDialog;
+import com.teach.javafx.managers.ShortcutManager;
+import com.teach.javafx.managers.ThemeManager;
+import com.teach.javafx.managers.WindowsManager;
 import com.teach.javafx.request.HttpRequestUtil;
-import com.teach.javafx.request.SQLiteJDBC;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 
@@ -55,6 +56,8 @@ public class MainApplication extends Application {
         ThemeManager.init();
         //初始化窗口管理器
         WindowsManager.init();
+        //初始化快捷方式管理器
+        ShortcutManager.init();
 
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("base/custom-login-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), loginStageWidth, loginStageHeight);
@@ -88,7 +91,6 @@ public class MainApplication extends Application {
             mainStage.setY(0);
 
         }
-        scene.getStylesheets().add(MainApplication.class.getResource("css/default-theme.css").toExternalForm());
         mainStage.setTitle(name);
         mainStage.setScene(scene);
         mainStage.setResizable(true);
@@ -100,7 +102,6 @@ public class MainApplication extends Application {
 
     public static void loginStage(String name, Scene scene) {
         mainStage = new Stage();
-        scene.getStylesheets().add(MainApplication.class.getResource("css/default-theme.css").toExternalForm());
         double screenWidth = getScreenWidth();
         double screenHeight = getScreenHeight();
         double windowWidth = scene.getWidth();

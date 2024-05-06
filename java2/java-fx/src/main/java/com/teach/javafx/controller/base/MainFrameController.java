@@ -1,9 +1,11 @@
 package com.teach.javafx.controller.base;
 
+import afester.javafx.svg.SvgLoader;
 import com.teach.javafx.AppStore;
 import com.teach.javafx.MainApplication;
 import com.teach.javafx.request.HttpRequestUtil;
 import com.teach.javafx.request.MyTreeNode;
+import com.teach.javafx.request.SvgImage;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.beans.property.ReadOnlyProperty;
 import javafx.beans.value.ChangeListener;
@@ -12,17 +14,32 @@ import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.SVGPath;
+import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import org.apache.batik.apps.rasterizer.DestinationType;
+import org.apache.batik.apps.rasterizer.SVGConverter;
+import org.apache.batik.apps.rasterizer.SVGConverterException;
+import org.apache.batik.svggen.SVGShape;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -147,7 +164,7 @@ public class MainFrameController {
         TreeItem<MyTreeNode> menu;
         for ( Map m :mList) {
             sList = (List<Map>)m.get("sList");
-            menu = new TreeItem<>(new MyTreeNode(null,(String)m.get("name") ,(String)m.get("title"),0));
+            menu = new TreeItem<>(new MyTreeNode(null,(String)m.get("name") ,(String)m.get("title"),0, new SvgImage((String) m.get("svgPath"))));
             parent.getChildren().add(menu);
             if(sList !=  null && sList.size()> 0) {
                 addMenuItems(menu, sList);
@@ -155,10 +172,15 @@ public class MainFrameController {
         }
     }
 
+    //初始化学生仪表盘菜单
+    public void initStudentDashboardMenu(){
+
+    }
+
     public void initMenuTree(List<Map> mList) {
         String role = AppStore.getJwt().getRoles();
         PseudoClass treeViewSubItem = PseudoClass.getPseudoClass("sub-tree-item");
-        MyTreeNode node = new MyTreeNode(null, null,"菜单",0);
+        MyTreeNode node = new MyTreeNode(null, null,"菜单",0,null);
         TreeItem<MyTreeNode> root = new TreeItem<>(node);
         menuTree.setRoot(root);
         menuTree.setShowRoot(false);
@@ -187,23 +209,45 @@ public class MainFrameController {
                 }
             }
         });
-        menuTree.setCellFactory(new Callback<TreeView<MyTreeNode>, TreeCell<MyTreeNode>>() {
+        //设置树形菜单显示工厂，方便显示SVG图标，自定义子项行为
+        menuTree.setCellFactory(new Callback<>() {
             @Override
             public TreeCell<MyTreeNode> call(TreeView<MyTreeNode> myTreeNodeTreeView) {
-                TreeCell<MyTreeNode> cell = new TreeCell<>(){
+                TreeCell<MyTreeNode> cell = new TreeCell<>() {
+                    //初始化块
+                    {
+                        setOnMouseClicked(mouseEvent -> {
+                            //设置为单击展开，单击折叠，而不是双击
+                            if(!isEmpty() && mouseEvent.getClickCount() == 1){
+                                TreeItem<MyTreeNode> item = getTreeItem();
+                                if(item != null && !item.isLeaf()){
+                                    if(item.isExpanded()){
+                                        item.setExpanded(false);
+                                    }
+                                    else{
+                                        item.setExpanded(true);
+                                    }
+                                }
+                            }
+                        });
+                    }
                     @Override
-                    public void updateItem(MyTreeNode myTreeNode, boolean isEmpty){
+                    public void updateItem(MyTreeNode myTreeNode, boolean isEmpty) {
                         //调用父类的更新方法更新基本状态
                         super.updateItem(myTreeNode, isEmpty);
-                        if(isEmpty){
+                        if (isEmpty) {
                             setText("");
                             setGraphic(null);
-                        }
-                        else{
+                        } else {
                             setText(myTreeNode.getLabel());
+                            if (myTreeNode.getSvg() != null) {
+                                //设置图标，如果有的话
+                                setGraphic(myTreeNode.getSvg().toGroup());
+                            }
                         }
                     }
                 };
+                cell.setDisclosureNode(new StackPane());
                 //父节点不是根节点的节点展开时的样式
                 cell.treeItemProperty().addListener((observableValue, oldItem, newItem) -> cell.pseudoClassStateChanged(treeViewSubItem, newItem != null && newItem.getParent() != cell.getTreeView().getRoot()));
                 return cell;
@@ -227,7 +271,7 @@ public class MainFrameController {
         for(i = 0; i < mList.size();i++) {
             m = mList.get(i);
             sList = (List<Map>)m.get("sList");
-            menu = new TreeItem<>(new MyTreeNode(null, (String)m.get("name"), (String)m.get("title"), (Integer)m.get("isLeft")));
+            menu = new TreeItem<>(new MyTreeNode(null, (String)m.get("name"), (String)m.get("title"), (Integer)m.get("isLeft"), new SvgImage((String) m.get("svgPath"))));
             menu.expandedProperty().addListener(expandedListener);
             if(sList != null && sList.size()> 0) {
                 addMenuItems(menu,sList);
@@ -242,11 +286,17 @@ public class MainFrameController {
         handler =new ChangePanelHandler();
         DataResponse res = HttpRequestUtil.request("/api/base/getMenuList",new DataRequest());
         List<Map> mList = (List<Map>)res.getData();
+        //若有仪表盘，则将仪表盘移动到第一位
+        for(Map m : mList){
+            if(m.get("title").equals("仪表盘")){
+                mList.remove(m);
+                mList.add(0, m);
+            }
+        }
         initMenuBar(mList);
         initMenuTree(mList);
         contentTabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
         contentTabPane.setStyle("-fx-background-image: url('shanda1.jpg'); -fx-background-repeat: no-repeat; -fx-background-size: cover;");  //inline选择器
-
 
     }
 

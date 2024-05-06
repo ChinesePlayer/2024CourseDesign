@@ -1,5 +1,8 @@
 package org.fatmansoft.teach.models;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 /**
@@ -13,6 +16,8 @@ import javax.validation.constraints.Size;
 @Table(	name = "menu",
         uniqueConstraints = {
         })
+@Getter
+@Setter
 public class MenuInfo {
     @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,43 +33,7 @@ public class MenuInfo {
     @Size(max = 40)
     private String title;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getUserTypeIds() {
-        return userTypeIds;
-    }
-
-    public void setUserTypeIds(String userTypeIds) {
-        this.userTypeIds = userTypeIds;
-    }
-
-    public Integer getPid() {
-        return pid;
-    }
-
-    public void setPid(Integer pid) {
-        this.pid = pid;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    @OneToOne
+    @JoinColumn(name = "svg_id")
+    private SvgImage svgImage;
 }

@@ -6,7 +6,7 @@
 
 <!-- 菜单管理面板FXML配置文件 对应页面交互控制类 com.teach.javafx.controller.base.MenuController -->
 
-<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teach.javafx.controller.base.MenuController">
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teach.javafx.controller.base.MenuController" styleClass="borderpane-container">
    <top>
        <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0">
            <children>

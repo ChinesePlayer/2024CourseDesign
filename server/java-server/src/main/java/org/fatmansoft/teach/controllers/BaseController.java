@@ -53,6 +53,8 @@ public class BaseController {
     private BaseService baseService;  //基本数据处理数据操作自动注入
     @Autowired
     private UserTypeRepository userTypeRepository;   //用户类型数据操作自动注入
+    @Autowired
+    private StudentRepository studentRepository;
 
 
     /**
@@ -82,6 +84,12 @@ public class BaseController {
                 ms.put("id", info.getId());
                 ms.put("name", info.getName());
                 ms.put("title", info.getTitle());
+                if(info.getSvgImage() != null){
+                    ms.put("svgPath", info.getSvgImage().getSvgPath());
+                }
+                else{
+                    ms.put("svgPath", null);
+                }
                 ms.put("sList", getMenuList(userTypeId, info.getId()));
                 sList.add(ms);
             }
@@ -107,6 +115,12 @@ public class BaseController {
             m.put("id", info.getId());
             m.put("name", info.getName());
             m.put("title", info.getTitle());
+            if(info.getSvgImage() != null){
+                m.put("svgPath", info.getSvgImage().getSvgPath());
+            }
+            else{
+                m.put("svgPath", null);
+            }
             sList = getMenuList(userTypeId, info.getId());
             m.put("sList", sList);
             dataList.add(m);
@@ -333,6 +347,41 @@ public class BaseController {
             e.printStackTrace();
         }
         return ResponseEntity.internalServerError().build();
+    }
+
+    //获取学生头像
+    @PostMapping("/getStudentAvatar")
+    public ResponseEntity<StreamingResponseBody> getStudentAvatar(@Valid @RequestBody DataRequest req){
+        Integer studentId = req.getInteger("studentId");
+        if(studentId == null){
+            return ResponseEntity.internalServerError().build();
+        }
+        Optional<Student> stuOp = studentRepository.findById(studentId);
+        if(stuOp.isEmpty()){
+            return ResponseEntity.internalServerError().build();
+        }
+        Student student = stuOp.get();
+        Integer personId = student.getPerson().getPersonId();
+        String avatarCompleteName = attachFolder + "photo/" + personId + ".jpg";
+        try{
+            File file = new File(avatarCompleteName);
+            int len = (int) file.length();
+            byte[] bytes = new byte[len];
+            FileInputStream in = new FileInputStream(file);
+            in.read(bytes);
+            in.close();
+            MediaType mType = new MediaType(MediaType.APPLICATION_OCTET_STREAM);
+            StreamingResponseBody stream = outputStream -> {
+                outputStream.write(bytes);
+            };
+            return ResponseEntity.ok()
+                    .contentType(mType)
+                    .body(stream);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 

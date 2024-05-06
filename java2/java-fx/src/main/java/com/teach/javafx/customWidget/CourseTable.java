@@ -98,6 +98,24 @@ public class CourseTable extends GridPane {
     //向课程表中添加课程，其中背景颜色若传入null则在内部随机一个背景颜色
     //注意，若该课程无上课时间，则不会添加到课程表中
     public void addAllCourse(List<Course> cl, Color colorOut){
+        //清空现有课程单元
+        courseCell.clear();
+        //生成新课程单元
+        for (int i = 0; i < 6; i++){
+            List<CourseCell> innerList = new ArrayList<>();
+            for(int j = 0 ; j < 8; j++){
+                innerList.add(new CourseCell());
+            }
+            courseCell.add(innerList);
+        }
+        //初始化课程表骨架：节次列和星期行
+        for(int i = 1; i < courseCell.get(0).size(); i++){
+            add(new CourseCell(new Label(dayTrans(i))), i, 0);
+        }
+        for(int i = 1; i < courseCell.size(); i++){
+            add(new CourseCell(new Label(String.valueOf(i))), 0, i);
+        }
+
         for(Course c : cl){
             if(c.getCourseTimes().isEmpty()){
                 continue;
@@ -151,6 +169,11 @@ public class CourseTable extends GridPane {
             int column = ct.getDay();
             add(new CourseCell(), column, row);
         }
+    }
+
+    //抛弃之前的课程，用新的课程更新课程表
+    public void updateTable(List<Course> cs){
+
     }
 
     public void printCourseInfos(){

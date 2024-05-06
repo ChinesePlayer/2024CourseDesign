@@ -38,7 +38,4 @@
       </padding>
     </HBox>
   </bottom>
-  <right>
-    <MFXButton fx:id="urlTest" text="URL测试" onAction="#onTestButton"/>
-  </right>
 </BorderPane>

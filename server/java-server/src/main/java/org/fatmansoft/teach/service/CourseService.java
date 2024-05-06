@@ -434,4 +434,21 @@ public class CourseService {
         return isRecycleCourseChain(c, preCourse.getPreCourse());
     }
 
+    public DataResponse getChosenCourse(DataRequest req){
+        Integer studentId = req.getInteger("studentId");
+        if (studentId == null) {
+            return CommonMethod.getReturnMessageError("无法获取学生ID");
+        }
+        List<Course> chosenCourse = studentRepository.findCoursesByStudentId(studentId);
+        List<Map> dataList = new ArrayList<>();
+        if(chosenCourse.isEmpty()){
+            //返回一个空列表
+            return CommonMethod.getReturnData(dataList);
+        }
+        for(Course c : chosenCourse){
+            dataList.add(courseInfoFactory.createCourseInfo("student", c));
+        }
+        return CommonMethod.getReturnData(dataList);
+    }
+
 }

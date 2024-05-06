@@ -8,7 +8,8 @@
 <BorderPane
         xmlns="http://javafx.com/javafx/17"
         xmlns:fx="http://javafx.com/fxml/1"
-        fx:controller="com.teach.javafx.controller.CourseController">
+        fx:controller="com.teach.javafx.controller.CourseController"
+         styleClass="borderpane-container">
    <top>
       <MFXButton fx:id="addNewCourse" text="添加新课程" onAction="#onAddNewCourse" />
    </top>

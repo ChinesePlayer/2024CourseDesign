@@ -67,4 +67,11 @@ public class CourseController {
     public DataResponse getCourse(@Valid @RequestBody DataRequest req){
         return courseService.getCourse(req);
     }
+
+    //根据学生ID，获取学生已选课程
+    @PostMapping("/getChosenCourse")
+    @PreAuthorize("hasRole('ROLE_STUDENT')")
+    public DataResponse getChosenCourse(@Valid @RequestBody DataRequest req){
+        return courseService.getChosenCourse(req);
+    }
 }

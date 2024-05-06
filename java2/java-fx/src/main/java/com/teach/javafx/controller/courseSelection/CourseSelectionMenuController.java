@@ -2,6 +2,8 @@ package com.teach.javafx.controller.courseSelection;
 
 import com.teach.javafx.MainApplication;
 import com.teach.javafx.controller.base.MessageDialog;
+import com.teach.javafx.managers.ShortcutManager;
+import com.teach.javafx.managers.Shortcutable;
 import com.teach.javafx.request.HttpRequestUtil;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.event.ActionEvent;

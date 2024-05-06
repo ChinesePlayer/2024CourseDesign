@@ -6,6 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 import org.fatmansoft.teach.models.Course;
 
 
@@ -29,6 +30,9 @@ public class CourseCell extends StackPane {
     public CourseCell(){
         super();
         this.textLabel = new Label();
+        Tooltip tooltip = new Tooltip(textLabel.getText());
+        tooltip.setShowDelay(Duration.millis(5));
+        Tooltip.install(textLabel, tooltip);
         textLabel.setWrapText(true);
         getChildren().add(textLabel);
         BackgroundFill bFill = new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY);
@@ -42,6 +46,9 @@ public class CourseCell extends StackPane {
     public CourseCell(Label label){
         super();
         this.textLabel = label;
+        Tooltip tooltip = new Tooltip(textLabel.getText());
+        tooltip.setShowDelay(Duration.millis(5));
+        Tooltip.install(textLabel, tooltip);
         textLabel.setWrapText(true);
         getChildren().add(textLabel);
         BackgroundFill bFill = new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY);
@@ -79,6 +86,7 @@ public class CourseCell extends StackPane {
         }
         this.textLabel = new Label(labelStr);
         Tooltip tooltip = new Tooltip(textLabel.getText());
+        tooltip.setShowDelay(Duration.millis(5));
         Tooltip.install(textLabel, tooltip);
         textLabel.setWrapText(true);
         getChildren().add(textLabel);
