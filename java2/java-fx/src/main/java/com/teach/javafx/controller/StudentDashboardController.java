@@ -2,6 +2,7 @@ package com.teach.javafx.controller;
 
 import com.teach.javafx.AppStore;
 import com.teach.javafx.customWidget.CourseTable;
+import com.teach.javafx.managers.ShortcutManager;
 import com.teach.javafx.request.HttpRequestUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -9,9 +10,11 @@ import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.FlowPane;
 import org.fatmansoft.teach.models.Course;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
@@ -41,6 +44,8 @@ public class StudentDashboardController {
     public PieChart markPieChart;
     @FXML
     public CourseTable courseTable;
+    @FXML
+    public FlowPane shortcuts;
 
     //储存信息的变量
     private String name;
@@ -49,6 +54,8 @@ public class StudentDashboardController {
     private Integer id = AppStore.getJwt().getRoleId();
     private Image img;
     private List<Course> chosenCourse = new ArrayList<>();
+    //快捷操作
+    private List<Button> shortActions = new ArrayList<>();
 
     @FXML
     public void initialize(){
@@ -136,6 +143,7 @@ public class StudentDashboardController {
         for(Map m : rawData){
             pieData.add(new PieChart.Data(m.get("title").toString(), Double.parseDouble(m.get("value").toString())));
         }
+        markPieChart.setTitle("成绩分布");
         markPieChart.setData(pieData);
     }
 
@@ -163,6 +171,7 @@ public class StudentDashboardController {
 
     //更新视图信息
     public void updateView(){
+        loadShortcuts();
         initData();
         getStudentAvatar();
         getChosenCourse();
@@ -174,25 +183,38 @@ public class StudentDashboardController {
         LocalTime time = LocalTime.now();
         int hour = time.getHour();
         if(6 <= hour && hour < 12){
-            return "上午好 " + greetObject + ", 来杯咖啡清醒一下吧~";
+            return "上午好 " + greetObject + ", 来杯咖啡清醒一下吧~ ☀";
         }
-        else if(12 <= hour && hour < 13){
-            return "中午好 " + greetObject + ", 再忙也要吃午饭哦~";
+        else if(hour == 12){
+            return "中午好 " + greetObject + ", 再忙也要吃午饭哦~ 🥗";
         }
         else if(13 <= hour && hour < 18){
-            return "下午好 " + greetObject + ", 又是阳光明媚的一天";
+            return "下午好 " + greetObject + ", 又是阳光明媚的一天 😊";
         }
         else if(18 <= hour && hour < 22){
-            return "晚上好 " + greetObject + ", 今天的星星又出来了呢";
+            return "晚上好 " + greetObject + ", 今天的星星又出来了呢 🌟";
         }
-        else if(22 <= hour && hour < 23){
-            return "晚上好 " + greetObject + ", 夜深了, 该休息咯";
+        else if(hour >= 22){
+            return "晚上好 " + greetObject + ", 夜深了, 该休息咯 🌙";
         }
         else if(0 <= hour && hour < 6){
-            return "已经凌晨了 " + greetObject + ", 小夜猫一枚";
+            return "已经凌晨了 " + greetObject + ", 小夜猫一枚 🐈‍⬛";
         }
         else{
             return "我忘了时间......";
         }
+    }
+
+    //刷新课表
+    public void refreshCourseTable(){
+        chosenCourse.clear();
+        getChosenCourse();
+    }
+
+    //加载快捷方式
+    private void loadShortcuts(){
+        shortActions.clear();
+        shortActions = ShortcutManager.getInstance().getShortcutActions();
+        shortcuts.getChildren().addAll(FXCollections.observableArrayList(shortActions));
     }
 }

@@ -1,12 +1,9 @@
-package com.teach.javafx;
+package com.teach.javafx.managers;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import javafx.stage.WindowEvent;
 
 import java.util.List;
 

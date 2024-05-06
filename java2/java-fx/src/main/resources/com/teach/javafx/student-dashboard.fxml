@@ -12,6 +12,7 @@
 <?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.ScrollPane?>
 <?import com.teach.javafx.customWidget.CourseTable?>
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.teach.javafx.controller.StudentDashboardController"
@@ -53,9 +54,14 @@
                         </BarChart>
                         <PieChart fx:id="markPieChart"/>
                     </VBox>
-                    <VBox styleClass="simple-info">
+                    <VBox styleClass="simple-info" alignment="CENTER" spacing="5">
                         <Label text="本周课表" style="-fx-font-size: 20px"/>
                         <CourseTable fx:id="courseTable" prefWidth="480" prefHeight="360" />
+                        <MFXButton text="刷新" onAction="#refreshCourseTable"/>
+                    </VBox>
+                    <VBox spacing="5" styleClass="simple-info">
+                        <Label text="快捷操作" style="-fx-font-size: 20px"/>
+                        <FlowPane fx:id="shortcuts" hgap="10" vgap="20"/>
                     </VBox>
                 </HBox>
 

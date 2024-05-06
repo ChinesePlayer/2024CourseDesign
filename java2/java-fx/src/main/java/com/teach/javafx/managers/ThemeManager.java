@@ -1,14 +1,10 @@
-package com.teach.javafx;
+package com.teach.javafx.managers;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import com.teach.javafx.MainApplication;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 //应用程序主题管理器，单例

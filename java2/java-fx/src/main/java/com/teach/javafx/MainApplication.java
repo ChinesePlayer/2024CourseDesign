@@ -2,6 +2,9 @@ package com.teach.javafx;
 
 import com.teach.javafx.controller.base.MainFrameController;
 import com.teach.javafx.controller.base.MessageDialog;
+import com.teach.javafx.managers.ShortcutManager;
+import com.teach.javafx.managers.ThemeManager;
+import com.teach.javafx.managers.WindowsManager;
 import com.teach.javafx.request.HttpRequestUtil;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -53,6 +56,8 @@ public class MainApplication extends Application {
         ThemeManager.init();
         //初始化窗口管理器
         WindowsManager.init();
+        //初始化快捷方式管理器
+        ShortcutManager.init();
 
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("base/custom-login-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), loginStageWidth, loginStageHeight);

@@ -37,9 +37,12 @@ module com.teach.javafx {
     exports com.teach.javafx.controller.studentScore;
     exports com.teach.javafx.controller.adminCoursePanel;
     exports com.teach.javafx.mySkin;
+    exports com.teach.javafx.managers;
+    exports com.teach.javafx.controller.setting;
     opens com.teach.javafx.models to com.google.gson, javafx.base;
     exports com.teach.javafx.controller.honor;
     opens com.teach.javafx.controller.honor to com.google.gson, javafx.fxml;
     exports com.teach.javafx.controller.courseSelection;
     opens com.teach.javafx.controller.courseSelection to com.google.gson, javafx.fxml;
+    opens com.teach.javafx.managers to javafx.fxml;
 }
