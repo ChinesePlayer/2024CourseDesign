@@ -4,8 +4,11 @@ import com.teach.javafx.MainApplication;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 //应用程序主题管理器，单例
 public class ThemeManager {
@@ -15,6 +18,8 @@ public class ThemeManager {
     private Map<String, String> styleSheets = new HashMap();
     //储存已加载的主题
     private Map<String, String> loadedTheme = new HashMap<>();
+
+    private Map<String, String> nameMapper = new HashMap<>();
     //当前主题
     private String currentTheme;
 
@@ -38,10 +43,17 @@ public class ThemeManager {
         }
 
         //加载默认主题
-        String themeFile = styleSheets.get("default");
-        String theme = MainApplication.class.getResource(CSS_PATH + themeFile).toExternalForm();;
+        String themeName = SettingManager.getInstance().getTheme();
+        String themeFile;
+        if(themeName == null){
+            themeFile = styleSheets.get("default");
+        }
+        else{
+            themeFile = styleSheets.get(themeName);
+        }
+        String theme = MainApplication.class.getResource(CSS_PATH + themeFile).toExternalForm();
         currentTheme = theme;
-        loadedTheme.put("default", theme);
+        loadedTheme.put(themeName, theme);
     }
 
     //根据提供的主题名称加载并返回相应的主题
@@ -85,5 +97,17 @@ public class ThemeManager {
 
     public void setCurrentTheme(String currentTheme) {
         this.currentTheme = currentTheme;
+    }
+
+    //获取所有主题的名字
+    public List<String> getNames(){
+        List<String> res = new ArrayList<>();
+        styleSheets.forEach(new BiConsumer<String, String>() {
+            @Override
+            public void accept(String s, String s2) {
+                res.add(s);
+            }
+        });
+        return res;
     }
 }
