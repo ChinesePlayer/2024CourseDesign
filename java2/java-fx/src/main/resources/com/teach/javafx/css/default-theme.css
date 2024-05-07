@@ -7,8 +7,9 @@
 **********************************/
 
 /* 取消所有元素被选中时的焦点边框颜色 */
-.root{
+*{
     -fx-focus-color: transparent;
+    /*-fx-font-family: 'AmaticSC-Regular';*/
 }
 
 
@@ -22,16 +23,17 @@
 
 .tree-view .tree-cell{
     -fx-background-color: transparent;
-    -fx-padding: 1.4em;
+    -fx-padding: 0.8em;
 }
 
 .tree-view {
-    -fx-background-color: linear-gradient(to bottom, lightblue, white);
-    -fx-effect: innershadow(gaussian, #6f8693, 10.0, 0, 0, 0);
+    -fx-background-color: linear-gradient(to bottom, lightblue, #BBD7EC);
+    -fx-effect: innershadow(gaussian, #9BBCD8, 10.0, 0, 4, 4);
 }
 
 .tree-view .tree-cell{
-    -fx-font-size: 15px;
+    -fx-font-family: Arial;
+    -fx-font-size: 19px;
 }
 
 .tree-view .tree-cell:sub-tree-item{
@@ -41,12 +43,17 @@
 }
 
 .tree-view .tree-cell .tree-disclosure-node .arrow{
-    -fx-background-color: #000000;
+    -fx-background-color: linear-gradient(to bottom, lightblue, white);
+    -fx-effect: dropshadow( gaussian , #496995 , 1 , 1 , 0 , 1 );
+    -fx-pref-width: 12px; /* 调整箭头的宽度 */
+    -fx-pref-height: 12px; /* 调整箭头的高度 */
 }
 
 .tree-view .tree-cell:selected:expanded, .tree-view .tree-cell:sub-tree-item:selected, .tree-view .tree-cell:expanded{
-    -fx-text-fill: #ffffff;
+    -fx-text-fill: #3E3A39;
     -fx-font-weight: bold;
+    -fx-effect: dropshadow( gaussian , #496995 , 0.5 , 0.5 , 0 , 1 );
+    -fx-font-size: 20px;
 }
 
 .tree-view .tree-cell:selected{
@@ -54,7 +61,16 @@
 }
 
 .tree-view .tree-cell:expanded .tree-disclosure-node .arrow{
-    -fx-background-color: #ffffff;
+    -fx-background-color: linear-gradient(to bottom, lightblue, white);
+}
+
+.tree-view .tree-cell:hover{
+    -fx-font-size:21px;
+    -fx-background-color: lightblue;
+    -fx-effect: dropshadow(gaussian, #88abda, 20.0, 0,10,10);
+    -fx-background-radius: 0.0 8 8 8;
+    -fx-opacity: 0.8;
+    -fx-padding: 0.8em;
 }
 
 
@@ -63,17 +79,30 @@
 顶部菜单栏样式
 
 **********************************/
-
 .menu-bar {
-    -fx-background-color: #a1c0de;
+    -fx-pref-width: 60px;
+    -fx-pref-height: 48px;
+    -fx-font-size:  19px ;
+    -fx-font-family: "Verdana";
+    -fx-background-color: linear-gradient(to bottom, #a1c0de, lightblue);
     -fx-text-fill: #ffffff;
+    /*-fx-opacity: 0.5;*/
     -fx-effect: dropshadow(gaussian, #6f8693, 20.0, 0,0,0);
 }
 
+.menu-button {
+    -fx-pref-height: 62px;
+}
+
 .menu-button:hover, .menu-button:focused, .menu-button:showing {
-    -fx-background: black ;
-    -fx-opacity: 0.5;
+    -fx-font-family: Arial;
+    -fx-padding: 0.5em;
+    -fx-background-color: linear-gradient(to bottom, #003152, #152F60);
+    -fx-opacity: 0.8;
     -fx-text-fill: white;
+    -fx-background-radius: 0.0 6.0 6.0 6.0;
+    -fx-effect: dropshadow(gaussian, #6f8693, 20.0, 0,10,10);
+    -fx-font-size:  20px ;
 }
 
 /*******************************
@@ -83,15 +112,19 @@
 **********************************/
 
 .context-menu{
-    -fx-background-color:lightblue ;
+    -fx-background-color: linear-gradient(to bottom, #93b5d0, lightblue);
     -fx-background-insets: 0.0;
     -fx-background-radius: 0.0 6.0 6.0 6.0;
-    -fx-padding: 0.0;
+    -fx-padding: 0.6;
+    -fx-font-size:  18px ;
 }
 
 .context-menu .menu-item:hover, .context-menu .menu-item:focused{
-    -fx-background-color: #6f8693;
+    -fx-background-color: #152f60;
     -fx-background-radius: 0.0 6.0 6.0 6.0;
+    -fx-opacity: 0.8;
+    -fx-effect: dropshadow(gaussian, #6f8693, 20.0, 0,10,10);
+    -fx-padding: 0.6em;
 }
 
 
@@ -105,12 +138,15 @@
 /* 取消行分割线 */
 .table-row-cell{
     -fx-background-insets: 0;
+    -fx-cell-size: 36px;
 }
 
 /* 取消列分割线，并使内容居中 */
 .table-view .table-row-cell .table-cell{
     -fx-border-width: 0px;
     -fx-alignment: center;
+    -fx-font-size: 18px;
+    -fx-font-family: Arial;
 }
 
 /* 奇数行的颜色 */
@@ -140,10 +176,13 @@
 
 /* 调整列标题字重 */
 .table-view .column-header{
+    -fx-font-size: 18px;
+    -fx-font-family: Arial;
     -fx-font-weight: lighter;
     -fx-background-color: #799ba1;
     -fx-border-width: 0px 1px 0px 0px;
     -fx-border-color: #afafaf;
+    -fx-header-height: 60px;
 }
 
 /* 列头文字颜色 */
@@ -214,7 +253,7 @@ Button样式
 
 .button {
     -fx-background-color: linear-gradient(to top, lightblue, white);
-    -fx-padding: 10;
+    -fx-padding: 15;
     -fx-font-weight: lighter;
 }
 
