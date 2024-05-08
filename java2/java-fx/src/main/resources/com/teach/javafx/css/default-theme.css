@@ -38,7 +38,6 @@
 
 .tree-view .tree-cell:sub-tree-item{
     -fx-background-color: transparent;
-
     -fx-text-alignment: center;
 }
 
@@ -337,4 +336,10 @@ ImageView样式
     -fx-border-width: 3 3 5 3;
     -fx-border-radius: 10;
     -fx-padding: 20px;
+}
+
+.setting-label{
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-padding: 5px;
 }

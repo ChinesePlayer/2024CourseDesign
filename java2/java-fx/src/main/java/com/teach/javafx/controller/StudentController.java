@@ -158,7 +158,7 @@ public class StudentController extends ToolController {
         studentId = CommonMethod.getInteger(form,"studentId");
         DataRequest req = new DataRequest();
         req.add("studentId",studentId);
-        DataResponse res = HttpRequestUtil.request("/api/student/setStudentSimpleInfo",req);
+        DataResponse res = HttpRequestUtil.request("/api/student/getStudentInfo",req);
         if(res.getCode() != 0){
             MessageDialog.showDialog(res.getMsg());
             return;

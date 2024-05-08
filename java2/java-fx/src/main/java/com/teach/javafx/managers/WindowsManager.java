@@ -35,7 +35,7 @@ public class WindowsManager {
                         for(Window w : addedWindows){
                             Stage stage = (Stage) w;
                             stage.getScene().getStylesheets().clear();
-                            stage.getScene().getStylesheets().add(ThemeManager.getInstance().getCurrentTheme());
+                            stage.getScene().getStylesheets().add(ThemeManager.getInstance().getCurrentExternForm());
                         }
                     }
                 }
@@ -53,5 +53,10 @@ public class WindowsManager {
         }
         initWindowsManager();
         System.out.println(instance.windows.size());
+    }
+
+    //获取所有窗口
+    public List<Window> getWindows(){
+        return windows.stream().toList();
     }
 }
