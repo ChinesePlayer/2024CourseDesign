@@ -1,7 +1,9 @@
 package com.teach.javafx.controller.setting;
 
 import com.teach.javafx.MainApplication;
+import com.teach.javafx.controller.base.MessageDialog;
 import com.teach.javafx.managers.Settable;
+import com.teach.javafx.managers.SettingManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -64,14 +66,16 @@ public class SystemSettingController {
         }
     }
 
-    //检查是否修改了设置
-
     //应用设置
     public void onSave(){
         for(Settable sta : settables){
             if(sta.isModified()){
-
+                SettingManager.getInstance().set(sta.getPairs());
+                sta.applyChange();
             }
+        }
+        if(SettingManager.getInstance().save()){
+            MessageDialog.showDialog("保存成功!");
         }
     }
 }

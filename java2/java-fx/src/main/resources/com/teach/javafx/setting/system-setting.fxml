@@ -25,7 +25,7 @@
             <BorderPane.margin>
                 <Insets top="10" bottom="10" />
             </BorderPane.margin>
-            <Button text="保存" />
+            <Button text="保存" onAction="#onSave" />
         </HBox>
     </bottom>
 

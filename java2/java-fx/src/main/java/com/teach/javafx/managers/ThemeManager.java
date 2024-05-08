@@ -1,6 +1,8 @@
 package com.teach.javafx.managers;
 
 import com.teach.javafx.MainApplication;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 
 import java.io.File;
 import java.net.URL;
@@ -18,8 +20,9 @@ public class ThemeManager {
     private Map<String, String> styleSheets = new HashMap();
     //储存已加载的主题
     private Map<String, String> loadedTheme = new HashMap<>();
+    //主题名---主题ID映射
+    private Map<String, String> nameMapper;
 
-    private Map<String, String> nameMapper = new HashMap<>();
     //当前主题名称
     private String currentThemeId;
 
@@ -54,6 +57,9 @@ public class ThemeManager {
         String theme = MainApplication.class.getResource(CSS_PATH + themeFile).toExternalForm();
         currentThemeId = themeName;
         loadedTheme.put(themeName, theme);
+
+        //获取主题名---主题ID的映射
+        nameMapper = SettingManager.getInstance().getThemeMapper();
     }
 
     //根据提供的主题名称加载并返回相应的主题
@@ -95,8 +101,34 @@ public class ThemeManager {
         return currentThemeId;
     }
 
-    public void setCurrentThemeId(String themeId) {
-        this.currentThemeId = themeId;
+    public void changeTo(String themeId){
+        List<Window> windows = WindowsManager.getInstance().getWindows();
+        String theme = getTheme(themeId);
+        if(theme == null){
+            return;
+        }
+        for(Window w : windows){
+            Stage s = (Stage) w;
+            s.getScene().getStylesheets().clear();
+            s.getScene().getStylesheets().add(theme);
+        }
+        currentThemeId = themeId;
+    }
+
+    //通过主题Id获取主题名
+    public String getThemeName(String themeId){
+        final String[] themeName = {null};
+        //遍历整个nameMapper
+        nameMapper.forEach((s, s2) -> {
+            if(s2.equals(themeId)){
+                themeName[0] = s;
+            }
+        });
+        return themeName[0];
+    }
+
+    public String getCurrentThemeName(){
+        return getThemeName(currentThemeId);
     }
 
     public String getCurrentExternForm(){
@@ -106,12 +138,7 @@ public class ThemeManager {
     //获取所有主题的名字
     public List<String> getNames(){
         List<String> res = new ArrayList<>();
-        styleSheets.forEach(new BiConsumer<String, String>() {
-            @Override
-            public void accept(String s, String s2) {
-                res.add(s);
-            }
-        });
+        styleSheets.forEach((s, s2) -> res.add(s));
         return res;
     }
 }

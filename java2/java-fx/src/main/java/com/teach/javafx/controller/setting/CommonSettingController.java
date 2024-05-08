@@ -4,10 +4,10 @@ import com.teach.javafx.managers.Settable;
 import com.teach.javafx.managers.SettingManager;
 import com.teach.javafx.managers.ThemeManager;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 
@@ -16,13 +16,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 public class CommonSettingController implements Settable {
     @FXML
     public HBox radioHBox;
     private List<RadioButton> themeRadios = new ArrayList<>();
     private ToggleGroup themeRadioGroup = new ToggleGroup();
-    //选项名称和主题名的映射
+    //主题名和主题ID的映射
     private Map<String, String> themeMap = new HashMap<>();
 
     @FXML
@@ -36,6 +37,12 @@ public class CommonSettingController implements Settable {
             themeMap.put(name, id);
         });
         radioHBox.getChildren().addAll(FXCollections.observableArrayList(themeRadios));
+        radioHBox.getChildren().forEach(node -> {
+            RadioButton radioButton = (RadioButton) node;
+            if(radioButton.getText().equals(ThemeManager.getInstance().getCurrentThemeName())){
+                themeRadioGroup.selectToggle(radioButton);
+            }
+        });
     }
 
     @Override
@@ -52,5 +59,12 @@ public class CommonSettingController implements Settable {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void applyChange(){
+        RadioButton button = (RadioButton) themeRadioGroup.getSelectedToggle();
+        String themeName = button.getText();
+        ThemeManager.getInstance().changeTo(themeMap.get(themeName));
     }
 }

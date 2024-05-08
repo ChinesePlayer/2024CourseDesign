@@ -38,7 +38,6 @@
 
 .tree-view .tree-cell:sub-tree-item{
     -fx-background-color: transparent;
-
     -fx-text-alignment: center;
 }
 

@@ -8,5 +8,5 @@ public interface Settable {
     Map<String, Object> getPairs();
     //实时应用修改，可选
     default void applyChange(){}
-    boolean isModified();
+    default boolean isModified(){return true;}
 }

@@ -54,4 +54,9 @@ public class WindowsManager {
         initWindowsManager();
         System.out.println(instance.windows.size());
     }
+
+    //获取所有窗口
+    public List<Window> getWindows(){
+        return windows.stream().toList();
+    }
 }

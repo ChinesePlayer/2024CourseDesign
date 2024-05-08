@@ -89,7 +89,6 @@ public class MainApplication extends Application {
             mainStage.setHeight(stageHeight);
             mainStage.setX(0);
             mainStage.setY(0);
-
         }
         mainStage.setTitle(name);
         mainStage.setScene(scene);
