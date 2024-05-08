@@ -9,6 +9,7 @@ import java.net.URI;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 //设置管理类，用于维护设置文件
 public class SettingManager {
@@ -75,4 +76,14 @@ public class SettingManager {
         return res;
     }
 
+    public void set(Map<String ,Object> m){
+        setting.putAll(m);
+    }
+
+//    //将设置保存至文件
+//    public void save(){
+//        try{
+//            FileWriter writer = new FileWriter()
+//        }
+//    }
 }

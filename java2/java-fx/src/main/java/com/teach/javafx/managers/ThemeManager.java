@@ -20,8 +20,8 @@ public class ThemeManager {
     private Map<String, String> loadedTheme = new HashMap<>();
 
     private Map<String, String> nameMapper = new HashMap<>();
-    //当前主题
-    private String currentTheme;
+    //当前主题名称
+    private String currentThemeId;
 
     private ThemeManager(){
         URL cssFolderUrl = MainApplication.class.getResource(CSS_PATH);
@@ -52,7 +52,7 @@ public class ThemeManager {
             themeFile = styleSheets.get(themeName);
         }
         String theme = MainApplication.class.getResource(CSS_PATH + themeFile).toExternalForm();
-        currentTheme = theme;
+        currentThemeId = themeName;
         loadedTheme.put(themeName, theme);
     }
 
@@ -91,12 +91,16 @@ public class ThemeManager {
         initThemeManager();
     }
 
-    public String getCurrentTheme() {
-        return currentTheme;
+    public String getCurrentThemeId(){
+        return currentThemeId;
     }
 
-    public void setCurrentTheme(String currentTheme) {
-        this.currentTheme = currentTheme;
+    public void setCurrentThemeId(String themeId) {
+        this.currentThemeId = themeId;
+    }
+
+    public String getCurrentExternForm(){
+        return getTheme(currentThemeId);
     }
 
     //获取所有主题的名字
