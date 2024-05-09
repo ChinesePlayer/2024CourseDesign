@@ -13,6 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -44,7 +45,7 @@ public class CourseSelectionController {
     @FXML
     public TableColumn<Course, String> loc;
     @FXML
-    public TableColumn<Course, Button> action;
+    public TableColumn<Course, HBox> action;
     @FXML
     public TableColumn<Course, String> days;
     @FXML
@@ -129,7 +130,9 @@ public class CourseSelectionController {
                 Course c = new Course(m);
                 MFXButton button = new MFXButton("选课");
                 button.setOnAction(this::onChooseButton);
-                c.setAction(button);
+                List<Button> buttons = new ArrayList<>();
+                buttons.add(button);
+                c.setAction(buttons);
                 courses.add(c);
                 //根据是否选中将课程分配到已选和未选两个List中
                 if(c.getChosen()){
@@ -174,10 +177,10 @@ public class CourseSelectionController {
         action.setCellValueFactory(new CourseActionValueFactory());
         action.setCellFactory(new Callback<>() {
             @Override
-            public TableCell<Course, Button> call(TableColumn<Course, Button> courseMFXButtonTableColumn) {
-                TableCell<Course, Button> cell = new TableCell<>() {
+            public TableCell<Course, HBox> call(TableColumn<Course, HBox> courseMFXButtonTableColumn) {
+                TableCell<Course, HBox> cell = new TableCell<>() {
                     @Override
-                    protected void updateItem(Button item, boolean empty) {
+                    protected void updateItem(HBox item, boolean empty) {
                         super.updateItem(item, empty);
                         if (item == null || empty) {
                             setText(null);
@@ -224,18 +227,18 @@ public class CourseSelectionController {
 
     public void setButtonCantChoose(Course c, Course cfltCourse){
         if(cfltCourse == null){
-            c.getAction().setText("课程冲突，不能选课");
-            c.getAction().setDisable(true);
+            c.getAction().get(0).setText("课程冲突，不能选课");
+            Course.setActionsStatus(c, false);
         }
         else {
-            c.getAction().setText("与 " + cfltCourse.getName() + " 冲突, 不能选课");
-            c.getAction().setDisable(true);
+            c.getAction().get(0).setText("与 " + cfltCourse.getName() + " 冲突, 不能选课");
+            Course.setActionsStatus(c, false);
         }
     }
 
     public void setButtonCanChoose(Course c){
-        c.getAction().setText("选课");
-        c.getAction().setDisable(false);
+        c.getAction().get(0).setText("选课");
+        Course.setActionsStatus(c, true);
     }
 
     public void onChooseButton(ActionEvent event){

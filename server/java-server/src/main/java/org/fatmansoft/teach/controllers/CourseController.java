@@ -74,4 +74,10 @@ public class CourseController {
     public DataResponse getChosenCourse(@Valid @RequestBody DataRequest req){
         return courseService.getChosenCourse(req);
     }
+
+    //老师端获取该老师自己教授的课程
+    @PostMapping("/getTeacherCourseList")
+    public DataResponse getTeacherCourseList(@Valid @RequestBody DataRequest req){
+        return courseService.getTeacherCourseList(req);
+    }
 }

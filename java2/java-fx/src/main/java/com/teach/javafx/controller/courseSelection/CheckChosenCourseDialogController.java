@@ -14,6 +14,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.MapValueFactory;
+import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 import org.fatmansoft.teach.models.Course;
 import org.fatmansoft.teach.payload.request.DataRequest;
@@ -36,7 +37,7 @@ public class CheckChosenCourseDialogController {
     @FXML
     public TableColumn<Course, String> preCourse;
     @FXML
-    public TableColumn<Course, Button> action;
+    public TableColumn<Course, HBox> action;
     private List<Course> courses = new ArrayList<>();
     private ObservableList<Course> observableList = FXCollections.observableArrayList();
     private CourseSelectionController courseSelectionController;
@@ -55,7 +56,9 @@ public class CheckChosenCourseDialogController {
         for(Course c : courses){
             MFXButton button = new MFXButton("退选");
             button.setOnAction(this::onCancelButtonPressed);
-            c.setAction(button);
+            List<Button> buttons = new ArrayList<>();
+            buttons.add(button);
+            c.setAction(buttons);
         }
         setTableViewData();
     }
@@ -75,10 +78,10 @@ public class CheckChosenCourseDialogController {
         //设置按钮所在单元格为居中显示
         action.setCellFactory(new Callback<>() {
             @Override
-            public TableCell<Course, Button> call(TableColumn<Course, Button> courseMFXButtonTableColumn) {
-                TableCell<Course, Button> cell = new TableCell<>() {
+            public TableCell<Course, HBox> call(TableColumn<Course, HBox> courseMFXButtonTableColumn) {
+                TableCell<Course, HBox> cell = new TableCell<>() {
                     @Override
-                    protected void updateItem(Button item, boolean empty) {
+                    protected void updateItem(HBox item, boolean empty) {
                         super.updateItem(item, empty);
                         if (item == null || empty) {
                             setText(null);

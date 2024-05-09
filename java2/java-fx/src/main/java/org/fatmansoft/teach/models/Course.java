@@ -1,7 +1,6 @@
 package org.fatmansoft.teach.models;
 
 import com.teach.javafx.request.HttpRequestUtil;
-import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.scene.control.Button;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
@@ -252,5 +251,38 @@ public class Course {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    //静态方法，将某个课程的操作设为不可用
+    public static void setActionsStatus(Course c, boolean status){
+        if(c == null){
+            return;
+        }
+        for(Button b : c.getAction()){
+            b.setDisable(!status);
+        }
+    }
+
+    //批量将指定的按钮设为不可用
+    public static void setActionsStatus(Course c, List<Button> actions, boolean status){
+        if(c == null || (actions == null || actions.isEmpty())){
+            return;
+        }
+        for(Button b : c.getAction()){
+            if(actions.contains(b)){
+                b.setDisable(!status);
+            }
+        }
+    }
+
+    public static void setActionsStatus(Course c, Button action, boolean status){
+        if(c == null || action ==null){
+            return;
+        }
+        for(Button b : c.getAction()){
+            if(b == action){
+                b.setDisable(!status);
+            }
+        }
     }
 }

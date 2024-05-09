@@ -451,4 +451,17 @@ public class CourseService {
         return CommonMethod.getReturnData(dataList);
     }
 
+    public DataResponse getTeacherCourseList(DataRequest req){
+        Integer teacherId = req.getInteger("teacherId");
+        if(teacherId == null){
+            return CommonMethod.getReturnMessageError("无法获取老师ID");
+        }
+        List<Course> courses = courseRepository.findCoursesByTeacherId(teacherId);
+        List<Map> dataList = new ArrayList<>();
+        for(Course c : courses){
+            dataList.add(courseInfoFactory.createCourseInfo("teacher", c));
+        }
+        return CommonMethod.getReturnData(dataList);
+    }
+
 }

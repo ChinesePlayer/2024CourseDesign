@@ -19,6 +19,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -47,7 +48,7 @@ public class CourseController {
     @FXML
     public TableColumn<Course, String> loc;
     @FXML
-    public TableColumn<Course, Button> action;
+    public TableColumn<Course, HBox> action;
     @FXML
     public MFXButton addNewCourse;
     @FXML
@@ -78,7 +79,9 @@ public class CourseController {
                 Course c = new Course(m);
                 MFXButton button = new MFXButton("编辑");
                 button.setOnAction(this::onEditButtonClick);
-                c.setAction(button);
+                List<Button> buttons = new ArrayList<>();
+                buttons.add(button);
+                c.setAction(buttons);
                 courseList.add(c);
             }
         }
@@ -112,10 +115,10 @@ public class CourseController {
         //设置按钮为居中显示
         action.setCellFactory(new Callback<>() {
             @Override
-            public TableCell<Course, Button> call(TableColumn<Course, Button> courseMFXButtonTableColumn) {
-                TableCell<Course, Button> cell = new TableCell<>() {
+            public TableCell<Course, HBox> call(TableColumn<Course, HBox> courseMFXButtonTableColumn) {
+                TableCell<Course, HBox> cell = new TableCell<>() {
                     @Override
-                    protected void updateItem(Button item, boolean empty) {
+                    protected void updateItem(HBox item, boolean empty) {
                         super.updateItem(item, empty);
                         if (item == null || empty) {
                             setText(null);
@@ -145,12 +148,16 @@ public class CourseController {
         }
     }
 
+    //保存了课程后的后续工作
+    //重设按钮状态，更新显示数据
     public void onHasSavedCourse(Course c){
         if(!courseList.contains(c)){
             courseList.add(c);
             MFXButton button = new MFXButton("编辑");
             button.setOnAction(this::onEditButtonClick);
-            c.setAction(button);
+            List<Button> buttons = new ArrayList<>();
+            buttons.add(button);
+            c.setAction(buttons);
         }
         setTableViewData();
     }
