@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -35,7 +36,7 @@ public class CheckChosenCourseDialogController {
     @FXML
     public TableColumn<Course, String> preCourse;
     @FXML
-    public TableColumn<Course, MFXButton> action;
+    public TableColumn<Course, Button> action;
     private List<Course> courses = new ArrayList<>();
     private ObservableList<Course> observableList = FXCollections.observableArrayList();
     private CourseSelectionController courseSelectionController;
@@ -74,10 +75,10 @@ public class CheckChosenCourseDialogController {
         //设置按钮所在单元格为居中显示
         action.setCellFactory(new Callback<>() {
             @Override
-            public TableCell<Course, MFXButton> call(TableColumn<Course, MFXButton> courseMFXButtonTableColumn) {
-                TableCell<Course, MFXButton> cell = new TableCell<>() {
+            public TableCell<Course, Button> call(TableColumn<Course, Button> courseMFXButtonTableColumn) {
+                TableCell<Course, Button> cell = new TableCell<>() {
                     @Override
-                    protected void updateItem(MFXButton item, boolean empty) {
+                    protected void updateItem(Button item, boolean empty) {
                         super.updateItem(item, empty);
                         if (item == null || empty) {
                             setText(null);

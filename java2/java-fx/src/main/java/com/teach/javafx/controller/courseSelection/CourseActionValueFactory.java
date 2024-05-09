@@ -4,15 +4,19 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
+import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 import org.fatmansoft.teach.models.Course;
 
-public class CourseActionValueFactory implements Callback<TableColumn.CellDataFeatures<Course, MFXButton>, ObservableValue<MFXButton>> {
+public class CourseActionValueFactory implements Callback<TableColumn.CellDataFeatures<Course, Button>, ObservableValue<Button>> {
     @Override
-    public ObservableValue<MFXButton> call(TableColumn.CellDataFeatures<Course, MFXButton> param) {
+    public ObservableValue<Button> call(TableColumn.CellDataFeatures<Course, Button> param) {
         Course c = param.getValue();
-        MFXButton button = c.getAction();
-        return new ReadOnlyObjectWrapper<>(button);
+        HBox buttonList = new HBox();
+        buttonList.getChildren().addAll(FXCollections.observableArrayList(c.getAction()));
+        return new ReadOnlyObjectWrapper<>(HBox);
     }
 }

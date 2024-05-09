@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import io.github.palexdev.materialfx.controls.MFXCheckbox?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.teach.javafx.controller.base.MenuEditorController"
+            prefHeight="400.0" prefWidth="600.0"
+            styleClass="borderpane-container">
+    <center>
+        <VBox spacing="5" alignment="TOP_CENTER">
+            <HBox alignment="CENTER">
+                <Label text="菜单名称: " />
+                <TextField fx:id="menuName" />
+            </HBox>
+            <HBox alignment="CENTER">
+                <Label text="权限设置" />
+                <MFXCheckbox fx:id="adminC" text="管理员" />
+                <MFXCheckbox fx:id="studentC" text="学生" />
+                <MFXCheckbox fx:id="teacherC" text="教师" />
+            </HBox>
+            <Button text="保存" onAction="#onSave" />
+        </VBox>
+    </center>
+
+</BorderPane>
