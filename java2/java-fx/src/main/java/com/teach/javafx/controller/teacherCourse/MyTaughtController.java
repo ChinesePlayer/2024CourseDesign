@@ -2,28 +2,26 @@ package com.teach.javafx.controller.teacherCourse;
 
 import com.teach.javafx.AppStore;
 import com.teach.javafx.MainApplication;
+import com.teach.javafx.controller.base.MessageDialog;
 import com.teach.javafx.controller.courseSelection.CourseActionValueFactory;
 import com.teach.javafx.controller.courseSelection.CourseTimeValueFactory;
 import com.teach.javafx.controller.courseSelection.CourseValueFactory;
+import com.teach.javafx.managers.WindowOpenAction;
+import com.teach.javafx.managers.WindowsManager;
 import com.teach.javafx.request.HttpRequestUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-import org.apache.batik.apps.rasterizer.Main;
 import org.fatmansoft.teach.models.Course;
-import org.fatmansoft.teach.models.CourseTime;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.util.CommonMethod;
@@ -80,12 +78,13 @@ public class MyTaughtController {
                 //学生管理按钮
                 Button checkStudent = new Button("学生管理");
                 checkStudent.setOnAction(this::onViewStudentClick);
-                //发布作业按钮
-                Button alignHomework = new Button("发布作业");
-                alignHomework.setOnAction(this::);
+
+                Button viewHomework = new Button("作业管理");
+                viewHomework.setOnAction(this::onViewHomework);
 
                 List<Button> buttonList = new ArrayList<>();
                 buttonList.add(checkStudent);
+                buttonList.add(viewHomework);
                 c.setAction(buttonList);
 
                 courseList.add(c);
@@ -127,9 +126,24 @@ public class MyTaughtController {
         }
     }
 
-    //发布作业回调
-    private void onAlignHomework(ActionEvent event){
-        Course m = (Course) CommonMethod.getRowValue(event, 2, courseTableView);
-        FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource())
+
+
+    //查看作业回调
+    private void onViewHomework(ActionEvent event){
+        Course c = (Course) CommonMethod.getRowValue(event, 2, courseTableView);
+        FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("teacherCourse/view-homework.fxml"));
+        try{
+            WindowsManager.getInstance().openNewWindow(
+                    loader, 800, 600, "管理作业: " + c.getName(),
+                    courseTableView.getScene().getWindow(), Modality.WINDOW_MODAL,
+                    controller -> {
+                        ViewHomeworkController controller1 = (ViewHomeworkController) controller;
+                        controller1.init(c, MyTaughtController.this);
+                    });
+        }
+        catch (IOException e){
+            e.printStackTrace();
+            MessageDialog.showDialog("打开作业管理页面失败");
+        }
     }
 }

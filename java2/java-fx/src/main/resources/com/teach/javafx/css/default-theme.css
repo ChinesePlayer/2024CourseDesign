@@ -343,3 +343,8 @@ ImageView样式
     -fx-font-weight: bold;
     -fx-padding: 5px;
 }
+
+/* 字体稍大的Label */
+.middle-label{
+    -fx-font-size: 15px;
+}

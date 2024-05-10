@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.teach.javafx.controller.teacherCourse.ViewHomeworkController"
+            prefHeight="400.0" prefWidth="600.0"
+            styleClass="borderpane-container">
+    <top>
+        <Button text="布置作业" onAction="#onAlignHomework">
+            <BorderPane.margin>
+                <Insets top="10" bottom="10" left="10" right="10"/>
+            </BorderPane.margin>
+        </Button>
+    </top>
+    <center>
+        <GridPane fx:id="gridPane">
+            <BorderPane.margin>
+                <Insets top="20" left="20" right="20" bottom="20" />
+            </BorderPane.margin>
+        </GridPane>
+    </center>
+
+</BorderPane>

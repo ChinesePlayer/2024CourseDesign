@@ -20,6 +20,7 @@ public class CourseActionValueFactory implements Callback<TableColumn.CellDataFe
         }
         Course c = param.getValue();
         HBox buttonList = new HBox();
+        buttonList.setSpacing(5);
         buttonList.setAlignment(Pos.CENTER);
         buttonList.getChildren().addAll(FXCollections.observableArrayList(c.getAction()));
         return new ReadOnlyObjectWrapper<>(buttonList);

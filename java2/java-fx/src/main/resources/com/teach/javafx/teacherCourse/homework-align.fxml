@@ -1,22 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teach.javafx.controller.teacherCourse.HomeworkAlignController">
+<BorderPane
+        prefHeight="400.0"
+        prefWidth="600.0"
+        xmlns="http://javafx.com/javafx/17.0.2-ea"
+        xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="com.teach.javafx.controller.teacherCourse.HomeworkAlignController"
+        styleClass="borderpane-container">
    <top>
-        <GridPane BorderPane.alignment="CENTER">
+        <GridPane alignment="CENTER" prefHeight="196.0" prefWidth="600.0" vgap="15" BorderPane.alignment="CENTER">
          <columnConstraints>
-            <ColumnConstraints maxWidth="54.666668574015304" minWidth="35.666668574015304" prefWidth="54.666668574015304" />
-            <ColumnConstraints maxWidth="94.99999809265135" minWidth="10.0" prefWidth="75.99999809265135" />
+            <ColumnConstraints maxWidth="90" minWidth="35.666668574015304" prefWidth="120" />
+            <ColumnConstraints maxWidth="350" minWidth="10.0" prefWidth="300" />
          </columnConstraints>
          <rowConstraints>
             <RowConstraints maxHeight="32.33333333333333" minHeight="20.33333237965902" prefHeight="26.333333333333332" />
-            <RowConstraints maxHeight="25.000000953674316" minHeight="10.0" prefHeight="19.666666666666668" />
+            <RowConstraints maxHeight="100" minHeight="30.0" prefHeight="100" />
+            <RowConstraints maxHeight="50.0" minHeight="30.0" prefHeight="45.0" />
          </rowConstraints>
          <children>
-            <Label text="Label" />
-         </children></GridPane>
+            <Label prefHeight="27.0" prefWidth="49.0" text="作业标题" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <TextField GridPane.columnIndex="1" fx:id="titleField" />
+            <Label text="作业描述" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+            <TextArea prefHeight="78.0" prefWidth="95.0" GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="contentArea" />
+            <Button mnemonicParsing="false" text="提交" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER"  />
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </BorderPane.margin></GridPane>
    </top>
 
 </BorderPane>
