@@ -83,10 +83,18 @@ public class TeacherService {
         if(status == null){
             return CommonMethod.getReturnMessageError("无法获取课程状态");
         }
+        List<Score> scoreList = scoreRepository.findByStudentCourse(studentId, courseId);
         //课程状态被调整为为已及格，删除所有其他的课程状态
         if(status == 1){
-            List<Score> scoreList = scoreRepository.findByStudentCourse(studentId, courseId);
             scoreRepository.deleteAll(scoreList);
+        }
+        else{
+            //删除所有已及格的课程实体类对象
+            scoreList.forEach(score1 -> {
+                if(score1.getStatus() == 1){
+                    scoreRepository.delete(score1);
+                }
+            });
         }
         score.setMark(mark);
         score.setStatus(status);
