@@ -137,7 +137,7 @@ public class CourseController {
     }
 
     public void onEditButtonClick(ActionEvent event){
-        TableCell<Course, MFXButton> cell = (TableCell<Course, MFXButton>) ((MFXButton)event.getTarget()).getParent();
+        TableCell<Course, ?> cell = (TableCell<Course, ?>) ((Button)event.getTarget()).getParent().getParent();
         int rowIndex = cell.getIndex();
         Course c = observableList.get(rowIndex);
         try{

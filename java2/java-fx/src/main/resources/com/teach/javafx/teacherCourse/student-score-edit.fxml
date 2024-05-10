@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.teach.javafx.controller.teacherCourse.StudentScoreEditController"
+            styleClass="borderpane-container"
+            prefHeight="400.0" prefWidth="600.0">
+
+    <center>
+        <VBox alignment="TOP_CENTER" spacing="5">
+            <HBox alignment="CENTER" spacing="5">
+                <Label text="成绩录入" />
+                <TextField fx:id="markField"  />
+            </HBox>
+            <HBox alignment="CENTER" spacing="5">
+                <Label text="修读状态" />
+                <ComboBox fx:id="statusComboBox" />
+            </HBox>
+            <Button text="保存" onAction="#onSave" />
+        </VBox>
+    </center>
+
+</BorderPane>

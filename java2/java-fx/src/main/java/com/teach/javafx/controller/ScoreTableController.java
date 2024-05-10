@@ -40,6 +40,8 @@ public class ScoreTableController {
     @FXML
     private TableColumn<Score,String> studentNum;
     @FXML
+    public TableColumn<Score, String> status;
+    @FXML
     private TableColumn<Score,String> studentName;
     @FXML
     private TableColumn<Score,String> className;
@@ -193,6 +195,7 @@ public class ScoreTableController {
         courseName.setCellValueFactory(new StudentScoreValueFactory());
         credit.setCellValueFactory(new StudentScoreValueFactory());
         mark.setCellValueFactory(new StudentScoreValueFactory());
+        status.setCellValueFactory(new StudentScoreValueFactory());
         editColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Score, Button>, ObservableValue<Button>>() {
             @Override
             public ObservableValue<Button> call(TableColumn.CellDataFeatures<Score, Button> data) {
@@ -216,7 +219,7 @@ public class ScoreTableController {
         Scene scene = null;
         try {
             fxmlLoader = new FXMLLoader(MainApplication.class.getResource("score-edit-dialog.fxml"));
-            scene = new Scene(fxmlLoader.load(), 260, 140);
+            scene = new Scene(fxmlLoader.load(), 400, 220);
             stage = new Stage();
             stage.initOwner(MainApplication.getMainStage());
             //设置当前对话框的模态: 即当对话框关闭前，用户无法与其父窗口进行交互
@@ -258,7 +261,8 @@ public class ScoreTableController {
         req.add("courseId",courseId);
         req.add("scoreId",CommonMethod.getInteger(data,"scoreId"));
         req.add("mark",CommonMethod.getInteger(data,"mark"));
-        res = HttpRequestUtil.request("/api/score/scoreSave",req); //从后台获取所有学生信息列表集合
+        req.add("status", CommonMethod.getInteger(data, "status"));
+        res = HttpRequestUtil.request("/api/score/scoreSave",req);
         if(res != null && res.getCode()== 0) {
             onQueryButtonClick();
         }

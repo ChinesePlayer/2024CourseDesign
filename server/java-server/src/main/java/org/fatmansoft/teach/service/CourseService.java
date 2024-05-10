@@ -11,9 +11,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.swing.text.html.Option;
 import javax.validation.Valid;
+import java.net.Socket;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.function.Consumer;
 
 @Service
 public class CourseService {
@@ -33,6 +36,8 @@ public class CourseService {
     private CompletionStatusRepository completionStatusRepository;
     @Autowired
     private CourseInfoFactory courseInfoFactory;
+    @Autowired
+    private ScoreRepository scoreRepository;
 
     //根据学生已选课程和来标记每个课程是否已被该学生选中
     //注意该方法会修改第一个参数!
@@ -83,6 +88,14 @@ public class CourseService {
         }
         student.getCourses().remove(course);
         course.getStudents().remove(student);
+
+        //删除所有该学生该课程正在修读中的Score实体对象
+        List<Score> scoreList = scoreRepository.findByStudentCourse(studentId, courseId);
+        for(Score s : scoreList){
+            if(s.getStatus() == 0){
+                scoreRepository.delete(s);
+            }
+        }
 
         studentRepository.saveAndFlush(student);
         chosenCourse = studentRepository.findCoursesByStudentId(studentId);
@@ -176,10 +189,31 @@ public class CourseService {
         if(!chosenCourse.contains(preCourse) && preCourse != null){
             return CommonMethod.getReturnMessageError("你尚未修读其前序课程: " + preCourse.getNum() + "-" + preCourse.getName() + " 无法选课! ");
         }
+
+        List<Score> existScores = scoreRepository.findByStudentCourse(student.getStudentId(), courseId);
+        if (!existScores.isEmpty()) {
+            //不为空，说明不是第一次选择该课程
+            //检查该学生之前的成绩，若已及格，则删除所有成绩，包括及格成绩
+            for(Score s : existScores){
+                if(s.getStatus() == 1){
+                    List<Integer> existIds = new ArrayList<>();
+                    existScores.forEach(score -> existIds.add(score.getScoreId()));
+                    scoreRepository.deleteAllById(existIds);
+                }
+            }
+        }
+
+        //为新课程创建成绩实体
+        Score score = new Score();
+        score.setStudent(student);
+        score.setCourse(course);
+        score.setStatus(0);
+
         student.getCourses().add(course);
         course.getStudents().add(student);
 
         studentRepository.saveAndFlush(student);
+        scoreRepository.saveAndFlush(score);
         return CommonMethod.getReturnMessageOK("选课成功!");
     }
 
@@ -462,6 +496,54 @@ public class CourseService {
             dataList.add(courseInfoFactory.createCourseInfo("teacher", c));
         }
         return CommonMethod.getReturnData(dataList);
+    }
+
+    //检查某门课某学生是否已经及格
+    public DataResponse getWasPassed(DataRequest req){
+        Integer studentId = req.getInteger("studentId");
+        Integer courseId = req.getInteger("courseId");
+        if(studentId == null){
+            return CommonMethod.getReturnMessageError("无法获取学生ID");
+        }
+        if(courseId == null){
+            return CommonMethod.getReturnMessageError("无法获取课程ID");
+        }
+        List<Score> scoreOp = scoreRepository.findByStudentCourse(studentId, courseId);
+        if(!scoreOp.isEmpty()){
+            Score score = scoreOp.get(0);
+            Integer status = score.getStatus();
+            if(status == 1){
+                return CommonMethod.getReturnData(true);
+            }
+        }
+        return CommonMethod.getReturnData(false);
+    }
+
+    public DataResponse getCourseStatus(DataRequest req){
+        Integer studentId = req.getInteger("studentId");
+        Integer courseId = req.getInteger("courseId");
+        if(studentId == null){
+            return CommonMethod.getReturnMessageError("无法获取学生ID");
+        }
+        if(courseId == null){
+            return CommonMethod.getReturnMessageError("无法获取课程ID");
+        }
+        List<Score> scoreList = scoreRepository.findByStudentCourse(studentId, courseId);
+        Integer status = -1;
+        for(Score s : scoreList){
+            if(s.getStatus() == 1){
+                return CommonMethod.getReturnData(1);
+            }
+            else if(s.getStatus() == 0){
+                return CommonMethod.getReturnData(0);
+            }
+        }
+        if (!scoreList.isEmpty()){
+            if(scoreList.get(0).getStatus() == 2){
+                status = 2;
+            }
+        }
+        return CommonMethod.getReturnData(status);
     }
 
 }

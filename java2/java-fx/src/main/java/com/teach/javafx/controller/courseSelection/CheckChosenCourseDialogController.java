@@ -19,6 +19,7 @@ import javafx.util.Callback;
 import org.fatmansoft.teach.models.Course;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
+import org.fatmansoft.teach.util.CommonMethod;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -105,9 +106,9 @@ public class CheckChosenCourseDialogController {
     //退选按钮按下时的回调
     public void onCancelButtonPressed(ActionEvent event){
         MFXButton button = (MFXButton) event.getTarget();
-        TableCell<Course, MFXButton> cell = (TableCell<Course, MFXButton>) button.getParent();
+        TableCell<Course, MFXButton> cell = (TableCell<Course, MFXButton>) button.getParent().getParent();
         int rowIndex = cell.getIndex();
-        Course c = observableList.get(rowIndex);
+        Course c = (Course) CommonMethod.getRowValue(event, 2, courseTableView);
         Integer courseId = c.getCourseId();
         if(courseId == null){
             MessageDialog.showDialog("退选失败: 无法找到该课程! ");

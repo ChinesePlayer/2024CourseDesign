@@ -80,4 +80,16 @@ public class CourseController {
     public DataResponse getTeacherCourseList(@Valid @RequestBody DataRequest req){
         return courseService.getTeacherCourseList(req);
     }
+
+    //检查某门课某学生是否已经及格
+    @PostMapping("/getWasPassed")
+    public DataResponse getWasPassed(@Valid @RequestBody DataRequest req){
+        return courseService.getWasPassed(req);
+    }
+
+    //获取学生某门课程的状态
+    @PostMapping("/getCourseStatus")
+    public DataResponse getCourseStatus(@Valid @RequestBody DataRequest req){
+        return courseService.getCourseStatus(req);
+    }
 }

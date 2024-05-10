@@ -15,6 +15,9 @@ import org.fatmansoft.teach.models.Course;
 public class CourseActionValueFactory implements Callback<TableColumn.CellDataFeatures<Course, HBox>, ObservableValue<HBox>> {
     @Override
     public ObservableValue<HBox> call(TableColumn.CellDataFeatures<Course, HBox> param) {
+        if(param.getValue() == null){
+            return new ReadOnlyObjectWrapper<>(new HBox());
+        }
         Course c = param.getValue();
         HBox buttonList = new HBox();
         buttonList.setAlignment(Pos.CENTER);

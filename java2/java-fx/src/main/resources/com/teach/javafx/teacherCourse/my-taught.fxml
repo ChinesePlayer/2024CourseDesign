@@ -15,11 +15,11 @@
         <TableView fx:id="courseTableView">
             <columns>
                 <TableColumn fx:id="courseNum" text="课序号" prefWidth="100" />
-                <TableColumn fx:id="courseName" text="课程名称" prefWidth="100" />
-                <TableColumn fx:id="day" text="上课时间" prefWidth="100" />
-                <TableColumn fx:id="section" text="上课节次" prefWidth="100" />
-                <TableColumn fx:id="loc" text="上课地点" prefWidth="100" />
-                <TableColumn fx:id="action" text="操作" prefWidth="100" />
+                <TableColumn fx:id="courseName" text="课程名称" prefWidth="120" />
+                <TableColumn fx:id="days" text="上课时间" prefWidth="120" />
+                <TableColumn fx:id="sections" text="上课节次" prefWidth="120" />
+                <TableColumn fx:id="loc" text="上课地点" prefWidth="120" />
+                <TableColumn fx:id="action" text="操作" prefWidth="150" />
             </columns>
         </TableView>
     </center>

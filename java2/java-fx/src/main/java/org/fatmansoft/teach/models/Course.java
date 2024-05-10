@@ -193,6 +193,9 @@ public class Course {
     }
 
     public List<Button> getAction() {
+        if(action == null){
+            return new ArrayList<>();
+        }
         return action;
     }
 
