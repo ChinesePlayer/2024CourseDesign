@@ -108,6 +108,7 @@ public class BaseService {
         node.setUserTypeIds(d.getUserTypeIds());
         node.setParentTitle(parentTitle);
         node.setPid(pid);
+        //System.out.println("当前菜单的名称: " + node.getLabel());
         List<MyTreeNode> childList = new ArrayList<MyTreeNode>();
         node.setChildren(childList);
         List<MenuInfo> sList = menuInfoRepository.findByUserTypeIds("",d.getId());

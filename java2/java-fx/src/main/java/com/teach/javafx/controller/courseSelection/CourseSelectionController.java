@@ -1,5 +1,6 @@
 package com.teach.javafx.controller.courseSelection;
 
+import com.teach.javafx.AppStore;
 import com.teach.javafx.MainApplication;
 import com.teach.javafx.controller.base.MessageDialog;
 import com.teach.javafx.customWidget.CourseTable;
@@ -12,16 +13,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.fatmansoft.teach.models.Course;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
+import org.fatmansoft.teach.util.CommonMethod;
 
 import java.io.IOException;
 import java.util.*;
@@ -47,7 +47,7 @@ public class CourseSelectionController {
     @FXML
     public TableColumn<Course, String> loc;
     @FXML
-    public TableColumn<Course, MFXButton> action;
+    public TableColumn<Course, HBox> action;
     @FXML
     public TableColumn<Course, String> days;
     @FXML
@@ -132,7 +132,9 @@ public class CourseSelectionController {
                 Course c = new Course(m);
                 MFXButton button = new MFXButton("选课");
                 button.setOnAction(this::onChooseButton);
-                c.setAction(button);
+                List<Button> buttons = new ArrayList<>();
+                buttons.add(button);
+                c.setAction(buttons);
                 courses.add(c);
                 //根据是否选中将课程分配到已选和未选两个List中
                 if(c.getChosen()){
@@ -177,10 +179,10 @@ public class CourseSelectionController {
         action.setCellValueFactory(new CourseActionValueFactory());
         action.setCellFactory(new Callback<>() {
             @Override
-            public TableCell<Course, MFXButton> call(TableColumn<Course, MFXButton> courseMFXButtonTableColumn) {
-                TableCell<Course, MFXButton> cell = new TableCell<>() {
+            public TableCell<Course, HBox> call(TableColumn<Course, HBox> courseMFXButtonTableColumn) {
+                TableCell<Course, HBox> cell = new TableCell<>() {
                     @Override
-                    protected void updateItem(MFXButton item, boolean empty) {
+                    protected void updateItem(HBox item, boolean empty) {
                         super.updateItem(item, empty);
                         if (item == null || empty) {
                             setText(null);
@@ -227,37 +229,44 @@ public class CourseSelectionController {
 
     public void setButtonCantChoose(Course c, Course cfltCourse){
         if(cfltCourse == null){
-            c.getAction().setText("课程冲突，不能选课");
-            c.getAction().setDisable(true);
+            c.getAction().get(0).setText("课程冲突，不能选课");
+            Course.setActionsStatus(c, false);
         }
         else {
-            c.getAction().setText("与 " + cfltCourse.getName() + " 冲突, 不能选课");
-            c.getAction().setDisable(true);
+            c.getAction().get(0).setText("与 " + cfltCourse.getName() + " 冲突, 不能选课");
+            Course.setActionsStatus(c, false);
         }
     }
 
     public void setButtonCanChoose(Course c){
-        c.getAction().setText("选课");
-        c.getAction().setDisable(false);
+        c.getAction().get(0).setText("选课");
+        Course.setActionsStatus(c, true);
     }
 
     public void onChooseButton(ActionEvent event){
-        MFXButton button = (MFXButton) event.getTarget();
-        TableCell<Course,MFXButton> cell = (TableCell<Course, MFXButton>) button.getParent();
-        int rowIndex = cell.getIndex();
         //获取所点击的按钮对应的行的所有数据
-        Course c = observableList.get(rowIndex);
+        Course c = (Course) CommonMethod.getRowValue(event, 2, courseTableView);
+
         int ret = MessageDialog.choiceDialog("你确定要选择: " + c.getName() + " 吗");
         System.out.println("选择的结果: " + ret);
         if(ret != MessageDialog.CHOICE_YES){
             System.out.println("取消选课了");
             return;
         }
+
+        if(CommonMethod.wasPassed(c.getCourseId())){
+            ret = MessageDialog.choiceDialog("你已经通过了 " + c.getName() + " 再次选择会清除之前的成绩, 你确定吗? ");
+            if(ret != MessageDialog.CHOICE_YES){
+                return;
+            }
+        }
+
         Course cfltCourse =  conflictOf(c);
         if(cfltCourse != null){
             MessageDialog.showDialog("该课程与 " + cfltCourse.getName() + " 冲突, 不能选择! ");
             return;
         }
+
         Integer courseId = c.getCourseId();
         //向后端发送网络请求，后端根据课程ID为该学生选课并返回是否选课成功
         DataRequest req = new DataRequest();
@@ -282,6 +291,7 @@ public class CourseSelectionController {
             MessageDialog.showDialog(res.getMsg());
         }
     }
+
 
     //当"查看已选课程按钮"按下时的回调
     public void onCheckChosenButtonPressed(){

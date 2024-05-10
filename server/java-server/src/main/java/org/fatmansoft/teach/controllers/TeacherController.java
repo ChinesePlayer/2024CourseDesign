@@ -5,6 +5,7 @@ import org.fatmansoft.teach.models.*;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.repository.*;
+import org.fatmansoft.teach.service.TeacherService;
 import org.fatmansoft.teach.util.ComDataUtil;
 import org.fatmansoft.teach.util.CommonMethod;
 import org.fatmansoft.teach.util.DateTimeTool;
@@ -32,6 +33,8 @@ public class TeacherController {
     private UserTypeRepository userTypeRepository; //用户类型数据操作自动注入
     @Autowired
     private PasswordEncoder encoder;  //密码服务自动注入
+    @Autowired
+    private TeacherService teacherService;
 
     @PostMapping("/getTeacherList")
     @PreAuthorize("hasRole('ADMIN')")
@@ -169,4 +172,15 @@ public class TeacherController {
         return CommonMethod.getReturnData(s.getTeacherId());  // 将studentId返回前端
     }
 
+    //获取选了某门课程的所有学生
+    @PostMapping("/getStudentList")
+    public DataResponse getStudents(@Valid @RequestBody DataRequest req){
+        return teacherService.getStudents(req);
+    }
+
+    //用于教师端修改学生的课程信息
+    @PostMapping("/saveStudentInfo")
+    public DataResponse saveStudentInfo(@Valid @RequestBody DataRequest req){
+        return teacherService.saveStudentInfo(req);
+    }
 }

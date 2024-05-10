@@ -14,7 +14,7 @@
       <MFXButton fx:id="addNewCourse" text="添加新课程" onAction="#onAddNewCourse" />
    </top>
    <center>
-      <TableView fx:id="dataTableView"  >
+      <TableView fx:id="dataTableView" >
          <columns>
             <TableColumn fx:id="courseNum" prefWidth="120.0" text="课程号" />
             <TableColumn fx:id="courseName" prefWidth="90.0" text="课程名" />

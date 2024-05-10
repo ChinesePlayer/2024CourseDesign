@@ -95,6 +95,9 @@ public class CourseInfoFactory {
                 CompletionStatus cs = optionalCompletionStatus.get();
                 m.put("status", cs.getStatus()+"");
             }
+            case "teacher":{
+                break;
+            }
         }
 
         return m;

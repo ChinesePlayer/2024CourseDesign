@@ -12,7 +12,12 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teach.javafx.controller.ScoreEditController">
+<VBox
+        alignment="CENTER"
+        spacing="20.0"
+        xmlns="http://javafx.com/javafx/17"
+        xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="com.teach.javafx.controller.ScoreEditController">
    <padding>
       <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
    </padding>
@@ -39,12 +44,18 @@
             </GridPane.margin>
          </Label>
          <ComboBox fx:id="courseComboBox" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-         <Label text="成绩" GridPane.columnIndex="0" GridPane.rowIndex="2">
+         <Label text="修读状态" GridPane.columnIndex="0" GridPane.rowIndex="2">
             <GridPane.margin>
                <Insets right="5.0" />
             </GridPane.margin>
          </Label>
-         <TextField fx:id="markField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+         <ComboBox fx:id="statusComboBox" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+         <Label text="成绩" GridPane.columnIndex="0" GridPane.rowIndex="3">
+            <GridPane.margin>
+               <Insets right="5.0" />
+            </GridPane.margin>
+         </Label>
+         <TextField fx:id="markField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
       </children>
    </GridPane>
    <FlowPane alignment="CENTER" prefHeight="40.0" prefWidth="300.0" BorderPane.alignment="CENTER">

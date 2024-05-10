@@ -12,6 +12,8 @@ import javax.persistence.*;
  * Integer mark 成绩
  * Integer ranking 排名
  */
+
+//注：特定学生的特定课程的Score实体对象可以有个多个，但是只会有三种状态：1.多个不及格的成绩  2.零个或多个不及格的成绩和一个修读中的成绩  3.一个已及格的成绩
 @Getter
 @Setter
 @Entity

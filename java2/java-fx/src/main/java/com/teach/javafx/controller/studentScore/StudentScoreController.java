@@ -97,6 +97,7 @@ public class StudentScoreController {
     }
 
     public void setDataView(){
+        observableList.clear();
         observableList.addAll(FXCollections.observableArrayList(scoreList));
         scoreTableView.setItems(observableList);
     }

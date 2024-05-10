@@ -22,4 +22,8 @@ public interface ScoreRepository extends JpaRepository<Score,Integer> {
     @Query(value="from Score where student.studentId=?1 and (?2=0 or course.name like %?2%)" )
     List<Score> findByStudentCourse(Integer studentId, String courseName);
 
+    //查找特定课程ID的Score
+    @Query("select s from Score s where s.course.courseId=?1")
+    List<Score> findByCourseId(Integer courseId);
+
 }

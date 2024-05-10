@@ -1,7 +1,7 @@
 package org.fatmansoft.teach.models;
 
 import com.teach.javafx.request.HttpRequestUtil;
-import io.github.palexdev.materialfx.controls.MFXButton;
+import javafx.scene.control.Button;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.util.CommonMethod;
@@ -19,7 +19,7 @@ public class Course {
     private CourseLocation location;
     private List<CourseTime> courseTimes = new ArrayList<>();
     //对课程可执行的操作
-    private MFXButton action;
+    private List<Button> action;
     //是否已选该课程
     private Boolean isChosen;
     //完成状态，0：修读中，1：已及格，2：不及格
@@ -192,11 +192,14 @@ public class Course {
         this.coursePath = coursePath;
     }
 
-    public MFXButton getAction() {
+    public List<Button> getAction() {
+        if(action == null){
+            return new ArrayList<>();
+        }
         return action;
     }
 
-    public void setAction(MFXButton action) {
+    public void setAction(List<Button> action) {
         this.action = action;
     }
 
@@ -251,5 +254,38 @@ public class Course {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    //静态方法，将某个课程的操作设为不可用
+    public static void setActionsStatus(Course c, boolean status){
+        if(c == null){
+            return;
+        }
+        for(Button b : c.getAction()){
+            b.setDisable(!status);
+        }
+    }
+
+    //批量将指定的按钮设为不可用
+    public static void setActionsStatus(Course c, List<Button> actions, boolean status){
+        if(c == null || (actions == null || actions.isEmpty())){
+            return;
+        }
+        for(Button b : c.getAction()){
+            if(actions.contains(b)){
+                b.setDisable(!status);
+            }
+        }
+    }
+
+    public static void setActionsStatus(Course c, Button action, boolean status){
+        if(c == null || action ==null){
+            return;
+        }
+        for(Button b : c.getAction()){
+            if(b == action){
+                b.setDisable(!status);
+            }
+        }
     }
 }

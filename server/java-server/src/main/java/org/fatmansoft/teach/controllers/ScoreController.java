@@ -109,6 +109,7 @@ public class ScoreController {
         Integer courseId = dataRequest.getInteger("courseId");
         Integer mark = dataRequest.getInteger("mark");
         Integer scoreId = dataRequest.getInteger("scoreId");
+        Integer status = dataRequest.getInteger("status");
         Optional<Score> op;
         Score s = null;
         if(scoreId != null) {
@@ -121,7 +122,27 @@ public class ScoreController {
             s.setStudent(studentRepository.findById(studentId).get());
             s.setCourse(courseRepository.findById(courseId).get());
         }
-        s.setMark(mark);
+
+        List<Score> scoreList = scoreRepository.findByStudentCourse(studentId, courseId);
+        if(status == 0 || status == 2){
+            s.setMark(null);
+            //删除所有已及格的成绩实体类
+            for(Score score:scoreList){
+                if(score.getStatus() == 1){
+                    scoreRepository.delete(score);
+                }
+            }
+        }
+        else{
+            s.setMark(mark);
+            //删除所有不及格和修读中的成绩实体类
+            for(Score score : scoreList){
+                if(score.getStatus() != 1){
+                    scoreRepository.delete(score);
+                }
+            }
+        }
+        s.setStatus(status);
         scoreRepository.save(s);
         return CommonMethod.getReturnMessageOK();
     }

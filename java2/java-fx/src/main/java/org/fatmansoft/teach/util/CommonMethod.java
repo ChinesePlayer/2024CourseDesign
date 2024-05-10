@@ -1,7 +1,18 @@
 package org.fatmansoft.teach.util;
 
 
+import com.teach.javafx.AppStore;
+import com.teach.javafx.controller.base.IntegerStringConverter;
+import com.teach.javafx.controller.base.MessageDialog;
+import com.teach.javafx.request.HttpRequestUtil;
 import com.teach.javafx.request.OptionItem;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.scene.Node;
+import javafx.scene.control.*;
+import org.fatmansoft.teach.payload.request.DataRequest;
+import org.fatmansoft.teach.payload.response.DataResponse;
 /**
  * CommonMethod 公共处理方法实例类
  */
@@ -252,5 +263,77 @@ public class CommonMethod {
             iList.add(new OptionItem(m));
         }
         return iList;
+    }
+
+    //通过指定某个元素，获取该元素所在的TableView行的数据
+    //level: 指定父亲级别
+    public static Object getRowValue(ActionEvent event, int level, TableView tableView){
+        Node n = (Node)event.getTarget();
+        for(int i = 0; i < level; i++){
+            n = n.getParent();
+        }
+        TableCell<?, ?> cell = (TableCell<?, ?>) n;
+        int rowIndex = cell.getIndex();
+        return tableView.getItems().get(rowIndex);
+    }
+
+    public static Integer getStatusInt(String str){
+        return switch (str) {
+            case "修读中" -> 0;
+            case "已及格" -> 1;
+            case "不及格" -> 2;
+            default -> -1;
+        };
+    }
+
+    public static String getStatusStr(Integer status){
+        return switch (status) {
+            case 0 -> "修读中";
+            case 1 -> "已及格";
+            case 2 -> "不及格";
+            default -> "----";
+        };
+    }
+
+    //限制某个TextField只能输入数字
+    public static void limitToNumber(TextField tf){
+        tf.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String oldValue, String newValue) {
+                if(!newValue.matches("\\d*")){
+                    tf.setText(newValue.replaceAll("[^\\d]", ""));
+                }
+            }
+        });
+    }
+
+    //检查某门课程该学生是否已经通过
+    public static boolean wasPassed(Integer courseId){
+        DataRequest req = new DataRequest();
+        req.add("studentId", AppStore.getJwt().getRoleId());
+        req.add("courseId", courseId);
+        DataResponse res = HttpRequestUtil.request("/api/course/getWasPassed", req);
+        assert res != null;
+        if(res.getCode() == 0){
+            Boolean wasPassed = (Boolean) res.getData();
+            return wasPassed;
+        }
+        else{
+            MessageDialog.showDialog("无法获取修读信息! ");
+            throw new RuntimeException("无法获取修读信息");
+        }
+    }
+
+    //获取课程状态
+    public static Integer getCourseStatus(Integer courseId){
+        DataRequest req = new DataRequest();
+        req.add("courseId", courseId);
+        DataResponse res = HttpRequestUtil.request("/api/course/getCourseStatus",req);
+        assert res != null;
+        if(res.getCode() == 0){
+            Integer status = (Integer) res.getData();
+            return status;
+        }
+        throw new RuntimeException("无法获取课程状态: " + res.getMsg());
     }
 }
