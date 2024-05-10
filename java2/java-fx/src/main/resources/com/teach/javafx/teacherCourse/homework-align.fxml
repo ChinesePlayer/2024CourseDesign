@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teach.javafx.controller.teacherCourse.HomeworkAlignController">
+   <top>
+        <GridPane BorderPane.alignment="CENTER">
+         <columnConstraints>
+            <ColumnConstraints maxWidth="54.666668574015304" minWidth="35.666668574015304" prefWidth="54.666668574015304" />
+            <ColumnConstraints maxWidth="94.99999809265135" minWidth="10.0" prefWidth="75.99999809265135" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints maxHeight="32.33333333333333" minHeight="20.33333237965902" prefHeight="26.333333333333332" />
+            <RowConstraints maxHeight="25.000000953674316" minHeight="10.0" prefHeight="19.666666666666668" />
+         </rowConstraints>
+         <children>
+            <Label text="Label" />
+         </children></GridPane>
+   </top>
+
+</BorderPane>

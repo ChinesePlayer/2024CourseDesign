@@ -194,4 +194,10 @@ public class StudentViewerController {
         //TODO: 为学生退选
         System.out.println("退选! ");
     }
+
+    //查看该学生的作业情况
+    public void onCheckHomeWork(ActionEvent event){
+        Map m = (Map) CommonMethod.getRowValue(event, 2, studentTableView);
+
+    }
 }

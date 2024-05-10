@@ -21,6 +21,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import org.apache.batik.apps.rasterizer.Main;
 import org.fatmansoft.teach.models.Course;
 import org.fatmansoft.teach.models.CourseTime;
 import org.fatmansoft.teach.payload.request.DataRequest;
@@ -76,8 +77,13 @@ public class MyTaughtController {
             for(Map m : rawData){
                 Course c = new Course(m);
                 //添加按钮
+                //学生管理按钮
                 Button checkStudent = new Button("学生管理");
                 checkStudent.setOnAction(this::onViewStudentClick);
+                //发布作业按钮
+                Button alignHomework = new Button("发布作业");
+                alignHomework.setOnAction(this::);
+
                 List<Button> buttonList = new ArrayList<>();
                 buttonList.add(checkStudent);
                 c.setAction(buttonList);
@@ -119,5 +125,11 @@ public class MyTaughtController {
         catch (IOException e){
             e.printStackTrace();
         }
+    }
+
+    //发布作业回调
+    private void onAlignHomework(ActionEvent event){
+        Course m = (Course) CommonMethod.getRowValue(event, 2, courseTableView);
+        FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource())
     }
 }
