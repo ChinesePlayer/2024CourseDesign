@@ -59,7 +59,6 @@ public class ViewHomeworkController {
             homeworkList.clear();
             for(Map m : rawData){
                 Homework h = new Homework(m);
-                //TODO: 为每行添加编辑按钮，让教师能够编辑作业内容
                 homeworkList.add(h);
             }
         }

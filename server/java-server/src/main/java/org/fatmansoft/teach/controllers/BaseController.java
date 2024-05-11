@@ -362,7 +362,7 @@ public class BaseController {
         }
         Student student = stuOp.get();
         Integer personId = student.getPerson().getPersonId();
-        String avatarCompleteName = attachFolder + "photo/" + personId + ".jpg";
+        String avatarCompleteName = CommonMethod.getStudentAvatar(personId, attachFolder);
         try{
             File file = new File(avatarCompleteName);
             int len = (int) file.length();

@@ -10,12 +10,17 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.fatmansoft.teach.models.Student;
 import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.security.services.UserDetailsImpl;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -445,5 +450,35 @@ public class CommonMethod {
     public static String getLocalDateTimeString(LocalDateTime dateTime){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
         return dateTime.format(formatter);
+    }
+
+    //根据学生ID获取学生头像路径
+    public static String getStudentAvatar(Integer personId, String attachFolder){
+        return attachFolder + "photo/" + personId + ".jpg";
+    }
+
+    //将文件的字节大小转换为合适的单位大小
+    public static String formatFileSize(long sizeInBytes) {
+        if (sizeInBytes <= 0) return "0 B";
+
+        final String[] units = {"B", "KB", "MB", "GB", "TB"};
+        int digitGroups = (int) (Math.log10(sizeInBytes) / Math.log10(1024));
+        return new DecimalFormat("#,##0.#").format(sizeInBytes / Math.pow(1024, digitGroups)) + " " + units[digitGroups];
+    }
+
+    public static String generateUniqueFileName(String originalFileName, String remotePath) {
+        String extension = "";
+        int dotIndex = originalFileName.lastIndexOf(".");
+        if (dotIndex > 0) {
+            extension = originalFileName.substring(dotIndex);
+            originalFileName = originalFileName.substring(0, dotIndex);
+        }
+        String fileName = originalFileName;
+        int count = 0;
+        while (Files.exists(Paths.get( remotePath + fileName + extension))) {
+            count++;
+            fileName = originalFileName + "(" + count + ")";
+        }
+        return fileName + extension;
     }
 }

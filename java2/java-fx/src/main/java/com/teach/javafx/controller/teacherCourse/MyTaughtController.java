@@ -108,18 +108,14 @@ public class MyTaughtController {
     //查看某个课程的所有学生
     public void onViewStudentClick(ActionEvent event){
         Course c = (Course) CommonMethod.getRowValue(event, 2, courseTableView);
-        //TODO: 弹出新页面，展示选择了该课程的学生
         FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("teacherCourse/student-viewer.fxml"));
         try{
-            Scene scene = new Scene(loader.load(), 900, 600);
-            StudentViewerController controller = loader.getController();
-            controller.init(c);
-            studentViewerStage = new Stage();
-            studentViewerStage.setTitle("学生管理");
-            studentViewerStage.setScene(scene);
-            studentViewerStage.initModality(Modality.APPLICATION_MODAL);
+            studentViewerStage = WindowsManager.getInstance().openNewWindow(
+                loader, 900, 600, "学生管理",
+                courseTableView.getScene().getWindow(), Modality.WINDOW_MODAL,
+                    controller -> ((StudentViewerController)controller).init(c)
+            );
             studentViewerStage.setOnCloseRequest(windowEvent -> studentViewerStage = null);
-            studentViewerStage.show();
         }
         catch (IOException e){
             e.printStackTrace();

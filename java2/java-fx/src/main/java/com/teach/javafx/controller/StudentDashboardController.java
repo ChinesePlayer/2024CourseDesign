@@ -91,6 +91,7 @@ public class StudentDashboardController {
     public void getStudentAvatar(){
         DataRequest req = new DataRequest();
         Integer studentId =  AppStore.getJwt().getRoleId();
+        System.out.println();
         req.add("studentId", studentId);
         byte[] bytes = HttpRequestUtil.requestByteData("/api/base/getStudentAvatar", req);
         if(bytes != null){

@@ -34,7 +34,6 @@ public class TeacherService {
         scoreList.forEach(score -> studentList.add(score.getStudent()));
         List<Map> dataList = new ArrayList<>();
         for(Student s:studentList){
-            System.out.println("IN");
             Map m = new HashMap<>();
             m.put("studentNum", s.getPerson().getNum());
             m.put("studentName", s.getPerson().getName());
@@ -46,8 +45,6 @@ public class TeacherService {
             if(!scoreL.isEmpty()){
                 score = scoreL.get(0);
             }
-            System.out.println(score.getStudent().getPerson().getName());
-            System.out.println(score.getCourse().getName());
             if(score != null){
                 m.put("scoreId", score.getScoreId());
                 m.put("mark", score.getMark());

@@ -16,6 +16,13 @@ import org.fatmansoft.teach.payload.response.DataResponse;
 /**
  * CommonMethod 公共处理方法实例类
  */
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serial;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -133,6 +140,22 @@ public class CommonMethod {
             return (int)Double.parseDouble(str);
         }catch(Exception e) {
             return 0;
+        }
+    }
+
+    public static Long getLong(Map data,String key) {
+        if(data == null)
+            return null;
+        Object obj = data.get(key);
+        if(obj == null)
+            return null;
+        if(obj instanceof Long)
+            return (Long) obj;
+        String str = obj.toString();
+        try {
+            return (long)Double.parseDouble(str);
+        }catch(Exception e) {
+            return null;
         }
     }
 
@@ -375,5 +398,23 @@ public class CommonMethod {
             Integer columnIndex = GridPane.getColumnIndex(node);
             return rowIndex != null && columnIndex != null && sColumn <= columnIndex && columnIndex <= eColumn && sRow <= rowIndex && rowIndex <= eRow;
         });
+    }
+
+    //序列化Map
+    public static byte[] mapToByteArray(Map map) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(map);
+        oos.close();
+        return baos.toByteArray();
+    }
+
+    //将文件的字节大小转换为合适的单位大小
+    public static String formatFileSize(long sizeInBytes) {
+        if (sizeInBytes <= 0) return "0 B";
+
+        final String[] units = {"B", "KB", "MB", "GB", "TB"};
+        int digitGroups = (int) (Math.log10(sizeInBytes) / Math.log10(1024));
+        return new DecimalFormat("#,##0.#").format(sizeInBytes / Math.pow(1024, digitGroups)) + " " + units[digitGroups];
     }
 }
