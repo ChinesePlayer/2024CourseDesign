@@ -53,7 +53,6 @@ public class StudentScoreController {
 
     @FXML
     public void initialize(){
-        //TODO:设置表格工厂
         courseName.setCellValueFactory(new StudentScoreValueFactory());
         courseNum.setCellValueFactory(new StudentScoreValueFactory());
         credit.setCellValueFactory(new StudentScoreValueFactory());

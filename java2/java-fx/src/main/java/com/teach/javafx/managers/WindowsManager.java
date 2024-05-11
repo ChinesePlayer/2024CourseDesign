@@ -37,9 +37,14 @@ public class WindowsManager {
                     if(change.wasAdded()){
                         List<Window> addedWindows = (List<Window>) change.getAddedSubList();
                         for(Window w : addedWindows){
-                            Stage stage = (Stage) w;
-                            stage.getScene().getStylesheets().clear();
-                            stage.getScene().getStylesheets().add(ThemeManager.getInstance().getCurrentExternForm());
+                            try{
+                                Stage stage = (Stage) w;
+                                stage.getScene().getStylesheets().clear();
+                                stage.getScene().getStylesheets().add(ThemeManager.getInstance().getCurrentExternForm());
+                            }
+                            catch (ClassCastException e){
+                                //该异常并无大碍，直接忽略
+                            }
                         }
                     }
                 }

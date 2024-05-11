@@ -102,20 +102,20 @@ public class HomeworkService {
 
         homework.setStart(start);
         homework.setEnd(end);
-        homeworkRepository.saveAndFlush(homework);
+        Homework homework1 = homeworkRepository.saveAndFlush(homework);
 
         try{
             //保存文件
             for(MultipartFile file : files){
                 String uniqueFileName = CommonMethod.generateUniqueFileName(file.getOriginalFilename(), attachFolder + "homework/" + homeworkId + "/");
-                Path path = Paths.get(attachFolder + "homework/" + homeworkId + "/" + uniqueFileName);
+                Path path = Paths.get(attachFolder + "homework/" + homework1.getHomeworkId() + "/" + uniqueFileName);
                 Files.createDirectories(path.getParent());
                 Files.write(path, file.getBytes());
 
                 //保存HomeworkFile实体类
                 HomeworkFile hf = new HomeworkFile();
                 hf.setHomework(homework);
-                hf.setFilePath(attachFolder + "homework/" + homeworkId + "/" + uniqueFileName);
+                hf.setFilePath(attachFolder + "homework/" + homework1.getHomeworkId() + "/" + uniqueFileName);
                 hf.setFileName(uniqueFileName);
                 homeworkFileRepository.saveAndFlush(hf);
             }

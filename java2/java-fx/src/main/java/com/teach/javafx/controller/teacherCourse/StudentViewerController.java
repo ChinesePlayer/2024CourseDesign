@@ -3,6 +3,8 @@ package com.teach.javafx.controller.teacherCourse;
 import com.teach.javafx.MainApplication;
 import com.teach.javafx.controller.base.MessageController;
 import com.teach.javafx.controller.base.MessageDialog;
+import com.teach.javafx.managers.WindowOpenAction;
+import com.teach.javafx.managers.WindowsManager;
 import com.teach.javafx.request.HttpRequestUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -144,16 +146,10 @@ public class StudentViewerController {
         //编辑按钮
         Button edit = new Button("编辑");
         edit.setOnAction(this::onEditButton);
-        //退课按钮
-        Button quit = new Button("退课");
-        quit.setOnAction(this::onQuitButton);
-        //查看作业
-        Button checkHomeWork = new Button("查看作业");
         HBox buttonList = new HBox();
         buttonList.setAlignment(Pos.CENTER);
         buttonList.setSpacing(5);
-        buttonList.getChildren().addAll(edit, quit);
-
+        buttonList.getChildren().addAll(edit);
         map.put(ACTION, buttonList);
         return map;
     }
@@ -161,19 +157,17 @@ public class StudentViewerController {
     public void onEditButton(ActionEvent event){
         //获取当行数据
         Map m = (Map) CommonMethod.getRowValue(event, 2, studentTableView);
-        //TODO: 打开编辑页面
-        System.out.println("打开编辑页面!");
         FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("teacherCourse/student-score-edit.fxml"));
         try{
-            Scene scene = new Scene(loader.load(), 600, 500);
-            StudentScoreEditController controller = loader.getController();
-            controller.init(m);
-            controller.controller = this;
-            Stage stage = new Stage();
-            stage.setTitle("编辑: " + m.get(STUDENT_NAME));
-            stage.setScene(scene);
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.show();
+            WindowsManager.getInstance().openNewWindow(
+                loader, 600, 500, "编辑: " + m.get(STUDENT_NAME),
+                studentTableView.getScene().getWindow(), Modality.WINDOW_MODAL,
+                controller12 -> {
+                    StudentScoreEditController controller1 = (StudentScoreEditController) controller12;
+                    controller1.init(m);
+                    controller1.controller = StudentViewerController.this;
+                }
+            );
         }
         catch (IOException e){
             e.printStackTrace();
@@ -183,16 +177,6 @@ public class StudentViewerController {
 
     public void onHasSaved(Map newData){
         updateViewData(course.getCourseId());
-    }
-
-    //退课按钮，为学生退课
-    public void onQuitButton(ActionEvent event){
-        int ret = MessageDialog.choiceDialog("你确定要为该学生退选: " + course.getName() + " 吗?");
-        if(ret != MessageDialog.CHOICE_YES){
-            return;
-        }
-        //TODO: 为学生退选
-        System.out.println("退选! ");
     }
 
     //查看该学生的作业情况
