@@ -9,11 +9,13 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.fatmansoft.teach.models.Course;
@@ -78,22 +80,24 @@ public class ViewHomeworkController {
                 Label l1 = new Label(homework.getTitle());
                 Label l2 = new Label(CommonMethod.getDateString(homework.getStart(), null));
                 Label l3 = new Label(CommonMethod.getDateString(homework.getEnd(), null));
-                Button button = new Button("编辑");
-                button.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        onEditButtonClick(homework);
-                    }
-                });
+                Button editButton = new Button("编辑");
+                editButton.setOnAction(event -> onEditButtonClick(homework));
+                Button deleteButton = new Button("删除");
+                deleteButton.setOnAction(event -> onDeleteButtonClick(homework));
 
                 l1.getStyleClass().add("middle-label");
                 l2.getStyleClass().add("middle-label");
                 l3.getStyleClass().add("middle-label");
 
+                HBox actionHBox = new HBox();
+                actionHBox.getChildren().add(editButton);
+                actionHBox.getChildren().add(deleteButton);
+                actionHBox.setAlignment(Pos.CENTER);
+
                 subData.add(l1);
                 subData.add(l2);
                 subData.add(l3);
-                subData.add(button);
+                subData.add(actionHBox);
                 data.add(subData);
             });
             //从第二行开始填充数据，第一行留给列头
@@ -163,6 +167,25 @@ public class ViewHomeworkController {
         catch (IOException e){
             e.printStackTrace();
             MessageDialog.showDialog("打开编辑页面失败!");
+        }
+    }
+
+    //删除作业
+    public void onDeleteButtonClick(Homework homework){
+        int ret = MessageDialog.choiceDialog("你确定要删除 " + homework.getTitle() + " 吗");
+        if(ret != MessageDialog.CHOICE_YES){
+            return;
+        }
+        DataRequest req = new DataRequest();
+        req.add("homeworkId", homework.getHomeworkId());
+        DataResponse res = HttpRequestUtil.request("/api/homework/deleteHomework", req);
+        assert res != null;
+        if (res.getCode() == 0){
+            MessageDialog.showDialog("删除成功! ");
+            update();
+        }
+        else {
+            MessageDialog.showDialog("删除失败! ");
         }
     }
 

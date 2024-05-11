@@ -87,4 +87,20 @@ public class HomeworkService {
 
         return CommonMethod.getReturnMessageOK("保存成功");
     }
+
+    public DataResponse deleteHomework(DataRequest req){
+        Integer homeworkId = req.getInteger("homeworkId");
+        if(homeworkId == null){
+            return CommonMethod.getReturnMessageError("无法获取作业ID");
+        }
+        Optional<Homework> hOp = homeworkRepository.findById(homeworkId);
+        if(hOp.isEmpty()){
+            return CommonMethod.getReturnMessageError("无法找到该作业, 可能已被删除!");
+        }
+        Homework homework = hOp.get();
+        //删除作业
+        homeworkRepository.delete(homework);
+
+        return CommonMethod.getReturnMessageOK("删除成功");
+    }
 }

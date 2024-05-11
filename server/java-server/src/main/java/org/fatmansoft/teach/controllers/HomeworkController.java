@@ -24,4 +24,10 @@ public class HomeworkController {
     public DataResponse saveHomework(@Valid @RequestBody DataRequest req){
         return homeworkService.saveHomework(req);
     }
+
+    @PostMapping("/deleteHomework")
+    public DataResponse deleteHomework(@Valid @RequestBody DataRequest req){
+        return homeworkService.deleteHomework(req);
+    }
+
 }
