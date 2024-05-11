@@ -2,6 +2,7 @@ package com.teach.javafx.request;
 
 import com.teach.javafx.AppStore;
 import com.google.gson.Gson;
+import org.apache.pdfbox.pdmodel.interactive.action.PDActionHide;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.util.JsonConvertUtil;
@@ -10,8 +11,10 @@ import org.fatmansoft.teach.util.CommonMethod;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.Method;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.URI;
@@ -115,6 +118,30 @@ public class HttpRequestUtil {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        }
+        return null;
+    }
+
+    //一个更加通用的请求方法，可上传文件
+    public static DataResponse request(String uri, DataRequest req, List<Path> pathList){
+        try{
+            HttpRequest.BodyPublisher bodyPublisher = ofMimeMultipartData(pathList, req);
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(serverUrl + uri))
+                    .POST(bodyPublisher)
+                    .headers("Content-Type", "multipart/form-data; boundary=---BOUNDARY")
+                    .headers("Authorization", "Bearer " + AppStore.getJwt().getAccessToken())
+                    .build();
+            HttpResponse<String> response = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            if(response.statusCode() == 200){
+                System.out.println(response.body());
+                DataResponse res = gson.fromJson(response.body(), DataResponse.class);
+                return res;
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
         }
         return null;
     }
@@ -352,7 +379,7 @@ public class HttpRequestUtil {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(serverUrl + uri + "?remotePath=" + remotePath))
                     .POST(HttpRequest.BodyPublishers.ofByteArray(CommonMethod.mapToByteArray(data)))
-                    .headers("Content-Type", "application/json")
+                    .headers("Content-Type", "application/octet-stream")
                     .headers("Authorization", "Bearer " + AppStore.getJwt().getAccessToken())
                     .build();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -372,37 +399,18 @@ public class HttpRequestUtil {
     //上传作业文件
     public static DataResponse uploadHomeworkFiles(List<String> paths, Integer homeworkId) {
         try{
-            Map<String , byte[]> data = new HashMap<>();
-            Map<String, String> nameMapper = new HashMap<>();
-            paths.forEach(s -> {
-                File f = new File(s);
-                nameMapper.put(s, f.getName());
-            });
-            //重命名重名文件
-            nameMapper.forEach((path, name) -> {
-                final int[] k = {1};
-                nameMapper.forEach((path2, name2) -> {
-                    if(!path2.equals(path)){
-                        if(name.equals(name2)){
-                            nameMapper.put(path2, name2 + " (" + k[0] + ") ");
-                            k[0]++;
-                        }
-                    }
-                });
-            });
-            paths.forEach(path -> {
-                try{
-                    File file = new File(path);
-                    data.put(nameMapper.get(path), Files.readAllBytes(file.toPath()));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            });
             HttpClient client = HttpClient.newHttpClient();
+            List<Path> entryList = new ArrayList<>();
+            paths.forEach(path -> {
+                File file = new File(path);
+                Path entry = file.toPath();
+                entryList.add(entry);
+            });
+            HttpRequest.BodyPublisher bodyPublisher = ofMimeMultipartData(entryList, null);
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(serverUrl + "/api/homework/uploadHomeworkFiles" + "?homeworkId=" + homeworkId))
-                    .POST(HttpRequest.BodyPublishers.ofByteArray(CommonMethod.mapToByteArray(data)))
-                    .headers("Content-Type", "application/json")
+                    .POST(bodyPublisher)
+                    .headers("Content-Type", "multipart/form-data; boundary=---BOUNDARY")
                     .headers("Authorization", "Bearer " + AppStore.getJwt().getAccessToken())
                     .build();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -415,8 +423,33 @@ public class HttpRequestUtil {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
+    }
+
+    //辅助方法，生成多文件请求体
+    private static HttpRequest.BodyPublisher ofMimeMultipartData(List<Path> data, DataRequest req) throws Exception {
+        String boundary = "---BOUNDARY";
+        var byteArrays = new ArrayList<byte[]>();
+        if(data != null){
+            for (var path : data) {
+                byteArrays.add(("--" + boundary + "\r\n").getBytes());
+                byteArrays.add(("Content-Disposition: form-data; name=\"file\"; filename=\"" + path.getFileName() + "\"\r\n").getBytes());
+                byteArrays.add(("Content-Type: " + Files.probeContentType(path) + "\r\n\r\n").getBytes());
+                byteArrays.add(Files.readAllBytes(path));
+                byteArrays.add("\r\n".getBytes());
+            }
+        }
+        byteArrays.add(("--" + boundary + "\r\n").getBytes());
+        byteArrays.add(("Content-Disposition: form-data; name=\"dataRequest\"\r\n").getBytes());
+        byteArrays.add(("Content-Type: application/json\r\n\r\n").getBytes());
+        byteArrays.add(gson.toJson(req).getBytes());
+        byteArrays.add("\r\n".getBytes()); // 添加换行，结束这个表单项
+        byteArrays.add(("--" + boundary + "--\r\n").getBytes()); // 正确的边界结束标记
+
+        return HttpRequest.BodyPublishers.ofByteArrays(byteArrays);
     }
 
     /**

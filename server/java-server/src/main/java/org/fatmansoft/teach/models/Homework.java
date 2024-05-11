@@ -6,6 +6,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Setter
@@ -27,6 +28,9 @@ public class Homework {
     @Size(max = 1000)
     @JoinColumn(name = "content")
     private String content;
+
+    @OneToMany(mappedBy = "homework")
+    private List<HomeworkFile> files;
 
     //作业开放时间
     private LocalDateTime start;

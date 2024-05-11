@@ -16,6 +16,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.fatmansoft.teach.models.Course;
 import org.fatmansoft.teach.models.Homework;
+import org.fatmansoft.teach.models.HomeworkFile;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.util.CommonMethod;
@@ -50,7 +51,8 @@ public class HomeworkAlignController {
     private Course course;
     private Homework homework;
     private ViewHomeworkController viewHomeworkController;
-    private List<String> filePaths = new ArrayList<>();
+
+    private List<HomeworkFile> fileList = new ArrayList<>();
 
     @FXML
     public void initialize(){
@@ -60,10 +62,12 @@ public class HomeworkAlignController {
     public void init(Course c, ViewHomeworkController controller){
         this.course = c;
         this.viewHomeworkController = controller;
+
     }
 
     //用于编辑作业时填充已有数据
     public void fillData(Homework homework){
+        System.out.println("数据被填充了! ");
         this.titleField.setText(homework.getTitle());
         this.contentArea.setText(homework.getContent());
         this.startPicker.setValue(homework.getStart().toLocalDate());
@@ -71,6 +75,8 @@ public class HomeworkAlignController {
         this.startTime.setTime(homework.getStart().toLocalTime());
         this.endTime.setTime(homework.getEnd().toLocalTime());
         this.homework = homework;
+        //获取文件列表
+        getFileList();
     }
 
     //提交作业
@@ -111,11 +117,16 @@ public class HomeworkAlignController {
         req.add("start", startDateTimeStr);
         req.add("end", endDateTimeStr);
         req.add("homeworkId", homework == null ? null : homework.getHomeworkId());
-        DataResponse res = HttpRequestUtil.request("/api/homework/saveHomework", req);
+        List<HomeworkFile> newFile = new ArrayList<>();
+        for(HomeworkFile f : fileList){
+            if(f.getFileId() == null){
+                newFile.add(f);
+            }
+        }
+        //仅上传新文件
+        DataResponse res = HttpRequestUtil.request("/api/homework/saveHomework",req, HomeworkFile.buildFilePaths(newFile));
         assert res != null;
         if(res.getCode() == 0){
-            //上传文件
-            submitFiles();
             MessageDialog.showDialog("保存成功");
             Stage thisStage = (Stage) titleField.getScene().getWindow();
             //关闭当前窗口
@@ -124,14 +135,6 @@ public class HomeworkAlignController {
         }
     }
 
-    //提交文件
-    public void submitFiles(){
-        DataRequest req = new DataRequest();
-        DataResponse res = HttpRequestUtil.uploadHomeworkFiles(filePaths,homework.getHomeworkId());
-        if(res == null || res.getCode() != 0){
-            MessageDialog.showDialog("文件上传失败");
-        }
-    }
 
     public void onHomeworkFileClick(ActionEvent event){
         try{
@@ -139,12 +142,9 @@ public class HomeworkAlignController {
             WindowsManager.getInstance().openNewWindow(
                     loader, 800, 600, "上传作业文件", titleField.getScene().getWindow(),
                     Modality.WINDOW_MODAL,
-                    new WindowOpenAction() {
-                        @Override
-                        public void init(Object controller) {
-                            HomeworkFileCheckerController controller1 = (HomeworkFileCheckerController) controller;
-                            controller1.init();
-                        }
+                    controller -> {
+                        HomeworkFileCheckerController controller1 = (HomeworkFileCheckerController) controller;
+                        controller1.init(HomeworkAlignController.this, homework);
                     }
             );
         }
@@ -154,15 +154,23 @@ public class HomeworkAlignController {
         }
     }
 
-    public void addFile(String path){
-        filePaths.add(path);
+    //获取文件列表
+    public void getFileList(){
+        fileList.clear();
+        DataRequest req = new DataRequest();
+        req.add("homeworkId", homework.getHomeworkId());
+        DataResponse res = HttpRequestUtil.request("/api/homework/getFileList", req);
+        assert res != null;
+        if(res.getCode() == 0){
+            List<Map> rawData = (ArrayList<Map>) res.getData();
+            for(Map m : rawData){
+                HomeworkFile homeworkFile = new HomeworkFile(m);
+                fileList.add(homeworkFile);
+            }
+        }
     }
 
-    public void removeFile(String path){
-        filePaths.remove(path);
-    }
-
-    public List<String> getFilePaths(){
-        return filePaths;
+    public List<HomeworkFile> getHomeworkFile(){
+        return fileList;
     }
 }

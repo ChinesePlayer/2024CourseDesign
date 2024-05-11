@@ -19,14 +19,16 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 /**
  * BaseService 系统菜单、数据字典等处理的功能和方法
@@ -170,19 +172,27 @@ public class BaseService {
         return studentOptional.get();
     }
 
-    public DataResponse uploadMultiFiles(Map<String, byte[]> data, String remotePath){
-        //Map可以保证文件名不重复
+    public DataResponse uploadMultiFiles(MultipartFile[] files, String remotePath){
         //将所有文件储存在指定目录
-        data.forEach((s, bytes) -> {
-            try {
-                OutputStream outputStream = new FileOutputStream(remotePath + s);
-                outputStream.write(bytes);
-                outputStream.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        return CommonMethod.getReturnMessageOK("文件上传成功");
+        List<String> fileNames = Arrays.stream(files)
+                        .map(file->{
+                            try {
+                                // 生成具有递增数字的唯一文件名
+                                String uniqueFileName = CommonMethod.generateUniqueFileName(file.getOriginalFilename(), remotePath);
+                                // 保存文件
+                                Path path = Paths.get(remotePath + uniqueFileName);
+                                Files.createDirectories(path.getParent());
+                                Files.write(path, file.getBytes());
+                                return uniqueFileName;
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                return "Failed to upload " + file.getOriginalFilename();
+                            }
+                        }).toList();
+        if(fileNames.isEmpty()){
+            return CommonMethod.getReturnMessageError("上传文件失败");
+        }
+        return CommonMethod.getReturnData(fileNames);
     }
 
 }

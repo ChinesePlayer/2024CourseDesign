@@ -12,7 +12,7 @@
             prefHeight="400.0" prefWidth="600.0"
             styleClass="borderpane-container">
     <top>
-        <Button text="上传文件" />
+        <Button text="上传文件" onAction="#onUploadButtonClick" />
     </top>
     <center>
         <GridPane fx:id="gridPane" vgap="5" hgap="10" />

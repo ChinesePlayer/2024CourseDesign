@@ -5,6 +5,7 @@ import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.service.HomeworkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.Map;
@@ -22,8 +23,8 @@ public class HomeworkController {
     }
 
     @PostMapping("/saveHomework")
-    public DataResponse saveHomework(@Valid @RequestBody DataRequest req){
-        return homeworkService.saveHomework(req);
+    public DataResponse saveHomework(@RequestPart("file") MultipartFile[] files, @RequestPart("dataRequest") DataRequest req){
+        return homeworkService.saveHomework(files, req);
     }
 
     @PostMapping("/deleteHomework")
@@ -33,9 +34,19 @@ public class HomeworkController {
 
     //接收参数：files: 文件名和文件内容映射
     @PostMapping("/uploadHomeworkFiles")
-    public DataResponse uploadHomeworkFiles(@RequestBody Map<String, byte[]> files,
+    public DataResponse uploadHomeworkFiles(@RequestParam("file") MultipartFile[] files,
                                             @RequestParam("homeworkId") Integer homeworkId){
         return homeworkService.uploadHomeworkFiles(files, homeworkId);
+    }
+
+    @PostMapping("/getFileList")
+    public DataResponse getFileList(@Valid @RequestBody DataRequest req){
+        return homeworkService.getFileList(req);
+    }
+
+    @PostMapping("/deleteFile")
+    public DataResponse deleteFile(@Valid @RequestBody DataRequest req){
+        return homeworkService.deleteFile(req);
     }
 
 }
