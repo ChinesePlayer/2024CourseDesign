@@ -19,4 +19,9 @@ public class HomeworkController {
     public DataResponse getHomeworkList(@Valid @RequestBody DataRequest req){
         return homeworkService.getHomeworkList(req);
     }
+
+    @PostMapping("/saveHomework")
+    public DataResponse saveHomework(@Valid @RequestBody DataRequest req){
+        return homeworkService.saveHomework(req);
+    }
 }

@@ -20,7 +20,7 @@
         </Button>
     </top>
     <center>
-        <GridPane fx:id="gridPane">
+        <GridPane fx:id="gridPane" hgap="10" vgap="5">
             <BorderPane.margin>
                 <Insets top="20" left="20" right="20" bottom="20" />
             </BorderPane.margin>

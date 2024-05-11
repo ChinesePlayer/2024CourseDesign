@@ -6,10 +6,12 @@ import com.teach.javafx.managers.WindowOpenAction;
 import com.teach.javafx.managers.WindowsManager;
 import com.teach.javafx.request.HttpRequestUtil;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
@@ -76,6 +78,13 @@ public class ViewHomeworkController {
                 Label l1 = new Label(homework.getTitle());
                 Label l2 = new Label(CommonMethod.getDateString(homework.getStart(), null));
                 Label l3 = new Label(CommonMethod.getDateString(homework.getEnd(), null));
+                Button button = new Button("编辑");
+                button.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        onEditButtonClick(homework);
+                    }
+                });
 
                 l1.getStyleClass().add("middle-label");
                 l2.getStyleClass().add("middle-label");
@@ -84,6 +93,7 @@ public class ViewHomeworkController {
                 subData.add(l1);
                 subData.add(l2);
                 subData.add(l3);
+                subData.add(button);
                 data.add(subData);
             });
             //从第二行开始填充数据，第一行留给列头
@@ -108,9 +118,10 @@ public class ViewHomeworkController {
     private void addColumnHead(){
         List<List> data = new ArrayList<>();
         List subData = new ArrayList<>();
-        subData.add("作业标题");
-        subData.add("开始时间");
-        subData.add("截止时间");
+        subData.add(new Label("作业标题"));
+        subData.add(new Label("开始时间"));
+        subData.add(new Label("截止时间"));
+        subData.add(new Label("操作"));
         data.add(subData);
         CommonMethod.addItemToGridPane(data, gridPane, 0, 0);
     }
@@ -132,5 +143,30 @@ public class ViewHomeworkController {
             e.printStackTrace();
             MessageDialog.showDialog("打开作业布置页面失败! ");
         }
+    }
+
+    public void onEditButtonClick(Homework homework){
+        //打开编辑页面
+        try{
+            FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("teacherCourse/homework-align.fxml"));
+            WindowsManager.getInstance().openNewWindow(
+                    loader, 800, 600, "编辑作业: " + homework.getTitle(),
+                    gridPane.getScene().getWindow(), Modality.WINDOW_MODAL,
+                    controller -> {
+                        HomeworkAlignController controller1 = (HomeworkAlignController) controller;
+                        controller1.init(course, ViewHomeworkController.this);
+                        //填充数据
+                        controller1.fillData(homework);
+                    }
+            );
+        }
+        catch (IOException e){
+            e.printStackTrace();
+            MessageDialog.showDialog("打开编辑页面失败!");
+        }
+    }
+
+    public void onClose(){
+        update();
     }
 }

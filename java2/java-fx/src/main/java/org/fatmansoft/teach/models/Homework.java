@@ -4,6 +4,7 @@ import javafx.scene.control.Button;
 import org.fatmansoft.teach.util.CommonMethod;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,12 +25,13 @@ public class Homework {
     }
 
     public Homework(Map m){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(CommonMethod.DATE_FORMAT);
         this.courseId = CommonMethod.getInteger(m, "courseId");
         this.homeworkId = CommonMethod.getInteger(m, "homeworkId");
         this.title = CommonMethod.getString(m, "title");
         this.content = CommonMethod.getString(m, "content");
-        this.start = LocalDateTime.parse(CommonMethod.getString(m, "start"));
-        this.end = LocalDateTime.parse(CommonMethod.getString(m, "end"));
+        this.start = LocalDateTime.parse(CommonMethod.getString(m, "start"), formatter);
+        this.end = LocalDateTime.parse(CommonMethod.getString(m, "end"), formatter);
     }
 
     public Map toMap(){

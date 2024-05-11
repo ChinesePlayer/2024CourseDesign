@@ -16,12 +16,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
  * CommonMethod 公共处理方法实例类
  */
 public class CommonMethod {
+    public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
     private static ObjectMapper mapper = new ObjectMapper();
     public static final MediaType exelType = new MediaType("application", "vnd.openxmlformats-officedocument.spreadsheetml.sheet");
     public static DataResponse getReturnData(Object obj, String msg){
@@ -436,5 +439,11 @@ public class CommonMethod {
         }catch(Exception e){
             return "";
         }
+    }
+
+    //根据该类开头定义的日期格式返回日期字符串
+    public static String getLocalDateTimeString(LocalDateTime dateTime){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
+        return dateTime.format(formatter);
     }
 }

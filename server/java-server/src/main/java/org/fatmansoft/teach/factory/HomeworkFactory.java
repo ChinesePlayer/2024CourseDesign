@@ -1,6 +1,7 @@
 package org.fatmansoft.teach.factory;
 
 import org.fatmansoft.teach.models.Homework;
+import org.fatmansoft.teach.util.CommonMethod;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -15,6 +16,8 @@ public class HomeworkFactory {
         data.put("courseId", homework.getCourse().getCourseId());
         data.put("title", homework.getTitle());
         data.put("content", homework.getContent());
+        data.put("start", CommonMethod.getLocalDateTimeString(homework.getStart()));
+        data.put("end", CommonMethod.getLocalDateTimeString(homework.getEnd()));
         return data;
     }
 }

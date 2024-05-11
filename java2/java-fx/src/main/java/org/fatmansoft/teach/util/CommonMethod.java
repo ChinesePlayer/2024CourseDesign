@@ -2,7 +2,6 @@ package org.fatmansoft.teach.util;
 
 
 import com.teach.javafx.AppStore;
-import com.teach.javafx.controller.base.IntegerStringConverter;
 import com.teach.javafx.controller.base.MessageDialog;
 import com.teach.javafx.request.HttpRequestUtil;
 import com.teach.javafx.request.OptionItem;
@@ -20,14 +19,13 @@ import org.fatmansoft.teach.payload.response.DataResponse;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CommonMethod {
-    public static final String DATE_FORMAT = "yyyy年MM月dd日 HH:mm:ss";
+    public static final String DISPLAY_DATE_FORMAT = "yyyy年MM月dd日 HH:mm:ss";
+    public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     //使用正则表达式来判断邮箱是否合法
     public static boolean isValidEmail(String email){
@@ -350,15 +348,12 @@ public class CommonMethod {
     public static void addItemToGridPane(List<List> data, GridPane gridPane, int startRow, int startColumn){
         final int[] row = {startRow};
         data.forEach(new Consumer<List>() {
-            final int[] column = {startColumn};
             @Override
             public void accept(List list) {
-                list.forEach(new Consumer() {
-                    @Override
-                    public void accept(Object o) {
-                        gridPane.add((Node) o,column[0] , row[0]);
-                        column[0]++;
-                    }
+                final int[] column = {startColumn};
+                list.forEach(o -> {
+                    gridPane.add((Node) o,column[0] , row[0]);
+                    column[0]++;
                 });
                 row[0]++;
             }
@@ -367,7 +362,7 @@ public class CommonMethod {
 
     public static String getDateString(LocalDateTime dateTime, String pattern){
         if(pattern == null){
-            pattern = DATE_FORMAT;
+            pattern = DISPLAY_DATE_FORMAT;
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         return dateTime.format(formatter);
