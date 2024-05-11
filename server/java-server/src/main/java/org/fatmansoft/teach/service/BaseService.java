@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.fatmansoft.teach.models.DictionaryInfo;
 import org.fatmansoft.teach.models.MenuInfo;
 import org.fatmansoft.teach.models.Student;
+import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.payload.response.MyTreeNode;
 import org.fatmansoft.teach.repository.DictionaryInfoRepository;
 import org.fatmansoft.teach.repository.MenuInfoRepository;
@@ -20,12 +21,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.BiConsumer;
 
 /**
  * BaseService 系统菜单、数据字典等处理的功能和方法
@@ -167,6 +168,21 @@ public class BaseService {
             return null;
         }
         return studentOptional.get();
+    }
+
+    public DataResponse uploadMultiFiles(Map<String, byte[]> data, String remotePath){
+        //Map可以保证文件名不重复
+        //将所有文件储存在指定目录
+        data.forEach((s, bytes) -> {
+            try {
+                OutputStream outputStream = new FileOutputStream(remotePath + s);
+                outputStream.write(bytes);
+                outputStream.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        return CommonMethod.getReturnMessageOK("文件上传成功");
     }
 
 }

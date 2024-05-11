@@ -7,18 +7,21 @@ import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.util.JsonConvertUtil;
 import org.fatmansoft.teach.util.CommonMethod;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.URI;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
+import java.nio.file.Files;
+import java.util.*;
 import java.nio.file.Path;
-import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * HttpRequestUtil 后台请求实例程序，主要实践向后台发送请求的方法
@@ -326,6 +329,89 @@ public class HttpRequestUtil {
                 return dataResponse;
             }
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    //data为文件路径
+    public static DataResponse uploadMultiFiles(String uri, List<String> paths, String remotePath) {
+        try{
+            Map<String , byte[]> data = new HashMap<>();
+            paths.forEach(path -> {
+                try{
+                    File file = new File(path);
+                    data.put(file.getName(), Files.readAllBytes(file.toPath()));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(serverUrl + uri + "?remotePath=" + remotePath))
+                    .POST(HttpRequest.BodyPublishers.ofByteArray(CommonMethod.mapToByteArray(data)))
+                    .headers("Content-Type", "application/json")
+                    .headers("Authorization", "Bearer " + AppStore.getJwt().getAccessToken())
+                    .build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if(response.statusCode() == 200){
+                DataResponse res = gson.fromJson(response.body(), DataResponse.class);
+                return res;
+            }
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    //上传作业文件
+    public static DataResponse uploadHomeworkFiles(List<String> paths, Integer homeworkId) {
+        try{
+            Map<String , byte[]> data = new HashMap<>();
+            Map<String, String> nameMapper = new HashMap<>();
+            paths.forEach(s -> {
+                File f = new File(s);
+                nameMapper.put(s, f.getName());
+            });
+            //重命名重名文件
+            nameMapper.forEach((path, name) -> {
+                final int[] k = {1};
+                nameMapper.forEach((path2, name2) -> {
+                    if(!path2.equals(path)){
+                        if(name.equals(name2)){
+                            nameMapper.put(path2, name2 + " (" + k[0] + ") ");
+                            k[0]++;
+                        }
+                    }
+                });
+            });
+            paths.forEach(path -> {
+                try{
+                    File file = new File(path);
+                    data.put(nameMapper.get(path), Files.readAllBytes(file.toPath()));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(serverUrl + "/api/homework/uploadHomeworkFiles" + "?homeworkId=" + homeworkId))
+                    .POST(HttpRequest.BodyPublishers.ofByteArray(CommonMethod.mapToByteArray(data)))
+                    .headers("Content-Type", "application/json")
+                    .headers("Authorization", "Bearer " + AppStore.getJwt().getAccessToken())
+                    .build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if(response.statusCode() == 200){
+                DataResponse res = gson.fromJson(response.body(), DataResponse.class);
+                return res;
+            }
+        }
+        catch (IOException e){
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();

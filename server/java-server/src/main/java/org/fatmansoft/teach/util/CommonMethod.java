@@ -10,9 +10,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.fatmansoft.teach.models.Student;
 import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.security.services.UserDetailsImpl;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import java.math.BigDecimal;
@@ -445,5 +447,10 @@ public class CommonMethod {
     public static String getLocalDateTimeString(LocalDateTime dateTime){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
         return dateTime.format(formatter);
+    }
+
+    //根据学生ID获取学生头像路径
+    public static String getStudentAvatar(Integer personId, String attachFolder){
+        return attachFolder + "photo/" + personId + ".jpg";
     }
 }

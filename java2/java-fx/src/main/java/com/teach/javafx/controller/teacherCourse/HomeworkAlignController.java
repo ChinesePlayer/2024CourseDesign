@@ -1,13 +1,18 @@
 package com.teach.javafx.controller.teacherCourse;
 
+import com.teach.javafx.MainApplication;
 import com.teach.javafx.controller.base.MessageDialog;
 import com.teach.javafx.customWidget.TimePicker;
+import com.teach.javafx.managers.WindowOpenAction;
+import com.teach.javafx.managers.WindowsManager;
 import com.teach.javafx.request.HttpRequestUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.fatmansoft.teach.models.Course;
 import org.fatmansoft.teach.models.Homework;
@@ -15,9 +20,19 @@ import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.util.CommonMethod;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 public class HomeworkAlignController {
     @FXML
@@ -35,6 +50,7 @@ public class HomeworkAlignController {
     private Course course;
     private Homework homework;
     private ViewHomeworkController viewHomeworkController;
+    private List<String> filePaths = new ArrayList<>();
 
     @FXML
     public void initialize(){
@@ -98,11 +114,55 @@ public class HomeworkAlignController {
         DataResponse res = HttpRequestUtil.request("/api/homework/saveHomework", req);
         assert res != null;
         if(res.getCode() == 0){
+            //上传文件
+            submitFiles();
             MessageDialog.showDialog("保存成功");
             Stage thisStage = (Stage) titleField.getScene().getWindow();
             //关闭当前窗口
             thisStage.close();
             viewHomeworkController.onClose();
         }
+    }
+
+    //提交文件
+    public void submitFiles(){
+        DataRequest req = new DataRequest();
+        DataResponse res = HttpRequestUtil.uploadHomeworkFiles(filePaths,homework.getHomeworkId());
+        if(res == null || res.getCode() != 0){
+            MessageDialog.showDialog("文件上传失败");
+        }
+    }
+
+    public void onHomeworkFileClick(ActionEvent event){
+        try{
+            FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("teacherCourse/homework-file-checker.fxml"));
+            WindowsManager.getInstance().openNewWindow(
+                    loader, 800, 600, "上传作业文件", titleField.getScene().getWindow(),
+                    Modality.WINDOW_MODAL,
+                    new WindowOpenAction() {
+                        @Override
+                        public void init(Object controller) {
+                            HomeworkFileCheckerController controller1 = (HomeworkFileCheckerController) controller;
+                            controller1.init();
+                        }
+                    }
+            );
+        }
+        catch (IOException e){
+            e.printStackTrace();
+            MessageDialog.showDialog("打开文件上传页面失败! ");
+        }
+    }
+
+    public void addFile(String path){
+        filePaths.add(path);
+    }
+
+    public void removeFile(String path){
+        filePaths.remove(path);
+    }
+
+    public List<String> getFilePaths(){
+        return filePaths;
     }
 }

@@ -9,8 +9,10 @@ import org.fatmansoft.teach.repository.CourseRepository;
 import org.fatmansoft.teach.repository.HomeworkRepository;
 import org.fatmansoft.teach.util.CommonMethod;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
@@ -26,6 +28,10 @@ public class HomeworkService {
     private HomeworkFactory homeworkFactory;
     @Autowired
     private CourseRepository courseRepository;
+    @Autowired
+    private BaseService baseService;
+    @Value("${attach.folder}")
+    private String attachFolder;
 
     public DataResponse getHomeworkList(DataRequest req){
         Integer courseId = req.getInteger("courseId");
@@ -102,5 +108,15 @@ public class HomeworkService {
         homeworkRepository.delete(homework);
 
         return CommonMethod.getReturnMessageOK("删除成功");
+    }
+
+    public DataResponse uploadHomeworkFiles(Map<String, byte[]> files, Integer homeworkId){
+        DataResponse res = baseService.uploadMultiFiles(files, attachFolder + "homework/" + homeworkId +"/");
+        if(res == null){
+            return CommonMethod.getReturnMessageError("上传作业文件失败! ");
+        }
+        else {
+            return CommonMethod.getReturnMessageOK("作业文件上传成功! ");
+        }
     }
 }
