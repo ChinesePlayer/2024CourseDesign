@@ -2,7 +2,6 @@ package org.fatmansoft.teach.util;
 
 
 import com.teach.javafx.AppStore;
-import com.teach.javafx.controller.base.IntegerStringConverter;
 import com.teach.javafx.controller.base.MessageDialog;
 import com.teach.javafx.request.HttpRequestUtil;
 import com.teach.javafx.request.OptionItem;
@@ -11,16 +10,23 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 /**
  * CommonMethod 公共处理方法实例类
  */
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CommonMethod {
+    public static final String DISPLAY_DATE_FORMAT = "yyyy年MM月dd日 HH:mm:ss";
+    public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+
     //使用正则表达式来判断邮箱是否合法
     public static boolean isValidEmail(String email){
         //正则表达式的模式字符串
@@ -335,5 +341,39 @@ public class CommonMethod {
             return status;
         }
         throw new RuntimeException("无法获取课程状态: " + res.getMsg());
+    }
+
+    //将Map中的元素填入指定GridPane中
+    //startRow为从第几行开始，startColumn为从第几列开始
+    public static void addItemToGridPane(List<List> data, GridPane gridPane, int startRow, int startColumn){
+        final int[] row = {startRow};
+        data.forEach(new Consumer<List>() {
+            @Override
+            public void accept(List list) {
+                final int[] column = {startColumn};
+                list.forEach(o -> {
+                    gridPane.add((Node) o,column[0] , row[0]);
+                    column[0]++;
+                });
+                row[0]++;
+            }
+        });
+    }
+
+    public static String getDateString(LocalDateTime dateTime, String pattern){
+        if(pattern == null){
+            pattern = DISPLAY_DATE_FORMAT;
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+        return dateTime.format(formatter);
+    }
+
+    //删除指定的GridPane中某个矩形区域的所有元素
+    public static void deleteRectFromGridPane(GridPane pane, int sRow, int sColumn, int eRow, int eColumn){
+        pane.getChildren().removeIf(node -> {
+            Integer rowIndex = GridPane.getRowIndex(node);
+            Integer columnIndex = GridPane.getColumnIndex(node);
+            return rowIndex != null && columnIndex != null && sColumn <= columnIndex && columnIndex <= eColumn && sRow <= rowIndex && rowIndex <= eRow;
+        });
     }
 }

@@ -82,6 +82,9 @@ public class Course implements Serializable {
     @JoinColumn(name = "location_id")
     private CourseLocation location;
 
+    @OneToMany(mappedBy = "course")
+    private List<Homework> homeworks = new ArrayList<>();
+
     @Override
     public boolean equals(Object o){
         if(o == null){
