@@ -4,8 +4,10 @@ import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.service.HomeworkService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import javax.validation.Valid;
 import java.util.Map;
@@ -49,4 +51,8 @@ public class HomeworkController {
         return homeworkService.deleteFile(req);
     }
 
+    @PostMapping("/downloadFile")
+    public ResponseEntity<StreamingResponseBody> downloadFile(@Valid @RequestBody DataRequest req){
+        return homeworkService.downloadFile(req);
+    }
 }

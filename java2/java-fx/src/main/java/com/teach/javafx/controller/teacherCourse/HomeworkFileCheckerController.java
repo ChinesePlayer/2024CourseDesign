@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import org.fatmansoft.teach.models.Homework;
 import org.fatmansoft.teach.models.HomeworkFile;
@@ -15,6 +16,10 @@ import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.util.CommonMethod;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -77,10 +82,20 @@ public class HomeworkFileCheckerController {
 
             Button deleteButton = new Button("移除");
             deleteButton.setOnAction(event -> onDeleteButtonClick(hFile));
+            //若文件为远程文件，则添加一个下载按钮，可用于下载文件
+            //id不为空则为远程文件
+            Button downloadButton=null;
+            if(hFile.getFileId() != null){
+                downloadButton = new Button("下载");
+                downloadButton.setOnAction(event -> onDownloadButtonClick(hFile));
+            }
 
             subData1.add(name);
             subData1.add(fileSize);
             subData1.add(deleteButton);
+            if(downloadButton != null){
+                subData1.add(downloadButton);
+            }
             fileData.add(subData1);
         });
         CommonMethod.addItemToGridPane(fileData,gridPane,1,0);
@@ -116,6 +131,7 @@ public class HomeworkFileCheckerController {
             assert res != null;
             if(res.getCode() == 0){
                 MessageDialog.showDialog("文件删除成功! ");
+                homeworkFiles.remove(hFile);
             }
             else{
                 MessageDialog.showDialog(res.getMsg());
@@ -126,5 +142,30 @@ public class HomeworkFileCheckerController {
             homeworkFiles.remove(hFile);
         }
         update();
+    }
+
+    public void onDownloadButtonClick(HomeworkFile file){
+        //打开目录选择器
+        DirectoryChooser chooser = new DirectoryChooser();
+        chooser.setTitle("选择保存路径");
+        File directory = chooser.showDialog(null);
+        Path p = Paths.get(directory.getPath(), CommonMethod.generateUniqueFileName(file.getFileName(), directory.getPath()));
+        //下载指定文件
+        DataRequest req = new DataRequest();
+        req.add("fileId", file.getFileId());
+        byte[] byteData = HttpRequestUtil.requestByteData("/api/homework/downloadFile", req);
+        if(byteData != null){
+            try{
+                Files.write(p, byteData);
+                MessageDialog.showDialog("保存成功! ");
+            }
+            catch (IOException e){
+                e.printStackTrace();
+                MessageDialog.showDialog("文件保存失败! ");
+            }
+        }
+        else {
+            MessageDialog.showDialog("获取文件失败! ");
+        }
     }
 }

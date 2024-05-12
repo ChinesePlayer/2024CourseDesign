@@ -1,0 +1,347 @@
+/* 默认主题文件 */
+
+/*******************************
+
+整体样式，配色
+
+**********************************/
+
+/* 取消所有元素被选中时的焦点边框颜色 */
+*{
+    -fx-focus-color: red;
+    /*-fx-font-family: 'AmaticSC-Regular';*/
+}
+
+
+/*******************************
+
+树形菜单样式
+
+**********************************/
+
+/* 注意sub-tree-item是在代码中自定义的伪类，此处IDEA无法识别，并不是错误! */
+
+.tree-view .tree-cell{
+    -fx-background-color: transparent;
+    -fx-padding: 0.8em;
+}
+
+.tree-view {
+    -fx-background-color: linear-gradient(to bottom, #EAB4C4, #E1C6C6);
+    -fx-effect: innershadow(gaussian, #C59694, 10.0, 0, 4, 4);
+}
+
+.tree-view .tree-cell{
+    -fx-font-family: Arial;
+    -fx-font-size: 19px;
+}
+
+.tree-view .tree-cell:sub-tree-item{
+    -fx-background-color: transparent;
+
+    -fx-text-alignment: center;
+}
+
+.tree-view .tree-cell .tree-disclosure-node .arrow{
+    -fx-background-color: linear-gradient(to bottom, #DDB6AB, white);
+    -fx-effect: dropshadow( gaussian , #FFE9E7 , 1 , 1 , 0 , 1 );
+    -fx-pref-width: 12px; /* 调整箭头的宽度 */
+    -fx-pref-height: 12px; /* 调整箭头的高度 */
+}
+
+.tree-view .tree-cell:selected:expanded, .tree-view .tree-cell:sub-tree-item:selected, .tree-view .tree-cell:expanded{
+    -fx-text-fill: #3E3A39;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow( gaussian , #B2686F , 0.5 , 0.5 , 0 , 1 );
+    -fx-font-size: 20px;
+}
+
+.tree-view .tree-cell:selected{
+    -fx-text-fill: #000000;
+}
+
+.tree-view .tree-cell:expanded .tree-disclosure-node .arrow{
+    -fx-background-color: linear-gradient(to bottom, #DDB6AB, white);
+}
+
+.tree-view .tree-cell:hover{
+    -fx-font-size:21px;
+    -fx-background-color: #FFCCDC;
+    -fx-effect: dropshadow(gaussian, #D08B92, 20.0, 0,10,10);
+    -fx-background-radius: 0.0 8 8 8;
+    -fx-opacity: 0.8;
+    -fx-padding: 0.8em;
+}
+
+
+/*******************************
+
+顶部菜单栏样式
+
+**********************************/
+.menu-bar {
+    -fx-pref-width: 60px;
+    -fx-pref-height: 48px;
+    -fx-font-size:  19px ;
+    -fx-font-family: "Verdana";
+    -fx-background-color: linear-gradient(to bottom, #EAB4C4, #E1C6C6);
+    -fx-text-fill: #ffffff;
+    /*-fx-opacity: 0.5;*/
+    -fx-effect: dropshadow(gaussian, #E6909B, 20.0, 0,0,0);
+}
+
+.menu-button {
+    -fx-pref-height: 62px;
+}
+
+.menu-button:hover, .menu-button:focused, .menu-button:showing {
+    -fx-font-family: Arial;
+    -fx-padding: 0.5em;
+    -fx-background-color: linear-gradient(to bottom, #DC6B82, #F091A0);
+    -fx-opacity: 0.8;
+    -fx-text-fill: white;
+    -fx-background-radius: 0.0 6.0 6.0 6.0;
+    -fx-effect: dropshadow(gaussian, #D08B92, 20.0, 0,10,10);
+    -fx-font-size:  20px ;
+}
+
+/*******************************
+
+上下文菜单样式
+
+**********************************/
+
+.context-menu{
+    -fx-background-color: linear-gradient(to bottom, #eab9c3, #f0c9cf);
+    -fx-background-insets: 0.0;
+    -fx-background-radius: 0.0 6.0 6.0 6.0;
+    -fx-padding: 0.6em 0.2em 0.6em 0.2em;
+    -fx-font-size:  18px ;
+}
+
+.context-menu .menu-item:hover, .context-menu .menu-item:focused{
+    -fx-background-color: #eba6b3;
+    -fx-background-radius: 0.0 6.0 6.0 6.0;
+    -fx-opacity: 0.8;
+    -fx-effect: dropshadow(gaussian, #ecb0c1, 20.0, 0,10,10);
+    -fx-padding: 0.6em;
+}
+
+
+
+/*******************************
+
+ TableView样式
+
+ ********************************/
+
+/* 取消行分割线 */
+.table-row-cell{
+    -fx-background-insets: 0;
+    -fx-cell-size: 36px;
+}
+
+/* 取消列分割线，并使内容居中 */
+.table-view .table-row-cell .table-cell{
+    -fx-border-width: 0px;
+    -fx-alignment: center;
+    -fx-font-size: 18px;
+    -fx-font-family: Arial;
+}
+
+/* 奇数行的颜色 */
+.table-view .table-row-cell:odd{
+    -fx-background-color: #FEE4E3;
+}
+
+/* 偶数行的颜色 */
+.table-view .table-row-cell:even{
+    -fx-background-color: #FEEFEC;
+}
+
+/* 被选中行的颜色 */
+.table-view .table-row-cell:odd:selected, .table-view .table-row-cell:even:selected{
+    -fx-background-color: #FED0D6;
+}
+
+/* 鼠标所在行的颜色 */
+.table-view .table-row-cell:hover{
+    -fx-background-color: #F4D6D8;
+}
+
+/* 被选中的行的颜色 用于覆盖JavaFX的默认行为 */
+.table-view:focused .table-row-cell:selected, .table-row-cell:hover:selected{
+    -fx-background: #B9D4EE;
+}
+
+/* 调整列标题字重 */
+.table-view .column-header{
+    -fx-font-size: 18px;
+    -fx-font-family: Arial;
+    -fx-font-weight: lighter;
+    -fx-background-color: #E2A2AC;
+    -fx-border-width: 0px 1px 0px 0px;
+    -fx-border-color: #DDB6B7;
+    -fx-header-height: 60px;
+}
+
+/* 列头文字颜色 */
+.table-view .column-header .label{
+    -fx-text-fill: #ffffff;
+}
+
+/* 改变无数据列的列头背景 */
+.table-view .filler{
+    -fx-background-color: #E2A2AC;
+}
+
+/***************************
+
+ComboBox样式
+
+*****************************/
+
+.combo-box{
+    -fx-background-color: #FFE9E7;
+    -fx-background-radius: 6 6 6 6;
+}
+
+.combo-box .list-cell:hover, .combo-box .combo-box-popup .list-cell:focused{
+    -fx-background-color: #FEEFEC;
+    -fx-background-radius: 6 6 6 6;
+    -fx-text-fill: #000000;
+}
+
+.combo-box .combo-box-popup .list-view {
+    -fx-background-radius: 0 8 8 8;
+    -fx-padding: 5 5 5 5;
+}
+
+.combo-box .combo-box-popup .list-view .list-cell{
+    -fx-padding: 5;
+}
+
+/***************************
+
+TabPane样式
+
+*****************************/
+.tab-pane .tab{
+    -fx-background-color: #f9d3e3;
+    -fx-background-radius: 10;
+    -fx-effect: innershadow(gaussian, #f0c9cf, 10, 0,0,0);
+}
+
+.tab-pane .tab:selected{
+    -fx-background-color: #f6bec8;
+    -fx-focus-color: #ffffff;
+}
+
+.tab-pane .tab:selected .tab-label{
+    -fx-text-fill: #ffffff;
+}
+
+.tab-pane .tab-header-area .tab-header-background{
+    -fx-background-color: #FAE0DD;
+}
+
+/***************************
+
+Button样式
+
+*****************************/
+
+.button {
+    -fx-background-color: linear-gradient(to top, #efa9b2, #ffe9e7);
+    -fx-padding: 10;
+    -fx-font-weight: lighter;
+    -fx-min-height: 10px;
+}
+
+.button:hover{
+    -fx-background-color: linear-gradient(to top, #eba6b3, #ffe9e7);
+    -fx-effect: dropshadow(gaussian, #f0c9cf, 1,1,0,0);
+}
+
+.login-button{
+    -fx-skin: 'com.teach.javafx.mySkin.MyButtonSkin';
+    -fx-min-height: 60px;
+}
+
+.login-button:hover{
+    -fx-skin: 'com.teach.javafx.mySkin.MyButtonSkin';
+    -fx-background-color: #930f15;
+}
+
+
+
+/***************************
+
+BorderPane样式
+
+*****************************/
+
+.borderpane-container {
+    -fx-background-color: #FAE0DD;
+}
+
+/***************************
+
+VBox样式
+
+*****************************/
+
+VBox {
+    -fx-background-color: #FAE0DD;
+}
+
+/***************************
+
+AnchorPane样式
+
+*****************************/
+
+AnchorPane {
+    -fx-background-color: #FAE0DD;
+}
+
+/***************************
+
+ImageView样式
+
+*****************************/
+
+.image-view{
+    -fx-effect: dropshadow(gaussian, black,15,0,0,0);
+}
+
+/***************************
+
+一些自定义选择类
+
+*****************************/
+
+.simple-info .student-dashboard-info{
+    -fx-background-color: #FAE0DD;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+.greetings-label{
+    -fx-font-size: 30px;
+    -fx-text-fill: #2f4a52;
+    -fx-effect: dropshadow(gaussian, lightblue, 10,0,0,0);
+    -fx-font-weight: lighter;
+}
+
+.simple-info{
+    -fx-border-style: solid;
+    -fx-border-color: grey;
+    -fx-border-width: 3 3 5 3;
+    -fx-border-radius: 10;
+    -fx-padding: 20px;
+}
+
+.Label{
+    -fx-background-color: #FAE0DD;
+}

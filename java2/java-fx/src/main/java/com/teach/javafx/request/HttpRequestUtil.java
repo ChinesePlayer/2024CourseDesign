@@ -2,6 +2,10 @@ package com.teach.javafx.request;
 
 import com.teach.javafx.AppStore;
 import com.google.gson.Gson;
+import com.teach.javafx.controller.base.LoadingAction;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import org.apache.pdfbox.pdmodel.interactive.action.PDActionHide;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
@@ -134,7 +138,7 @@ public class HttpRequestUtil {
                     .headers("Authorization", "Bearer " + AppStore.getJwt().getAccessToken())
                     .build();
             HttpResponse<String> response = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-            if(response.statusCode() == 200){
+            if (response.statusCode() == 200) {
                 System.out.println(response.body());
                 DataResponse res = gson.fromJson(response.body(), DataResponse.class);
                 return res;

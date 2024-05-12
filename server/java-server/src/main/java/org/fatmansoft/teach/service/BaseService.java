@@ -175,20 +175,20 @@ public class BaseService {
     public DataResponse uploadMultiFiles(MultipartFile[] files, String remotePath){
         //将所有文件储存在指定目录
         List<String> fileNames = Arrays.stream(files)
-                        .map(file->{
-                            try {
-                                // 生成具有递增数字的唯一文件名
-                                String uniqueFileName = CommonMethod.generateUniqueFileName(file.getOriginalFilename(), remotePath);
-                                // 保存文件
-                                Path path = Paths.get(remotePath + uniqueFileName);
-                                Files.createDirectories(path.getParent());
-                                Files.write(path, file.getBytes());
-                                return uniqueFileName;
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                                return "Failed to upload " + file.getOriginalFilename();
-                            }
-                        }).toList();
+            .map(file->{
+                try {
+                    // 生成具有递增数字的唯一文件名
+                    String uniqueFileName = CommonMethod.generateUniqueFileName(file.getOriginalFilename(), remotePath);
+                    // 保存文件
+                    Path path = Paths.get(remotePath + uniqueFileName);
+                    Files.createDirectories(path.getParent());
+                    Files.write(path, file.getBytes());
+                    return uniqueFileName;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return "Failed to upload " + file.getOriginalFilename();
+                }
+        }).toList();
         if(fileNames.isEmpty()){
             return CommonMethod.getReturnMessageError("上传文件失败");
         }

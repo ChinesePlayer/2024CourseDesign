@@ -12,15 +12,19 @@ import org.fatmansoft.teach.repository.HomeworkRepository;
 import org.fatmansoft.teach.util.CommonMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import javax.validation.Valid;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -191,5 +195,30 @@ public class HomeworkService {
             return CommonMethod.getReturnMessageError("无法找到文件, 已删除该文件记录");
         }
         return CommonMethod.getReturnMessageOK("删除成功");
+    }
+
+    public ResponseEntity<StreamingResponseBody> downloadFile(DataRequest req){
+        Integer fileId = req.getInteger("fileId");
+        if(fileId == null){
+            return ResponseEntity.internalServerError().build();
+        }
+        Optional<HomeworkFile> hfOp = homeworkFileRepository.findById(fileId);
+        if(hfOp.isEmpty()){
+            return ResponseEntity.internalServerError().build();
+        }
+        HomeworkFile homeworkFile = hfOp.get();
+        String filePath = homeworkFile.getFilePath();
+        try{
+            byte[] data = Files.readAllBytes(Paths.get(filePath));
+            MediaType mediaType = new MediaType(MediaType.APPLICATION_OCTET_STREAM);
+            StreamingResponseBody streamBody = outputStream -> outputStream.write(data);
+            return ResponseEntity.ok()
+                    .contentType(mediaType)
+                    .body(streamBody);
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        return ResponseEntity.internalServerError().build();
     }
 }
