@@ -25,6 +25,7 @@ import java.net.URI;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.nio.file.Path;
 import java.util.function.BiConsumer;
@@ -437,7 +438,7 @@ public class HttpRequestUtil {
     private static HttpRequest.BodyPublisher ofMimeMultipartData(List<Path> data, DataRequest req) throws Exception {
         String boundary = "---BOUNDARY";
         var byteArrays = new ArrayList<byte[]>();
-        if(data != null){
+        if(data != null && !data.isEmpty()){
             for (var path : data) {
                 byteArrays.add(("--" + boundary + "\r\n").getBytes());
                 byteArrays.add(("Content-Disposition: form-data; name=\"file\"; filename=\"" + path.getFileName() + "\"\r\n").getBytes());
@@ -446,6 +447,7 @@ public class HttpRequestUtil {
                 byteArrays.add("\r\n".getBytes());
             }
         }
+
         byteArrays.add(("--" + boundary + "\r\n").getBytes());
         byteArrays.add(("Content-Disposition: form-data; name=\"dataRequest\"\r\n").getBytes());
         byteArrays.add(("Content-Type: application/json\r\n\r\n").getBytes());

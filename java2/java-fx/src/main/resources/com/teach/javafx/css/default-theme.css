@@ -348,3 +348,8 @@ ImageView样式
 .middle-label{
     -fx-font-size: 15px;
 }
+
+/* 字体更大的Label */
+.big-label{
+    -fx-font-size: 20px;
+}

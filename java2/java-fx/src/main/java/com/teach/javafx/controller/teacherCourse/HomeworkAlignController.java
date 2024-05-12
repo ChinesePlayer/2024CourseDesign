@@ -64,7 +64,6 @@ public class HomeworkAlignController {
     public void init(Course c, ViewHomeworkController controller){
         this.course = c;
         this.viewHomeworkController = controller;
-
     }
 
     //用于编辑作业时填充已有数据
@@ -111,7 +110,6 @@ public class HomeworkAlignController {
             return;
         }
 
-
         DataRequest req = new DataRequest();
         req.add("title", title);
         req.add("content", content);
@@ -134,6 +132,9 @@ public class HomeworkAlignController {
             //关闭当前窗口
             thisStage.close();
             viewHomeworkController.onClose();
+        }
+        else {
+            MessageDialog.showDialog(res.getMsg());
         }
     }
 

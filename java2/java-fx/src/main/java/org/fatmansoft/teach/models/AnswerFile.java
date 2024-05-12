@@ -8,28 +8,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class HomeworkFile {
-    private String fileName;
+public class AnswerFile {
     private Integer fileId;
-    private Long fileSize;
-    //前端本地的文件路径
+    //文件的本地路径
     private String filePath;
+    private Long fileSize;
+    private String fileName;
 
-    public HomeworkFile(){
+    public AnswerFile(){
 
     }
 
-    public HomeworkFile(Map m){
-        this.fileName = CommonMethod.getString(m, "fileName");
+    public AnswerFile(Map m){
         this.fileId = CommonMethod.getInteger(m, "fileId");
         this.fileSize = CommonMethod.getLong(m, "fileSize");
-    }
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
+        this.fileName = CommonMethod.getString(m, "fileName");
     }
 
     public Integer getFileId() {
@@ -40,14 +33,6 @@ public class HomeworkFile {
         this.fileId = fileId;
     }
 
-    public Long getFileSize() {
-        return fileSize;
-    }
-
-    public void setFileSize(Long fileSize) {
-        this.fileSize = fileSize;
-    }
-
     public String getFilePath() {
         return filePath;
     }
@@ -56,12 +41,28 @@ public class HomeworkFile {
         this.filePath = filePath;
     }
 
-    public static List<Path> buildFilePaths(List<HomeworkFile> files){
+    public Long getFileSize() {
+        return fileSize;
+    }
+
+    public void setFileSize(Long fileSize) {
+        this.fileSize = fileSize;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public static List<Path> buildFilePaths(List<AnswerFile> files){
         if (files == null){
             return new ArrayList<>();
         }
         List<Path> pathList = new ArrayList<>();
-        for(HomeworkFile file : files){
+        for(AnswerFile file : files){
             Path p = Paths.get(file.getFilePath());
             pathList.add(p);
         }

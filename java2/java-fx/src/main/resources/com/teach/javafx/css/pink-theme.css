@@ -345,3 +345,13 @@ ImageView样式
 .Label{
     -fx-background-color: #FAE0DD;
 }
+
+/* 字体稍大的Label */
+.middle-label{
+    -fx-font-size: 15px;
+}
+
+/* 字体更大的Label */
+.big-label{
+    -fx-font-size: 20px;
+}
