@@ -57,6 +57,11 @@ public class ScoreEditController {
                 return;
             }
         }
+        Integer mark = (markField.getText() ==null || markField.getText().isEmpty()) ? null : Integer.valueOf(markField.getText());
+        if(status == 1 && (mark == null || mark < 60)){
+            MessageDialog.showDialog("请输入合法分数! ");
+            return;
+        }
         Map data = new HashMap();
         Student op;
         op = studentComboBox.getSelectionModel().getSelectedItem();

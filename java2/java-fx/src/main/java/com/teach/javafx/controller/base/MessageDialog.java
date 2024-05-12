@@ -2,6 +2,7 @@ package com.teach.javafx.controller.base;
 
 import com.teach.javafx.MainApplication;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -21,6 +22,7 @@ public class MessageDialog {
     private  MessageController messageController= null;
     private  ChoiceController choiceController= null;
     private  PdfViewerController pdfViewerController = null;
+    private EnhancedDialogController enhancedDialogController = null;
     private static MessageDialog instance = new MessageDialog();
 
     /**
@@ -76,6 +78,20 @@ public class MessageDialog {
             pdfViewerController = (PdfViewerController) fxmlLoader.getController();
             pdfViewerController.setStage(stage);
 
+            //加载增强版对话框
+            fxmlLoader = new FXMLLoader(MainApplication.class.getResource("base/enhanced-dialog.fxml"));
+            scene = new Scene(fxmlLoader.load(), 300, 260);
+            stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle("提示信息");
+            stage.setAlwaysOnTop(true);
+            stage.initOwner(MainApplication.getMainStage());
+            stage.initModality(Modality.NONE);
+            stage.setOnCloseRequest(e->{
+                MainApplication.setCanClose(true);
+            });
+            enhancedDialogController = fxmlLoader.getController();
+            enhancedDialogController.setStage(stage);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -93,6 +109,25 @@ public class MessageDialog {
         instance.messageController.showDialog(msg);
         MainApplication.setCanClose(false);
     }
+
+    //showDialog的增强版本，可以显示控件，而不仅仅是文本
+    public static void showDialog(Node widget){
+        if(instance == null || instance.enhancedDialogController == null){
+            return;
+        }
+        instance.enhancedDialogController.showDialog(widget);
+        MainApplication.setCanClose(false);
+    }
+
+    //关闭增强版对话框
+    public static void closeDialog(){
+        if(instance == null || instance.enhancedDialogController == null){
+            return;
+        }
+        instance.enhancedDialogController.closeDialog();
+        MainApplication.setCanClose(true);
+    }
+
     public static int showTest(String msg) {
         if(instance == null)
             return 1;

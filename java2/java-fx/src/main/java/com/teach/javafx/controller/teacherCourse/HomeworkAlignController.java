@@ -1,6 +1,7 @@
 package com.teach.javafx.controller.teacherCourse;
 
 import com.teach.javafx.MainApplication;
+import com.teach.javafx.controller.base.LoadingAction;
 import com.teach.javafx.controller.base.MessageDialog;
 import com.teach.javafx.customWidget.TimePicker;
 import com.teach.javafx.managers.WindowOpenAction;
@@ -10,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
@@ -62,7 +64,6 @@ public class HomeworkAlignController {
     public void init(Course c, ViewHomeworkController controller){
         this.course = c;
         this.viewHomeworkController = controller;
-
     }
 
     //用于编辑作业时填充已有数据
@@ -109,7 +110,6 @@ public class HomeworkAlignController {
             return;
         }
 
-
         DataRequest req = new DataRequest();
         req.add("title", title);
         req.add("content", content);
@@ -124,7 +124,7 @@ public class HomeworkAlignController {
             }
         }
         //仅上传新文件
-        DataResponse res = HttpRequestUtil.request("/api/homework/saveHomework",req, HomeworkFile.buildFilePaths(newFile));
+        DataResponse res = HttpRequestUtil.request("/api/homework/saveHomework", req, HomeworkFile.buildFilePaths(newFile));
         assert res != null;
         if(res.getCode() == 0){
             MessageDialog.showDialog("保存成功");
@@ -132,6 +132,9 @@ public class HomeworkAlignController {
             //关闭当前窗口
             thisStage.close();
             viewHomeworkController.onClose();
+        }
+        else {
+            MessageDialog.showDialog(res.getMsg());
         }
     }
 

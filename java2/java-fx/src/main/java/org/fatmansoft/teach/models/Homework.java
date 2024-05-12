@@ -17,6 +17,7 @@ public class Homework {
     private String content;
     private LocalDateTime start;
     private LocalDateTime end;
+    private Answer answer;
 
     private List<Button> actions;
 
@@ -103,5 +104,13 @@ public class Homework {
 
     public void setEnd(LocalDateTime end) {
         this.end = end;
+    }
+
+    public Answer getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(Answer answer) {
+        this.answer = answer;
     }
 }

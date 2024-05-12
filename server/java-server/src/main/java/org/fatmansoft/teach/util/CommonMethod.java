@@ -15,10 +15,14 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
@@ -480,5 +484,32 @@ public class CommonMethod {
             fileName = originalFileName + "(" + count + ")";
         }
         return fileName + extension;
+    }
+
+    //保存文件, 返回保存成功的文件个数
+    public static int saveMultipartFiles(MultipartFile[] files, String savePath, HasSavedAction hasSavedAction){
+        int count = 0;
+        if(files == null){
+            return count;
+        }
+        for(MultipartFile file : files){
+            if(file == null){
+                continue;
+            }
+            try{
+                String uniqueName = CommonMethod.generateUniqueFileName(file.getOriginalFilename(), savePath);
+                Path path = Paths.get(savePath + uniqueName);
+                Files.createDirectories(path.getParent());
+                Files.write(path, file.getBytes());
+                count++;
+                if(hasSavedAction != null){
+                    hasSavedAction.action(path.toFile());
+                }
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+        return count;
     }
 }
