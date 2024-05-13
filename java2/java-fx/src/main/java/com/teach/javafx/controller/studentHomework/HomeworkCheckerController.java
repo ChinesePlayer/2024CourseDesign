@@ -93,6 +93,7 @@ public class HomeworkCheckerController {
             Label l3 = new Label(endTime);
 
             Button answerButton = new Button("作答");
+            Button lookHomeworkFile = new Button("查看附件");
 
             l1.getStyleClass().add("middle-label");
             l2.getStyleClass().add("middle-label");
@@ -114,8 +115,10 @@ public class HomeworkCheckerController {
                 answerButton.setOnAction(event -> onAnswerButton(homework));
                 answerButton.setDisable(false);
             }
+            lookHomeworkFile.setOnAction(event -> onLookHomeworkFile(homework));
 
             subData1.add(answerButton);
+            subData1.add(lookHomeworkFile);
 
             data.add(subData1);
         });
@@ -158,6 +161,27 @@ public class HomeworkCheckerController {
         catch (IOException e){
             e.printStackTrace();
             MessageDialog.showDialog("打开作答窗口失败");
+        }
+    }
+
+    public void onLookHomeworkFile(Homework homework){
+        try{
+            FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("studentHomework/homework-file-checker.fxml"));
+            WindowsManager.getInstance().openNewWindow(
+                    loader, 800, 600, "查看附件",
+                    gridPane.getScene().getWindow(), Modality.WINDOW_MODAL,
+                    new WindowOpenAction() {
+                        @Override
+                        public void init(Object controller) {
+                            HomeworkFileCheckerController cont = (HomeworkFileCheckerController) controller;
+                            cont.init(homework);
+                        }
+                    }
+            );
+        }
+        catch (IOException e){
+            e.printStackTrace();
+            MessageDialog.showDialog("打开文件查看窗口失败! ");
         }
     }
 
