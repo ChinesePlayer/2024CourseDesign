@@ -112,8 +112,11 @@ public class HomeworkCheckerController {
                 answerButton.setDisable(true);
             }
             else{
-                answerButton.setOnAction(event -> onAnswerButton(homework));
+                if(homework.getAnswer() != null){
+                    answerButton.setText("修改答案");
+                }
                 answerButton.setDisable(false);
+                answerButton.setOnAction(event -> onAnswerButton(homework));
             }
             lookHomeworkFile.setOnAction(event -> onLookHomeworkFile(homework));
 

@@ -6,6 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.geometry.Insets?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.teach.javafx.controller.studentHomework.HomeworkCheckerController"
@@ -13,7 +14,11 @@
             styleClass="borderpane-container">
 
     <center>
-        <GridPane fx:id="gridPane" vgap="5" hgap="10" />
+        <GridPane fx:id="gridPane" vgap="5" hgap="10">
+            <BorderPane.margin>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </BorderPane.margin>
+        </GridPane>
     </center>
 
 </BorderPane>
