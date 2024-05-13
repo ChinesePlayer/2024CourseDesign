@@ -28,7 +28,7 @@
         </HBox>
     </top>
     <center>
-        <HBox spacing="30">
+        <HBox spacing="30" alignment="CENTER">
             <LineChart fx:id="lineChart" title="消费总览">
                 <xAxis>
                     <CategoryAxis label="日期" side="BOTTOM" />
