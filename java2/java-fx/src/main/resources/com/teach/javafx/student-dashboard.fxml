@@ -43,7 +43,7 @@
                     </Label>
                 </HBox>
                 <HBox spacing="20">
-                    <VBox maxWidth="500" maxHeight="800" styleClass="simple-info" spacing="20" prefHeight="730">
+                    <VBox  maxWidth="1000" maxHeight="800" styleClass="simple-info" spacing="20" prefHeight="730" prefWidth="600">
                         <Label text="统计数据" style="-fx-font-size: 20px" />
                         <BarChart fx:id="costBarChart" maxHeight="250">
                             <xAxis>
@@ -62,7 +62,7 @@
                         <CourseTable fx:id="courseTable" prefWidth="480" prefHeight="360" />
                         <MFXButton text="刷新" onAction="#refreshCourseTable"/>
                     </VBox>
-                    <VBox spacing="5" styleClass="simple-info" maxHeight="300" prefHeight="100">
+                    <VBox spacing="5" styleClass="simple-info" maxHeight="300" prefHeight="100" prefWidth="200">
                         <Label text="快捷操作" style="-fx-font-size: 20px"/>
                         <FlowPane fx:id="shortcuts" hgap="10" vgap="20" maxHeight="300" prefHeight="100"/>
                     </VBox>
