@@ -130,26 +130,20 @@ public class HomeworkService {
         homework.setEnd(end);
         Homework homework1 = homeworkRepository.saveAndFlush(homework);
 
-        try{
-            //保存文件
-            if (files != null){
-                for(MultipartFile file : files){
-                    String uniqueFileName = CommonMethod.generateUniqueFileName(file.getOriginalFilename(), attachFolder + "homework/" + homeworkId + "/");
-                    Path path = Paths.get(attachFolder + "homework/" + homework1.getHomeworkId() + "/" + uniqueFileName);
-                    Files.createDirectories(path.getParent());
-                    Files.write(path, file.getBytes());
-
+        Homework finalHomework = homework;
+        int count = CommonMethod.saveMultipartFiles(
+                files,
+                attachFolder + "homework/" + homework1.getHomeworkId() + "/",
+                savedFile -> {
                     //保存HomeworkFile实体类
                     HomeworkFile hf = new HomeworkFile();
-                    hf.setHomework(homework);
-                    hf.setFilePath(attachFolder + "homework/" + homework1.getHomeworkId() + "/" + uniqueFileName);
-                    hf.setFileName(uniqueFileName);
+                    hf.setHomework(finalHomework);
+                    hf.setFilePath(savedFile.getPath());
+                    hf.setFileName(savedFile.getName());
                     homeworkFileRepository.saveAndFlush(hf);
                 }
-            }
-        }
-        catch (IOException e){
-            e.printStackTrace();
+        );
+        if (count == 0 && files != null){
             return CommonMethod.getReturnMessageError("作业保存成功, 但文件未能上传");
         }
 
