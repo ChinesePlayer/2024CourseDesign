@@ -2,6 +2,7 @@ package org.fatmansoft.teach.models;
 
 import org.fatmansoft.teach.util.CommonMethod;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 public class Score {
@@ -18,6 +19,8 @@ public class Score {
     private Integer rank;
     private Integer status;
     private Double gpa;
+
+    private LocalDateTime time;
 
     public Score(){
 

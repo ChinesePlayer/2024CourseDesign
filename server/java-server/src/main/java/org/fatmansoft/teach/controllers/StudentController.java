@@ -360,6 +360,17 @@ public class StudentController {
         return CommonMethod.getReturnData(data);//将前端所需数据保留Map对象里，返还前端
     }
 
+    //获取学生消费记录
+    @PostMapping("/getStudentFeeList")
+    public DataResponse getStudentFeeList(@Valid @RequestBody DataRequest req) {
+        Integer studentId = req.getInteger("studentId");
+        if(studentId == null){
+            return CommonMethod.getReturnMessageError("无法获取学生信息");
+        }
+        List<Map> feeList = getStudentFeeList(studentId);
+        return CommonMethod.getReturnData(feeList);
+    }
+
     /**
      * saveStudentIntroduce 前端学生个人简介信息introduce提交服务
      *

@@ -99,6 +99,7 @@ public class ScoreController {
                 m.put("rank", s.getRank()+"");
             }
             m.put("gpa", s.calcGpa());
+            m.put("dateTime", CommonMethod.getLocalDateTimeString(s.getDateTime()));
             dataList.add(m);
         }
         return CommonMethod.getReturnData(dataList);

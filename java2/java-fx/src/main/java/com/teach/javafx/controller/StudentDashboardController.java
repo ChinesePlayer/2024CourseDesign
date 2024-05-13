@@ -1,12 +1,18 @@
 package com.teach.javafx.controller;
 
 import com.teach.javafx.AppStore;
+import com.teach.javafx.MainApplication;
+import com.teach.javafx.controller.base.MessageDialog;
+import com.teach.javafx.controller.statistic.FeeStatisticController;
 import com.teach.javafx.customWidget.CourseTable;
 import com.teach.javafx.managers.ShortcutManager;
+import com.teach.javafx.managers.WindowOpenAction;
+import com.teach.javafx.managers.WindowsManager;
 import com.teach.javafx.request.HttpRequestUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
@@ -15,12 +21,14 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
+import javafx.stage.Modality;
 import org.fatmansoft.teach.models.Course;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.util.CommonMethod;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -217,5 +225,21 @@ public class StudentDashboardController {
         shortActions.clear();
         shortActions = ShortcutManager.getInstance().getShortcutActions();
         shortcuts.getChildren().addAll(FXCollections.observableArrayList(shortActions));
+    }
+
+    //查看详细消费数据时
+    public void onCheckDetailFee(){
+        try{
+            FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("statistic/fee-statistic.fxml"));
+            WindowsManager.getInstance().openNewWindow(
+                    loader, 800, 700, "生活消费数据",
+                    courseTable.getScene().getWindow(), Modality.WINDOW_MODAL,
+                    null
+            );
+        }
+        catch (IOException e){
+            e.printStackTrace();
+            MessageDialog.showDialog("打开生活消费数据统计页面失败");
+        }
     }
 }

@@ -65,6 +65,19 @@ public class CommonMethod {
             return (String)obj;
         return obj.toString();
     }
+
+    public static LocalDateTime getDateTime(Map data, String key){
+        if(data == null)
+            return null;
+        Object obj = data.get(key);
+        if(obj == null)
+            return null;
+        if(obj instanceof String){
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
+            return LocalDateTime.parse((String)obj, formatter);
+        }
+        return null;
+    }
     public static Boolean getBoolean(Map data,String key){
         if(data == null)
             return null;
