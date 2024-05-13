@@ -65,6 +65,19 @@ public class CommonMethod {
             return (String)obj;
         return obj.toString();
     }
+
+    public static LocalDateTime getDateTime(Map data, String key){
+        if(data == null)
+            return null;
+        Object obj = data.get(key);
+        if(obj == null)
+            return null;
+        if(obj instanceof String){
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
+            return LocalDateTime.parse((String)obj, formatter);
+        }
+        return null;
+    }
     public static Boolean getBoolean(Map data,String key){
         if(data == null)
             return null;
@@ -325,14 +338,11 @@ public class CommonMethod {
         };
     }
 
-    //限制某个TextField只能输入数字
+    //限制某个TextField只能输入整数
     public static void limitToNumber(TextField tf){
-        tf.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observableValue, String oldValue, String newValue) {
-                if(!newValue.matches("\\d*")){
-                    tf.setText(newValue.replaceAll("[^\\d]", ""));
-                }
+        tf.textProperty().addListener((observableValue, oldValue, newValue) -> {
+            if(!newValue.matches("\\d*")){
+                tf.setText(newValue.replaceAll("[^\\d]", ""));
             }
         });
     }

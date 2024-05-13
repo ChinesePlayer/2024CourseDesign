@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.geometry.Insets?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.teach.javafx.controller.statistic.FeeStatisticController"
+            prefHeight="400.0" prefWidth="600.0"
+            styleClass="borderpane-container">
+
+    <top>
+        <HBox spacing="30" alignment="CENTER_LEFT">
+            <Label text="生活消费统计" styleClass="big-label" />
+            <Label text="时间范围: " />
+            <ComboBox fx:id="rangeCombo" />
+            <BorderPane.margin>
+                <Insets top="10" left="10" right="10" bottom="10"/>
+            </BorderPane.margin>
+        </HBox>
+    </top>
+    <center>
+        <HBox spacing="30" alignment="CENTER">
+            <LineChart fx:id="lineChart" title="消费总览">
+                <xAxis>
+                    <CategoryAxis label="日期" side="BOTTOM" />
+                </xAxis>
+                <yAxis>
+                    <NumberAxis label="金额" side="LEFT" />
+                </yAxis>
+            </LineChart>
+            <BorderPane.margin>
+                <Insets top="10" left="10" right="10" bottom="10"/>
+            </BorderPane.margin>
+        </HBox>
+    </center>
+
+</BorderPane>

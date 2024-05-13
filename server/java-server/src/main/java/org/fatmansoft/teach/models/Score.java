@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+
 /**
  * Score 成绩表实体类  保存成绩的的基本信息信息，
  * Integer scoreId 人员表 score 主键 score_id
@@ -38,6 +40,10 @@ public class Score {
 
     //完成状态，0：修读中，1：已及格，2：不及格
     private Integer status;
+
+    //成绩录入时间
+    //由后端管理，前端无修改权限，仅能读取
+    private LocalDateTime dateTime;
 
     public Double calcGpa(){
         if(mark != null){

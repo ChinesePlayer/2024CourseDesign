@@ -32,11 +32,9 @@ public class StudentScoreEditController {
     }
 
     public void init(Map data){
-        String mark = (String) data.get(StudentViewerController.MARK);
-        if(mark == null){
-            mark = "";
-        }
-        markField.setText(mark);
+        Integer mark = CommonMethod.getInteger(data, StudentViewerController.MARK);
+        //将mark解析为整数
+        markField.setText(mark == null ? "" : mark+"");
         ObservableList<String> items = FXCollections.observableArrayList();
         items.add("修读中");
         items.add("已及格");

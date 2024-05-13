@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -99,6 +100,7 @@ public class ScoreController {
                 m.put("rank", s.getRank()+"");
             }
             m.put("gpa", s.calcGpa());
+            m.put("dateTime", CommonMethod.getLocalDateTimeString(s.getDateTime()));
             dataList.add(m);
         }
         return CommonMethod.getReturnData(dataList);
@@ -143,6 +145,7 @@ public class ScoreController {
             }
         }
         s.setStatus(status);
+        s.setDateTime(LocalDateTime.now());
         scoreRepository.save(s);
         return CommonMethod.getReturnMessageOK();
     }

@@ -2,6 +2,8 @@ package com.teach.javafx.controller;
 
 import com.teach.javafx.controller.base.MessageDialog;
 import com.teach.javafx.models.Student;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.fatmansoft.teach.models.Course;
@@ -42,10 +44,20 @@ public class ScoreEditController {
         statuses.add("已及格");
         statuses.add("不及格");
         statusComboBox.setItems(statuses);
+        CommonMethod.limitToNumber(markField);
     }
 
     @FXML
     public void okButtonClick(){
+        if(studentComboBox.getSelectionModel().getSelectedItem() == null || studentComboBox.getSelectionModel().getSelectedItem().isEmptyStudent()){
+            MessageDialog.showDialog("请选择学生! ");
+            return;
+        }
+        if(courseComboBox.getSelectionModel().getSelectedItem() == null || courseComboBox.getSelectionModel().getSelectedItem().isEmptyCourse() ){
+            MessageDialog.showDialog("请选择课程! ");
+            return;
+        }
+
         if(statusComboBox.getSelectionModel().getSelectedItem() == null || statusComboBox.getSelectionModel().getSelectedItem().isEmpty()){
             MessageDialog.showDialog("请选择修读状态! ");
             return;
@@ -132,7 +144,7 @@ public class ScoreEditController {
             studentComboBox.setDisable(true);
             courseComboBox.setDisable(true);
             if(data.getMark() != null){
-                markField.setText(data.getMark()+"");
+                markField.setText(data.getMark().intValue()+"");
             }
             else{
                 markField.setText("");
