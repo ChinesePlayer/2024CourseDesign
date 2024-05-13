@@ -338,14 +338,11 @@ public class CommonMethod {
         };
     }
 
-    //限制某个TextField只能输入数字
+    //限制某个TextField只能输入整数
     public static void limitToNumber(TextField tf){
-        tf.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observableValue, String oldValue, String newValue) {
-                if(!newValue.matches("\\d*")){
-                    tf.setText(newValue.replaceAll("[^\\d]", ""));
-                }
+        tf.textProperty().addListener((observableValue, oldValue, newValue) -> {
+            if(!newValue.matches("\\d*")){
+                tf.setText(newValue.replaceAll("[^\\d]", ""));
             }
         });
     }

@@ -55,7 +55,6 @@
                         </BarChart>
                         <Button text="详细数据" minHeight="50" onAction="#onCheckDetailFee" />
                         <PieChart fx:id="markPieChart" maxHeight="230"/>
-                        <Button text="成绩详情" />
                     </VBox>
                     <VBox styleClass="simple-info" alignment="CENTER" spacing="5" maxHeight="490">
                         <Label text="本周课表" style="-fx-font-size: 20px"/>
