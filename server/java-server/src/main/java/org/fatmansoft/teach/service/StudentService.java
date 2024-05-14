@@ -5,10 +5,7 @@ import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import org.fatmansoft.teach.models.Honor;
-import org.fatmansoft.teach.models.Person;
-import org.fatmansoft.teach.models.Score;
-import org.fatmansoft.teach.models.Student;
+import org.fatmansoft.teach.models.*;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.repository.ScoreRepository;
@@ -135,7 +132,6 @@ public class StudentService {
         String dept = student.getPerson().getDept();
         String major = student.getMajor();
         String className = student.getClassName();
-        String loc = student.getPerson().getAddress();
         //证件号码
         String idNum = student.getPerson().getCard();
         String gender = student.getPerson().getGender();
@@ -153,14 +149,14 @@ public class StudentService {
             doc.open();
 
             //学生基本信息表格
-            PdfPTable basicInfoTable = new PdfPTable(4);
             BaseFont chineseFont = BaseFont.createFont("STSong-Light", "UniGB-UCS2-H", BaseFont.NOT_EMBEDDED);
             Font titleFont = new Font(chineseFont, 24, Font.BOLD);
+            Font subtitleFont = new Font(chineseFont, 18, Font.BOLD);
             Font contentFont = new Font(chineseFont, 12);
 
 
             //添加标题
-            Paragraph title = new Paragraph(name + " 个人简介", titleFont);
+            Paragraph title = new Paragraph("个人画像", titleFont);
             //标题居中显示
             title.setAlignment(Element.ALIGN_CENTER);
             //与下一段的距离
@@ -168,34 +164,132 @@ public class StudentService {
             doc.add(title);
 
 
-//            //添加头像
-//            //读取图片
-//            Image image = Image.getInstance(CommonMethod.getAvatar(student.getPerson().getPersonId(), attachFolder));
-//            //头像未获取成功, 使用默认头像
-//            if(image == null){
-//                image = Image.getInstance(CommonMethod.getDefaultAvatar());
-//            }
-//            PdfPCell imageCell = new PdfPCell();
-//            imageCell.setRowspan(2);
-//            imageCell.setColspan(2);
-//            imageCell.addElement(image);
+            //添加头像
+            //读取图片
+            Image image = Image.getInstance(CommonMethod.getAvatar(student.getPerson().getPersonId(), attachFolder));
+            //头像未获取成功, 使用默认头像
+            if(image == null){
+                image = Image.getInstance(CommonMethod.getDefaultAvatar());
+            }
+            PdfPCell imageCell = new PdfPCell();
+            image.scaleToFit(200,200);
+            //图片横跨表格两行四列
+            imageCell.setRowspan(2);
+            imageCell.setColspan(4);
+            //设置图片未居中对齐
+            imageCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            imageCell.setVerticalAlignment(Element.ALIGN_CENTER);
+            image.setAlignment(Image.ALIGN_CENTER);
+            imageCell.addElement(image);
 
-
-            String introduction = "    " + name + "，学号为" + num + "，就读于山东大学" + dept + "学院的" + major + "专业" +
-                    "，所在班级为" + className + "。" + "联系方式: 邮箱 " + email + "\n电话 " + phone + "。" ;
-            doc.add(new Paragraph(introduction, contentFont));
-//            basicInfoTable.addCell(new Paragraph("姓名: "+name, contentFont));
-//            basicInfoTable.addCell(new Paragraph("学号: "+num, contentFont));
-//            basicInfoTable.addCell(new Paragraph("专业: "+major, contentFont));
-//            basicInfoTable.addCell(new Paragraph("学院: "+dept, contentFont));
-//            basicInfoTable.addCell(new Paragraph("班级: "+className, contentFont));
-//            basicInfoTable.addCell(new Paragraph("证件号码: "+idNum, contentFont));
-//            basicInfoTable.addCell(new Paragraph("性别: "+gender, contentFont));
-//            basicInfoTable.addCell(new Paragraph("生日: "+birth, contentFont));
-//            basicInfoTable.addCell(new Paragraph("邮箱: "+email, contentFont));
-//            basicInfoTable.addCell(new Paragraph("电话: "+phone, contentFont));
-//            basicInfoTable.addCell(new Paragraph("地址: "+address, contentFont));
+            PdfPTable basicInfoTable = new PdfPTable(4);
+            basicInfoTable.setSpacingAfter(20);
+            //注意添加单元格时单元格数量一定要是列数的倍数，否则会有部分单元格无法被添加
+            basicInfoTable.addCell(new PdfPCell(new Paragraph("姓名: "+name, contentFont)));
+            basicInfoTable.addCell(new PdfPCell(new Paragraph("学号: "+num, contentFont)));
+            basicInfoTable.addCell(new PdfPCell(new Paragraph("专业: "+major, contentFont)));
+            basicInfoTable.addCell(new PdfPCell(new Paragraph("学院: "+dept, contentFont)));
+            basicInfoTable.addCell(new PdfPCell(new Paragraph("班级: "+className, contentFont)));
+            basicInfoTable.addCell(new PdfPCell(new Paragraph("证件号码: "+idNum, contentFont)));
+            basicInfoTable.addCell(new PdfPCell(new Paragraph("性别: "+gender, contentFont)));
+            basicInfoTable.addCell(new PdfPCell(new Paragraph("生日: "+birth, contentFont)));
+            basicInfoTable.addCell(new PdfPCell(new Paragraph("邮箱: "+email, contentFont)));
+            basicInfoTable.addCell(new PdfPCell(new Paragraph("电话: "+phone, contentFont)));
+            basicInfoTable.addCell(new PdfPCell(new Paragraph("地址: "+address, contentFont)));
+            //新增一个空白单元格，凑成列数的倍数
+            basicInfoTable.addCell(new PdfPCell(new Paragraph(" ", contentFont)));
+            basicInfoTable.addCell(imageCell);
             doc.add(basicInfoTable);
+
+            //添加荣誉信息
+            Paragraph honorTitle = new Paragraph("荣誉墙", subtitleFont);
+            honorTitle.setAlignment(Element.ALIGN_CENTER);
+            honorTitle.setSpacingAfter(10);
+            doc.add(honorTitle);
+
+            doc.add(new Paragraph("荣誉称号: ", contentFont));
+            for(Honor h : getHonorByType(honorList, EHonorType.HONOR_TITLE)){
+                Paragraph unit = new Paragraph("    " + h.getHonorContent(), contentFont);
+                unit.setSpacingAfter(5);
+                doc.add(unit);
+            }
+            if(getHonorByType(honorList, EHonorType.HONOR_TITLE).isEmpty()){
+                Paragraph unit = new Paragraph("    暂无", contentFont);
+                unit.setSpacingAfter(5);
+                doc.add(unit);
+            }
+
+            doc.add(new Paragraph("学科竞赛: ", contentFont));
+            for(Honor h : getHonorByType(honorList, EHonorType.HONOR_CONTEST)){
+                Paragraph unit = new Paragraph("    " + h.getHonorContent(), contentFont);
+                unit.setSpacingAfter(5);
+                doc.add(unit);
+            }
+            if(getHonorByType(honorList, EHonorType.HONOR_CONTEST).isEmpty()){
+                Paragraph unit = new Paragraph("    暂无", contentFont);
+                unit.setSpacingAfter(5);
+                doc.add(unit);
+            }
+
+            doc.add(new Paragraph("社会实践: ", contentFont));
+            for(Honor h : getHonorByType(honorList, EHonorType.HONOR_PRACTICE)){
+                Paragraph unit = new Paragraph("    " + h.getHonorContent(), contentFont);
+                unit.setSpacingAfter(5);
+                doc.add(unit);
+            }
+            if(getHonorByType(honorList, EHonorType.HONOR_PRACTICE).isEmpty()){
+                Paragraph unit = new Paragraph("    暂无", contentFont);
+                unit.setSpacingAfter(5);
+                doc.add(unit);
+            }
+
+            doc.add(new Paragraph("科技成果: ", contentFont));
+            for(Honor h : getHonorByType(honorList, EHonorType.HONOR_TECH)){
+                Paragraph unit = new Paragraph("    " + h.getHonorContent(), contentFont);
+                unit.setSpacingAfter(5);
+                doc.add(unit);
+            }
+            if(getHonorByType(honorList, EHonorType.HONOR_TECH).isEmpty()){
+                Paragraph unit = new Paragraph("    暂无", contentFont);
+                unit.setSpacingAfter(5);
+                doc.add(unit);
+            }
+
+            doc.add(new Paragraph("培训讲座: ", contentFont));
+            for(Honor h : getHonorByType(honorList, EHonorType.HONOR_LECTURE)){
+                Paragraph unit = new Paragraph("    " + h.getHonorContent(), contentFont);
+                unit.setSpacingAfter(5);
+                doc.add(unit);
+            }
+            if(getHonorByType(honorList, EHonorType.HONOR_LECTURE).isEmpty()){
+                Paragraph unit = new Paragraph("    暂无", contentFont);
+                unit.setSpacingAfter(5);
+                doc.add(unit);
+            }
+
+            doc.add(new Paragraph("校外实习: ", contentFont));
+            for(Honor h : getHonorByType(honorList, EHonorType.HONOR_INTERNSHIP)){
+                Paragraph unit = new Paragraph("    " + h.getHonorContent(), contentFont);
+                unit.setSpacingAfter(5);
+                doc.add(unit);
+            }
+            if(getHonorByType(honorList, EHonorType.HONOR_INTERNSHIP).isEmpty()){
+                Paragraph unit = new Paragraph("    暂无", contentFont);
+                unit.setSpacingAfter(5);
+                doc.add(unit);
+            }
+
+            doc.add(new Paragraph("创新项目: ", contentFont));
+            for(Honor h : getHonorByType(honorList, EHonorType.HONOR_PROJ)){
+                Paragraph unit = new Paragraph("    " + h.getHonorContent(), contentFont);
+                unit.setSpacingAfter(5);
+                doc.add(unit);
+            }
+            if(getHonorByType(honorList, EHonorType.HONOR_PROJ).isEmpty()){
+                Paragraph unit = new Paragraph("    暂无", contentFont);
+                unit.setSpacingAfter(5);
+                doc.add(unit);
+            }
 
             doc.close();
 
@@ -209,6 +303,16 @@ public class StudentService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public List<Honor> getHonorByType(List<Honor> list, EHonorType type){
+        List<Honor> res = new ArrayList<>();
+        for(Honor h : list){
+            if(h.getHonorType().getType() == type){
+                res.add(h);
+            }
+        }
+        return res;
     }
 
 

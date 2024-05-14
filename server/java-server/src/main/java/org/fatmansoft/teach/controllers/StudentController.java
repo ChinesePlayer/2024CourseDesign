@@ -268,6 +268,7 @@ public class StudentController {
             m.put("credit", c.getCredit());
             m.put("mark", s.getMark());
             m.put("rank", s.getRank());
+            m.put("status", s.getStatus());
             list.add(m);
         }
         return list;

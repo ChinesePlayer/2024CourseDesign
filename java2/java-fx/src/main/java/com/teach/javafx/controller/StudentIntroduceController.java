@@ -4,6 +4,7 @@ import com.teach.javafx.AppStore;
 import com.teach.javafx.MainApplication;
 import com.teach.javafx.controller.base.MessageDialog;
 import com.teach.javafx.controller.base.ToolController;
+import com.teach.javafx.controller.studentDraw.StudentDrawController;
 import com.teach.javafx.controller.studentScore.StudentScoreValueFactory;
 import com.teach.javafx.managers.WindowOpenAction;
 import com.teach.javafx.managers.WindowsManager;
@@ -44,53 +45,55 @@ import java.util.Map;
  *  在简单熟悉HTML的基础上，构建比较美观丰富的个人简历，并生成和下载PDF文件
  */
 public class StudentIntroduceController extends ToolController {
-    private ImageView photoImageView;
-    private ObservableList<Score> observableList= FXCollections.observableArrayList();
-    private List<Score> scoreList = new ArrayList<>();
+    public ImageView photoImageView;
+    public ObservableList<Score> observableList= FXCollections.observableArrayList();
+    public List<Score> scoreList = new ArrayList<>();
+    public List<Map> feeList = new ArrayList<>();
+    public List<Map> markList = new ArrayList<>();
 
     @FXML
-    private Button photoButton;  //照片显示和上传按钮
+    public Button photoButton;  //照片显示和上传按钮
     @FXML
-    private Label num;  //学号标签
+    public Label num;  //学号标签
     @FXML
-    private Label name;//姓名标签
+    public Label name;//姓名标签
     @FXML
-    private Label dept; //学院标签
+    public Label dept; //学院标签
     @FXML
-    private Label major; //专业标签
+    public Label major; //专业标签
     @FXML
-    private Label className; //班级标签
+    public Label className; //班级标签
     @FXML
-    private Label card;  //证件号码标签
+    public Label card;  //证件号码标签
     @FXML
-    private Label gender; //性别标签
+    public Label gender; //性别标签
     @FXML
-    private Label birthday; //出生日期标签
+    public Label birthday; //出生日期标签
     @FXML
-    private Label email; //邮箱标签
+    public Label email; //邮箱标签
     @FXML
-    private Label phone; //电话标签
+    public Label phone; //电话标签
     @FXML
-    private Label address; //地址标签
+    public Label address; //地址标签
     @FXML
-    private TableView<Score> scoreTable;  //成绩表TableView
+    public TableView<Score> scoreTable;  //成绩表TableView
     @FXML
-    private TableColumn<Score,String> courseNum;  //课程号列
+    public TableColumn<Score,String> courseNum;  //课程号列
     @FXML
-    private TableColumn<Score,String> courseName; //课程名列
+    public TableColumn<Score,String> courseName; //课程名列
     @FXML
-    private TableColumn<Score,String> credit; //学分列
+    public TableColumn<Score,String> credit; //学分列
     @FXML
-    private TableColumn<Score,String> mark; //成绩列
+    public TableColumn<Score,String> mark; //成绩列
     @FXML
-    private TableColumn<Score,String> rank; //排名列
+    public TableColumn<Score,String> rank; //排名列
 
     @FXML
-    private BarChart<String,Number> barChart;  //消费直方图控件
+    public BarChart<String,Number> barChart;  //消费直方图控件
     @FXML
-    private PieChart pieChart;   //成绩分布饼图控件
-    private Integer studentId = null;  //学生主键
-    private Integer personId = null;  //学生关联人员主键
+    public PieChart pieChart;   //成绩分布饼图控件
+    public Integer studentId = null;  //学生主键
+    public Integer personId = null;  //学生关联人员主键
 
     /**
      * 页面加载对象创建完成初始话方法，页面中控件属性的设置，初始数据显示等初始操作都在这里完成，其他代码都事件处理方法里
@@ -153,14 +156,14 @@ public class StudentIntroduceController extends ToolController {
         initScoreList((List) data.get("scoreList"));
         setScoreTable();
 
-        List<Map> markList = (List)data.get("markList");
+        markList = (List)data.get("markList");
         ObservableList<PieChart.Data> chartData = FXCollections.observableArrayList();
         for(Map m:markList) {
             chartData.add(new PieChart.Data(m.get("title").toString(),Double.parseDouble(m.get("value").toString())));
         }
         pieChart.setData(chartData);  //成绩分类表显示
 
-        List<Map> feeList = (List)data.get("feeList");
+        feeList = (List)data.get("feeList");
         XYChart.Series<String, Number> seriesFee = new XYChart.Series<>();
         seriesFee.setName("日常消费");
         for(Map m:feeList)
@@ -203,6 +206,31 @@ public class StudentIntroduceController extends ToolController {
         catch (IOException e){
             e.printStackTrace();
             MessageDialog.showDialog("打开个人简历编辑页面失败");
+        }
+    }
+
+    //按下查看个人画像的时候，打开个人画像页面
+    public void onCheckDraw(){
+        try{
+            FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("studentDraw/student-draw.fxml"));
+            Stage s = WindowsManager.getInstance().openNewWindow(
+                    loader, 566, 800, "个人画像",
+                    photoButton.getScene().getWindow(), Modality.WINDOW_MODAL,
+                    new WindowOpenAction() {
+                        @Override
+                        public void init(Object controller) {
+                            WindowOpenAction.super.init(controller);
+                            StudentDrawController cont = (StudentDrawController) controller;
+                            cont.init(StudentIntroduceController.this);
+                        }
+                    }
+            );
+            //禁止修改窗口大小
+            s.setResizable(false);
+        }
+        catch (IOException e){
+            e.printStackTrace();
+            MessageDialog.showDialog("打开个人画像页面失败! ");
         }
     }
 
