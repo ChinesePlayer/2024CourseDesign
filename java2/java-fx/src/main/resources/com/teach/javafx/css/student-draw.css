@@ -1,0 +1,13 @@
+.container{
+    -fx-background-image: url('../picture/drawTemplate.jpg');
+    -fx-background-size: cover;
+}
+
+.basic-label{
+    -fx-text-fill: #ffffff;
+}
+
+.name{
+    -fx-text-fill: black;
+    -fx-font-size: 40;
+}

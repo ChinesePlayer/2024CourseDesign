@@ -268,6 +268,7 @@ public class StudentController {
             m.put("credit", c.getCredit());
             m.put("mark", s.getMark());
             m.put("rank", s.getRank());
+            m.put("status", s.getStatus());
             list.add(m);
         }
         return list;
@@ -581,6 +582,11 @@ public class StudentController {
         return CommonMethod.getReturnData(data);
     }
 
+    @PostMapping("/getStudentIntroHTML")
+    public DataResponse getStudentIntroHTML(@Valid @RequestBody DataRequest req){
+        return studentService.getStudentIntroHTML(req);
+    }
+
 
     public byte[] getStudentIntroduceItextPdfData(Integer studentId) {
         byte data[] = null;
@@ -829,6 +835,11 @@ public class StudentController {
     @PreAuthorize("hasRole('ROLE_STUDENT')")
     public DataResponse getStudentDashboardInfo(@Valid @RequestBody DataRequest req){
         return studentService.getStudentDashboardInfo(req);
+    }
+
+    @PostMapping("/getIntroducePdf")
+    public ResponseEntity<StreamingResponseBody> getIntroducePdf(@Valid @RequestBody DataRequest req){
+        return studentService.getIntroducePdf(req);
     }
 
 }

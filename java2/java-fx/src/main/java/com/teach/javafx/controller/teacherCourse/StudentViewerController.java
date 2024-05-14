@@ -160,13 +160,17 @@ public class StudentViewerController {
         FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("teacherCourse/student-score-edit.fxml"));
         try{
             WindowsManager.getInstance().openNewWindow(
-                loader, 600, 500, "编辑: " + m.get(STUDENT_NAME),
-                studentTableView.getScene().getWindow(), Modality.WINDOW_MODAL,
-                controller12 -> {
-                    StudentScoreEditController controller1 = (StudentScoreEditController) controller12;
-                    controller1.init(m);
-                    controller1.controller = StudentViewerController.this;
-                }
+                    loader, 600, 500, "编辑: " + m.get(STUDENT_NAME),
+                    studentTableView.getScene().getWindow(), Modality.WINDOW_MODAL,
+                    new WindowOpenAction() {
+                        @Override
+                        public void init(Object controller) {
+                            WindowOpenAction.super.init(controller);
+                            StudentScoreEditController controller1 = (StudentScoreEditController) controller;
+                            controller1.init(m);
+                            controller1.controller = StudentViewerController.this;
+                        }
+                    }
             );
         }
         catch (IOException e){

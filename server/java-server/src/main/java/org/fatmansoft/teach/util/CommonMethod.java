@@ -7,18 +7,15 @@ import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.fatmansoft.teach.models.Student;
+import org.fatmansoft.teach.SpringBootSecurityJwtApplication;
 import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.security.services.UserDetailsImpl;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
-import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
@@ -457,7 +454,7 @@ public class CommonMethod {
     }
 
     //根据学生ID获取学生头像路径
-    public static String getStudentAvatar(Integer personId, String attachFolder){
+    public static String getAvatar(Integer personId, String attachFolder){
         return attachFolder + "photo/" + personId + ".jpg";
     }
 
@@ -511,5 +508,10 @@ public class CommonMethod {
             }
         }
         return count;
+    }
+
+    //获取默认头像路径
+    public static String getDefaultAvatar(){
+        return SpringBootSecurityJwtApplication.class.getResource("/image/noAvatar.jpg").getPath();
     }
 }

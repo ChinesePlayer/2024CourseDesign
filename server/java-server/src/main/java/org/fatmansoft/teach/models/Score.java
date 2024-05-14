@@ -47,7 +47,8 @@ public class Score {
 
     public Double calcGpa(){
         if(mark != null){
-            if(mark < 60){
+            //分数小于60或状态不是已及格就不计算绩点
+            if(mark < 60 || status != 1){
                 return null;
             }
             return mark/10.0-5.0;

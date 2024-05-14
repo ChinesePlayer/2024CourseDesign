@@ -91,6 +91,7 @@ public class WindowsManager {
         }
         if(action != null){
             action.init(controller);
+            action.init(controller, stage);
         }
         stage.show();
         return stage;
