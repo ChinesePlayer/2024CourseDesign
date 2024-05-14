@@ -145,9 +145,13 @@ public class HomeworkAlignController {
             WindowsManager.getInstance().openNewWindow(
                     loader, 800, 600, "上传作业文件", titleField.getScene().getWindow(),
                     Modality.WINDOW_MODAL,
-                    controller -> {
-                        HomeworkFileCheckerController controller1 = (HomeworkFileCheckerController) controller;
-                        controller1.init(HomeworkAlignController.this, homework);
+                    new WindowOpenAction() {
+                        @Override
+                        public void init(Object controller) {
+                            WindowOpenAction.super.init(controller);
+                            HomeworkFileCheckerController controller1 = (HomeworkFileCheckerController) controller;
+                            controller1.init(HomeworkAlignController.this, homework);
+                        }
                     }
             );
         }

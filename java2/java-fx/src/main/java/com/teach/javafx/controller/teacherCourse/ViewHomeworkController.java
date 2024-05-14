@@ -136,9 +136,13 @@ public class ViewHomeworkController {
             WindowsManager.getInstance().openNewWindow(
                     loader, 800, 600, "作业布置: " + course.getName(),
                     gridPane.getScene().getWindow(), Modality.WINDOW_MODAL,
-                    controller -> {
-                        HomeworkAlignController controller1 = (HomeworkAlignController) controller;
-                        controller1.init(course, ViewHomeworkController.this);
+                    new WindowOpenAction() {
+                        @Override
+                        public void init(Object controller) {
+                            WindowOpenAction.super.init(controller);
+                            HomeworkAlignController controller1 = (HomeworkAlignController) controller;
+                            controller1.init(course, ViewHomeworkController.this);
+                        }
                     }
             );
         }
@@ -155,11 +159,15 @@ public class ViewHomeworkController {
             WindowsManager.getInstance().openNewWindow(
                     loader, 800, 600, "编辑作业: " + homework.getTitle(),
                     gridPane.getScene().getWindow(), Modality.WINDOW_MODAL,
-                    controller -> {
-                        HomeworkAlignController controller1 = (HomeworkAlignController) controller;
-                        controller1.init(course, ViewHomeworkController.this);
-                        //填充数据
-                        controller1.fillData(homework);
+                    new WindowOpenAction() {
+                        @Override
+                        public void init(Object controller) {
+                            WindowOpenAction.super.init(controller);
+                            HomeworkAlignController controller1 = (HomeworkAlignController) controller;
+                            controller1.init(course, ViewHomeworkController.this);
+                            //填充数据
+                            controller1.fillData(homework);
+                        }
                     }
             );
         }

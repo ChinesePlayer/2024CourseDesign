@@ -111,9 +111,15 @@ public class MyTaughtController {
         FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("teacherCourse/student-viewer.fxml"));
         try{
             studentViewerStage = WindowsManager.getInstance().openNewWindow(
-                loader, 900, 600, "学生管理",
-                courseTableView.getScene().getWindow(), Modality.WINDOW_MODAL,
-                    controller -> ((StudentViewerController)controller).init(c)
+                    loader, 900, 600, "学生管理",
+                    courseTableView.getScene().getWindow(), Modality.WINDOW_MODAL,
+                    new WindowOpenAction() {
+                        @Override
+                        public void init(Object controller) {
+                            WindowOpenAction.super.init(controller);
+                            ((StudentViewerController)controller).init(c);
+                        }
+                    }
             );
             studentViewerStage.setOnCloseRequest(windowEvent -> studentViewerStage = null);
         }
@@ -132,9 +138,13 @@ public class MyTaughtController {
             WindowsManager.getInstance().openNewWindow(
                     loader, 800, 600, "管理作业: " + c.getName(),
                     courseTableView.getScene().getWindow(), Modality.WINDOW_MODAL,
-                    controller -> {
-                        ViewHomeworkController controller1 = (ViewHomeworkController) controller;
-                        controller1.init(c, MyTaughtController.this);
+                    new WindowOpenAction() {
+                        @Override
+                        public void init(Object controller) {
+                            WindowOpenAction.super.init(controller);
+                            ViewHomeworkController controller1 = (ViewHomeworkController) controller;
+                            controller1.init(c, MyTaughtController.this);
+                        }
                     });
         }
         catch (IOException e){

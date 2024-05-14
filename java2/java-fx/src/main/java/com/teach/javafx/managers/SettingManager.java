@@ -19,7 +19,8 @@ public class SettingManager {
     static {
         instance = new SettingManager();
         try{
-            SETTING_PATH = System.getProperty("user.dir") + "/" + SETTING_FILE_NAME;
+            SETTING_PATH = System.getProperty("user.dir") + "\\" + SETTING_FILE_NAME;
+            System.out.println(SETTING_PATH);
             BufferedReader reader = new BufferedReader(new FileReader(SETTING_PATH));
             JSONTokener tokener = new JSONTokener(reader);
             JSONObject jsonObject = new JSONObject(tokener);

@@ -24,7 +24,6 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.*;
-import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.List;
@@ -362,7 +361,7 @@ public class BaseController {
         }
         Student student = stuOp.get();
         Integer personId = student.getPerson().getPersonId();
-        String avatarCompleteName = CommonMethod.getStudentAvatar(personId, attachFolder);
+        String avatarCompleteName = CommonMethod.getAvatar(personId, attachFolder);
         try{
             File file = new File(avatarCompleteName);
             int len = (int) file.length();

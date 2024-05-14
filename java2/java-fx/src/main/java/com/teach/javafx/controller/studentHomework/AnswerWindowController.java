@@ -76,13 +76,17 @@ public class AnswerWindowController {
         try{
             FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("studentHomework/answer-file-checker.fxml"));
             WindowsManager.getInstance().openNewWindow(
-                loader, 700, 600, "上传文件",
-                contentArea.getScene().getWindow(), Modality.WINDOW_MODAL,
-                controller -> {
-                    AnswerFileCheckerController cont = (AnswerFileCheckerController) controller;
-                    //注意此处homework.getAnswer()可能为null
-                    cont.init(homework.getAnswer(), answerFileList);
-                }
+                    loader, 700, 600, "上传文件",
+                    contentArea.getScene().getWindow(), Modality.WINDOW_MODAL,
+                    new WindowOpenAction() {
+                        @Override
+                        public void init(Object controller) {
+                            WindowOpenAction.super.init(controller);
+                            AnswerFileCheckerController cont = (AnswerFileCheckerController) controller;
+                            //注意此处homework.getAnswer()可能为null
+                            cont.init(homework.getAnswer(), answerFileList);
+                        }
+                    }
             );
         }
         catch (IOException e){

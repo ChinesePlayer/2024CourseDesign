@@ -193,14 +193,16 @@ public class MainFrameController {
                 if (menu == null)
                     return;
                 String name = menu.getName();
+                System.out.println("方法名:" + name);
                 if (name == null || name.length() == 0)
                     return;
                 if ("logout".equals(name)) {
                     logout();
                 } else if (name.endsWith("Command")) {
                     try {
-                        Method m = this.getClass().getMethod(name);
-                        m.invoke(this);
+                        Method m = MainFrameController.this.getClass().getDeclaredMethod(name);
+                        m.setAccessible(true);
+                        m.invoke(MainFrameController.this);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -452,7 +454,7 @@ public class MainFrameController {
     /**
      * 点击编辑菜单中的“导出”菜单，执行doExportCommand方法， 执行当前显示的面板对应的控制类中的doExport方法
      */
-    protected  void doExportCommand(){
+    protected void doExportCommand(){
         ToolController c = getCurrentToolController();
         if(c == null)
             return;

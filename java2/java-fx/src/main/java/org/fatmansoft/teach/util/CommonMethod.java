@@ -445,4 +445,16 @@ public class CommonMethod {
         }
         return fileName + extension;
     }
+
+    //通用的保存文件方法
+    public static void saveFile(String path, String fileName, byte[] fileBytes) throws IOException {
+        String uniqueName = generateUniqueFileName(fileName, path);
+        Path p = Paths.get(path + "/" + uniqueName);
+        if(fileBytes == null){
+            return;
+        }
+        //如果目录不存在，则创建
+        Files.createDirectories(p.getParent());
+        Files.write(p, fileBytes);
+    }
 }

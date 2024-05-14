@@ -1,9 +1,17 @@
 package com.teach.javafx.controller;
 
+import com.teach.javafx.AppStore;
+import com.teach.javafx.MainApplication;
 import com.teach.javafx.controller.base.MessageDialog;
 import com.teach.javafx.controller.base.ToolController;
 import com.teach.javafx.controller.studentScore.StudentScoreValueFactory;
+import com.teach.javafx.managers.WindowOpenAction;
+import com.teach.javafx.managers.WindowsManager;
 import com.teach.javafx.request.HttpRequestUtil;
+import javafx.fxml.FXMLLoader;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import org.fatmansoft.teach.models.Score;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
@@ -21,6 +29,10 @@ import javafx.stage.FileChooser;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -36,8 +48,6 @@ public class StudentIntroduceController extends ToolController {
     private ObservableList<Score> observableList= FXCollections.observableArrayList();
     private List<Score> scoreList = new ArrayList<>();
 
-    @FXML
-    private HTMLEditor introduceHtml; //个人简历HTML编辑器
     @FXML
     private Button photoButton;  //照片显示和上传按钮
     @FXML
@@ -139,7 +149,6 @@ public class StudentIntroduceController extends ToolController {
         email.setText(CommonMethod.getString(info,"email"));
         phone.setText(CommonMethod.getString(info,"phone"));
         address.setText(CommonMethod.getString(info,"address"));
-        introduceHtml.setHtmlText(CommonMethod.getString(info,"introduce"));
 
         initScoreList((List) data.get("scoreList"));
         setScoreTable();
@@ -173,6 +182,31 @@ public class StudentIntroduceController extends ToolController {
         }
 
     }
+
+    //按下编辑个人简历按钮时打开编辑页面
+    public void onEditIntroButtonClick(){
+        try{
+            FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("student-intro-editor.fxml"));
+            //以A4纸的宽高比210:297打开页面
+            Stage s = WindowsManager.getInstance().openNewWindow(
+                    loader, 565, 800, "编辑简历",
+                    photoButton.getScene().getWindow(), Modality.WINDOW_MODAL,
+                    new WindowOpenAction() {
+                        @Override
+                        public void init(Object controller, Stage stage) {
+                            WindowOpenAction.super.init(controller, stage);
+                            ((StudentIntroEditorController)controller).setStage(stage);
+                        }
+                    }
+            );
+        }
+        catch (IOException e){
+            e.printStackTrace();
+            MessageDialog.showDialog("打开个人简历编辑页面失败");
+        }
+    }
+
+
     /**
      * 点击保存按钮 执行onSubmitButtonClick 调用doSave 实现个人简历保存
      */
@@ -225,18 +259,18 @@ public class StudentIntroduceController extends ToolController {
      * 保存个人简介数据到数据库里
      */
 
-    public void doSave(){
-        String introduce = introduceHtml.getHtmlText();
-        DataRequest req = new DataRequest();
-        req.add("studentId",studentId);
-        req.add("introduce",introduce);
-        DataResponse res = HttpRequestUtil.request("/api/student/saveStudentIntroduce", req);
-        if(res.getCode() == 0) {
-            MessageDialog.showDialog("提交成功！");
-        }else {
-            MessageDialog.showDialog(res.getMsg());
-        }
-    }
+//    public void doSave(){
+//        String introduce = introduceHtml.getHtmlText();
+//        DataRequest req = new DataRequest();
+//        req.add("studentId",studentId);
+//        req.add("introduce",introduce);
+//        DataResponse res = HttpRequestUtil.request("/api/student/saveStudentIntroduce", req);
+//        if(res.getCode() == 0) {
+//            MessageDialog.showDialog("提交成功！");
+//        }else {
+//            MessageDialog.showDialog(res.getMsg());
+//        }
+//    }
 
     /**
      * 数据导入示例，点击编辑菜单中的导入菜单执行该方法， doImport 重写了 ToolController 中的doImport
@@ -257,6 +291,33 @@ public class StudentIntroduceController extends ToolController {
         else {
             MessageDialog.showDialog(res.getMsg());
         }
+    }
+
+    @Override
+    public void doExport(){
+        //TODO: 从后端获取学生个人画像
+        //选择保存路径
+        DirectoryChooser chooser = new DirectoryChooser();
+        chooser.setTitle("请选择保存位置");
+        //文件路径
+        File file = chooser.showDialog(scoreTable.getScene().getWindow());
+
+        DataRequest req = new DataRequest();
+        req.add("studentId", AppStore.getJwt().getRoleId());
+        byte[] pdfBytes = HttpRequestUtil.requestByteData("/api/student/getIntroducePdf", req);
+        if(pdfBytes == null){
+            MessageDialog.showDialog("获取个人画像失败! ");
+            return;
+        }
+        try{
+            String fileName = name.getText() + " " + num.getText() + "个人简介" + ".pdf";
+            CommonMethod.saveFile(file.getPath(), fileName, pdfBytes);
+        }
+        catch (IOException e){
+            e.printStackTrace();
+            MessageDialog.showDialog("保存个人简介失败! ");
+        }
+
     }
 
 }
