@@ -1,5 +1,6 @@
 package com.teach.javafx.controller.adminAttendance;
 
+import com.teach.javafx.controller.base.AttendanceEditorOpener;
 import com.teach.javafx.controller.base.MessageDialog;
 import com.teach.javafx.models.Student;
 import com.teach.javafx.request.HttpRequestUtil;
@@ -38,7 +39,7 @@ public class AttendanceEditorController {
     public List<Student> studentList = new ArrayList<>();
     public List<Course> courseList = new ArrayList<>();
     public Attendance attendance;
-    public AttendancePanelController panelController;
+    public AttendanceEditorOpener opener;
 
     @FXML
     public void initialize(){
@@ -50,8 +51,8 @@ public class AttendanceEditorController {
     }
 
     //外部调用的初始化方法
-    public void init(Attendance a, AttendancePanelController pc){
-        this.panelController = pc;
+    public void init(Attendance a, AttendanceEditorOpener ope){
+        this.opener = ope;
         this.attendance = a;
         setDataView();
     }
@@ -161,7 +162,7 @@ public class AttendanceEditorController {
         DataResponse res = HttpRequestUtil.request("/api/attendance/saveAttendance",req);
         assert res != null;
         if(res.getCode() == 0){
-            panelController.hasSaved();
+            opener.hasSaved();
             //关闭该窗口
             ((Stage)studentCombo.getScene().getWindow()).close();
         }

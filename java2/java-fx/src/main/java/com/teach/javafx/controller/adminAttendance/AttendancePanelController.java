@@ -1,6 +1,7 @@
 package com.teach.javafx.controller.adminAttendance;
 
 import com.teach.javafx.MainApplication;
+import com.teach.javafx.controller.base.AttendanceEditorOpener;
 import com.teach.javafx.controller.base.MessageDialog;
 import com.teach.javafx.factories.AttendanceActionFactory;
 import com.teach.javafx.factories.AttendanceValueFactory;
@@ -28,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class AttendancePanelController {
+public class AttendancePanelController implements AttendanceEditorOpener {
     @FXML
     public TableView<Attendance> tableView;
     @FXML
