@@ -48,6 +48,7 @@ module com.teach.javafx {
     exports com.teach.javafx.factories;
     exports com.teach.javafx.controller.adminAttendance;
     exports com.teach.javafx.controller.studentAttendance;
+    exports com.teach.javafx.controller.teacherAttendance;
     opens com.teach.javafx.models to com.google.gson, javafx.base;
     exports com.teach.javafx.controller.honor;
     opens com.teach.javafx.controller.honor to com.google.gson, javafx.fxml;
