@@ -1,7 +1,6 @@
 package com.teach.javafx.controller.teacherCourse;
 
 import com.teach.javafx.MainApplication;
-import com.teach.javafx.controller.base.LoadingAction;
 import com.teach.javafx.controller.base.MessageDialog;
 import com.teach.javafx.customWidget.TimePicker;
 import com.teach.javafx.managers.WindowOpenAction;
@@ -11,7 +10,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
@@ -23,19 +21,13 @@ import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.util.CommonMethod;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 public class HomeworkAlignController {
     @FXML
@@ -95,7 +87,7 @@ public class HomeworkAlignController {
             return;
         }
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(CommonMethod.DATE_FORMAT);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(CommonMethod.DATE_TIME_FORMAT);
         LocalDateTime sDateTime = startDate.atTime(startTime.getLocalTime());
         LocalDateTime eDateTime = endDate.atTime(endTime.getLocalTime());
         String startDateTimeStr = sDateTime.format(formatter);

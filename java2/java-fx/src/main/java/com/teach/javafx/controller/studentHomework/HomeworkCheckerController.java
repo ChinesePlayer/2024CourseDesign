@@ -15,7 +15,6 @@ import javafx.stage.Modality;
 import org.fatmansoft.teach.models.Answer;
 import org.fatmansoft.teach.models.Course;
 import org.fatmansoft.teach.models.Homework;
-import org.fatmansoft.teach.models.HomeworkFile;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.util.CommonMethod;
@@ -84,8 +83,8 @@ public class HomeworkCheckerController {
         homeworkList.forEach(homework -> {
             List subData1 = new ArrayList<>();
             String homeworkTitle = homework.getTitle();
-            String startTime = CommonMethod.getDateString(homework.getStart(),null);
-            String endTime = CommonMethod.getDateString(homework.getEnd(), null);
+            String startTime = CommonMethod.getDateTimeString(homework.getStart(),null);
+            String endTime = CommonMethod.getDateTimeString(homework.getEnd(), null);
             LocalDateTime dateTime = LocalDateTime.now();
 
             Label l1 = new Label(homeworkTitle);

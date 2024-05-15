@@ -26,11 +26,11 @@ public class MenuInfo {
     private String userTypeIds;
     private Integer pid;
 
-    @Size(max = 40)
+    @Size(max = 100)
     private String name;
 
 
-    @Size(max = 40)
+    @Size(max = 100)
     private String title;
 
     @OneToOne

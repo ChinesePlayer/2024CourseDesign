@@ -34,7 +34,7 @@ public class StudentIntroEditorController {
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent windowEvent) {
-                if(!originHtml.equals(introduceHtml.getHtmlText())){
+                if( originHtml != null && !originHtml.equals(introduceHtml.getHtmlText())){
                     int ret = MessageDialog.choiceDialog("未保存的内容会丢失，你确定吗?");
                     if(ret != MessageDialog.CHOICE_YES){
                         //阻止关闭事件的进一步传播
@@ -53,7 +53,7 @@ public class StudentIntroEditorController {
         assert res != null;
         if(res.getCode() == 0){
             String html = (String)res.getData();
-            System.out.printf(html);
+            System.out.println(html);
 
             originHtml = html;
             introduceHtml.setHtmlText(html);

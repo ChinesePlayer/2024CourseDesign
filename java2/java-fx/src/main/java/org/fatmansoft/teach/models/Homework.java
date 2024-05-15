@@ -26,7 +26,7 @@ public class Homework {
     }
 
     public Homework(Map m){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(CommonMethod.DATE_FORMAT);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(CommonMethod.DATE_TIME_FORMAT);
         this.courseId = CommonMethod.getInteger(m, "courseId");
         this.homeworkId = CommonMethod.getInteger(m, "homeworkId");
         this.title = CommonMethod.getString(m, "title");
@@ -38,16 +38,16 @@ public class Homework {
     public Map toMap(){
         Map res = new HashMap<>();
         res.put("title", this.title);
-        res.put("start", CommonMethod.getDateString(this.start, null));
-        res.put("end", CommonMethod.getDateString(this.end, null));
+        res.put("start", CommonMethod.getDateTimeString(this.start, null));
+        res.put("end", CommonMethod.getDateTimeString(this.end, null));
         return res;
     }
 
     public List toList(){
         List res = new ArrayList<>();
         res.add(this.title);
-        res.add(CommonMethod.getDateString(this.start, null));
-        res.add(CommonMethod.getDateString(this.end, null));
+        res.add(CommonMethod.getDateTimeString(this.start, null));
+        res.add(CommonMethod.getDateTimeString(this.end, null));
         return res;
     }
 

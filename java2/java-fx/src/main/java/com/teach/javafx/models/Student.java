@@ -1,8 +1,10 @@
 package com.teach.javafx.models;
 
 import org.fatmansoft.teach.models.Person;
+import org.fatmansoft.teach.util.CommonMethod;
 
 import java.util.Map;
+import java.util.Objects;
 
 public class Student {
     private Integer studentId;
@@ -30,16 +32,13 @@ public class Student {
     }
 
     public Student(Map m){
-        this.studentId = Integer.parseInt((String) m.get("studentId"));
-        if(m.get("personId") != null){
-            this.personId = Integer.parseInt((String) m.get("personId"));
-        }
-        else{
-            this.personId = null;
-        }
-        this.num = (String) m.get("studentNum");
-        this.name = (String) m.get("studentName");
-        this.className = (String) m.get("className");
+        this.studentId = CommonMethod.getInteger(m,"studentId");
+        this.personId = CommonMethod.getInteger(m,"personId");
+        this.num = CommonMethod.getString(m, "studentNum");
+        this.name = CommonMethod.getString(m,"studentName");
+        this.className = CommonMethod.getString(m, "className");
+        this.num = CommonMethod.getString(m, "num");
+        this.name = CommonMethod.getString(m, "name");
     }
 
     @Override
@@ -50,6 +49,18 @@ public class Student {
         else {
             return num + " - " + name;
         }
+    }
+
+    //根据学生ID来判断两个学生对象是否相等
+    @Override
+    public boolean equals(Object o){
+        if(!(o instanceof Student)){
+            return false;
+        }
+        if(o == this){
+            return true;
+        }
+        return Objects.equals(((Student) o).studentId, this.studentId);
     }
 
     //判断当前学生是否为空学生

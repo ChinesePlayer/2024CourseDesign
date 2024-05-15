@@ -1,4 +1,4 @@
-package com.teach.javafx.controller.courseSelection;
+package com.teach.javafx.factories;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;

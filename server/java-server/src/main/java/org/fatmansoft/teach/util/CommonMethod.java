@@ -22,6 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -513,5 +514,16 @@ public class CommonMethod {
     //获取默认头像路径
     public static String getDefaultAvatar(){
         return SpringBootSecurityJwtApplication.class.getResource("/image/noAvatar.jpg").getPath();
+    }
+
+    //从字符串解析LocalDateTime对象
+    //解析方法使用后端定义的标准格式
+    public static LocalDateTime getDateTimeFromString(String dateTimeStr){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
+        return LocalDateTime.parse(dateTimeStr, formatter);
+    }
+
+    public static LocalDate getDate(String dateStr){
+        return getDateTimeFromString(dateStr).toLocalDate();
     }
 }

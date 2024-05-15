@@ -2,9 +2,9 @@ package com.teach.javafx.controller;
 
 import com.teach.javafx.MainApplication;
 import com.teach.javafx.controller.adminCoursePanel.EditCourseController;
-import com.teach.javafx.controller.courseSelection.CourseAdminActionValueFactory;
-import com.teach.javafx.controller.courseSelection.CourseTimeValueFactory;
-import com.teach.javafx.controller.courseSelection.CourseValueFactory;
+import com.teach.javafx.factories.CourseAdminActionValueFactory;
+import com.teach.javafx.factories.CourseTimeValueFactory;
+import com.teach.javafx.factories.CourseValueFactory;
 import com.teach.javafx.request.HttpRequestUtil;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.collections.FXCollections;
@@ -25,11 +25,9 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 import org.fatmansoft.teach.models.Course;
-import org.fatmansoft.teach.models.CourseLocation;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.util.*;
 
