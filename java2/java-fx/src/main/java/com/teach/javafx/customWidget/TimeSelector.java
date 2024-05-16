@@ -15,6 +15,7 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import javafx.geometry.Insets;
 
 //用于管理员编辑课程时选择课程的上课时间
 public class TimeSelector extends VBox {
@@ -27,10 +28,16 @@ public class TimeSelector extends VBox {
 
     public TimeSelector(){
         setStyle("-fx-padding: 20px");
-        Label dayL = new Label("星期");
-        Label sectionL = new Label("节次");
+        Label dayL = new Label("星    期    :");
+        dayL.setPadding(new Insets(0, 0, 0, 30));
+        Label sectionL = new Label("节    次    :");
+        sectionL.setPadding(new Insets(0, 0, 0, 30));
+        dayL.setStyle("-fx-font-size: 19px; -fx-font-family: Arial;");
+        sectionL.setStyle("-fx-font-size: 19px; -fx-font-family: Arial;");
         HBox dayBox = new HBox();
+        dayBox.setSpacing(30);
         HBox sectionBox = new HBox();
+        sectionBox.setSpacing(30);
         //设置星期和节次的选择模型
         IntegerSpinnerModel integerSpinnerModel = new IntegerSpinnerModel();
         integerSpinnerModel.setIncrement(1);
@@ -51,15 +58,21 @@ public class TimeSelector extends VBox {
 
         getChildren().addAll(dayBox, sectionBox);
         setAlignment(Pos.TOP_CENTER);
-        setSpacing(10);
+        setSpacing(40);
     }
 
     public TimeSelector(MFXButton action){
         setStyle("-fx-padding: 20px");
-        Label dayL = new Label("星期");
-        Label sectionL = new Label("节次");
+        Label dayL = new Label("星    期    :");
+        dayL.setPadding(new Insets(0, 0, 0, 30));
+        Label sectionL = new Label("节    次    :");
+        sectionL.setPadding(new Insets(0, 0, 0, 30));
+        dayL.setStyle("-fx-font-size: 19px; -fx-font-family: Arial;");
+        sectionL.setStyle("-fx-font-size: 19px; -fx-font-family: Arial;");
         HBox dayBox = new HBox();
+        dayBox.setSpacing(30);
         HBox sectionBox = new HBox();
+        sectionBox.setSpacing(30);
         //设置星期和节次的选择模型
         IntegerSpinnerModel integerSpinnerModel = new IntegerSpinnerModel();
         integerSpinnerModel.setIncrement(1);
@@ -83,15 +96,22 @@ public class TimeSelector extends VBox {
 
         getChildren().addAll( action, dayBox, sectionBox);
         setAlignment(Pos.TOP_CENTER);
-        setSpacing(10);
+        setSpacing(40);
     }
 
     public TimeSelector(int day, int section, MFXButton action){
         setStyle("-fx-padding: 20px");
-        Label dayL = new Label("星期");
-        Label sectionL = new Label("节次");
+        Label dayL = new Label("星    期    :");
+        dayL.setPadding(new Insets(0, 0, 0, 30));
+        /*VBox.setMargin(dayL, new Insets(10, 10, 200, 10));*/
+        Label sectionL = new Label("节    次    :");
+        sectionL.setPadding(new Insets(0, 0, 0, 30));
+        dayL.setStyle("-fx-font-size: 19px; -fx-font-family: Arial;");
+        sectionL.setStyle("-fx-font-size: 19px; -fx-font-family: Arial;");
         HBox dayBox = new HBox();
+        dayBox.setSpacing(30);
         HBox sectionBox = new HBox();
+        sectionBox.setSpacing(30);
         //设置星期和节次的选择模型
         IntegerSpinnerModel integerSpinnerModel = new IntegerSpinnerModel();
         integerSpinnerModel.setIncrement(1);
@@ -115,7 +135,7 @@ public class TimeSelector extends VBox {
 
         getChildren().addAll(action, dayBox, sectionBox);
         setAlignment(Pos.TOP_CENTER);
-        setSpacing(10);
+        setSpacing(40);
     }
 
     public Map toMap(){

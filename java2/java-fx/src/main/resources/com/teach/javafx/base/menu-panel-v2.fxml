@@ -13,7 +13,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox prefHeight="400.0" prefWidth="600.0" stylesheets="@../css/pane-update-menu.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teach.javafx.controller.base.MenuControllerV2">
+<HBox
+        prefHeight="400.0"
+        prefWidth="600.0"
+        stylesheets="@../css/pane-update-menu.css"
+        xmlns="http://javafx.com/javafx/17"
+        xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="com.teach.javafx.controller.base.MenuControllerV2">
     <TreeView fx:id="menuTreeView" prefHeight="200" prefWidth="200" />
     <VBox fx:id="editView" minHeight="-Infinity" HBox.hgrow="ALWAYS">
         <GridPane fx:id="editStatusView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="619.0" prefWidth="729.0">

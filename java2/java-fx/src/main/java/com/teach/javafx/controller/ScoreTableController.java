@@ -235,6 +235,7 @@ public class ScoreTableController {
             throw new RuntimeException(e);
         }
     }
+
     public void doClose(String cmd, Map data) {
         MainApplication.setCanClose(true);
         stage.close();

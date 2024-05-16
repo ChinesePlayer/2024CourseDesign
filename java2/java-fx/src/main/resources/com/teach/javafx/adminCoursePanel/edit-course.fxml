@@ -6,6 +6,7 @@
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import io.github.palexdev.materialfx.controls.MFXSpinner?>
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.geometry.Insets?>
 <BorderPane xmlns="http://javafx.com/javafx/17"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.teach.javafx.controller.adminCoursePanel.EditCourseController"
@@ -13,17 +14,65 @@
 
     <center>
         <ScrollPane BorderPane.alignment="TOP_CENTER" fitToWidth="true" fitToHeight="true">
-            <VBox  alignment="TOP_CENTER" spacing="10">
-                <MFXTextField fx:id="name" floatMode="ABOVE" floatingText="课程名称" />
-                <MFXTextField fx:id="num" floatMode="ABOVE" floatingText="课序号" />
-                <MFXSpinner fx:id="credit" />
-                <MFXButton fx:id="addTimeSelectorButton" text="+" onAction="#addTimeSelector" />
-                <VBox fx:id="timeGroup" alignment="TOP_CENTER">
+            <VBox  alignment="TOP_CENTER" spacing="20">
+                <padding>
+                    <Insets bottom="20.0" left="10.0" right="20.0" top="30.0" />
+                </padding>
+                <HBox>
+                    <padding>
+                        <Insets bottom="5.0" left="60.0" right="20.0" top="5.0" />
+                    </padding>
+                    <Label text="课程名称 ：    " style="-fx-font-size:20px;" alignment="CENTER" prefHeight="20"></Label>
+                    <MFXTextField fx:id="name" floatMode="BORDER" floatingText="Course Name" prefHeight="20" prefWidth="220"/>
+                </HBox>
+                <!--<MFXTextField fx:id="name" floatMode="BORDER" floatingText="Course Name" prefHeight="20" prefWidth="200"/>-->
+                <HBox>
+                    <padding>
+                        <Insets bottom="5.0" left="60.0" right="20.0" top="5.0" />
+                    </padding>
+                    <Label text="课程序号 ：    " style="-fx-font-size:20px;" alignment="CENTER" prefHeight="20"></Label>
+                    <MFXTextField fx:id="num" floatMode="BORDER" floatingText="Course ID" prefHeight="20" prefWidth="220"/>
+                </HBox>
+                <HBox>
+                    <padding>
+                        <Insets bottom="5.0" left="60.0" right="20.0" top="5.0" />
+                    </padding>
+                    <Label text="课程学分 ：    " style="-fx-font-size:20px;" alignment="CENTER" prefHeight="20"></Label>
+                    <MFXSpinner fx:id="credit" />
+                </HBox>
+                <HBox>
+                    <padding>
+                        <Insets bottom="20.0" left="60.0" right="20.0" top="10.0" />
+                    </padding>
+                    <Label text="增加节次 ：    " style="-fx-font-size:20px;" alignment="CENTER" prefHeight="20"></Label>
+                    <MFXButton fx:id="addTimeSelectorButton" text="+" onAction="#addTimeSelector" />
+                </HBox>
+                <VBox alignment="TOP_CENTER" spacing="30">
+                    <HBox>
+                        <padding>
+                            <Insets bottom="5.0" left="60.0" right="20.0" top="5.0" />
+                        </padding>
+                        <Label text="授课教师 ：    " style="-fx-font-size:20px;" alignment="CENTER" prefHeight="20"></Label>
+                        <ComboBox fx:id="teacher" prefHeight="20" prefWidth="220"/>
+                    </HBox>
+                    <HBox>
+                        <padding>
+                            <Insets bottom="5.0" left="60.0" right="20.0" top="5.0" />
+                        </padding>
+                        <Label text="上课地点 ：    " style="-fx-font-size:20px;" alignment="CENTER" prefHeight="20"></Label>
+                        <ComboBox fx:id="loc" prefHeight="20" prefWidth="220"/>
+                    </HBox>
+                    <HBox>
+                        <padding>
+                            <Insets bottom="30" left="60.0" right="20.0" top="5.0" />
+                        </padding>
+                        <Label text="前置课程 ：    " style="-fx-font-size:20px;" alignment="CENTER" prefHeight="20"></Label>
+                        <ComboBox fx:id="preCourse" prefHeight="20" prefWidth="220" />
+                    </HBox>
                 </VBox>
-                <ComboBox fx:id="teacher" />
-                <ComboBox fx:id="loc" />
-                <ComboBox fx:id="preCourse" />
-                <HBox alignment="CENTER" spacing="5">
+                <VBox fx:id="timeGroup" alignment="TOP_CENTER" spacing="30">
+                </VBox>
+                <HBox alignment="CENTER" spacing="15">
                     <MFXButton fx:id="save" text="保存" onAction="#onSaveButton" />
                     <MFXButton fx:id="cancel" text="取消" onAction="#onCancelButton" />
                     <MFXButton fx:id="delete" text="删除" onAction="#onDeleteButton" />

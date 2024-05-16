@@ -37,8 +37,17 @@ public class Student {
         this.num = CommonMethod.getString(m, "studentNum");
         this.name = CommonMethod.getString(m,"studentName");
         this.className = CommonMethod.getString(m, "className");
-        this.num = CommonMethod.getString(m, "num");
-        this.name = CommonMethod.getString(m, "name");
+        this.gender = CommonMethod.getString(m, "gender");
+        this.genderName = CommonMethod.getString(m, "genderName");
+        this.birthday = CommonMethod.getString(m, "birthday");
+        this.email = CommonMethod.getString(m, "email");
+        this.phone = CommonMethod.getString(m, "phone");
+        this.address = CommonMethod.getString(m, "address");
+        this.introduce = CommonMethod.getString(m, "introduce");
+        this.major = CommonMethod.getString(m, "major");
+        this.type = CommonMethod.getString(m, "type");
+        this.dept = CommonMethod.getString(m, "dept");
+        this.card = CommonMethod.getString(m, "card");
     }
 
     @Override

@@ -1,16 +1,16 @@
 {
   "shortcuts": [
     {
-      "name": "个人荣誉",
-      "fxml": "honor/honor-check-panel.fxml"
+      "fxml": "honor/honor-check-panel.fxml",
+      "name": "个人荣誉"
     },
     {
-      "name": "系统设置",
-      "fxml": "setting/system-setting.fxml"
+      "fxml": "setting/system-setting.fxml",
+      "name": "系统设置"
     },
     {
-      "name": "进入选课",
-      "fxml": "courseSelection/course-selection-menu.fxml"
+      "fxml": "courseSelection/course-selection-menu.fxml",
+      "name": "进入选课"
     }
   ],
   "allShortcuts": [
@@ -31,9 +31,9 @@
       "name": "个人荣誉"
     }
   ],
-  "theme": "pink",
+  "theme": "blue",
   "themeMapper": {
-    "浅蓝色": "default",
+    "浅蓝色": "blue",
     "空主题": "empty",
     "粉色主题": "pink"
   }

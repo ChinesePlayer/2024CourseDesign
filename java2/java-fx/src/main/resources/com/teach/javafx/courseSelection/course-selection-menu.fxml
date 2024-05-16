@@ -18,7 +18,7 @@
         </MFXButton>
     </top>
     <center>
-        <GridPane fx:id="gridPane" vgap="20" hgap="20">
+        <GridPane fx:id="gridPane" vgap="40" hgap="100" >
             <BorderPane.margin>
                 <Insets top="20" bottom="20" left="20" right="20"/>
             </BorderPane.margin>

@@ -1,3 +1,13 @@
 .label {
     -fx-font-size: 20px;
 }
+.grid-pane {
+    -fx-background-color: lightblue; /* 设置背景颜色为浅蓝色 */
+}
+.button{
+    -fx-font-size: 16px;
+    -fx-background-color:#2e59a7;2
+}
+.button:hover{
+    -fx-font-size: 17px;
+}

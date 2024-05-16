@@ -301,6 +301,7 @@ public class EditCourseController {
             checkData();
         }
         catch (RuntimeException e){
+            e.printStackTrace();
             MessageDialog.showDialog(e.getMessage());
             return;
         }

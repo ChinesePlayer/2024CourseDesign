@@ -141,6 +141,10 @@ public class MenuControllerV2 {
     }
 
     private void onDeleteButtonPressed(ActionEvent event){
+        int ret = MessageDialog.choiceDialog("你确定要删除此菜单吗?");
+        if(ret != MessageDialog.CHOICE_YES){
+            return;
+        }
         if(currentItem == null || currentItem.getValue() == null){
             MessageDialog.showDialog("删除失败: 未选择任何菜单");
             return;
