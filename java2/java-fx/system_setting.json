@@ -1,8 +1,40 @@
 {
+  "shortcuts": [
+    {
+      "name": "个人荣誉",
+      "fxml": "honor/honor-check-panel.fxml"
+    },
+    {
+      "name": "系统设置",
+      "fxml": "setting/system-setting.fxml"
+    },
+    {
+      "name": "进入选课",
+      "fxml": "courseSelection/course-selection-menu.fxml"
+    }
+  ],
+  "allShortcuts": [
+    {
+      "fxml": "courseSelection/course-selection-menu.fxml",
+      "name": "进入选课"
+    },
+    {
+      "fxml": "studentScore/course-score.fxml",
+      "name": "成绩查询"
+    },
+    {
+      "fxml": "setting/system-setting.fxml",
+      "name": "系统设置"
+    },
+    {
+      "fxml": "honor/honor-check-panel.fxml",
+      "name": "个人荣誉"
+    }
+  ],
+  "theme": "pink",
   "themeMapper": {
     "浅蓝色": "default",
     "空主题": "empty",
     "粉色主题": "pink"
-  },
-  "theme": "pink"
+  }
 }

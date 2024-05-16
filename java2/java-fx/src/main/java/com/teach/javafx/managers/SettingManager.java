@@ -1,18 +1,21 @@
 package com.teach.javafx.managers;
 
-import com.teach.javafx.MainApplication;
+import com.teach.javafx.models.Shortcut;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.io.*;
-import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 //设置管理类，用于维护设置文件
 public class SettingManager {
     private static SettingManager instance;
     private static String SETTING_FILE_NAME = "system_setting.json";
+    //设置文件的Map形式
     private static Map<String, Object> setting = new HashMap<>();
     private static String SETTING_PATH;
     //静态初始化块，用于加载instance和加载设置文件
@@ -75,11 +78,53 @@ public class SettingManager {
         return res;
     }
 
+    //获取快捷操作列表
+    public List<Shortcut> getShortcutsList(){
+        System.out.println(setting.get("shortcuts").getClass());
+        List raw = ((JSONArray) setting.get("shortcuts")).toList();
+        List<Shortcut> res = new ArrayList<>();
+        for(Object o : raw){
+            Map<String, String> m = (Map<String, String>) o;
+            Shortcut s = new Shortcut();
+            s.setName(m.get("name"));
+            s.setFxml(m.get("fxml"));
+            res.add(s);
+        }
+
+        return res;
+    }
+
+    public List<Shortcut> getAllShortcutsList(){
+        List raw = ((JSONArray) setting.get("allShortcuts")).toList();
+        List<Shortcut> res = new ArrayList<>();
+        for(Object o : raw){
+            Map<String, String> m = (Map<String, String>) o;
+            Shortcut s = new Shortcut();
+            s.setName(m.get("name"));
+            s.setFxml(m.get("fxml"));
+            res.add(s);
+        }
+        return res;
+    }
+
+    public void setDisplayedShortcuts(List<Shortcut> display){
+        JSONArray mapList = new JSONArray();
+        for(Shortcut s : display){
+            Map<String,String> m = new HashMap<>();
+            m.put("name", s.getName());
+            m.put("fxml", s.getFxml());
+            mapList.put(m);
+        }
+        Map<String, Object> dataToSave = new HashMap<>();
+        dataToSave.put("shortcuts", mapList);
+        set(dataToSave);
+    }
+
     public void set(Map<String ,Object> m){
         setting.putAll(m);
     }
 
-    //将设置保存至文件，保存成功则返回true，否则返回false，或者抛出异常
+    //将设置保存至文件，保存成功则返回true，否则返回false
     public boolean save(){
         try{
             FileWriter writer = new FileWriter(SETTING_PATH);

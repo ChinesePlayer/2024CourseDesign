@@ -15,8 +15,8 @@
         maxWidth="-Infinity"
         minHeight="-Infinity"
         minWidth="-Infinity"
-        xmlns="http://javafx.com/javafx/17"
-        xmlns:fx="http://javafx.com/fxml/1"
+        xmlns="http://javafx.com/javafx/"
+        xmlns:fx="http://javafx.com/fxml/"
         fx:controller="com.teach.javafx.controller.base.MainFrameController">
   <top>
     <MenuBar fx:id="menuBar" />
