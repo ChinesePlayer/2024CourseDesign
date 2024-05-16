@@ -183,4 +183,10 @@ public class TeacherController {
     public DataResponse saveStudentInfo(@Valid @RequestBody DataRequest req){
         return teacherService.saveStudentInfo(req);
     }
+
+    //获取该教师开设的所有课程
+    @PostMapping("/getCourseList")
+    public DataResponse getCourseList(@Valid @RequestBody DataRequest req){
+        return teacherService.getCourseList(req);
+    }
 }

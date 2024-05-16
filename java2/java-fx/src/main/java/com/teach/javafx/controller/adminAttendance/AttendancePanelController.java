@@ -151,7 +151,7 @@ public class AttendancePanelController implements AttendanceEditorOpener {
                         public void init(Object controller) {
                             WindowOpenAction.super.init(controller);
                             AttendanceEditorController cont = (AttendanceEditorController) controller;
-                            cont.init(null, AttendancePanelController.this);
+                            cont.opener = AttendancePanelController.this;
                         }
                     }
             );

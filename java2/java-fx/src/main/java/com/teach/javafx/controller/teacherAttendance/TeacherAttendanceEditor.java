@@ -1,5 +1,6 @@
-package com.teach.javafx.controller.adminAttendance;
+package com.teach.javafx.controller.teacherAttendance;
 
+import com.teach.javafx.AppStore;
 import com.teach.javafx.controller.base.AttendanceEditorOpener;
 import com.teach.javafx.controller.base.MessageDialog;
 import com.teach.javafx.models.Student;
@@ -25,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class AttendanceEditorController {
+public class TeacherAttendanceEditor {
     public final String PRESENCE = "出勤";
     public final String ABSENCE = "缺勤";
     @FXML
@@ -48,18 +49,16 @@ public class AttendanceEditorController {
         statusCombo.setItems(FXCollections.observableArrayList(PRESENCE, ABSENCE));
         getCourseList();
         courseCombo.setItems(FXCollections.observableArrayList(courseList));
-        studentCombo.setItems(FXCollections.observableArrayList(studentList));
-        courseCombo.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Course c = courseCombo.getSelectionModel().getSelectedItem();
-                if(c == null){
-                    return;
-                }
-                getStudentList(c.getCourseId());
-                studentCombo.setItems(FXCollections.observableArrayList(studentList));
-                studentCombo.getSelectionModel().select(null);
+
+        //初始化courseCombo的回调，实现在选择了某门课程时，studentCombo中更新成该课程对应的学生
+        courseCombo.setOnAction(event -> {
+            Course c = courseCombo.getSelectionModel().getSelectedItem();
+            if(c == null){
+                return;
             }
+            getStudentList(c.getCourseId());
+            studentCombo.setItems(FXCollections.observableArrayList(studentList));
+            studentCombo.getSelectionModel().select(null);
         });
     }
 
@@ -71,6 +70,7 @@ public class AttendanceEditorController {
         setDataView();
     }
 
+    //获取所有选了该课程的学生
     public void getStudentList(Integer courseId){
         //清空已有学生
         studentList.clear();
@@ -94,7 +94,8 @@ public class AttendanceEditorController {
         courseList.clear();
         //从后端获取所有课程
         DataRequest req =new DataRequest();
-        DataResponse res = HttpRequestUtil.request("/api/course/getCourseList",req);
+        req.add("teacherId", AppStore.getJwt().getRoleId());
+        DataResponse res = HttpRequestUtil.request("/api/teacher/getCourseList",req);
         assert res != null;
         if(res.getCode() == 0){
             List<Map> rawData = (ArrayList<Map>) res.getData();

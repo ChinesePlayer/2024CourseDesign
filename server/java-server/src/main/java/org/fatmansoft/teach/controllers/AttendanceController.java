@@ -38,4 +38,10 @@ public class AttendanceController {
     public DataResponse getStudentAttendanceList(@Valid @RequestBody DataRequest req){
         return attendanceService.getStudentAttendanceList(req);
     }
+
+    //教师端获取该教师的课程的考勤信息
+    @PostMapping("/getTeacherAttendanceList")
+    public DataResponse getTeacherAttendanceList(@Valid @RequestBody DataRequest req){
+        return attendanceService.getTeacherAttendanceList(req);
+    }
 }

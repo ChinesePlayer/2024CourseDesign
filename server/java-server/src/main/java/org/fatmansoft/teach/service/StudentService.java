@@ -8,6 +8,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import org.fatmansoft.teach.models.*;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
+import org.fatmansoft.teach.repository.CourseRepository;
 import org.fatmansoft.teach.repository.ScoreRepository;
 import org.fatmansoft.teach.repository.StudentRepository;
 import org.fatmansoft.teach.util.ComDataUtil;
@@ -32,6 +33,8 @@ public class StudentService {
     private StudentRepository studentRepository;
     @Autowired
     private ScoreRepository scoreRepository;
+    @Autowired
+    private CourseRepository courseRepository;
     @Value("${attach.folder}")
     private String attachFolder;
 
@@ -315,5 +318,17 @@ public class StudentService {
         return res;
     }
 
+    public DataResponse getStudentsListByCourseId(DataRequest req) {
+        Integer courseId = req.getInteger("courseId");
+        if(courseId == null){
+            return CommonMethod.getReturnMessageError("无法获取课程信息");
+        }
+        List<Student> studentList = courseRepository.findStudentsByCourseId(courseId);
+        List<Map> dataList = new ArrayList<>();
+        for(Student s : studentList){
+            dataList.add(getMapFromStudent(s));
+        }
+        return CommonMethod.getReturnData(dataList);
+    }
 
 }

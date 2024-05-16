@@ -1,5 +1,6 @@
 package com.teach.javafx.controller.teacherAttendance;
 
+import com.teach.javafx.AppStore;
 import com.teach.javafx.MainApplication;
 import com.teach.javafx.controller.adminAttendance.AttendanceEditorController;
 import com.teach.javafx.controller.adminAttendance.AttendancePanelController;
@@ -79,7 +80,9 @@ public class TeacherAttendancePanel implements AttendanceEditorOpener {
         DataRequest req = new DataRequest();
         req.add("courseName", courseName);
         req.add("studentName", studentName);
-        DataResponse res = HttpRequestUtil.request("/api/attendance/getAttendanceList",req);
+        //将教师ID传入到后端
+        req.add("teacherId", AppStore.getJwt().getRoleId());
+        DataResponse res = HttpRequestUtil.request("/api/attendance/getTeacherAttendanceList",req);
         assert res != null;
         if(res.getCode() == 0){
             attendanceList.clear();
@@ -116,7 +119,7 @@ public class TeacherAttendancePanel implements AttendanceEditorOpener {
         //获取被点击的编辑按钮的那一行的Attendance数据
         Attendance attendance = (Attendance) CommonMethod.getRowValue(event, 2,tableView);
         try{
-            FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("adminAttendance/attendance-editor.fxml"));
+            FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("teacherAttendance/teacher-attendance-editor.fxml"));
             WindowsManager.getInstance().openNewWindow(
                     loader, 400, 300, "编辑考勤信息",
                     tableView.getScene().getWindow(), Modality.WINDOW_MODAL,
@@ -124,7 +127,7 @@ public class TeacherAttendancePanel implements AttendanceEditorOpener {
                         @Override
                         public void init(Object controller) {
                             WindowOpenAction.super.init(controller);
-                            AttendanceEditorController cont = (AttendanceEditorController)  controller;
+                            TeacherAttendanceEditor cont = (TeacherAttendanceEditor)  controller;
                             cont.init(attendance, TeacherAttendancePanel.this);
                         }
                     }
@@ -145,7 +148,7 @@ public class TeacherAttendancePanel implements AttendanceEditorOpener {
     //新增考勤信息的的操作
     public void onNewAttendance(){
         try{
-            FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("adminAttendance/attendance-editor.fxml"));
+            FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("teacherAttendance/teacher-attendance-editor.fxml"));
             WindowsManager.getInstance().openNewWindow(
                     loader, 400, 300, "新增考勤信息",
                     tableView.getScene().getWindow(), Modality.WINDOW_MODAL,
@@ -153,8 +156,8 @@ public class TeacherAttendancePanel implements AttendanceEditorOpener {
                         @Override
                         public void init(Object controller) {
                             WindowOpenAction.super.init(controller);
-                            AttendanceEditorController cont = (AttendanceEditorController) controller;
-                            cont.init(null, TeacherAttendancePanel.this);
+                            TeacherAttendanceEditor cont = (TeacherAttendanceEditor) controller;
+                            cont.opener = TeacherAttendancePanel.this;
                         }
                     }
             );

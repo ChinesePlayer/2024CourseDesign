@@ -113,6 +113,21 @@ public class StudentController {
         return CommonMethod.getReturnData(dataList);  //按照测试框架规范会送Map的list
     }
 
+//    //教师端，用于获取所有选了这个教师的课的学生
+//    @PostMapping("/getStudentList")
+//    @PreAuthorize("hasRole('TEACHER')")
+//    public DataResponse getTeacherStudentList(@Valid @RequestBody DataRequest dataRequest) {
+//        String numName = dataRequest.getString("numName");
+//        List dataList = getStudentMapList(numName);
+//        return CommonMethod.getReturnData(dataList);  //按照测试框架规范会送Map的list
+//    }
+
+    //根据课程ID来查询所有选了这门课的学生
+    @PostMapping("/getStudentsListByCourseId")
+    public DataResponse getStudentsListByCourseId(@Valid @RequestBody DataRequest req) {
+        return studentService.getStudentsListByCourseId(req);
+    }
+
 
     /**
      * studentDelete 删除学生信息Web服务 Student页面的列表里点击删除按钮则可以删除已经存在的学生信息， 前端会将该记录的id 回传到后端，方法从参数获取id，查出相关记录，调用delete方法删除

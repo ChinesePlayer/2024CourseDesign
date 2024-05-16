@@ -36,6 +36,21 @@ public class AttendanceService {
         }
         return dataList;
     }
+
+    public List getTeacherAttendanceMapList(String courseName, String studentName, Integer teacherId) {
+        List dataList = new ArrayList();
+        if(teacherId == null || teacherId <= 0){
+            return dataList;
+        }
+        List<Attendance> aList = attendanceRepository.findByCourseNameAndStudentNameAndTeacherId(courseName, studentName, teacherId);  //根据课程名或课序号进行数据库查询
+        if (aList == null || aList.size() == 0)
+            return dataList;
+        for (Attendance attendance : aList) {
+            dataList.add(getMapFromAttendance(attendance));
+        }
+        return dataList;
+    }
+
     public Map getMapFromAttendance(Attendance a) {
         Map m = new HashMap();
         m.put("attendanceId", a.getId());
@@ -173,6 +188,17 @@ public class AttendanceService {
         for(Attendance a : rightAttendance){
             dataList.add(getMapFromAttendance(a));
         }
+        return CommonMethod.getReturnData(dataList);
+    }
+
+    public DataResponse getTeacherAttendanceList(DataRequest req){
+        Integer teacherId = req.getInteger("teacherId");
+        if(teacherId == null){
+            return CommonMethod.getReturnMessageError("无法获取老师信息");
+        }
+        String courseName = req.getString("courseName");
+        String studentName = req.getString("studentName");
+        List dataList = getTeacherAttendanceMapList(courseName,studentName, teacherId);
         return CommonMethod.getReturnData(dataList);
     }
 }
