@@ -229,7 +229,7 @@ TabPane样式
 .tab-pane .tab{
     -fx-background-color: #f9d3e3;
     -fx-background-radius: 10;
-    -fx-effect: innershadow(gaussian, #f0c9cf, 10, 0,0,0);
+    -fx-effect: innershadow(gaussian, f0c9cf, 10, 0,0,0);
 }
 
 .tab-pane .tab:selected{
@@ -282,7 +282,7 @@ BorderPane样式
 *****************************/
 
 .borderpane-container {
-    -fx-background-color: #FAE0DD;
+    -fx-background-color: #FFCCDC;
 }
 
 /***************************
@@ -292,7 +292,7 @@ VBox样式
 *****************************/
 
 VBox {
-    -fx-background-color: #FAE0DD;
+    -fx-background-color: #FFCCDC;
 }
 
 /***************************
@@ -302,7 +302,7 @@ AnchorPane样式
 *****************************/
 
 AnchorPane {
-    -fx-background-color: #FAE0DD;
+    -fx-background-color: #effdff;
 }
 
 /***************************
@@ -322,7 +322,6 @@ ImageView样式
 *****************************/
 
 .simple-info .student-dashboard-info{
-    -fx-background-color: #FAE0DD;
     -fx-font-size: 20px;
     -fx-font-weight: bold;
 }
@@ -340,8 +339,4 @@ ImageView样式
     -fx-border-width: 3 3 5 3;
     -fx-border-radius: 10;
     -fx-padding: 20px;
-}
-
-.Label{
-    -fx-background-color: #FAE0DD;
 }

@@ -1,0 +1,9 @@
+{
+  "themeMapper": {
+    "空主题": "empty",
+    "蓝色主题": "blue",
+    "绿色主题": "green",
+    "粉红主题": "pink"
+  },
+  "theme": "blue"
+}

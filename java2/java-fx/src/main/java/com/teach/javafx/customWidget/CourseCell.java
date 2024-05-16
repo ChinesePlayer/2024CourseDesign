@@ -22,7 +22,7 @@ public class CourseCell extends StackPane {
     //背景默认颜色为白色
     private Color backgroundColor = Color.WHITE;
     //默认边框样式
-    private BorderStroke borderStroke = new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT);
+    private BorderStroke borderStroke = new BorderStroke(Color.GREY, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(0.5));
     private Border border = new Border(borderStroke);
     private double height = 80.0;
     private double width = 80.0;

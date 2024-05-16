@@ -16,6 +16,7 @@ module com.teach.javafx {
     requires batik.svgrasterizer;
     requires batik.svggen;
     requires javafx.svg;
+    requires org.json;
 
 
 

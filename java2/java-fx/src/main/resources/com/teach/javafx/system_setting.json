@@ -1,0 +1,7 @@
+{
+  "theme": "default",
+  "themeMapper": {
+    "默认主题": "default",
+    "空主题": "empty"
+  }
+}

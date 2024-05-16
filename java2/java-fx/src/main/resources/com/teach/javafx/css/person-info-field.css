@@ -1,5 +1,9 @@
 .person-info-field{
-    -fx-border-color: lightgray;
+    /*-fx-border-color: lightblue;*/
     -fx-border-radius: 5px;
     -fx-font-size: 13px;
+}
+
+.person-info-field:focused{
+    -fx-border-color: lightblue;
 }

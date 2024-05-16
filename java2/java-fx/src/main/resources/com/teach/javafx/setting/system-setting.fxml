@@ -6,6 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.geometry.Insets?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.teach.javafx.controller.setting.SystemSettingController"
@@ -13,10 +14,19 @@
             styleClass="borderpane-container"
             fx:id="borderPane">
     <left>
-        <VBox fx:id="settingCategories" spacing="10" />
+        <VBox fx:id="settingCategories" spacing="10" styleClass="simple-info">
+            <BorderPane.margin>
+                <Insets right="20"/>
+            </BorderPane.margin>
+        </VBox>
     </left>
-    <center>
-        <BorderPane fx:id="settingBody" />
-    </center>
+    <bottom>
+        <HBox alignment="CENTER">
+            <BorderPane.margin>
+                <Insets top="10" bottom="10" />
+            </BorderPane.margin>
+            <Button text="保存" onAction="#onSave" />
+        </HBox>
+    </bottom>
 
 </BorderPane>

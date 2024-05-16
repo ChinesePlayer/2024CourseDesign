@@ -5,26 +5,33 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TableColumn?>
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.geometry.Insets?>
 <BorderPane
         xmlns="http://javafx.com/javafx/17"
         xmlns:fx="http://javafx.com/fxml/1"
         fx:controller="com.teach.javafx.controller.CourseController"
          styleClass="borderpane-container">
    <top>
-      <MFXButton fx:id="addNewCourse" text="添加新课程" onAction="#onAddNewCourse" />
+      <HBox>
+         <padding>
+            <Insets top="10" right="10" bottom="10" left="10"/> <!-- 指定顶部、右侧、底部和左侧填充 -->
+         </padding>
+         <MFXButton fx:id="addNewCourse" text="添加新课程" onAction="#onAddNewCourse" style="-fx-margin: 100px;"/>
+      </HBox>
    </top>
    <center>
       <TableView fx:id="dataTableView"  >
          <columns>
-            <TableColumn fx:id="courseNum" prefWidth="120.0" text="课程号" />
-            <TableColumn fx:id="courseName" prefWidth="90.0" text="课程名" />
-            <TableColumn fx:id="credit" prefWidth="60.0" text="学分" />
-            <TableColumn fx:id="days" text="星期" />
-            <TableColumn fx:id="sections" text="节次" />
-            <TableColumn fx:id="teacher" text="教师" />
-            <TableColumn fx:id="loc" text="上课地点" />
-            <TableColumn fx:id="preCourse" prefWidth="120.0" text="前序课" />
-            <TableColumn fx:id="action" text="操作" />
+            <TableColumn fx:id="courseNum" prefWidth="160.0" text="课程号" />
+            <TableColumn fx:id="courseName" prefWidth="240.0" text="课程名" />
+            <TableColumn fx:id="credit" prefWidth="140.0" text="学分" />
+            <TableColumn fx:id="days" text="星期" prefWidth="130" />
+            <TableColumn fx:id="sections" text="节次" prefWidth="130" />
+            <TableColumn fx:id="teacher" text="教师" prefWidth="140" />
+            <TableColumn fx:id="loc" text="上课地点" prefWidth="180" />
+            <TableColumn fx:id="preCourse" prefWidth="220.0" text="前序课" />
+            <TableColumn fx:id="action" text="操作" prefWidth="165" />
          </columns>
       </TableView>
    </center>
