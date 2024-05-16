@@ -64,6 +64,7 @@
                     <VBox spacing="5" styleClass="simple-info" maxHeight="300" prefHeight="100" prefWidth="200">
                         <Label text="快捷操作" style="-fx-font-size: 20px"/>
                         <FlowPane fx:id="shortcuts" hgap="10" vgap="20" maxHeight="300" prefHeight="100"/>
+                        <Button text="编辑快捷操作" onAction="#onEditShortcuts" />
                     </VBox>
                 </HBox>
 

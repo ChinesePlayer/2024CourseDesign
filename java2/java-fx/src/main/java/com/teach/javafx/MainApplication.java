@@ -158,6 +158,7 @@ public class MainApplication extends Application {
             }
         }
         catch (IOException e){
+            e.printStackTrace();
             MessageDialog.showDialog("无法打开主页面!\n 异常信息: " + e.getMessage());
         }
     }

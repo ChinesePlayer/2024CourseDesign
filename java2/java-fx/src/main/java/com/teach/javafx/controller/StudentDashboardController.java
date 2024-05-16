@@ -3,11 +3,14 @@ package com.teach.javafx.controller;
 import com.teach.javafx.AppStore;
 import com.teach.javafx.MainApplication;
 import com.teach.javafx.controller.base.MessageDialog;
+import com.teach.javafx.controller.shortcuts.ShortcutsEditorController;
 import com.teach.javafx.controller.statistic.FeeStatisticController;
 import com.teach.javafx.customWidget.CourseTable;
 import com.teach.javafx.managers.ShortcutManager;
+import com.teach.javafx.managers.ShortcutsDisplayer;
 import com.teach.javafx.managers.WindowOpenAction;
 import com.teach.javafx.managers.WindowsManager;
+import com.teach.javafx.models.Shortcut;
 import com.teach.javafx.request.HttpRequestUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -35,7 +38,7 @@ import java.util.List;
 import java.util.Map;
 
 //学生仪表盘页面
-public class StudentDashboardController {
+public class StudentDashboardController implements ShortcutsDisplayer {
     @FXML
     public ImageView avatar;
     @FXML
@@ -241,5 +244,37 @@ public class StudentDashboardController {
             e.printStackTrace();
             MessageDialog.showDialog("打开生活消费数据统计页面失败");
         }
+    }
+
+    //编辑快捷操作
+    //负责和ShortcutManager交互
+    public void onEditShortcuts(){
+        //打开编辑窗口
+        FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("shortcuts-editor.fxml"));
+        try{
+            WindowsManager.getInstance().openNewWindow(
+                    loader, 800, 600, "编辑快捷设置",
+                    shortcuts.getScene().getWindow(), Modality.WINDOW_MODAL,
+                    new WindowOpenAction() {
+                        @Override
+                        public void init(Object controller) {
+                            WindowOpenAction.super.init(controller);
+                            ShortcutsEditorController cont = (ShortcutsEditorController) controller;
+                            cont.init(StudentDashboardController.this);
+                        }
+                    }
+            );
+        }
+        catch (IOException e){
+            e.printStackTrace();
+            MessageDialog.showDialog("打开编辑窗口失败! ");
+        }
+    }
+
+    @Override
+    public void onEdited(List<Shortcut> newShortcuts) {
+        List<Button> actions = ShortcutManager.getInstance().getShortcutActions();
+        shortcuts.getChildren().clear();
+        shortcuts.getChildren().addAll(actions);
     }
 }
