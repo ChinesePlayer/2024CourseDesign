@@ -5,7 +5,7 @@ import com.teach.javafx.MainApplication;
 import com.teach.javafx.controller.base.MessageDialog;
 import com.teach.javafx.controller.base.ToolController;
 import com.teach.javafx.controller.studentDraw.StudentDrawController;
-import com.teach.javafx.controller.studentScore.StudentScoreValueFactory;
+import com.teach.javafx.factories.StudentScoreValueFactory;
 import com.teach.javafx.managers.WindowOpenAction;
 import com.teach.javafx.managers.WindowsManager;
 import com.teach.javafx.request.HttpRequestUtil;
@@ -22,18 +22,13 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.web.HTMLEditor;
 import javafx.stage.FileChooser;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -238,28 +233,28 @@ public class StudentIntroduceController extends ToolController {
     /**
      * 点击保存按钮 执行onSubmitButtonClick 调用doSave 实现个人简历保存
      */
-    @FXML
-    public void onSubmitButtonClick(){
-        doSave();
-    }
+//    @FXML
+//    public void onSubmitButtonClick(){
+//        doSave();
+//    }
 
     /**
      * 显示生成的个人简历的PDF， 可以直接将PDF数据存入本地文件参见StudentController 中的doExpert 方法中的本地文件保存
      * 后台修改完善扩展PDF内容的生成方法，可以按照HTML语法生成PDF要展示的数据内容
      */
-    @FXML
-    public void onIntroduceDownloadClick(){
-        DataRequest req = new DataRequest();
-        req.add("studentId",studentId);
-        byte[] bytes = HttpRequestUtil.requestByteData("/api/student/getStudentIntroducePdf", req);
-        if (bytes != null) {
-            try {
-                MessageDialog.pdfViewerDialog(bytes);
-            }catch(Exception e){
-                e.printStackTrace();
-            }
-        }
-    }
+//    @FXML
+//    public void onIntroduceDownloadClick(){
+//        DataRequest req = new DataRequest();
+//        req.add("studentId",studentId);
+//        byte[] bytes = HttpRequestUtil.requestByteData("/api/student/getStudentIntroducePdf", req);
+//        if (bytes != null) {
+//            try {
+//                MessageDialog.pdfViewerDialog(bytes);
+//            }catch(Exception e){
+//                e.printStackTrace();
+//            }
+//        }
+//    }
 
     /**
      *  点击图片位置，可以重现上传图片，可在本地目录选择要上传的张片进行上传
@@ -323,7 +318,6 @@ public class StudentIntroduceController extends ToolController {
 
     @Override
     public void doExport(){
-        //TODO: 从后端获取学生个人画像
         //选择保存路径
         DirectoryChooser chooser = new DirectoryChooser();
         chooser.setTitle("请选择保存位置");

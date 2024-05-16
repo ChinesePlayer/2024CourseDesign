@@ -24,6 +24,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.fatmansoft.teach.models.Fee;
 import org.fatmansoft.teach.models.Honor;
@@ -205,16 +206,15 @@ public class StudentDrawController {
 
     //保存图片
     public void saveAsImage(){
-        DirectoryChooser chooser = new DirectoryChooser();
+        FileChooser chooser = new FileChooser();
         chooser.setTitle("选择保存路径");
-        File directory = chooser.showDialog(actions.getScene().getWindow());
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("png图片", "*.png"));
+        File file = chooser.showSaveDialog(actions.getScene().getWindow());
         //隐藏按钮
         actions.setVisible(false);
         //截图
         SnapshotParameters parameters = new SnapshotParameters();
         WritableImage image = actions.getScene().getRoot().snapshot(parameters, null);
-        String uniqueName = CommonMethod.generateUniqueFileName(name.getText()+" 个人画像"+".png", directory.getPath());
-        File file = new File(directory, uniqueName);
         try{
             boolean isSuccess = ImageIO.write(SwingFXUtils.fromFXImage(image,null),"png", file);
             if(isSuccess){
@@ -237,11 +237,10 @@ public class StudentDrawController {
 
     //保存PDF
     public void saveAsPdf(){
-        DirectoryChooser chooser = new DirectoryChooser();
+        FileChooser chooser = new FileChooser();
         chooser.setTitle("选择保存路径");
-        File directory = chooser.showDialog(actions.getScene().getWindow());
-        String uniqueName = CommonMethod.generateUniqueFileName(name.getText()+" 个人画像" + ".pdf", directory.getPath());
-        File file = new File(directory, uniqueName);
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("pdf文档", "*.pdf"));
+        File file = chooser.showSaveDialog(actions.getScene().getWindow());
         Document doc = new Document();
         try{
             PdfWriter.getInstance(doc, new FileOutputStream(file));
@@ -258,6 +257,8 @@ public class StudentDrawController {
             image.setAlignment(Image.ALIGN_CENTER);
             doc.open();
             doc.add(image);
+
+            MessageDialog.showDialog("PDF已保存至: " + file.getAbsolutePath());
         } catch (DocumentException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {

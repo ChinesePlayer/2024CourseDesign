@@ -2,6 +2,7 @@ package com.teach.javafx.controller.studentScore;
 
 import com.teach.javafx.AppStore;
 import com.teach.javafx.controller.base.MessageDialog;
+import com.teach.javafx.factories.StudentScoreValueFactory;
 import com.teach.javafx.request.HttpRequestUtil;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.collections.FXCollections;

@@ -1,5 +1,7 @@
 package org.fatmansoft.teach.service;
 
+import org.fatmansoft.teach.factory.CourseInfoFactory;
+import org.fatmansoft.teach.models.Course;
 import org.fatmansoft.teach.models.Score;
 import org.fatmansoft.teach.models.Student;
 import org.fatmansoft.teach.payload.request.DataRequest;
@@ -22,6 +24,8 @@ public class TeacherService {
     private CourseRepository courseRepository;
     @Autowired
     private ScoreRepository scoreRepository;
+    @Autowired
+    private CourseInfoFactory courseInfoFactory;
 
     public DataResponse getStudents(@Valid @RequestBody DataRequest req){
         Integer courseId = req.getInteger("courseId");
@@ -97,5 +101,18 @@ public class TeacherService {
         score.setStatus(status);
         scoreRepository.save(score);
         return CommonMethod.getReturnMessageOK("保存成功");
+    }
+
+    public DataResponse getCourseList(DataRequest req){
+        Integer teacherId = req.getInteger("teacherId");
+        if(teacherId == null){
+            return CommonMethod.getReturnMessageError("无法获取教师信息");
+        }
+        List<Course> courseList = courseRepository.findCoursesByTeacherId(teacherId);
+        List<Map> dataList = new ArrayList<>();
+        for(Course c : courseList){
+            dataList.add(courseInfoFactory.createCourseInfo("teacher",c));
+        }
+        return CommonMethod.getReturnData(dataList);
     }
 }

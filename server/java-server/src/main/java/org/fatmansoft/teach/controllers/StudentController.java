@@ -84,6 +84,9 @@ public class StudentController {
      */
     public List getStudentMapList(String numName) {
         List dataList = new ArrayList();
+        if(numName == null){
+            numName = "";
+        }
         List<Student> sList = studentRepository.findStudentListByNumName(numName);  //数据库查询操作
         if (sList == null || sList.size() == 0)
             return dataList;
@@ -108,6 +111,21 @@ public class StudentController {
         String numName = dataRequest.getString("numName");
         List dataList = getStudentMapList(numName);
         return CommonMethod.getReturnData(dataList);  //按照测试框架规范会送Map的list
+    }
+
+//    //教师端，用于获取所有选了这个教师的课的学生
+//    @PostMapping("/getStudentList")
+//    @PreAuthorize("hasRole('TEACHER')")
+//    public DataResponse getTeacherStudentList(@Valid @RequestBody DataRequest dataRequest) {
+//        String numName = dataRequest.getString("numName");
+//        List dataList = getStudentMapList(numName);
+//        return CommonMethod.getReturnData(dataList);  //按照测试框架规范会送Map的list
+//    }
+
+    //根据课程ID来查询所有选了这门课的学生
+    @PostMapping("/getStudentsListByCourseId")
+    public DataResponse getStudentsListByCourseId(@Valid @RequestBody DataRequest req) {
+        return studentService.getStudentsListByCourseId(req);
     }
 
 

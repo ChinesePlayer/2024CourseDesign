@@ -157,7 +157,7 @@ public class HomeworkFileCheckerController {
         if(byteData != null){
             try{
                 Files.write(p, byteData);
-                MessageDialog.showDialog("保存成功! ");
+                MessageDialog.showDialog("文件已保存至: " + p.toFile().getAbsolutePath());
             }
             catch (IOException e){
                 e.printStackTrace();

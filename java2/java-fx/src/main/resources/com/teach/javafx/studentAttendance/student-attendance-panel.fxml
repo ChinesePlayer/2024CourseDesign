@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+
+<BorderPane prefHeight="400.0" prefWidth="600.0" styleClass="borderpane-container" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teach.javafx.controller.studentAttendance.StudentAttendancePanel">
+    <top>
+        <FlowPane alignment="CENTER_LEFT" hgap="10">
+            <BorderPane.margin>
+                <Insets bottom="15" left="15" right="15" top="15" />
+            </BorderPane.margin>
+         <Label text="课程" />
+         <ComboBox fx:id="courseComboBox" prefWidth="150.0" />
+         <Label text="日期" />
+         <DatePicker fx:id="datePicker" />
+            <Button text="查询" onAction="#onQueryButtonClick" />
+         <Button mnemonicParsing="false" text="清除" onAction="#onClearButtonClick" />
+        </FlowPane>
+    </top>
+
+    <center>
+
+    </center>
+   <center>
+      <TableView fx:id="tableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <columns>
+          <TableColumn fx:id="courseName" prefWidth="120" text="课程名称" />
+          <TableColumn fx:id="courseNum" prefWidth="100" text="课序号" />
+          <TableColumn fx:id="date" prefWidth="240" text="考勤日期" />
+          <TableColumn fx:id="status" prefWidth="150" text="考勤状态" />
+        </columns>
+      </TableView>
+   </center>
+
+</BorderPane>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.teach.javafx.controller.teacherAttendance.TeacherAttendancePanel"
+            prefHeight="400.0" prefWidth="600.0"
+            styleClass="borderpane-container">
+
+    <top>
+        <FlowPane alignment="CENTER_LEFT" hgap="10">
+            <BorderPane.margin>
+                <Insets bottom="15" left="15" right="15" top="15" />
+            </BorderPane.margin>
+            <MFXTextField fx:id="courseNameField" floatMode="BORDER" floatingText="课程名" prefHeight="38.0" prefWidth="153.0" />
+            <MFXTextField fx:id="studentNameField" floatMode="BORDER" floatingText="学生名" prefHeight="38.0" prefWidth="160.0" />
+            <Button text="查询" onAction="#onQueryButtonClick" />
+            <Button text="清空查询条件" onAction="#onClearQueryConditions" />
+            <Button text="新增考勤" onAction="#onNewAttendance" />
+            <Button text="删除选中" onAction="#onDeleteAttendance" />
+        </FlowPane>
+    </top>
+    <center>
+        <TableView fx:id="tableView" prefHeight="300.0" prefWidth="500.0">
+            <columns>
+                <TableColumn fx:id="studentNum" text="学号" prefWidth="70" />
+                <TableColumn fx:id="studentName" text="姓名" prefWidth="70" />
+                <TableColumn fx:id="courseNum" text="课序号" prefWidth="120" />
+                <TableColumn fx:id="courseName" text="课程" prefWidth="120" />
+                <TableColumn fx:id="date" text="考勤日期" prefWidth="250" />
+                <TableColumn fx:id="status" text="考勤状态" prefWidth="100" />
+                <TableColumn fx:id="actions" text="操作" prefWidth="150" />
+            </columns>
+        </TableView>
+    </center>
+
+</BorderPane>

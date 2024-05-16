@@ -132,10 +132,7 @@ public class Course {
         if(o == this){
             return true;
         }
-        if(Objects.equals(((Course) o).getCourseId(), this.courseId)){
-            return true;
-        }
-        return false;
+        return Objects.equals(((Course) o).getCourseId(), this.courseId);
     }
 
     //返回当前课程对象是否为空课程

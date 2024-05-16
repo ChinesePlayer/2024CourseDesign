@@ -1,9 +1,11 @@
 package com.teach.javafx.controller.courseSelection;
 
-import com.teach.javafx.AppStore;
 import com.teach.javafx.MainApplication;
 import com.teach.javafx.controller.base.MessageDialog;
 import com.teach.javafx.customWidget.CourseTable;
+import com.teach.javafx.factories.CourseActionValueFactory;
+import com.teach.javafx.factories.CourseTimeValueFactory;
+import com.teach.javafx.factories.CourseValueFactory;
 import com.teach.javafx.request.HttpRequestUtil;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.collections.FXCollections;

@@ -5,8 +5,6 @@ import com.teach.javafx.AppStore;
 import com.teach.javafx.controller.base.MessageDialog;
 import com.teach.javafx.request.HttpRequestUtil;
 import com.teach.javafx.request.OptionItem;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -19,7 +17,6 @@ import org.fatmansoft.teach.payload.response.DataResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.io.Serial;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -32,8 +29,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CommonMethod {
-    public static final String DISPLAY_DATE_FORMAT = "yyyy年MM月dd日 HH:mm:ss";
-    public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    public static final String DISPLAY_DATE_TIME_FORMAT = "yyyy年MM月dd日 HH:mm:ss";
+    public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    public static final String DISPLAY_DATE_FORMAT = "yyyy年MM月dd日";
 
     //使用正则表达式来判断邮箱是否合法
     public static boolean isValidEmail(String email){
@@ -73,7 +71,7 @@ public class CommonMethod {
         if(obj == null)
             return null;
         if(obj instanceof String){
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);
             return LocalDateTime.parse((String)obj, formatter);
         }
         return null;
@@ -394,9 +392,9 @@ public class CommonMethod {
         });
     }
 
-    public static String getDateString(LocalDateTime dateTime, String pattern){
+    public static String getDateTimeString(LocalDateTime dateTime, String pattern){
         if(pattern == null){
-            pattern = DISPLAY_DATE_FORMAT;
+            pattern = DISPLAY_DATE_TIME_FORMAT;
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         return dateTime.format(formatter);

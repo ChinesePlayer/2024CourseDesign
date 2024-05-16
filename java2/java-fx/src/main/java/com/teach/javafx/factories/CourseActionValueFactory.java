@@ -1,4 +1,4 @@
-package com.teach.javafx.controller.courseSelection;
+package com.teach.javafx.factories;
 
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.beans.property.ReadOnlyObjectProperty;

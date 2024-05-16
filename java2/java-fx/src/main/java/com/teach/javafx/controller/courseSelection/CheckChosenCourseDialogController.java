@@ -1,7 +1,8 @@
 package com.teach.javafx.controller.courseSelection;
 
 import com.teach.javafx.controller.base.MessageDialog;
-import com.teach.javafx.controller.courseSelection.CourseSelectionController;
+import com.teach.javafx.factories.CourseActionValueFactory;
+import com.teach.javafx.factories.CourseValueFactory;
 import com.teach.javafx.request.HttpRequestUtil;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.collections.FXCollections;
@@ -13,7 +14,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 import org.fatmansoft.teach.models.Course;
@@ -22,9 +22,7 @@ import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.util.CommonMethod;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class CheckChosenCourseDialogController {
     @FXML

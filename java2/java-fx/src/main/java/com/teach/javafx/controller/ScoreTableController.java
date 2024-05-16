@@ -2,17 +2,13 @@ package com.teach.javafx.controller;
 
 import com.teach.javafx.MainApplication;
 import com.teach.javafx.controller.base.MessageDialog;
-import com.teach.javafx.controller.studentScore.StudentScoreValueFactory;
+import com.teach.javafx.factories.StudentScoreValueFactory;
 import com.teach.javafx.models.Student;
 import com.teach.javafx.request.HttpRequestUtil;
-import com.teach.javafx.request.OptionItem;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.chart.PieChart;
 import javafx.util.Callback;
 import org.fatmansoft.teach.models.Course;
 import org.fatmansoft.teach.models.Score;
@@ -25,7 +21,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.MapValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
