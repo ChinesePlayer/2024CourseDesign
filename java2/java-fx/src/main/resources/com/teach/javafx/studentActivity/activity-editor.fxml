@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="400.0" prefWidth="600.0" styleClass="borderpane-container" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teach.javafx.controller.studentActivity.ActivityEditorController">
+   <center>
+      <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <content>
+            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+               <children>
+                  <MFXTextField fx:id="activityNameField" floatMode="BORDER" floatingText="活动名称" prefHeight="38.0" prefWidth="222.0" />
+                  <Label text="负责人" />
+                  <ComboBox fx:id="directorCombo" prefHeight="23.0" prefWidth="216.0" />
+                  <Label text="开始时间" />
+                  <DatePicker fx:id="start" prefHeight="23.0" prefWidth="218.0" />
+                  <Label text="结束时间" />
+                  <DatePicker fx:id="end" prefHeight="23.0" prefWidth="222.0" />
+                  <MFXTextField fx:id="maxNumberField" floatMode="BORDER" floatingText="人数上限" prefHeight="38.0" prefWidth="223.0" />
+                  <Label text="审批状态" />
+                  <ComboBox fx:id="statusCombo" prefHeight="23.0" prefWidth="223.0" />
+                  <Button mnemonicParsing="false" onAction="#onSave" text="保存" />
+               </children>
+               <padding>
+                  <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+               </padding>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </center>
+</BorderPane>

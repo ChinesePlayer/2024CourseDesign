@@ -42,6 +42,9 @@ public class Student {
     @ManyToMany(mappedBy = "students")
     private List<Course> courses = new ArrayList<>();
 
+    @ManyToMany(mappedBy = "students")
+    private List<Activity> activities = new ArrayList<>();
+
     @OneToMany(mappedBy = "student")
     private List<Honor> honors = new ArrayList<>();
 

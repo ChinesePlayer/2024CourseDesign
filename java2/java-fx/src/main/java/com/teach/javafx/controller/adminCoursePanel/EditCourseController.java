@@ -80,7 +80,7 @@ public class EditCourseController {
             emptyTeacher.setTeacherId(0);
             teacherList.add(emptyTeacher);
             for(Teacher m : res){
-                m.setName(m.getPerson().getName());
+                m.setName(m.getPerson().getPersonName());
                 teacherList.add(m);
             }
         }

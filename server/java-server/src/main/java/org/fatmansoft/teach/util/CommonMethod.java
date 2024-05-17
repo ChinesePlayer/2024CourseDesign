@@ -31,7 +31,8 @@ import java.util.*;
  * CommonMethod 公共处理方法实例类
  */
 public class CommonMethod {
-    public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    public static final String DATE_FORMAT = "yyyy-MM-dd";
     private static ObjectMapper mapper = new ObjectMapper();
     public static final MediaType exelType = new MediaType("application", "vnd.openxmlformats-officedocument.spreadsheetml.sheet");
     public static DataResponse getReturnData(Object obj, String msg){
@@ -450,7 +451,7 @@ public class CommonMethod {
 
     //根据该类开头定义的日期格式返回日期字符串
     public static String getLocalDateTimeString(LocalDateTime dateTime){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);
         return dateTime.format(formatter);
     }
 
@@ -519,11 +520,21 @@ public class CommonMethod {
     //从字符串解析LocalDateTime对象
     //解析方法使用后端定义的标准格式
     public static LocalDateTime getDateTimeFromString(String dateTimeStr){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);
         return LocalDateTime.parse(dateTimeStr, formatter);
     }
 
     public static LocalDate getDate(String dateStr){
         return getDateTimeFromString(dateStr).toLocalDate();
+    }
+
+    public static String getStringFromDate(LocalDate date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(CommonMethod.DATE_FORMAT);
+        return date.format(formatter);
+    }
+
+    public static LocalDate getDateFromString(String dateStr, String pattern){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+        return LocalDate.parse(dateStr, formatter);
     }
 }

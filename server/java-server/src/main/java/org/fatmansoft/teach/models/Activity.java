@@ -1,120 +1,45 @@
 package org.fatmansoft.teach.models;
-import javax.persistence.*;
-import javax.validation.constraints.Size;
 
-/**
- * Activity 校园活动实体类  保存校园活动的的基本信息
- * Integer ActivityId 活动参与人员表 主键 activityId
- * String name 活动名称
- * String address 活动地点
- * Integer qualityDevelopmentCredit 素拓分
- * Integer volunteerTime 志愿时长
- * String activityOrganizeUnit组织单位
- * Integer joinedPeople参与人数
- */
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+//学生活动实体类
 @Entity
-@Table(name = "activity",
-        uniqueConstraints = {
-        })
+@Getter
+@Setter
+@Table(name = "activity")
 public class Activity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer activityId;
-    @Size(max = 50)
-    private String name;//活动名称
-    private Integer qualityDevelopmentCredit;
-    private Integer volunteerTime;
+
+    //参与人员
+    @ManyToMany
+    @JoinTable(name = "activity_student",
+    joinColumns = @JoinColumn(name = "activity_id"),
+    inverseJoinColumns = @JoinColumn(name = "student_id"))
+    private List<Student> students=new ArrayList<>();
+
+    private String activityName;
+
+    //负责人
     @ManyToOne
-    @JoinColumn(name="host_id")
-    private Person person;
-    private String address;
-    private String activityOrganizeUnit;
-    private Integer joinedPeople;
-    private Integer leftPeopleRemaining;
-    private String state;
-    private String timeStart;
-    private String timeEnd;
-//    private Integer leftPeopleRemaining;
-    public Integer getJoinedPeople() {
-        return joinedPeople;
-    }
-    public void setJoinedPeople(Integer joinedPeople) {
-        this.joinedPeople = joinedPeople;
-    }
-    public Integer getActivityId() {
-        return activityId;
-    }
-    public void setActivityId(Integer ActivityId) {
-        this.activityId = ActivityId;
-    }
+    @JoinColumn(name = "director_id")
+    private Person director;
 
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-    public String getAddress() {
-        return address;
-    }
-    public void setAddress(String address) {
-        this.address = address;
-    }
-    public Integer getQualityDevelopmentCredit() {
-        return qualityDevelopmentCredit;
-    }
-    public void setQualityDevelopmentCredit(Integer qualityDevelopmentCredit) {
-        this.qualityDevelopmentCredit = qualityDevelopmentCredit;
-    }
-    public Integer getVolunteerTime() {
-        return volunteerTime;
-    }
-    public void setVolunteerTime(Integer volunteerTime) {
-        this.volunteerTime = volunteerTime;
-    }
-    public String getActivityOrganizeUnit() {
-        return activityOrganizeUnit;
-    }
-    public void setActivityOrganizeUnit(String activityOrganizeUnit) {
-        this.activityOrganizeUnit = activityOrganizeUnit;
-    }
+    //活动的审批状态:0: 审批中  1: 已通过  2: 未通过
+    private Integer status;
 
-    public Integer getLeftPeopleRemaining() {
-        return leftPeopleRemaining;
-    }
+    //活动可参与的总名额
+    private Integer maxJoiner;
 
-    public void setLeftPeopleRemaining(Integer leftPeopleRemaining) {
-        this.leftPeopleRemaining = leftPeopleRemaining;
-    }
-
-    public String getState() {
-        return state;
-    }
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public String getTimeStart() {
-        return timeStart;
-    }
-
-    public void setTimeStart(String timeStart) {
-        this.timeStart = timeStart;
-    }
-
-    public String getTimeEnd() {
-        return timeEnd;
-    }
-
-    public void setTimeEnd(String timeEnd) {
-        this.timeEnd = timeEnd;
-    }
-
-    public Person getPerson() {
-        return person;
-    }
-
-    public void setPerson(Person person) {
-        this.person = person;
-    }
+    //结束时间
+    private LocalDate start;
+    //开始时间
+    private LocalDate end;
 }

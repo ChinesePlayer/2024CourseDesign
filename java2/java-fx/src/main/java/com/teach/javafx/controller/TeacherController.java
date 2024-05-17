@@ -4,9 +4,7 @@ import com.teach.javafx.controller.base.LocalDateStringConverter;
 import com.teach.javafx.controller.base.ToolController;
 import com.teach.javafx.request.*;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.util.Callback;
 import org.fatmansoft.teach.models.Person;
 import org.fatmansoft.teach.models.Teacher;
 import org.fatmansoft.teach.payload.request.DataRequest;
@@ -132,9 +130,9 @@ public class TeacherController extends ToolController {
 //            }
 //        });
 //        上述代码实际也可以简写成下面一行代码：
-        numColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPerson().getNum()));
+        numColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPerson().getPersonNum()));
 
-        nameColumn.setCellValueFactory(cellData-> new SimpleStringProperty(cellData.getValue().getPerson().getName()));
+        nameColumn.setCellValueFactory(cellData-> new SimpleStringProperty(cellData.getValue().getPerson().getPersonName()));
         deptColumn.setCellValueFactory(cellData-> new SimpleStringProperty(cellData.getValue().getPerson().getDept()));
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         degreeColumn.setCellValueFactory(new PropertyValueFactory<>("degree"));
@@ -183,8 +181,8 @@ public class TeacherController extends ToolController {
         DataRequest req = new DataRequest();
         req.add("teacherId",teacherId);
         teacher = (Teacher)HttpRequestUtil.requestDataObject("/api/teacher/getTeacherInfo",req);
-        numField.setText(teacher.getPerson().getNum());
-        nameField.setText(teacher.getPerson().getName());
+        numField.setText(teacher.getPerson().getPersonNum());
+        nameField.setText(teacher.getPerson().getPersonName());
         deptField.setText(teacher.getPerson().getDept());
         titleField.setText(teacher.getTitle());
         degreeField.setText(teacher.getDegree());
@@ -262,8 +260,8 @@ public class TeacherController extends ToolController {
         Teacher t = new Teacher();
         Person p = new Person();
         t.setPerson(p);
-        p.setNum(numField.getText());
-        p.setName(nameField.getText());
+        p.setPersonNum(numField.getText());
+        p.setPersonName(nameField.getText());
         p.setDept(deptField.getText());
         t.setTitle(titleField.getText());
         t.setDegree(degreeField.getText());

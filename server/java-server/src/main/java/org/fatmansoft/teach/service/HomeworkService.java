@@ -1,37 +1,26 @@
 package org.fatmansoft.teach.service;
 
-import org.apache.tomcat.jni.Local;
 import org.fatmansoft.teach.factory.HomeworkFactory;
 import org.fatmansoft.teach.models.*;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.repository.*;
 import org.fatmansoft.teach.util.CommonMethod;
-import org.fatmansoft.teach.util.HasSavedAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
-import javax.validation.Valid;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 
 @Service
@@ -122,7 +111,7 @@ public class HomeworkService {
         homework.setContent(content);
         homework.setCourse(course);
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(CommonMethod.DATE_FORMAT);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(CommonMethod.DATE_TIME_FORMAT);
         LocalDateTime start = LocalDateTime.parse(startStr, formatter);
         LocalDateTime end = LocalDateTime.parse(endStr, formatter);
 

@@ -7,13 +7,10 @@ import org.fatmansoft.teach.repository.*;
 import org.fatmansoft.teach.util.CommonMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.function.Consumer;
 
 @Service
 public class AttendanceService {
@@ -61,7 +58,7 @@ public class AttendanceService {
         m.put("courseNum", a.getCourse().getNum());
         m.put("studentNum", a.getStudent().getPerson().getNum());
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(CommonMethod.DATE_FORMAT);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(CommonMethod.DATE_TIME_FORMAT);
         m.put("date",a.getDate().format(formatter));
         m.put("status",a.getStatus());
         return m;
