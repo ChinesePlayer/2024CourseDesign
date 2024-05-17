@@ -153,6 +153,11 @@ public class MenuControllerV2 {
             MessageDialog.showDialog("删除失败: 不能删除根节点");
             return;
         }
+        //不允许删除仪表盘页面
+        if(currentItem.getValue().getTitle().equals("仪表盘")){
+            MessageDialog.showDialog("不允许删除该页面! ");
+            return;
+        }
         if(!currentItem.getChildren().isEmpty()){
             int confirm = MessageDialog.choiceDialog("此操作会将 " + currentItem.getValue().getLabel() + " 中的所有子页面删除，你确定吗");
             //若用户没有选择确定，则终止删除操作
@@ -178,8 +183,17 @@ public class MenuControllerV2 {
 
     //编辑上下文菜单被按下
     private void onEditButtonPressed(ActionEvent event){
+        if(currentItem == null){
+            MessageDialog.showDialog("未选择任何页面");
+            return;
+        }
         if(currentItem.getValue() == null || !currentItem.getValue().getIsMenu()){
             MessageDialog.showDialog("请选择菜单文件夹进行编辑!");
+            return;
+        }
+        //不允许编辑仪表盘页面
+        if(currentItem.getValue().getTitle().equals("仪表盘")){
+            MessageDialog.showDialog("不允许编辑该页面! ");
             return;
         }
         FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("base/menu-editor.fxml"));
@@ -314,6 +328,12 @@ public class MenuControllerV2 {
         clearEditView();
 
         editNode = new MyTreeNode();
+
+        //不允许用户编辑仪表盘页面
+        if(currentItem.getValue().getTitle().equals("仪表盘")){
+            MessageDialog.showDialog("不允许编辑仪表盘页面");
+            return;
+        }
 
         if(!currentItem.getValue().getIsMenu()){
             editType = 2;

@@ -39,7 +39,7 @@
             <TableColumn fx:id="status" text="审批状态" />
             <TableColumn fx:id="start" text="开始时间" prefWidth="150" />
             <TableColumn fx:id="end" text="结束时间" prefWidth="150" />
-            <TableColumn fx:id="actions" text="操作" />
+            <TableColumn fx:id="actions" text="操作" sortable="false" />
          </columns>
       </TableView>
    </center>
