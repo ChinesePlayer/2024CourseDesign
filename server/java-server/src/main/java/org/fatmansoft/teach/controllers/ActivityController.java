@@ -38,4 +38,14 @@ public class ActivityController {
     public DataResponse deleteActivity(@Valid @RequestBody DataRequest req){
         return activityService.deleteActivity(req);
     }
+
+    @PostMapping("/passActivity")
+    public DataResponse passActivity(@Valid @RequestBody DataRequest req){
+        return activityService.passActivity(req);
+    }
+
+    @PostMapping("/refuseActivity")
+    public DataResponse refuseActivity(@Valid @RequestBody DataRequest req){
+        return activityService.refuseActivity(req);
+    }
 }

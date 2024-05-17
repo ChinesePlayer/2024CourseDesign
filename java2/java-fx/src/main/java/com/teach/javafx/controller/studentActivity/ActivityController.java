@@ -22,6 +22,7 @@ import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.util.CommonMethod;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -106,6 +107,17 @@ public class ActivityController {
                 editButton.setOnAction(this::onEditButtonClick);
                 Button deleteButton = new Button("删除");
                 deleteButton.setOnAction(this::onDeleteButtonClick);
+                if(a.getStatus() != 1){
+                    Button passButton = new Button("通过");
+                    passButton.setOnAction(this::onPass);
+                    a.getActions().add(passButton);
+                }
+                if(a.getStatus() != 2){
+                    Button refuseButton = new Button("拒绝");
+                    refuseButton.setOnAction(this::onRefuse);
+                    a.getActions().add(refuseButton);
+                }
+
                 a.getActions().add(editButton);
                 a.getActions().add(deleteButton);
                 activityList.add(a);
@@ -135,6 +147,38 @@ public class ActivityController {
         assert res != null;
         if(res.getCode() == 0){
             MessageDialog.showDialog("删除成功");
+            onQueryButtonClick();
+        }
+        else{
+            MessageDialog.showDialog(res.getMsg());
+        }
+    }
+
+    //审批通过按钮按下时进行的操作
+    public void onPass(ActionEvent event){
+        Activity a = (Activity) CommonMethod.getRowValue(event,2,tableView);
+        DataRequest req = new DataRequest();
+        req.add("activityId", a.getActivityId());
+        DataResponse res = HttpRequestUtil.request("/api/activity/passActivity",req);
+        assert res != null;
+        if(res.getCode() == 0){
+            MessageDialog.showDialog("审批成功!");
+            onQueryButtonClick();
+        }
+        else{
+            MessageDialog.showDialog(res.getMsg());
+        }
+    }
+
+    //拒绝按钮按下时进行的操作
+    public void onRefuse(ActionEvent event){
+        Activity a = (Activity) CommonMethod.getRowValue(event,2,tableView);
+        DataRequest req = new DataRequest();
+        req.add("activityId", a.getActivityId());
+        DataResponse res = HttpRequestUtil.request("/api/activity/refuseActivity",req);
+        assert res != null;
+        if(res.getCode() == 0){
+            MessageDialog.showDialog("审批成功!");
             onQueryButtonClick();
         }
         else{

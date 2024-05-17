@@ -112,6 +112,36 @@ public class ActivityService {
         return CommonMethod.getReturnMessageOK();
     }
 
+    public DataResponse passActivity(DataRequest req){
+        Integer activityId = req.getInteger("activityId");
+        if(activityId == null){
+            return CommonMethod.getReturnMessageError("无法获取活动信息");
+        }
+        Optional<Activity> aOp = activityRepository.findById(activityId);
+        if(aOp.isEmpty()){
+            return CommonMethod.getReturnMessageError("无法获取活动信息");
+        }
+        Activity activity = aOp.get();
+        activity.setStatus(1);
+        activityRepository.save(activity);
+        return CommonMethod.getReturnMessageOK();
+    }
+
+    public DataResponse refuseActivity(DataRequest req){
+        Integer activityId = req.getInteger("activityId");
+        if(activityId == null){
+            return CommonMethod.getReturnMessageError("无法获取活动信息");
+        }
+        Optional<Activity> aOp = activityRepository.findById(activityId);
+        if(aOp.isEmpty()){
+            return CommonMethod.getReturnMessageError("无法获取活动信息");
+        }
+        Activity activity = aOp.get();
+        activity.setStatus(2);
+        activityRepository.save(activity);
+        return CommonMethod.getReturnMessageOK();
+    }
+
     //工具方法，用于将Activity对象中的信息提取到Map中
     private Map getMapFromActivity(Activity a){
         Map m = new HashMap<>();
