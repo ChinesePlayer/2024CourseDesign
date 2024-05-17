@@ -289,8 +289,19 @@ public class MainFrameController {
         DataResponse res = HttpRequestUtil.request("/api/base/getMenuList",new DataRequest());
         assert res != null;
         List<Map> mList = (List<Map>)res.getData();
+
+//        for(Map m : mList){
+//            System.out.println(m.get("title"));
+//            if(m.get("title").equals("仪表盘")){
+//                mList.remove(m);
+//                mList.add(0, m);
+//            }
+//        }
         //若有仪表盘，则将仪表盘移动到第一位
-        for(Map m : mList){
+        //上面的增强型for循环不能用于删除元素，否则会抛出异常，所以此处改为传统for循环
+        for(int i = 0; i < mList.size(); i++){
+            Map m = mList.get(i);
+            System.out.println(m.get("title"));
             if(m.get("title").equals("仪表盘")){
                 mList.remove(m);
                 mList.add(0, m);

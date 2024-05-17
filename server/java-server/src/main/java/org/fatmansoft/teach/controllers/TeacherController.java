@@ -122,11 +122,14 @@ public class TeacherController {
             }
         }
         Optional<Person> nOp = personRepository.findByNum(num); //查询是否存在num的人员
-        if (nOp.isPresent()) {
-            if (s == null || s.getPerson().getNum().equals(num)) {
-                return CommonMethod.getReturnMessageError("新工号已经存在，不能添加或修改！");
-            }
+        if(nOp.isPresent() && s == null){
+            return CommonMethod.getReturnMessageError("工号已经存在，不能添加!");
         }
+//        if (nOp.isPresent()) {
+//            if (s == null || s.getPerson().getNum().equals(num)) {
+//                return CommonMethod.getReturnMessageError("新工号已经存在，不能添加或修改！");
+//            }
+//        }
         if (s == null) {
             p = new Person();
             p.setNum(num);

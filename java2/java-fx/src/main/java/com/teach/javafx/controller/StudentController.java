@@ -108,8 +108,8 @@ public class StudentController extends ToolController {
         if(res != null && res.getCode()== 0) {
             studentList = (ArrayList<Map>)res.getData();
         }
-        numColumn.setCellValueFactory(new MapValueFactory<>("num"));  //设置列值工厂属性
-        nameColumn.setCellValueFactory(new MapValueFactory<>("name"));
+        numColumn.setCellValueFactory(new MapValueFactory<>("studentNum"));  //设置列值工厂属性
+        nameColumn.setCellValueFactory(new MapValueFactory<>("studentName"));
         deptColumn.setCellValueFactory(new MapValueFactory<>("dept"));
         majorColumn.setCellValueFactory(new MapValueFactory<>("major"));
         classNameColumn.setCellValueFactory(new MapValueFactory<>("className"));
@@ -164,8 +164,8 @@ public class StudentController extends ToolController {
             return;
         }
         form = (Map)res.getData();
-        numField.setText(CommonMethod.getString(form, "num"));
-        nameField.setText(CommonMethod.getString(form, "name"));
+        numField.setText(CommonMethod.getString(form, "studentNum"));
+        nameField.setText(CommonMethod.getString(form, "studentName"));
         deptField.setText(CommonMethod.getString(form, "dept"));
         majorField.setText(CommonMethod.getString(form, "major"));
         classNameField.setText(CommonMethod.getString(form, "className"));

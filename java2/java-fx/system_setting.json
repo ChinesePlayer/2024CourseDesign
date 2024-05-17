@@ -1,16 +1,20 @@
 {
   "shortcuts": [
     {
-      "fxml": "honor/honor-check-panel.fxml",
-      "name": "个人荣誉"
+      "name": "系统设置",
+      "fxml": "setting/system-setting.fxml"
     },
     {
-      "fxml": "setting/system-setting.fxml",
-      "name": "系统设置"
+      "name": "成绩查询",
+      "fxml": "studentScore/course-score.fxml"
     },
     {
-      "fxml": "courseSelection/course-selection-menu.fxml",
-      "name": "进入选课"
+      "name": "个人荣誉",
+      "fxml": "honor/honor-check-panel.fxml"
+    },
+    {
+      "name": "进入选课",
+      "fxml": "courseSelection/course-selection-menu.fxml"
     }
   ],
   "allShortcuts": [

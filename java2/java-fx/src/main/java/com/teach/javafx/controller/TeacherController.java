@@ -256,7 +256,7 @@ public class TeacherController extends ToolController {
     @FXML
     protected void onSaveButtonClick() {
         if( numField.getText().equals("")) {
-            MessageDialog.showDialog("学号为空，不能修改");
+            MessageDialog.showDialog("工号为空，不能修改");
             return;
         }
         Teacher t = new Teacher();

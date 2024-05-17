@@ -188,7 +188,7 @@
 /* 列头文字颜色 */
 .table-view .column-header .label{
     -fx-text-fill: #ffffff;
-    -fx-font-size:20px;
+    -fx-font-size:15px;
 }
 
 /* 改变无数据列的列头背景 */
