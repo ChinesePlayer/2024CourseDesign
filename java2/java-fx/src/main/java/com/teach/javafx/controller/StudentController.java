@@ -252,8 +252,8 @@ public class StudentController extends ToolController {
             return;
         }
         Map form = new HashMap();
-        form.put("num",numField.getText());
-        form.put("name",nameField.getText());
+        form.put("personNum",numField.getText());
+        form.put("personName",nameField.getText());
         form.put("dept",deptField.getText());
         form.put("major",majorField.getText());
         form.put("className",classNameField.getText());
