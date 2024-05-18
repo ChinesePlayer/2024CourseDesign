@@ -22,6 +22,8 @@ public class Activity {
     private Integer number;
     //最大参与人数
     private Integer maxNumber;
+    //该变量仅在学生端有值, 表示该学生是否已报名该活动
+    private boolean isSignup;
     //外界可执行的一些操作
     private List<Button> actions=new ArrayList<>();
 
@@ -39,6 +41,7 @@ public class Activity {
         this.directorName = CommonMethod.getString(m, "directorName");
         this.number = CommonMethod.getInteger(m, "number");
         this.maxNumber = CommonMethod.getInteger(m, "maxNumber");
+        this.isSignup = CommonMethod.getBoolean(m, "isSignup");
     }
 
     public Integer getActivityId() {
@@ -119,5 +122,31 @@ public class Activity {
 
     public void setMaxNumber(Integer maxNumber) {
         this.maxNumber = maxNumber;
+    }
+
+    public boolean isSignup() {
+        return isSignup;
+    }
+
+    public void setSignup(boolean signup) {
+        isSignup = signup;
+    }
+
+    //判断该活动的进行状态0: 未开始  1:进行中 2:已结束
+    public Integer getProgressStatus(){
+        LocalDate now = LocalDate.now();
+        if(now.isBefore(start)){
+            return 0;
+        }
+        else if(!now.isBefore(start) && !now.isAfter(end)){
+            return 1;
+        }
+        else if(now.isAfter(end)){
+            return 2;
+        }
+        else{
+            //状态未知，返回一个未开始状态
+            return 0;
+        }
     }
 }

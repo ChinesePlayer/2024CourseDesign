@@ -42,4 +42,22 @@ public class Activity {
     private LocalDate start;
     //开始时间
     private LocalDate end;
+
+    //判断该活动的进行状态0: 未开始  1:进行中 2:已结束
+    public Integer getProgressStatus(){
+        LocalDate now = LocalDate.now();
+        if(now.isBefore(start)){
+            return 0;
+        }
+        else if(!now.isBefore(start) && !now.isAfter(end)){
+            return 1;
+        }
+        else if(now.isAfter(end)){
+            return 2;
+        }
+        else{
+            //状态未知，返回一个未开始状态
+            return 0;
+        }
+    }
 }

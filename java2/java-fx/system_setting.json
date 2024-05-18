@@ -11,10 +11,6 @@
     {
       "name": "个人荣誉",
       "fxml": "honor/honor-check-panel.fxml"
-    },
-    {
-      "name": "进入选课",
-      "fxml": "courseSelection/course-selection-menu.fxml"
     }
   ],
   "allShortcuts": [
