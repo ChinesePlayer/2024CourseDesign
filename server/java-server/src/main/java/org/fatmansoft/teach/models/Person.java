@@ -25,7 +25,7 @@ import java.util.Date;
 @Entity
 @Table(	name = "person",
         uniqueConstraints = {
-                @UniqueConstraint(columnNames = "num"),   //人员表中的编号 唯一
+                @UniqueConstraint(columnNames = "personNum"),   //人员表中的编号 唯一
         })
 public class Person {
     @Id
@@ -34,10 +34,10 @@ public class Person {
 
     @NotBlank    // 字段非空
     @Size(max = 20)   //字段长度最长为20
-    private String num;
+    private String personNum;
 
     @Size(max = 50)
-    private String name;
+    private String personName;
 
     @Size(max = 2)
     private String type;
@@ -77,20 +77,20 @@ public class Person {
         this.personId = personId;
     }
 
-    public String getNum() {
-        return num;
+    public String getPersonNum() {
+        return personNum;
     }
 
-    public void setNum(String num) {
-        this.num = num;
+    public void setPersonNum(String num) {
+        this.personNum = num;
     }
 
-    public String getName() {
-        return name;
+    public String getPersonName() {
+        return personName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setPersonName(String name) {
+        this.personName = name;
     }
 
     public String getType() {

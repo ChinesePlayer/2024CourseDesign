@@ -54,9 +54,9 @@ public class AttendanceService {
         m.put("studentId",a.getStudent().getStudentId());
         m.put("courseId",a.getCourse().getCourseId());
         m.put("courseName",a.getCourse().getName());
-        m.put("studentName", a.getStudent().getPerson().getName());
+        m.put("studentName", a.getStudent().getPerson().getPersonName());
         m.put("courseNum", a.getCourse().getNum());
-        m.put("studentNum", a.getStudent().getPerson().getNum());
+        m.put("studentNum", a.getStudent().getPerson().getPersonNum());
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(CommonMethod.DATE_TIME_FORMAT);
         m.put("date",a.getDate().format(formatter));

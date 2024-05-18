@@ -55,8 +55,8 @@ public class ScoreService {
         for(Student s : students){
             Map m = new HashMap<>();
             m.put("studentId", s.getStudentId()+"");
-            m.put("studentName", s.getPerson().getName());
-            m.put("studentNum", s.getPerson().getNum());
+            m.put("studentName", s.getPerson().getPersonName());
+            m.put("studentNum", s.getPerson().getPersonNum());
             m.put("personId", s.getPerson().getPersonId()+"");
             m.put("className", s.getClassName());
             dataList.add(m);

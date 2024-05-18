@@ -50,8 +50,8 @@ public class StudentService {
             return m;
         m.put("studentId", s.getStudentId());
         m.put("personId", p.getPersonId());
-        m.put("studentNum",p.getNum());
-        m.put("studentName",p.getName());
+        m.put("studentNum",p.getPersonNum());
+        m.put("studentName",p.getPersonName());
         m.put("dept",p.getDept());
         m.put("card",p.getCard());
         String gender = p.getGender();
@@ -92,8 +92,8 @@ public class StudentService {
         Student student = stuOp.get();
         Map data = new HashMap<>();
         data.put("studentId", studentId);
-        data.put("studentNum", student.getPerson().getNum());
-        data.put("studentName", student.getPerson().getName());
+        data.put("studentNum", student.getPerson().getPersonNum());
+        data.put("studentName", student.getPerson().getPersonName());
         data.put("studentDept", student.getPerson().getDept());
         //TODO: 暂时先返回这些数据，后续会逐渐增加
         return CommonMethod.getReturnData(data);
@@ -129,9 +129,9 @@ public class StudentService {
         //计算绩点
         double gpa = gpas[0]/nonReadingScore.size();
         //搜集学生信息，构建PDF
-        String name = student.getPerson().getName();
+        String name = student.getPerson().getPersonName();
         //学号
-        String num = student.getPerson().getNum();
+        String num = student.getPerson().getPersonNum();
         String dept = student.getPerson().getDept();
         String major = student.getMajor();
         String className = student.getClassName();

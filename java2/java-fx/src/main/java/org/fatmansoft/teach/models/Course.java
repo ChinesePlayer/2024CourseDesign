@@ -57,7 +57,7 @@ public class Course {
         Map teacherMap = (Map)m.get("teacher");
         if(teacherMap != null){
             Teacher t = new Teacher();
-            t.setName((String) teacherMap.get("name"));
+            t.setPersonName((String) teacherMap.get("name"));
             t.setTeacherId(Integer.parseInt((String) teacherMap.get("id")));
             this.teacher = t;
         }

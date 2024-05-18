@@ -23,16 +23,16 @@
             </columns>
         </TableView>
     </center>
-   <top>
-      <HBox alignment="CENTER_LEFT" prefHeight="59.0" prefWidth="600.0" spacing="10.0" BorderPane.alignment="CENTER">
-         <children>
-            <Label text="活动状态: " />
-            <ComboBox fx:id="statusCombo" prefWidth="150.0" />
-            <Button mnemonicParsing="false" text="查询" onAction="#onQueryButtonClick" />
-         </children>
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
-      </HBox>
-   </top>
+    <top>
+        <HBox alignment="CENTER_LEFT" prefHeight="59.0" prefWidth="600.0" spacing="10.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label text="活动状态: " />
+                <ComboBox fx:id="statusCombo" prefWidth="150.0" />
+                <Button mnemonicParsing="false" text="查询" onAction="#onQueryButtonClick" />
+            </children>
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+        </HBox>
+    </top>
 </BorderPane>

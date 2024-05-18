@@ -1,13 +1,12 @@
 package org.fatmansoft.teach.models;
 
-import java.net.Inet4Address;
 import java.util.Map;
 import java.util.Objects;
 
 public class Teacher {
     private Integer teacherId;
     private Person person;
-    private String name;
+    private String personName;
     private String title;
     private String degree;
 
@@ -24,12 +23,12 @@ public class Teacher {
         }
         Map personMap = (Map) m.get("person");
         if(personMap != null){
-            this.name = (String) personMap.get("name");
+            this.personName = (String) personMap.get("name");
             this.title = (String) m.get("title");
             this.degree = (String) m.get("degree");
         }
         else{
-            this.name = null;
+            this.personName = null;
             this.title = null;
             this.degree = null;
         }
@@ -73,12 +72,12 @@ public class Teacher {
         this.degree = degree;
     }
 
-    public String getName() {
-        return name;
+    public String getPersonName() {
+        return personName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setPersonName(String personName) {
+        this.personName = personName;
     }
 
     @Override
@@ -86,7 +85,7 @@ public class Teacher {
         if(teacherId == null || teacherId <= 0){
             return "无";
         }
-        return teacherId + " - " + name;
+        return teacherId + " - " + personName;
     }
 
     @Override

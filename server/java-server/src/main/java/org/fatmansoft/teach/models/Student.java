@@ -81,7 +81,7 @@ public class Student {
     }
 
     public String getNumName(){
-        return person.getNum()+"-" + person.getName();
+        return person.getPersonNum()+"-" + person.getPersonName();
     }
 
     public List<Course> getCourses() {

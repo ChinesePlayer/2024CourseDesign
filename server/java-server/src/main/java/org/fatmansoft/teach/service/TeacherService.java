@@ -39,8 +39,8 @@ public class TeacherService {
         List<Map> dataList = new ArrayList<>();
         for(Student s:studentList){
             Map m = new HashMap<>();
-            m.put("studentNum", s.getPerson().getNum());
-            m.put("studentName", s.getPerson().getName());
+            m.put("studentNum", s.getPerson().getPersonNum());
+            m.put("studentName", s.getPerson().getPersonName());
             m.put("className", s.getClassName());
             m.put("studentId", s.getStudentId());
             List<Score> scoreL = scoreRepository.findByStudentCourse(s.getStudentId(), courseId);

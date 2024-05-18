@@ -360,7 +360,7 @@ public class ActivityService {
         Map m = new HashMap<>();
         m.put("activityId", a.getActivityId());
         m.put("activityName", a.getActivityName());
-        m.put("directorName",a.getDirector().getName());
+        m.put("directorName",a.getDirector().getPersonName());
         m.put("directorId", a.getDirector().getPersonId());
         m.put("status", a.getStatus());
         m.put("start", CommonMethod.getStringFromDate(a.getStart()));
@@ -374,8 +374,8 @@ public class ActivityService {
     private Map getMapFromPerson(Person p){
         Map m = new HashMap<>();
         m.put("personId", p.getPersonId());
-        m.put("personName", p.getName());
-        m.put("personNum", p.getNum());
+        m.put("personName", p.getPersonName());
+        m.put("personNum", p.getPersonNum());
         return m;
     }
 }
