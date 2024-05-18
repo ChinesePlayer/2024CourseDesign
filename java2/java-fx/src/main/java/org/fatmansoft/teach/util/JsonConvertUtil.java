@@ -170,6 +170,8 @@ public class JsonConvertUtil {
                     o = c.getDeclaredConstructor().newInstance();
                 } else {
                     mName = aStr.substring(0, 1).toUpperCase() + aStr.substring(1);
+                    System.out.println(aStr);
+                    System.out.println("当前要调用的方法名: " + mName);
                     m = c.getMethod("get" + mName);
                     fc = m.getReturnType();
                     if(cc == '['){

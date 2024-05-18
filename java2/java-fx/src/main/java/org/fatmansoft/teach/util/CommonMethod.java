@@ -459,6 +459,8 @@ public class CommonMethod {
     }
 
     public static LocalDate getLocalDateFromString(String str, String pattern){
+        if(str == null || str.equals(""))
+            return null;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         return LocalDate.parse(str, formatter);
     }

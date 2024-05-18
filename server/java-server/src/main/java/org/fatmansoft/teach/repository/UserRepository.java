@@ -22,7 +22,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
     Optional<User> findByUserName(String userName);
-    Optional<User> findByPersonNum(String perNum);
+    Optional<User> findByPersonPersonNum(String perNum);
     Optional<User> findByPersonPersonId(Integer personId);
 
     Optional<User> findByUserId(Integer userId);

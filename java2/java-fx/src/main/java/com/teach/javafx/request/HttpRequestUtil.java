@@ -47,8 +47,8 @@ public class HttpRequestUtil {
      *  应用关闭是需要做关闭处理
      */
     public static void close(){
-        if(isLocal)
-            SQLiteJDBC.getInstance().close();
+//        if(isLocal)
+//            SQLiteJDBC.getInstance().close();
     }
 
     /**
@@ -59,7 +59,8 @@ public class HttpRequestUtil {
 
     public static String login(LoginRequest request){
         if(isLocal) {
-            return SQLiteJDBC.getInstance().login(request.getUsername(),request.getPassword());
+//            return SQLiteJDBC.getInstance().login(request.getUsername(),request.getPassword());
+            return "";
         }else {
             HttpRequest httpRequest = HttpRequest.newBuilder()
                     .uri(URI.create(serverUrl + "/auth/login"))
@@ -93,14 +94,14 @@ public class HttpRequestUtil {
      */
     public static DataResponse request(String url, DataRequest request){
         if(isLocal) {
-            int index = url.lastIndexOf('/');
-            String methodName = url.substring(index+1,url.length());
-            try {
-                Method method = SQLiteJDBC.class.getMethod(methodName, DataRequest.class);
-                return (DataResponse)method.invoke(SQLiteJDBC.getInstance(), request);
-            }catch(Exception e) {
-                e.printStackTrace();
-            }
+//            int index = url.lastIndexOf('/');
+//            String methodName = url.substring(index+1,url.length());
+//            try {
+//                Method method = SQLiteJDBC.class.getMethod(methodName, DataRequest.class);
+//                return (DataResponse)method.invoke(SQLiteJDBC.getInstance(), request);
+//            }catch(Exception e) {
+//                e.printStackTrace();
+//            }
         }else {
             HttpRequest httpRequest = HttpRequest.newBuilder()
                     .uri(URI.create(serverUrl + url))

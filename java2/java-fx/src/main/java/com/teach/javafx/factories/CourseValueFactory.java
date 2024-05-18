@@ -33,7 +33,7 @@ public class CourseValueFactory implements Callback<TableColumn.CellDataFeatures
                 if (c.getTeacher() == null) {
                     return new SimpleStringProperty("暂未公布");
                 } else {
-                    return new SimpleStringProperty(c.getTeacher().getName());
+                    return new SimpleStringProperty(c.getTeacher().getPersonName());
                 }
             }
             case "loc" -> {

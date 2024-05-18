@@ -21,17 +21,17 @@ import java.util.Optional;
 
 public interface StudentRepository extends JpaRepository<Student,Integer> {
     Optional<Student> findByPersonPersonId(Integer personId);
-    Optional<Student> findByPersonNum(String num);
-    List<Student> findByPersonName(String name);
+    Optional<Student> findByPersonPersonNum(String num);
+    List<Student> findByPersonPersonName(String name);
 
-    @Query(value = "from Student where ?1='' or person.num like %?1% or person.name like %?1% ")
+    @Query(value = "from Student where ?1='' or person.personNum like %?1% or person.personName like %?1% ")
     List<Student> findStudentListByNumName(String numName);
 
     @Query(value="select s from Student s, User u where u.person.personId = s.person.personId and u.userId=?1")
     Optional<Student> findByUserId(Integer userId);
 
-    @Query(value = "from Student where ?1='' or person.num like %?1% or person.name like %?1% ",
-            countQuery = "SELECT count(studentId) from Student where ?1='' or person.num like %?1% or person.name like %?1% ")
+    @Query(value = "from Student where ?1='' or person.personNum like %?1% or person.personName like %?1% ",
+            countQuery = "SELECT count(studentId) from Student where ?1='' or person.personNum like %?1% or person.personName like %?1% ")
     Page<Student> findStudentPageByNumName(String numName,  Pageable pageable);
 
     //根据学生ID来查找该学生选择的所有课程

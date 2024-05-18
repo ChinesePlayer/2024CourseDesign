@@ -44,6 +44,7 @@ public class TeacherController {
             numName ="";
         System.out.println("numName is : " + numName);
         List<Teacher> sList = teacherRepository.findTeacherListByNumName(numName);
+        System.out.println("sList的个数: " + sList.size());
         String dataToBeSent = JsonConvertUtil.getDataListJson(sList);
         System.out.println(dataToBeSent);
         return dataToBeSent;
@@ -107,7 +108,7 @@ public class TeacherController {
         Integer teacherId = dataRequest.getInteger("teacherId");
         Map form = dataRequest.getMap("form"); //参数获取Map对象
         Map pForm =  CommonMethod.getMap(form,"person");
-        String num = CommonMethod.getString(pForm, "num");  //Map 获取属性的值
+        String num = CommonMethod.getString(pForm, "personNum");  //Map 获取属性的值
         System.out.println("新添加的工号: " + num);
         Teacher s = null;
         Person p;
@@ -121,7 +122,7 @@ public class TeacherController {
                 s = op.get();
             }
         }
-        Optional<Person> nOp = personRepository.findByNum(num); //查询是否存在num的人员
+        Optional<Person> nOp = personRepository.findByPersonNum(num); //查询是否存在num的人员
         if(nOp.isPresent() && s == null){
             return CommonMethod.getReturnMessageError("工号已经存在，不能添加!");
         }
@@ -132,7 +133,7 @@ public class TeacherController {
 //        }
         if (s == null) {
             p = new Person();
-            p.setNum(num);
+            p.setPersonNum(num);
             p.setType("2");
             personRepository.saveAndFlush(p);  //插入新的Person记录
             String password = encoder.encode("123456");
@@ -151,16 +152,16 @@ public class TeacherController {
             p = s.getPerson();
         }
         personId = p.getPersonId();
-        if (!num.equals(p.getNum())) {   //如果人员编号变化，修改人员编号和登录账号
+        if (!num.equals(p.getPersonNum())) {   //如果人员编号变化，修改人员编号和登录账号
             Optional<User> uOp = userRepository.findByPersonPersonId(personId);
             if (uOp.isPresent()) {
                 u = uOp.get();
                 u.setUserName(num);
                 userRepository.saveAndFlush(u);
             }
-            p.setNum(num);  //设置属性
+            p.setPersonNum(num);  //设置属性
         }
-        p.setName(CommonMethod.getString(pForm, "name"));
+        p.setPersonName(CommonMethod.getString(pForm, "personName"));
         p.setDept(CommonMethod.getString(pForm, "dept"));
         p.setCard(CommonMethod.getString(pForm, "card"));
         p.setGender(CommonMethod.getString(pForm, "gender"));

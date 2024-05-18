@@ -196,7 +196,7 @@ public class StudentController {
     public DataResponse studentEditSave(@Valid @RequestBody DataRequest dataRequest) {
         Integer studentId = dataRequest.getInteger("studentId");
         Map form = dataRequest.getMap("form"); //参数获取Map对象
-        String num = CommonMethod.getString(form, "num");  //Map 获取属性的值
+        String num = CommonMethod.getString(form, "personNum");  //Map 获取属性的值
         Student s = null;
         Person p;
         User u;
@@ -209,15 +209,15 @@ public class StudentController {
                 s = op.get();
             }
         }
-        Optional<Person> nOp = personRepository.findByNum(num); //查询是否存在num的人员
+        Optional<Person> nOp = personRepository.findByPersonNum(num); //查询是否存在num的人员
         if (nOp.isPresent()) {
-            if (s == null || !s.getPerson().getNum().equals(num)) {
+            if (s == null || !s.getPerson().getPersonNum().equals(num)) {
                 return CommonMethod.getReturnMessageError("新学号已经存在，不能添加或修改！");
             }
         }
         if (s == null) {
             p = new Person();
-            p.setNum(num);
+            p.setPersonNum(num);
             p.setType("1");
             personRepository.saveAndFlush(p);  //插入新的Person记录
             String password = encoder.encode("123456");
@@ -238,16 +238,16 @@ public class StudentController {
             isNew = false;
         }
         personId = p.getPersonId();
-        if (!num.equals(p.getNum())) {   //如果人员编号变化，修改人员编号和登录账号
+        if (!num.equals(p.getPersonNum())) {   //如果人员编号变化，修改人员编号和登录账号
             Optional<User> uOp = userRepository.findByPersonPersonId(personId);
             if (uOp.isPresent()) {
                 u = uOp.get();
                 u.setUserName(num);
                 userRepository.saveAndFlush(u);
             }
-            p.setNum(num);  //设置属性
+            p.setPersonNum(num);  //设置属性
         }
-        p.setName(CommonMethod.getString(form, "name"));
+        p.setPersonName(CommonMethod.getString(form, "personName"));
         p.setDept(CommonMethod.getString(form, "dept"));
         p.setCard(CommonMethod.getString(form, "card"));
         p.setGender(CommonMethod.getString(form, "gender"));
@@ -279,7 +279,7 @@ public class StudentController {
         for (Score s : sList) {
             m = new HashMap();
             c = s.getCourse();
-            m.put("studentNum", s.getStudent().getPerson().getNum());
+            m.put("studentNum", s.getStudent().getPerson().getPersonNum());
             m.put("scoreId", s.getScoreId()+"");
             m.put("courseNum", c.getNum());
             m.put("courseName", c.getName());
@@ -365,7 +365,7 @@ public class StudentController {
     @PreAuthorize("hasRole('ROLE_STUDENT')")
     public DataResponse getStudentIntroduceData(@Valid @RequestBody DataRequest dataRequest) {
         String username = CommonMethod.getUsername();
-        Optional<Student> sOp = studentRepository.findByPersonNum(username);  // 查询获得 Student对象
+        Optional<Student> sOp = studentRepository.findByPersonPersonNum(username);  // 查询获得 Student对象
         if (!sOp.isPresent())
             return CommonMethod.getReturnMessageError("学生不存在！");
         Student s = sOp.get();
