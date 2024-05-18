@@ -17,7 +17,7 @@
                 <TableColumn text="成绩" fx:id="mark" prefWidth="100"/>
                 <TableColumn text="排名" fx:id="rank" prefWidth="100"/>
                 <TableColumn text="状态" fx:id="status" prefWidth="100"/>
-                <TableColumn text="操作" fx:id="action" prefWidth="160"/>
+                <TableColumn text="操作" fx:id="action" prefWidth="160" sortable="false"/>
             </columns>
         </TableView>
     </center>

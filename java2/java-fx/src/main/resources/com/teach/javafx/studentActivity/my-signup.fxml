@@ -19,7 +19,7 @@
                 <TableColumn fx:id="activityName"  text="活动名称" />
                 <TableColumn fx:id="start" prefWidth="150" text="开始时间" />
                 <TableColumn fx:id="end" prefWidth="150" text="结束时间" />
-                <TableColumn fx:id="actions"  text="操作" />
+                <TableColumn fx:id="actions"  text="操作" sortable="false" />
             </columns>
         </TableView>
     </center>
