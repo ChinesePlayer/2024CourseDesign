@@ -1,37 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+
 <!-- 前端应用主框架FXML配置文件 对应页面交互控制类 com.teach.javafx.controller.base.MainFrameController -->
-<?import javafx.scene.control.TreeView?>
-<?import io.github.palexdev.materialfx.controls.MFXButton?>
-<BorderPane
-        maxHeight="-Infinity"
-        maxWidth="-Infinity"
-        minHeight="-Infinity"
-        minWidth="-Infinity"
-        xmlns="http://javafx.com/javafx/"
-        xmlns:fx="http://javafx.com/fxml/"
-        fx:controller="com.teach.javafx.controller.base.MainFrameController">
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teach.javafx.controller.base.MainFrameController">
   <top>
     <MenuBar fx:id="menuBar" />
   </top>
   <left>
-    <TreeView fx:id="menuTree" prefWidth="200"/>
+    <TreeView fx:id="menuTree" prefWidth="200" />
   </left>
   <center>
-    <TabPane fx:id="contentTabPane"  tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+    <TabPane fx:id="contentTabPane" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
     </TabPane>
   </center>
   <bottom>
     <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0">
       <children>
-        <Pane prefHeight="2.0" prefWidth="-1"  />
+        <Pane prefHeight="2.0" prefWidth="-1" />
       </children>
       <padding>
         <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
