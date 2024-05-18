@@ -12,7 +12,7 @@
             fx:controller="com.teach.javafx.controller.courseSelection.CourseSelectionController"
             styleClass="borderpane-container"
             stylesheets="@../css/pane-course-selection.css">
-    <top>
+    <!--<top>
         <HBox>
             <MFXButton fx:id="checkChosenButton" text="查看已选课程" onAction="#onCheckChosenButtonPressed">
                 <HBox.margin>
@@ -20,32 +20,51 @@
                 </HBox.margin>
             </MFXButton>
         </HBox>
-    </top>
+    </top>-->
     <center>
-        <VBox>
-            <HBox alignment="CENTER">
-                <CourseTable fx:id="courseTable" prefWidth="600" prefHeight="400" />
-                <Label fx:id="allCredit" styleClass="creditText">
-                    <HBox.margin>
-                        <Insets top="20" bottom="20" left="20" right="20"/>
-                    </HBox.margin>
-                </Label>
-            </HBox>
-            <TableView fx:id="courseTableView">
+        <HBox spacing="100">
+            <padding>
+                <Insets top="0" right="10" bottom="0" left="0"/> <!-- 指定顶部、右侧、底部和左侧填充 -->
+            </padding>
+            <VBox alignment="CENTER">
+                <padding>
+                    <Insets top="0" right="10" bottom="0" left="100"/> <!-- 指定顶部、右侧、底部和左侧填充 -->
+                </padding>
+                <CourseTable fx:id="courseTable" prefWidth="600" prefHeight="400"  />
+                <HBox>
+                    <padding>
+                        <Insets top="100" right="10" bottom="0" left="40"/> <!-- 指定顶部、右侧、底部和左侧填充 -->
+                    </padding>
+                    <Label fx:id="allCredit" styleClass="creditText" >
+                        <padding>
+                            <Insets top="0" right="30" bottom="0" left="0"/> <!-- 指定顶部、右侧、底部和左侧填充 -->
+                        </padding>
+                        <HBox.margin>
+                            <Insets top="20" bottom="20" left="20" right="20"/>
+                        </HBox.margin>
+                    </Label>
+                    <MFXButton fx:id="checkChosenButton" text="查看已选课程" onAction="#onCheckChosenButtonPressed">
+                        <HBox.margin>
+                            <Insets left="10.0" right="10.0" top="20.0" bottom="10.0" />
+                        </HBox.margin>
+                    </MFXButton>
+                </HBox>
+            </VBox>
+            <TableView fx:id="courseTableView" prefWidth="1000" prefHeight="5000">
                 <columns>
-                    <TableColumn fx:id="courseName" text="课程名称" prefWidth="120" />
-                    <TableColumn fx:id="courseNum" text="课程编号" prefWidth="120"/>
-                    <TableColumn fx:id="credit" text="学分" prefWidth="120"/>
-                    <TableColumn fx:id="days" text="星期" prefWidth="120"/>
-                    <TableColumn fx:id="sections" text="节次" prefWidth="120"/>
-                    <TableColumn fx:id="teacher" text="教师" prefWidth="120"/>
+                    <TableColumn fx:id="courseName" text="课程名称" prefWidth="120"/>
+                    <TableColumn fx:id="courseNum" text="课程编号" prefWidth="100"/>
+                    <TableColumn fx:id="credit" text="学分" prefWidth="90"/>
+                    <TableColumn fx:id="days" text="星期" prefWidth="90"/>
+                    <TableColumn fx:id="sections" text="节次" prefWidth="90"/>
+                    <TableColumn fx:id="teacher" text="教师" prefWidth="90"/>
                     <TableColumn fx:id="loc" text="上课地点" prefWidth="120"/>
-                    <TableColumn fx:id="preCourse" text="前序课程" prefWidth="120"/>
-                    <TableColumn fx:id="action" text="操作" prefWidth="150"/>
+                    <TableColumn fx:id="preCourse" text="前序课程" prefWidth="140"/>
+                    <TableColumn fx:id="action" text="操作" prefWidth="100"/>
                 </columns>
             </TableView>
 
-        </VBox>
+        </HBox>
     </center>
 
 </BorderPane>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.geometry.Insets?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.teach.javafx.controller.studentActivity.StudentActivityEditorController"
+            prefHeight="400.0" prefWidth="600.0"
+            styleClass="borderpane-container">
+
+    <center>
+        <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <content>
+                <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+                    <children>
+                        <MFXTextField fx:id="activityNameField" floatMode="BORDER" floatingText="活动名称" prefHeight="38.0" prefWidth="222.0" />
+                        <Label text="开始时间" />
+                        <DatePicker fx:id="start" prefHeight="23.0" prefWidth="218.0" />
+                        <Label text="结束时间" />
+                        <DatePicker fx:id="end" prefHeight="23.0" prefWidth="222.0" />
+                        <MFXTextField fx:id="maxNumberField" floatMode="BORDER" floatingText="人数上限" prefHeight="38.0" prefWidth="223.0" />
+                        <Button mnemonicParsing="false" onAction="#onSubmit" text="提交" />
+                    </children>
+                    <padding>
+                        <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                    </padding>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+
+</BorderPane>

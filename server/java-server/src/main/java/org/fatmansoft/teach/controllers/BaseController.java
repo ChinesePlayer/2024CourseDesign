@@ -176,7 +176,9 @@ public class BaseController {
         Integer id = dataRequest.getInteger("id");
         int count  = menuInfoRepository.countMenuInfoByPid(id);
         if(count > 0) {
-            return CommonMethod.getReturnMessageError("存在子菜单，不能删除！");
+            //删除所有子页面
+            List<MenuInfo> subMenus = menuInfoRepository.findByPid(id);
+            menuInfoRepository.deleteAll(subMenus);
         }
         Optional<MenuInfo> op = menuInfoRepository.findById(id);
         if (op.isPresent())

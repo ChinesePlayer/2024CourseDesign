@@ -13,7 +13,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox prefHeight="400.0" prefWidth="600.0" stylesheets="@../css/pane-update-menu.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teach.javafx.controller.base.MenuControllerV2">
+<HBox
+        prefHeight="400.0"
+        prefWidth="600.0"
+        stylesheets="@../css/pane-update-menu.css"
+        xmlns="http://javafx.com/javafx/17"
+        xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="com.teach.javafx.controller.base.MenuControllerV2">
     <TreeView fx:id="menuTreeView" prefHeight="200" prefWidth="200" />
     <VBox fx:id="editView" minHeight="-Infinity" HBox.hgrow="ALWAYS">
         <GridPane fx:id="editStatusView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="619.0" prefWidth="729.0">
@@ -32,25 +38,17 @@
                 <RowConstraints maxHeight="169.6666208902995" minHeight="10.0" prefHeight="108.3333740234375" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Label text="父节点" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-               <font>
-                  <Font size="20.0" />
-               </font></Label>
-                <Label text="菜单值" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-               <font>
-                  <Font size="20.0" />
-               </font></Label>
-                <Label text="菜单名称" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
-               <font>
-                  <Font size="20.0" />
-               </font></Label>
+                <Label text="父节点" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" style="-fx-font-size: 20px;">
+               </Label>
+                <Label text="菜单值" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" style="-fx-font-size: 20px;">
+               </Label>
+                <Label text="菜单名称" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" style="-fx-font-size: 20px;">
+               </Label>
                 <MFXTextField fx:id="valueField" floatMode="DISABLED" prefHeight="29.0" prefWidth="179.0" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
                 <MFXTextField fx:id="titleField" floatMode="DISABLED" prefHeight="29.0" prefWidth="177.0" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" />
                 <Label fx:id="pidLabel" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                <Label fx:id="bigTitle" GridPane.columnSpan="4" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
-               <font>
-                  <Font size="40.0" />
-               </font>
+                <Label fx:id="bigTitle" GridPane.columnSpan="4" GridPane.halignment="LEFT" GridPane.valignment="CENTER" style="-fx-font-size: 40px;">
+
                <GridPane.margin>
                   <Insets left="20.0" />
                </GridPane.margin></Label>
@@ -58,10 +56,7 @@
                <font>
                   <Font size="25.0" />
                </font></MFXButton>
-            <Label text="访问权限" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4">
-               <font>
-                  <Font size="20.0" />
-               </font>
+            <Label text="访问权限" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" style="-fx-font-size: 20px;">
             </Label>
             <MFXCheckbox fx:id="admin" text="管理员" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="4" />
             <MFXCheckbox fx:id="student" text="学生" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="4" />

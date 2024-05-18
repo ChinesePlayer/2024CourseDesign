@@ -13,7 +13,8 @@
 <BorderPane
         xmlns="http://javafx.com/javafx/17"
         xmlns:fx="http://javafx.com/fxml/1"
-        fx:controller="com.teach.javafx.controller.ScoreTableController">
+        fx:controller="com.teach.javafx.controller.ScoreTableController"
+        styleClass="borderpane-container">
    <top>
        <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0" >
            <children>

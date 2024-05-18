@@ -21,6 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -32,6 +33,7 @@ public class CommonMethod {
     public static final String DISPLAY_DATE_TIME_FORMAT = "yyyy年MM月dd日 HH:mm:ss";
     public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
     public static final String DISPLAY_DATE_FORMAT = "yyyy年MM月dd日";
+    public static final String DATE_FORMAT = "yyyy-MM-dd";
 
     //使用正则表达式来判断邮箱是否合法
     public static boolean isValidEmail(String email){
@@ -454,5 +456,15 @@ public class CommonMethod {
         //如果目录不存在，则创建
         Files.createDirectories(p.getParent());
         Files.write(p, fileBytes);
+    }
+
+    public static LocalDate getLocalDateFromString(String str, String pattern){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+        return LocalDate.parse(str, formatter);
+    }
+
+    public static String getDateString(LocalDate date, String pattern){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+        return date.format(formatter);
     }
 }

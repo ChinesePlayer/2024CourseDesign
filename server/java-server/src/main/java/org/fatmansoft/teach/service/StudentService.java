@@ -50,8 +50,8 @@ public class StudentService {
             return m;
         m.put("studentId", s.getStudentId());
         m.put("personId", p.getPersonId());
-        m.put("num",p.getNum());
-        m.put("name",p.getName());
+        m.put("studentNum",p.getNum());
+        m.put("studentName",p.getName());
         m.put("dept",p.getDept());
         m.put("card",p.getCard());
         String gender = p.getGender();

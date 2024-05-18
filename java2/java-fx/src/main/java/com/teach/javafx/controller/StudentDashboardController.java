@@ -93,8 +93,8 @@ public class StudentDashboardController implements ShortcutsDisplayer {
 
     //获取学生简要信息
     public void setStudentSimpleInfo(Map rawData){
-        name = (String) rawData.get("name");
-        num = (String) rawData.get("num");
+        name = (String) rawData.get("studentName");
+        num = (String) rawData.get("studentNum");
         dept = (String) rawData.get("dept");
     }
 

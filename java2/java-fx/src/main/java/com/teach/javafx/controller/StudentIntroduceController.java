@@ -323,7 +323,6 @@ public class StudentIntroduceController extends ToolController {
         chooser.setTitle("请选择保存位置");
         //文件路径
         File file = chooser.showDialog(scoreTable.getScene().getWindow());
-
         DataRequest req = new DataRequest();
         req.add("studentId", AppStore.getJwt().getRoleId());
         byte[] pdfBytes = HttpRequestUtil.requestByteData("/api/student/getIntroducePdf", req);
@@ -339,7 +338,6 @@ public class StudentIntroduceController extends ToolController {
             e.printStackTrace();
             MessageDialog.showDialog("保存个人简介失败! ");
         }
-
     }
 
 }

@@ -1,9 +1,13 @@
 package org.fatmansoft.teach.models;
 
+import org.fatmansoft.teach.util.CommonMethod;
+
+import java.util.Map;
+
 public class Person {
     private Integer personId;
-    private String num;
-    private String name;
+    private String personNum;
+    private String personName;
     private String type;
     private String dept;
     private String card;
@@ -15,6 +19,31 @@ public class Person {
     private String address;
     private String introduce;
 
+    public Person(){
+
+    }
+
+    public Person(Map m){
+        this.personId = CommonMethod.getInteger(m, "personId");
+        this.personName = CommonMethod.getString(m, "personName");
+        this.personNum = CommonMethod.getString(m, "personNum");
+    }
+
+    @Override
+    public String toString(){
+        if(isEmpty()){
+            return "无";
+        }
+        return personNum + " - "+ personName;
+    }
+
+    public boolean isEmpty(){
+        if(personId == null || personId <= 0){
+            return true;
+        }
+        return false;
+    }
+
     public Integer getPersonId() {
         return personId;
     }
@@ -23,20 +52,20 @@ public class Person {
         this.personId = personId;
     }
 
-    public String getNum() {
-        return num;
+    public String getPersonNum() {
+        return personNum;
     }
 
-    public void setNum(String num) {
-        this.num = num;
+    public void setPersonNum(String personNum) {
+        this.personNum = personNum;
     }
 
-    public String getName() {
-        return name;
+    public String getPersonName() {
+        return personName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setPersonName(String personName) {
+        this.personName = personName;
     }
 
     public String getType() {
