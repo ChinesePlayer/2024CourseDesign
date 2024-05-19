@@ -2,6 +2,7 @@ package org.fatmansoft.teach.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 
 @Entity
 @Table(	name = "family_member",
@@ -21,7 +22,7 @@ public class FamilyMember {
     private String name;
     @Size(max=10)
     private String gender;
-    private Integer age;
+    private LocalDate birthday;
     @Size(max=50)
     private String unit;
 
@@ -65,19 +66,19 @@ public class FamilyMember {
         this.gender = gender;
     }
 
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
-
     public String getUnit() {
         return unit;
     }
 
     public void setUnit(String unit) {
         this.unit = unit;
+    }
+
+    public LocalDate getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(LocalDate birthday) {
+        this.birthday = birthday;
     }
 }

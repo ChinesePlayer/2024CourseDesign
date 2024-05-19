@@ -58,4 +58,11 @@ public class LoginController {
         }
         MainApplication.openMainContent();
     }
+
+    //点击忘记密码时的操作
+    //直接弹出一个弹窗，让用户联系管理员
+    public void onForgetPassword(){
+        //如果没有这个换行符会导致前面的中文乱码，应该是颜文字中的特殊符号导致的
+        MessageDialog.showDialog("请联系管理员处理\n ╮(๑•́ ₃•̀๑)╭");
+    }
 }
