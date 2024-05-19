@@ -5,6 +5,7 @@ import com.teach.javafx.AppStore;
 import com.teach.javafx.controller.base.MessageDialog;
 import com.teach.javafx.request.HttpRequestUtil;
 import com.teach.javafx.request.OptionItem;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -466,7 +467,14 @@ public class CommonMethod {
     }
 
     public static String getDateString(LocalDate date, String pattern){
+        if(date == null){
+            return null;
+        }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         return date.format(formatter);
+    }
+
+    public static SimpleStringProperty getSimpleStringProperty(String str){
+        return new SimpleStringProperty(Objects.requireNonNullElse(str, "----"));
     }
 }

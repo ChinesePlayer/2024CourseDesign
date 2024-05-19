@@ -11,6 +11,14 @@
     {
       "fxml": "honor/honor-check-panel.fxml",
       "name": "个人荣誉"
+    },
+    {
+      "fxml": "courseSelection/course-selection-menu.fxml",
+      "name": "进入选课"
+    },
+    {
+      "fxml": "application/student-application.fxml",
+      "name": "出校申请"
     }
   ],
   "allShortcuts": [
@@ -29,9 +37,13 @@
     {
       "fxml": "honor/honor-check-panel.fxml",
       "name": "个人荣誉"
+    },
+    {
+      "fxml": "application/student-application.fxml",
+      "name": "出校申请"
     }
   ],
-  "theme": "pink",
+  "theme": "blue",
   "themeMapper": {
     "浅蓝色": "blue",
     "空主题": "empty",

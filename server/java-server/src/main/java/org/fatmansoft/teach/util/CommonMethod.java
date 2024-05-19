@@ -529,6 +529,9 @@ public class CommonMethod {
     }
 
     public static String getStringFromDate(LocalDate date){
+        if (date == null){
+            return null;
+        }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(CommonMethod.DATE_FORMAT);
         return date.format(formatter);
     }

@@ -1,24 +1,37 @@
 package org.fatmansoft.teach.models;
 
+import javafx.scene.control.Button;
+import org.fatmansoft.teach.util.CommonMethod;
+
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.BiConsumer;
 
 //请假类
 public class Application {
 
+    //请假类型映射
+    //类型名称 ---- 类型值
     private static Map<String, String> typesMap = new HashMap<>();
+    //状态码----状态名称
+    private static Map<String,Integer> statusMap = new HashMap<>();
 
     static {
         typesMap.put("暂时离校", "APP_TEMP");
         typesMap.put("长期离校", "APP_LONG");
         typesMap.put("永久离校", "APP_FOREVER");
+
+        statusMap.put("全部",null);
+        statusMap.put("审批中",0);
+        statusMap.put("已通过",1);
+        statusMap.put("未通过",2);
+        statusMap.put("已销假",3);
     }
 
     private Integer applicationId;
 
     private Integer studentId;
+    private String studentName;
 
     private String applicationType;
 
@@ -32,6 +45,23 @@ public class Application {
 
     //假条状态：0: 审批中  1: 已通过  2: 未通过  3: 已销假
     private Integer status;
+
+    private List<Button> actions = new ArrayList<>();
+
+    public Application(){
+
+    }
+
+    public Application(Map m){
+        this.applicationId = CommonMethod.getInteger(m,"applicationId");
+        this.studentId = CommonMethod.getInteger(m,"studentId");
+        this.reason = CommonMethod.getString(m, "reason");
+        this.status = CommonMethod.getInteger(m,"status");
+        this.leaveDate = CommonMethod.getLocalDateFromString(CommonMethod.getString(m,"leaveDate"),CommonMethod.DATE_FORMAT);
+        this.returnDate = CommonMethod.getLocalDateFromString(CommonMethod.getString(m,"returnDate"),CommonMethod.DATE_FORMAT);
+        this.studentName = CommonMethod.getString(m,"studentName");
+        this.applicationType = CommonMethod.getString(m,"applicationType");
+    }
 
     public Integer getApplicationId() {
         return applicationId;
@@ -103,8 +133,38 @@ public class Application {
         return res[0];
     }
 
+    public static String getStatusName(Integer code){
+        final String[] res = new String[1];
+        statusMap.forEach((string, integer) -> {
+            if(Objects.equals(integer, code)){
+                res[0] = string;
+            }
+        });
+        return res[0];
+    }
+
+    public static Integer getStatusCode(String statusName){
+        return statusMap.get(statusName);
+    }
+
     //通过展示给用户的字符串获取请假类型字符串
     public static String getTypeString(String displayStr){
         return typesMap.get(displayStr);
+    }
+
+    public String getStudentName() {
+        return studentName;
+    }
+
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
+    }
+
+    public List<Button> getActions() {
+        return actions;
+    }
+
+    public void setActions(List<Button> actions) {
+        this.actions = actions;
     }
 }
