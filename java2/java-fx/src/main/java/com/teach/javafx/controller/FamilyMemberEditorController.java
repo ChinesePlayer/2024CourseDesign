@@ -1,5 +1,6 @@
 package com.teach.javafx.controller;
 
+import com.teach.javafx.controller.base.FamilyMemberEditorOpener;
 import com.teach.javafx.controller.base.MessageDialog;
 import com.teach.javafx.request.HttpRequestUtil;
 import io.github.palexdev.materialfx.controls.MFXTextField;
@@ -30,14 +31,14 @@ public class FamilyMemberEditorController {
 
     private FamilyMember familyMember;
     private Integer studentId;
-    private FamilyMemberController opener;
+    private FamilyMemberEditorOpener opener;
 
     @FXML
     public void initialize(){
         genderCombo.setItems(FXCollections.observableArrayList("男", "女"));
     }
 
-    public void init(FamilyMember fm,Integer stuId, FamilyMemberController fmc){
+    public void init(FamilyMember fm,Integer stuId, FamilyMemberEditorOpener fmc){
         this.familyMember = fm;
         this.studentId = stuId;
         this.opener = fmc;

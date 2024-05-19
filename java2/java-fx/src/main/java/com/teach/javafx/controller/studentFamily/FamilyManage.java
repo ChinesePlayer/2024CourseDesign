@@ -1,7 +1,9 @@
-package com.teach.javafx.controller;
+package com.teach.javafx.controller.studentFamily;
 
 import com.teach.javafx.AppStore;
 import com.teach.javafx.MainApplication;
+import com.teach.javafx.controller.FamilyMemberController;
+import com.teach.javafx.controller.FamilyMemberEditorController;
 import com.teach.javafx.controller.base.FamilyMemberEditorOpener;
 import com.teach.javafx.controller.base.MessageDialog;
 import com.teach.javafx.factories.FamilyMemberValueFactory;
@@ -25,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class FamilyMemberController implements FamilyMemberEditorOpener {
+public class FamilyManage implements FamilyMemberEditorOpener {
     @FXML
     public TableColumn<FamilyMember, String> memberNum;
     @FXML
@@ -40,8 +42,6 @@ public class FamilyMemberController implements FamilyMemberEditorOpener {
     public TableColumn<FamilyMember, String> unit;
     @FXML
     public TableView<FamilyMember> tableView;
-    public Label bigTitle;
-    private Student student;
     private List<FamilyMember> familyMemberList = new ArrayList<>();
 
     @FXML
@@ -52,16 +52,12 @@ public class FamilyMemberController implements FamilyMemberEditorOpener {
         gender.setCellValueFactory(new FamilyMemberValueFactory());
         birth.setCellValueFactory(new FamilyMemberValueFactory());
         unit.setCellValueFactory(new FamilyMemberValueFactory());
-    }
-
-    public void init(Student s) {
-        this.student = s;
         getFamilyMemberList();
     }
 
     public void getFamilyMemberList(){
         DataRequest req = new DataRequest();
-        req.add("studentId", student.getStudentId());
+        req.add("studentId", AppStore.getJwt().getRoleId());
         DataResponse res = HttpRequestUtil.request("/api/student/getFamilyMemberList",req);
         assert res != null;
         if(res.getCode() == 0){
@@ -73,13 +69,6 @@ public class FamilyMemberController implements FamilyMemberEditorOpener {
             }
             setDataView();
         }
-    }
-
-    public void setDataView(){
-        tableView.getItems().clear();
-        tableView.setItems(FXCollections.observableArrayList(familyMemberList));
-        bigTitle.setText(student.getStudentName() + " 的家庭成员");
-        bigTitle.setStyle("-fx-font-size: 30px");
     }
 
     //添加家庭成员
@@ -94,7 +83,7 @@ public class FamilyMemberController implements FamilyMemberEditorOpener {
                         public void init(Object controller) {
                             WindowOpenAction.super.init(controller);
                             FamilyMemberEditorController fmeCont = (FamilyMemberEditorController) controller;
-                            fmeCont.init(null, student.getStudentId(), FamilyMemberController.this);
+                            fmeCont.init(null, AppStore.getJwt().getRoleId(), FamilyManage.this);
                         }
                     }
             );
@@ -147,7 +136,7 @@ public class FamilyMemberController implements FamilyMemberEditorOpener {
                         public void init(Object controller) {
                             WindowOpenAction.super.init(controller);
                             FamilyMemberEditorController fmeCont = (FamilyMemberEditorController) controller;
-                            fmeCont.init(fm, student.getStudentId(), FamilyMemberController.this);
+                            fmeCont.init(fm, AppStore.getJwt().getRoleId(), FamilyManage.this);
                         }
                     }
             );
@@ -158,6 +147,12 @@ public class FamilyMemberController implements FamilyMemberEditorOpener {
         }
     }
 
+    public void setDataView(){
+        tableView.getItems().clear();
+        tableView.setItems(FXCollections.observableArrayList(familyMemberList));
+    }
+
+    @Override
     public void hasSaved() {
         getFamilyMemberList();
     }
