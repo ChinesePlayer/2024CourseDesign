@@ -110,6 +110,9 @@ public class StudentController {
     @PreAuthorize("hasRole('ADMIN')")
     public DataResponse getStudentList(@Valid @RequestBody DataRequest dataRequest) {
         String numName = dataRequest.getString("numName");
+        if(numName == null){
+            numName = "";
+        }
         List dataList = getStudentMapList(numName);
         return CommonMethod.getReturnData(dataList);  //按照测试框架规范会送Map的list
     }

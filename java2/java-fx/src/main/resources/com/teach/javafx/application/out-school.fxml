@@ -9,16 +9,16 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-
 <BorderPane prefHeight="400.0" prefWidth="600.0" styleClass="borderpane-container" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teach.javafx.controller.application.OutSchoolController">
    <top>
       <HBox alignment="CENTER_LEFT" prefHeight="77.0" prefWidth="600.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
             <Label text="学生: " />
-            <ComboBox prefWidth="150.0" />
+            <ComboBox fx:id="studentCombo" prefWidth="150.0" />
             <Label text="假条状态: " />
-            <ComboBox prefWidth="150.0" />
-            <Button mnemonicParsing="false" text="查询" />
+            <ComboBox fx:id="statusCombo" prefWidth="150.0" />
+            <Button onAction="#onQueryButtonClick" mnemonicParsing="false" text="查询" />
+            <Button onAction="#onDeleteApplication" mnemonicParsing="false" text="删除" />
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -26,11 +26,15 @@
       </HBox>
    </top>
    <center>
-      <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-        <columns>
-          <TableColumn prefWidth="75.0" text="C1" />
-          <TableColumn prefWidth="75.0" text="C2" />
-        </columns>
+      <TableView fx:id="tableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <columns>
+            <TableColumn fx:id="studentName" prefWidth="100" text="学生姓名" />
+            <TableColumn fx:id="applicationType" prefWidth="120" text="请假类型" />
+            <TableColumn fx:id="leaveDate" prefWidth="150" text="离校时间" />
+            <TableColumn fx:id="returnDate" prefWidth="150" text="返校时间" />
+            <TableColumn fx:id="status" prefWidth="120" text="假条状态" />
+            <TableColumn fx:id="actions" prefWidth="120" text="操作" />
+         </columns>
       </TableView>
    </center>
 </BorderPane>
