@@ -1,24 +1,24 @@
 {
   "shortcuts": [
     {
-      "name": "系统设置",
-      "fxml": "setting/system-setting.fxml"
+      "fxml": "setting/system-setting.fxml",
+      "name": "系统设置"
     },
     {
-      "name": "成绩查询",
-      "fxml": "studentScore/course-score.fxml"
+      "fxml": "studentScore/course-score.fxml",
+      "name": "成绩查询"
     },
     {
-      "name": "个人荣誉",
-      "fxml": "honor/honor-check-panel.fxml"
+      "fxml": "honor/honor-check-panel.fxml",
+      "name": "个人荣誉"
     },
     {
-      "name": "进入选课",
-      "fxml": "courseSelection/course-selection-menu.fxml"
+      "fxml": "courseSelection/course-selection-menu.fxml",
+      "name": "进入选课"
     },
     {
-      "name": "出校申请",
-      "fxml": "application/student-application.fxml"
+      "fxml": "application/student-application.fxml",
+      "name": "出校申请"
     }
   ],
   "allShortcuts": [
@@ -43,7 +43,7 @@
       "name": "出校申请"
     }
   ],
-  "theme": "pink",
+  "theme": "blue",
   "themeMapper": {
     "浅蓝色": "blue",
     "空主题": "empty",

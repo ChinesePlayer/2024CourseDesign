@@ -136,7 +136,14 @@ public class StudentDrawController {
     //获取前三的成绩
     public List<Score> getTopThree(List<Score> scoreList){
         List<Score> res = new ArrayList<>();
-        scoreList.sort((o1, o2) -> o2.getMark().compareTo(o1.getMark()));
+        scoreList.sort((o1, o2) -> {
+            if(o1.getMark() != null && o2.getMark() != null){
+                return o2.getMark().compareTo(o1.getMark());
+            }
+            else{
+                return 1;
+            }
+        });
         for(int i = 0; i < 3 && i < scoreList.size(); i++){
             res.add(scoreList.get(i));
         }

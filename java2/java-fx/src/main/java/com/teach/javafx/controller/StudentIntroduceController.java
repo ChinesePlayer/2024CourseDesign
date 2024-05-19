@@ -136,8 +136,8 @@ public class StudentIntroduceController extends ToolController {
         Map info = (Map)data.get("info");
         studentId = CommonMethod.getInteger(info,"studentId");
         personId = CommonMethod.getInteger(info,"personId");
-        num.setText(CommonMethod.getString(info,"num"));
-        name.setText(CommonMethod.getString(info,"name"));
+        num.setText(CommonMethod.getString(info,"studentNum"));
+        name.setText(CommonMethod.getString(info,"studentName"));
         dept.setText(CommonMethod.getString(info,"dept"));
         major.setText(CommonMethod.getString(info,"major"));
         className.setText(CommonMethod.getString(info,"className"));
