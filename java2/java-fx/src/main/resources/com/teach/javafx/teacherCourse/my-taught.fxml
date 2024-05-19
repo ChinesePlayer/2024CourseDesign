@@ -19,7 +19,7 @@
                 <TableColumn fx:id="days" text="上课时间" prefWidth="120" />
                 <TableColumn fx:id="sections" text="上课节次" prefWidth="120" />
                 <TableColumn fx:id="loc" text="上课地点" prefWidth="120" />
-                <TableColumn fx:id="action" text="操作" prefWidth="230" />
+                <TableColumn fx:id="action" text="操作" prefWidth="230" sortable="false" />
             </columns>
         </TableView>
     </center>

@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.*;
 import java.net.URLEncoder;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.List;
 
@@ -785,7 +786,7 @@ public class StudentController {
                 m.put("relation", f.getRelation());
                 m.put("name", f.getName());
                 m.put("gender", f.getGender());
-                m.put("age", f.getAge());
+                m.put("birthday", CommonMethod.getStringFromDate(f.getBirthday()));
                 m.put("unit", f.getUnit());
                 dataList.add(m);
             }
@@ -814,7 +815,8 @@ public class StudentController {
         f.setRelation(CommonMethod.getString(form,"relation"));
         f.setName(CommonMethod.getString(form,"name"));
         f.setGender(CommonMethod.getString(form,"gender"));
-        f.setAge(CommonMethod.getInteger(form,"age"));
+        LocalDate birth = CommonMethod.getDateFromString(CommonMethod.getString(form,"birthday"),CommonMethod.DATE_FORMAT);
+        f.setBirthday(birth);
         f.setUnit(CommonMethod.getString(form,"unit"));
         familyMemberRepository.save(f);
         return CommonMethod.getReturnMessageOK();
@@ -824,10 +826,16 @@ public class StudentController {
     @PreAuthorize(" hasRole('ADMIN') or  hasRole('STUDENT')")
     public DataResponse familyMemberDelete(@Valid @RequestBody DataRequest dataRequest) {
         Integer memberId = dataRequest.getInteger("memberId");
+        if(memberId == null){
+            return CommonMethod.getReturnMessageError("无法获取成员信息");
+        }
         Optional<FamilyMember> op;
         op = familyMemberRepository.findById(memberId);
         if(op.isPresent()) {
             familyMemberRepository.delete(op.get());
+        }
+        else{
+            return CommonMethod.getReturnMessageError("无法获取成员信息");
         }
         return CommonMethod.getReturnMessageOK();
     }

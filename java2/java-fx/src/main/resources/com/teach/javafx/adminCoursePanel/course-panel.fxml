@@ -31,7 +31,7 @@
             <TableColumn fx:id="teacher" text="教师" prefWidth="140" />
             <TableColumn fx:id="loc" text="上课地点" prefWidth="180" />
             <TableColumn fx:id="preCourse" prefWidth="220.0" text="前序课" />
-            <TableColumn fx:id="action" text="操作" prefWidth="165" />
+            <TableColumn fx:id="action" text="操作" prefWidth="165" sortable="false" />
          </columns>
       </TableView>
    </center>

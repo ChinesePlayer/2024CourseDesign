@@ -7,8 +7,11 @@ import com.teach.javafx.managers.WindowOpenAction;
 import com.teach.javafx.managers.WindowsManager;
 import com.teach.javafx.models.Student;
 import com.teach.javafx.request.*;
+import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.fatmansoft.teach.payload.request.DataRequest;
@@ -291,6 +294,34 @@ public class StudentController extends ToolController {
         catch (IOException e){
             e.printStackTrace();
             MessageDialog.showDialog("无法打开编辑页面");
+        }
+    }
+
+    //查看家庭成员
+    public void onViewFamilyMember(){
+        Student s = dataTableView.getSelectionModel().getSelectedItem();
+        if(s == null){
+            MessageDialog.showDialog("请选中学生以查看其家庭成员");
+            return;
+        }
+        try{
+            FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("family-member.fxml"));
+            WindowsManager.getInstance().openNewWindow(
+                    loader, 800, 600, s.getStudentName() + " 的家庭成员",
+                    dataTableView.getScene().getWindow(), Modality.WINDOW_MODAL,
+                    new WindowOpenAction() {
+                        @Override
+                        public void init(Object controller) {
+                            WindowOpenAction.super.init(controller);
+                            FamilyMemberController fmCont = (FamilyMemberController) controller;
+                            fmCont.init(s);
+                        }
+                    }
+            );
+        }
+        catch (IOException e){
+            e.printStackTrace();
+            MessageDialog.showDialog("无法查看家庭成员");
         }
     }
 

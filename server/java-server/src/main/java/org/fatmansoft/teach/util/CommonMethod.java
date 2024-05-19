@@ -534,6 +534,9 @@ public class CommonMethod {
     }
 
     public static LocalDate getDateFromString(String dateStr, String pattern){
+        if(dateStr == null){
+            return null;
+        }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         return LocalDate.parse(dateStr, formatter);
     }

@@ -19,7 +19,7 @@
                 <TableColumn fx:id="courseNum" text="课程编号" prefWidth="120"/>
                 <TableColumn fx:id="credit" text="学分" prefWidth="120"/>
                 <TableColumn fx:id="preCourse" text="前序课程" prefWidth="180"/>
-                <TableColumn fx:id="action" text="操作" prefWidth="140"/>
+                <TableColumn fx:id="action" text="操作" prefWidth="140" sortable="false"/>
             </columns>
         </TableView>
     </center>

@@ -30,8 +30,11 @@ import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.util.CommonMethod;
 
+import java.awt.*;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -276,5 +279,16 @@ public class StudentDashboardController implements ShortcutsDisplayer {
         List<Button> actions = ShortcutManager.getInstance().getShortcutActions();
         shortcuts.getChildren().clear();
         shortcuts.getChildren().addAll(actions);
+    }
+
+    public void onGoToSDUWebsite(){
+        String url = "https://www.sdu.edu.cn/";
+        try{
+            Desktop.getDesktop().browse(new URI(url));
+        }
+        catch (IOException | URISyntaxException e){
+            e.printStackTrace();
+            MessageDialog.showDialog("打开浏览器失败!");
+        }
     }
 }
