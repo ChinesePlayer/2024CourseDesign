@@ -9,16 +9,16 @@
       "name": "成绩查询"
     },
     {
+      "fxml": "studentAffair/student-application.fxml",
+      "name": "出校申请"
+    },
+    {
       "fxml": "honor/honor-check-panel.fxml",
       "name": "个人荣誉"
     },
     {
       "fxml": "courseSelection/course-selection-menu.fxml",
       "name": "进入选课"
-    },
-    {
-      "fxml": "application/student-application.fxml",
-      "name": "出校申请"
     }
   ],
   "allShortcuts": [
@@ -43,7 +43,7 @@
       "name": "出校申请"
     }
   ],
-  "theme": "blue",
+  "theme": "pink",
   "themeMapper": {
     "浅蓝色": "blue",
     "空主题": "empty",

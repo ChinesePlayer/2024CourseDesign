@@ -7,13 +7,12 @@ import com.teach.javafx.managers.WindowOpenAction;
 import com.teach.javafx.managers.WindowsManager;
 import com.teach.javafx.models.Student;
 import com.teach.javafx.request.*;
-import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.Node;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 import com.teach.javafx.controller.base.MessageDialog;
@@ -34,6 +33,8 @@ import java.util.*;
  *  @FXML 方法 对应于fxml文件中的 on***Click的属性
  */
 public class StudentController extends ToolController {
+    @FXML
+    public Pagination pagination;
     @FXML
     private TableView<Student> dataTableView;  //学生信息表
     @FXML
@@ -91,6 +92,7 @@ public class StudentController extends ToolController {
     private List<OptionItem> genderList;   //性别选择列表数据
 
 
+
     /**
      * 将学生数据集合设置到面板上显示
      */
@@ -105,6 +107,14 @@ public class StudentController extends ToolController {
 
     @FXML
     public void initialize() {
+        pagination.setPageFactory(new Callback<Integer, Node>() {
+            @Override
+            public Node call(Integer integer) {
+
+                return null;
+            }
+        });
+
         onQueryButtonClick();
 
         numColumn.setCellValueFactory(new StudentValueFactory());  //设置列值工厂属性
@@ -129,9 +139,6 @@ public class StudentController extends ToolController {
 //        genderComboBox.getItems().addAll(genderList);
 //        birthdayPick.setConverter(new LocalDateStringConverter("yyyy-MM-dd"));
     }
-
-    //从后端获取信息
-
 
     /**
      * 清除学生表单中输入信息
@@ -424,6 +431,7 @@ public class StudentController extends ToolController {
             MessageDialog.showDialog(res.getMsg());
         }
     }
+
 
     public void hasSaves() {
         onQueryButtonClick();

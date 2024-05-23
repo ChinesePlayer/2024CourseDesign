@@ -1,19 +1,22 @@
 package com.teach.javafx.customWidget;
 
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import org.fatmansoft.teach.models.Course;
 import org.fatmansoft.teach.models.CourseTime;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Stack;
 
 public class CourseTable extends GridPane {
     List<List<CourseCell>> courseCell = new ArrayList<>();
+    private StackPane tableHead;
+
 
     public CourseTable(){
         super();
@@ -115,6 +118,11 @@ public class CourseTable extends GridPane {
         for(int i = 1; i < courseCell.size(); i++){
             add(new CourseCell(new Label(String.valueOf(i))), 0, i);
         }
+        add(new CourseCell(),0,0);
+
+        CourseCell cell = courseCell.get(0).get(0);
+        add(getTableHead(cell.getPrefWidth(), cell.getPrefHeight()),0,0);
+
 
         for(Course c : cl){
             if(c.getCourseTimes().isEmpty()){
@@ -139,6 +147,42 @@ public class CourseTable extends GridPane {
                 add(courseCell.get(i).get(j), j, i);
             }
         }
+    }
+
+    private AnchorPane getTableHead(double width, double height){
+        AnchorPane res = new AnchorPane();
+        BackgroundFill bgf = new BackgroundFill(Color.WHITE,CornerRadii.EMPTY, Insets.EMPTY);
+        Background bg = new Background(bgf);
+
+        StackPane background = new StackPane();
+        //设置首选宽度
+        background.setPrefWidth(width);
+        background.setPrefHeight(height);
+        //背景颜色
+        background.setBackground(bg);
+        //边框
+        BorderStroke bs = new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT);
+        Border border = new Border(bs);
+        background.setBorder(border);
+        //绝对定位
+        background.setLayoutX(0);
+        background.setLayoutY(0);
+        res.getChildren().add(background);
+
+        Line line = new Line(0,0,width,height);
+        //设置实现宽度
+        line.setStrokeWidth(2);
+        background.getChildren().add(line);
+
+        Label day = new Label("星期");
+        day.setLayoutX(1.1*width/2.0);
+        day.setLayoutY(height/3.0);
+        Label section = new Label("节次");
+        section.setLayoutX(width/4.3);
+        section.setLayoutY(2.0*height/3.0);
+        res.getChildren().add(day);
+        res.getChildren().add(section);
+        return res;
     }
 
     public void addCourse(Course c, Color outColor){

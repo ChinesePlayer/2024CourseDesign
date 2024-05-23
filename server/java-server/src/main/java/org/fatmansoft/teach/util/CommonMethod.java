@@ -8,11 +8,16 @@ import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.fatmansoft.teach.SpringBootSecurityJwtApplication;
+import org.fatmansoft.teach.models.Student;
+import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
+import org.fatmansoft.teach.repository.StudentRepository;
 import org.fatmansoft.teach.security.services.UserDetailsImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
@@ -30,7 +35,10 @@ import java.util.*;
 /**
  * CommonMethod 公共处理方法实例类
  */
+@Component
 public class CommonMethod {
+    @Autowired
+    private StudentRepository studentRepository;
     public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
     public static final String DATE_FORMAT = "yyyy-MM-dd";
     private static ObjectMapper mapper = new ObjectMapper();
@@ -542,5 +550,13 @@ public class CommonMethod {
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         return LocalDate.parse(dateStr, formatter);
+    }
+    public Student getStudentFromReq(DataRequest req){
+        Integer studentId = req.getInteger("studentId");
+        if(studentId == null){
+            return null;
+        }
+        Optional<Student> sOp = studentRepository.findById(studentId);
+        return sOp.orElse(null);
     }
 }

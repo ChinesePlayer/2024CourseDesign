@@ -61,7 +61,7 @@ public class ShortcutManager {
                 FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource(s.getFxml()));
                 try {
                     Stage stage = WindowsManager.getInstance().openNewWindow(
-                            loader,800,500,s.getName(),
+                            loader,1000,500,s.getName(),
                             MainApplication.getMainStage(),Modality.WINDOW_MODAL,
                             null
                     );

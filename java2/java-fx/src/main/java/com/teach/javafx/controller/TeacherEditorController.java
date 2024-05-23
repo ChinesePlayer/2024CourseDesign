@@ -87,6 +87,11 @@ public class TeacherEditorController {
             MessageDialog.showDialog("工号为空，不能修改");
             return;
         }
+        //判断邮箱是否合法，不合法就拒绝提交并弹出提示
+        if(!CommonMethod.isValidEmail(emailField.getText()) && (emailField.getText() != null && !emailField.getText().isEmpty())){
+            MessageDialog.showDialog("邮箱格式不合法!");
+            return;
+        }
         Teacher t = new Teacher();
         Person p = new Person();
         t.setPerson(p);

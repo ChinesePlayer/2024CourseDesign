@@ -1,5 +1,6 @@
 package com.teach.javafx.controller.honor;
 
+import com.teach.javafx.AppStore;
 import com.teach.javafx.MainApplication;
 import com.teach.javafx.request.HttpRequestUtil;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -56,6 +57,7 @@ public class HonorCheckController {
 
     public void requestHonors(){
         DataRequest req = new DataRequest();
+        req.add("studentId", AppStore.getJwt().getRoleId());
         DataResponse res = HttpRequestUtil.request(BASE_URL+"/getHonors",req);
         if(res != null && res.getCode() == 0){
             honors = (ArrayList<Map>)(res.getData());

@@ -44,12 +44,12 @@ public class ShortcutsEditorController {
         List<DataCarryingButton<Shortcut>> displayedButtons = new ArrayList<>();
         List<DataCarryingButton<Shortcut>> notDisplayedButtons = new ArrayList<>();
         for(Shortcut s : displayed){
-            DataCarryingButton<Shortcut> btn = getShortcutDataCarryingButton(s, notDisplayedPane);
+            DataCarryingButton<Shortcut> btn = getShortcutDataCarryingButton(s);
             displayedButtons.add(btn);
         }
 
         for(Shortcut s : notDisplayed){
-            DataCarryingButton<Shortcut> btn = getShortcutDataCarryingButton(s, displayedPane);
+            DataCarryingButton<Shortcut> btn = getShortcutDataCarryingButton(s);
             notDisplayedButtons.add(btn);
         }
 
@@ -74,7 +74,7 @@ public class ShortcutsEditorController {
                 if(target.getParent() != displayedPane){
                     notDisplayedPane.getChildren().remove(target);
                 }
-                DataCarryingButton<Shortcut> btn = getShortcutDataCarryingButton((Shortcut) db.getContent(shortcutFormat),notDisplayedPane);
+                DataCarryingButton<Shortcut> btn = getShortcutDataCarryingButton((Shortcut) db.getContent(shortcutFormat));
                 displayedPane.getChildren().add(btn);
                 isSuccess = true;
             }
@@ -97,7 +97,7 @@ public class ShortcutsEditorController {
                 if(target.getParent() != notDisplayedPane){
                     displayedPane.getChildren().remove(target);
                 }
-                DataCarryingButton<Shortcut> btn = getShortcutDataCarryingButton((Shortcut) db.getContent(shortcutFormat),displayedPane);
+                DataCarryingButton<Shortcut> btn = getShortcutDataCarryingButton((Shortcut) db.getContent(shortcutFormat));
                 notDisplayedPane.getChildren().add(btn);
                 isSuccess = true;
             }
@@ -107,7 +107,7 @@ public class ShortcutsEditorController {
 
     }
 
-    private DataCarryingButton<Shortcut> getShortcutDataCarryingButton(Shortcut s, FlowPane des) {
+    private DataCarryingButton<Shortcut> getShortcutDataCarryingButton(Shortcut s) {
         DataCarryingButton<Shortcut> btn = new DataCarryingButton<>(s.getName(), s);
         //添加拖动回调
         btn.setOnDragDetected(mouseEvent -> {

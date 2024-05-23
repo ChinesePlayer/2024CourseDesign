@@ -14,5 +14,18 @@ public enum EHonorType {
     //校外实习
     HONOR_INTERNSHIP,
     //创新项目
-    HONOR_PROJ,
+    HONOR_PROJ;
+
+    public static EHonorType fromString(String str){
+        return switch (str) {
+            case "HONOR_TITLE" -> HONOR_TITLE;
+            case "HONOR_CONTEST" -> HONOR_CONTEST;
+            case "HONOR_PRACTICE" -> HONOR_PRACTICE;
+            case "HONOR_TECH" -> HONOR_TECH;
+            case "HONOR_LECTURE" -> HONOR_LECTURE;
+            case "HONOR_INTERNSHIP" -> HONOR_INTERNSHIP;
+            case "HONOR_PROJ" -> HONOR_PROJ;
+            default -> null;
+        };
+    }
 }
