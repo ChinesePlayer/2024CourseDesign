@@ -255,6 +255,7 @@ public class MainFrameController {
                 return cell;
             }
         });
+        //最多只能同时展开一个菜单
         ChangeListener<Boolean> expandedListener = (observableValue, wasExpanded, isNowExpanded) -> {
             if(isNowExpanded){
                 ReadOnlyProperty<?> expandedProperty = (ReadOnlyProperty<?>) observableValue;
