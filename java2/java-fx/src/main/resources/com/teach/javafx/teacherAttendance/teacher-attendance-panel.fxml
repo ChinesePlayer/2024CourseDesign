@@ -28,6 +28,7 @@
     <center>
         <TableView fx:id="tableView" prefHeight="300.0" prefWidth="500.0">
             <columns>
+<<<<<<< HEAD
                 <TableColumn fx:id="studentNum" text="学号" prefWidth="200" />
                 <TableColumn fx:id="studentName" text="姓名" prefWidth="160" />
                 <TableColumn fx:id="courseNum" text="课序号" prefWidth="180" />
@@ -35,6 +36,15 @@
                 <TableColumn fx:id="date" text="考勤日期" prefWidth="280" />
                 <TableColumn fx:id="status" text="考勤状态" prefWidth="240" />
                 <TableColumn fx:id="actions" text="操作" prefWidth="240" sortable="false" />
+=======
+                <TableColumn fx:id="studentNum" text="学号" prefWidth="70" />
+                <TableColumn fx:id="studentName" text="姓名" prefWidth="70" />
+                <TableColumn fx:id="courseNum" text="课序号" prefWidth="120" />
+                <TableColumn fx:id="courseName" text="课程" prefWidth="120" />
+                <TableColumn fx:id="date" text="考勤日期" prefWidth="250" />
+                <TableColumn fx:id="status" text="考勤状态" prefWidth="100" />
+                <TableColumn fx:id="actions" text="操作" prefWidth="150" sortable="false" />
+>>>>>>> ddf8d0867769ac4312e31fe4d008303dcee0ba2f
             </columns>
         </TableView>
     </center>

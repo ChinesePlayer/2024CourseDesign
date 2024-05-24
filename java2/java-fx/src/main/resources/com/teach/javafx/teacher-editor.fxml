@@ -59,7 +59,11 @@
                         <MFXTextField fx:id="phoneField" floatMode="BORDER" floatingText="Phone" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
                         <MFXTextField fx:id="addressField" floatMode="BORDER" floatingText="Address" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="10" />
                         <ComboBox fx:id="genderCombo" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+<<<<<<< HEAD
                         <DatePicker fx:id="birthPicker" GridPane.columnIndex="1" GridPane.rowIndex="7" prefWidth="200.0"/>
+=======
+                        <DatePicker fx:id="birthPicker" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+>>>>>>> ddf8d0867769ac4312e31fe4d008303dcee0ba2f
                     </children>
                 </GridPane>
             </children>

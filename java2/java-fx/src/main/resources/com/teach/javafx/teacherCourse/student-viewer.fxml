@@ -11,12 +11,21 @@
     <center>
         <TableView fx:id="studentTableView">
             <columns>
+<<<<<<< HEAD
                 <TableColumn text="学号" fx:id="studentNum" prefWidth="140" />
                 <TableColumn text="姓名" fx:id="studentName" prefWidth="120"/>
                 <TableColumn text="班级" fx:id="className" prefWidth="120"/>
                 <TableColumn text="成绩" fx:id="mark" prefWidth="120"/>
                 <TableColumn text="排名" fx:id="rank" prefWidth="120"/>
                 <TableColumn text="状态" fx:id="status" prefWidth="120"/>
+=======
+                <TableColumn text="学号" fx:id="studentNum" prefWidth="100" />
+                <TableColumn text="姓名" fx:id="studentName" prefWidth="100"/>
+                <TableColumn text="班级" fx:id="className" prefWidth="100"/>
+                <TableColumn text="成绩" fx:id="mark" prefWidth="100"/>
+                <TableColumn text="排名" fx:id="rank" prefWidth="100"/>
+                <TableColumn text="状态" fx:id="status" prefWidth="100"/>
+>>>>>>> ddf8d0867769ac4312e31fe4d008303dcee0ba2f
                 <TableColumn text="操作" fx:id="action" prefWidth="160" sortable="false"/>
             </columns>
         </TableView>

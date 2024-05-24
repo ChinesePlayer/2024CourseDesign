@@ -7,6 +7,7 @@ import com.teach.javafx.managers.WindowOpenAction;
 import com.teach.javafx.managers.WindowsManager;
 import com.teach.javafx.models.Student;
 import com.teach.javafx.request.*;
+<<<<<<< HEAD
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -14,6 +15,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+=======
+import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.util.Callback;
+>>>>>>> ddf8d0867769ac4312e31fe4d008303dcee0ba2f
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 import com.teach.javafx.controller.base.MessageDialog;
@@ -34,6 +43,32 @@ import java.util.*;
  *  @FXML 方法 对应于fxml文件中的 on***Click的属性
  */
 public class StudentController extends ToolController {
+    @FXML
+<<<<<<< HEAD
+    private TableView<Student> dataTableView;  //学生信息表
+    @FXML
+    private TableColumn<Student,String> numColumn;   //学生信息表 编号列
+    @FXML
+    private TableColumn<Student,String> nameColumn; //学生信息表 名称列
+    @FXML
+    private TableColumn<Student,String> deptColumn;  //学生信息表 院系列
+    @FXML
+    private TableColumn<Student,String> majorColumn; //学生信息表 专业列
+    @FXML
+    private TableColumn<Student,String> classNameColumn; //学生信息表 班级列
+    @FXML
+    private TableColumn<Student,String> cardColumn; //学生信息表 证件号码列
+    @FXML
+    private TableColumn<Student,String> genderColumn; //学生信息表 性别列
+    @FXML
+    private TableColumn<Student,String> birthdayColumn; //学生信息表 出生日期列
+    @FXML
+    private TableColumn<Student,String> emailColumn; //学生信息表 邮箱列
+    @FXML
+    private TableColumn<Student,String> phoneColumn; //学生信息表 电话列
+    @FXML
+=======
+    public Pagination pagination;
     @FXML
     private TableView<Student> dataTableView;  //学生信息表
     @FXML
@@ -57,6 +92,7 @@ public class StudentController extends ToolController {
     @FXML
     private TableColumn<Student,String> phoneColumn; //学生信息表 电话列
     @FXML
+>>>>>>> ddf8d0867769ac4312e31fe4d008303dcee0ba2f
     private TableColumn<Student,String> addressColumn;//学生信息表 地址列
 
 //    @FXML
@@ -89,6 +125,10 @@ public class StudentController extends ToolController {
 
     private ArrayList<Student> studentList = new ArrayList();  // 学生信息列表数据
     private List<OptionItem> genderList;   //性别选择列表数据
+<<<<<<< HEAD
+=======
+
+>>>>>>> ddf8d0867769ac4312e31fe4d008303dcee0ba2f
 
 
     /**
@@ -105,6 +145,17 @@ public class StudentController extends ToolController {
 
     @FXML
     public void initialize() {
+<<<<<<< HEAD
+=======
+        pagination.setPageFactory(new Callback<Integer, Node>() {
+            @Override
+            public Node call(Integer integer) {
+
+                return null;
+            }
+        });
+
+>>>>>>> ddf8d0867769ac4312e31fe4d008303dcee0ba2f
         onQueryButtonClick();
 
         numColumn.setCellValueFactory(new StudentValueFactory());  //设置列值工厂属性
@@ -220,7 +271,11 @@ public class StudentController extends ToolController {
         try{
             FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("student-editor.fxml"));
              Stage stage= WindowsManager.getInstance().openNewWindow(
+<<<<<<< HEAD
                     loader, 460, 700, "新增学生",
+=======
+                    loader, 500, 800, "新增学生",
+>>>>>>> ddf8d0867769ac4312e31fe4d008303dcee0ba2f
                     dataTableView.getScene().getWindow(), Modality.WINDOW_MODAL,
                     new WindowOpenAction() {
                         @Override
@@ -278,7 +333,11 @@ public class StudentController extends ToolController {
         FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("student-editor.fxml"));
         try{
             Stage stage= WindowsManager.getInstance().openNewWindow(
+<<<<<<< HEAD
                     loader, 460, 700, "编辑: " + s.getStudentName(),
+=======
+                    loader, 500, 800, "编辑: " + s.getStudentName(),
+>>>>>>> ddf8d0867769ac4312e31fe4d008303dcee0ba2f
                     dataTableView.getScene().getWindow(), Modality.WINDOW_MODAL,
                     new WindowOpenAction() {
                         @Override
@@ -424,6 +483,10 @@ public class StudentController extends ToolController {
         }
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> ddf8d0867769ac4312e31fe4d008303dcee0ba2f
     public void hasSaves() {
         onQueryButtonClick();
     }

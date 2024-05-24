@@ -9,7 +9,11 @@
       "name": "成绩查询"
     },
     {
+<<<<<<< HEAD
       "fxml": "application/student-application.fxml",
+=======
+      "fxml": "studentAffair/student-application.fxml",
+>>>>>>> ddf8d0867769ac4312e31fe4d008303dcee0ba2f
       "name": "出校申请"
     },
     {
@@ -43,7 +47,7 @@
       "name": "出校申请"
     }
   ],
-  "theme": "blue",
+  "theme": "pink",
   "themeMapper": {
     "浅蓝色": "blue",
     "空主题": "empty",

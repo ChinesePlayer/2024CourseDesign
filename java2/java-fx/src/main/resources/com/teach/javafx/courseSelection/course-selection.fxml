@@ -60,7 +60,11 @@
                     <TableColumn fx:id="teacher" text="教师" prefWidth="90"/>
                     <TableColumn fx:id="loc" text="上课地点" prefWidth="120"/>
                     <TableColumn fx:id="preCourse" text="前序课程" prefWidth="140"/>
+<<<<<<< HEAD
                     <TableColumn fx:id="action" text="操作" prefWidth="280" sortable="false"/>
+=======
+                    <TableColumn fx:id="action" text="操作" prefWidth="100" sortable="false"/>
+>>>>>>> ddf8d0867769ac4312e31fe4d008303dcee0ba2f
                 </columns>
             </TableView>
 

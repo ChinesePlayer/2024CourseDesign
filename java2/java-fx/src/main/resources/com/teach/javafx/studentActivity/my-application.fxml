@@ -14,10 +14,17 @@
    <center>
       <TableView fx:id="tableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <columns>
+<<<<<<< HEAD
             <TableColumn fx:id="activityNum"  text="活动编号" prefWidth="172"/>
             <TableColumn fx:id="activityName" prefWidth="172" text="活动名称" />
             <TableColumn fx:id="status"  text="审批状态" prefWidth="172"/>
             <TableColumn fx:id="actions"  text="操作" sortable="false" prefWidth="180"/>
+=======
+            <TableColumn fx:id="activityNum"  text="活动编号" />
+            <TableColumn fx:id="activityName" prefWidth="150" text="活动名称" />
+            <TableColumn fx:id="status"  text="审批状态" />
+            <TableColumn fx:id="actions"  text="操作" sortable="false" />
+>>>>>>> ddf8d0867769ac4312e31fe4d008303dcee0ba2f
         </columns>
       </TableView>
    </center>

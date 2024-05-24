@@ -52,7 +52,11 @@ module com.teach.javafx {
     exports com.teach.javafx.controller.shortcuts;
     exports com.teach.javafx.controller.studentActivity;
     exports com.teach.javafx.util;
+<<<<<<< HEAD
     exports com.teach.javafx.controller.application;
+=======
+    exports com.teach.javafx.controller.studentAffair;
+>>>>>>> ddf8d0867769ac4312e31fe4d008303dcee0ba2f
     exports com.teach.javafx.controller.studentFamily;
     opens com.teach.javafx.models to com.google.gson, javafx.base;
     exports com.teach.javafx.controller.honor;
