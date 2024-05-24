@@ -102,7 +102,7 @@ public class StudentApplicationController {
     public void onEditApplication(ActionEvent event){
         Application a = (Application) CommonMethod.getRowValue(event,2,tableView);
         try{
-            FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("application/application-editor.fxml"));
+            FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("studentAffair/application-editor.fxml"));
             WindowsManager.getInstance().openNewWindow(
                     loader, 500, 600, "编辑假条",
                     tableView.getScene().getWindow(), Modality.WINDOW_MODAL,

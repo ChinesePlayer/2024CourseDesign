@@ -10,11 +10,9 @@
 
 <!-- 前端应用主框架FXML配置文件 对应页面交互控制类 com.teach.javafx.controller.base.MainFrameController -->
 
-<<<<<<< HEAD
+
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teach.javafx.controller.base.MainFrameController" >
-=======
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teach.javafx.controller.base.MainFrameController">
->>>>>>> ddf8d0867769ac4312e31fe4d008303dcee0ba2f
+
   <top>
     <MenuBar fx:id="menuBar" />
   </top>
@@ -22,11 +20,9 @@
     <TreeView fx:id="menuTree" prefWidth="200" />
   </left>
   <center>
-<<<<<<< HEAD
-    <TabPane fx:id="contentTabPane"  tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER" stylesheets="@../css/main-frame.css">
-=======
+
     <TabPane fx:id="contentTabPane" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
->>>>>>> ddf8d0867769ac4312e31fe4d008303dcee0ba2f
+
     </TabPane>
   </center>
   <bottom>

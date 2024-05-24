@@ -15,19 +15,13 @@
     <center>
         <TableView fx:id="tableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <columns>
-<<<<<<< HEAD
+
                 <TableColumn fx:id="activityNum"  text="活动编号" prefWidth="120"/>
                 <TableColumn fx:id="activityName"  text="活动名称" prefWidth="160"/>
                 <TableColumn fx:id="start" prefWidth="160" text="开始时间" />
                 <TableColumn fx:id="end" prefWidth="160" text="结束时间" />
                 <TableColumn fx:id="actions"  text="操作" sortable="false" prefWidth="200"/>
-=======
-                <TableColumn fx:id="activityNum"  text="活动编号" />
-                <TableColumn fx:id="activityName"  text="活动名称" />
-                <TableColumn fx:id="start" prefWidth="150" text="开始时间" />
-                <TableColumn fx:id="end" prefWidth="150" text="结束时间" />
-                <TableColumn fx:id="actions"  text="操作" sortable="false" />
->>>>>>> ddf8d0867769ac4312e31fe4d008303dcee0ba2f
+
             </columns>
         </TableView>
     </center>

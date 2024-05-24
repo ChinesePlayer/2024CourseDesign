@@ -8,32 +8,11 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<<<<<<< HEAD
+
 <BorderPane prefHeight="400.0" prefWidth="600.0" styleClass="borderpane-container" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teach.javafx.controller.StudentDashboardController">
    <right>
         <ScrollPane fitToHeight="false" fitToWidth="true" BorderPane.alignment="CENTER">
-=======
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.control.Label?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.chart.BarChart?>
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.chart.PieChart?>
-<?import javafx.scene.control.ScrollPane?>
-<?import com.teach.javafx.customWidget.CourseTable?>
-<?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Hyperlink?>
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.teach.javafx.controller.StudentDashboardController"
-            prefHeight="400.0" prefWidth="600.0"
-            styleClass="borderpane-container">
 
-    <center>
-        <ScrollPane fitToHeight="false" fitToWidth="true">
->>>>>>> ddf8d0867769ac4312e31fe4d008303dcee0ba2f
             <VBox>
                 <padding>
                     <Insets bottom="20" left="60" right="60" top="20" />
@@ -50,14 +29,12 @@
                     </VBox>
                     <Label fx:id="greetings" styleClass="greetings-label">
                         <HBox.margin>
-                            <Insets left="100"  right="100"/>
+                            <Insets left="50"  right="50"/>
                         </HBox.margin>
                     </Label>
-<<<<<<< HEAD
+
                     <Button onAction="#onGoToSDUWebsite" text="跳转到山东大学官网" />
-=======
-                    <Button text="跳转到山东大学官网" onAction="#onGoToSDUWebsite" />
->>>>>>> ddf8d0867769ac4312e31fe4d008303dcee0ba2f
+
                 </HBox>
                 <HBox spacing="20">
                     <VBox maxHeight="1000" maxWidth="780" prefHeight="1400" prefWidth="6000" spacing="40" styleClass="simple-info">
@@ -105,7 +82,7 @@
                                 </padding>
                                 <Label style="-fx-font-size: 26px" text="本周课表" />
                             </VBox>
-                            <CourseTable fx:id="courseTable" prefHeight="360" prefWidth="480" />
+                            <CourseTable fx:id="courseTable" prefHeight="360" prefWidth="500" />
                             <VBox alignment="CENTER">
                                 <padding>
                                     <Insets bottom="10.0" left="0.0" right="0.0" top="40.0" />

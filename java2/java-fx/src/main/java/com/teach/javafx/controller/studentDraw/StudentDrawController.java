@@ -6,6 +6,7 @@ import com.itextpdf.text.Font;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.teach.javafx.AppStore;
 import com.teach.javafx.controller.StudentIntroduceController;
 import com.teach.javafx.controller.base.MessageDialog;
 import com.teach.javafx.controller.honor.HonorCheckController;
@@ -172,6 +173,7 @@ public class StudentDrawController {
     //从后端获取个人荣誉信息
     public void getHonors(){
         DataRequest req = new DataRequest();
+        req.add("studentId", AppStore.getJwt().getRoleId());
         DataResponse res = HttpRequestUtil.request("/api/honor/getHonors", req);
         assert res != null;
         if(res.getCode() == 0){

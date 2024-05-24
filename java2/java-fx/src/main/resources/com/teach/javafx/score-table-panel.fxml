@@ -76,7 +76,7 @@
    <center>
         <TableView fx:id="dataTableView"  >
             <columns>
-<<<<<<< HEAD
+
                 <TableColumn fx:id="studentNum" prefWidth="180.0" text="学号" />
                 <TableColumn fx:id="studentName" prefWidth="160.0" text="姓名" />
                 <TableColumn fx:id="className" prefWidth="180.0" text="班级" />
@@ -86,17 +86,7 @@
                 <TableColumn fx:id="mark" prefWidth="140.0" text="成绩" />
                 <TableColumn fx:id="status" prefWidth="220.0" text="课程状态" />
                 <TableColumn fx:id="editColumn" prefWidth="210.0" text="操作" sortable="false" />
-=======
-                <TableColumn fx:id="studentNum" prefWidth="120.0" text="学号" />
-                <TableColumn fx:id="studentName" prefWidth="100.0" text="姓名" />
-                <TableColumn fx:id="className" prefWidth="140.0" text="班级" />
-                <TableColumn fx:id="courseNum" prefWidth="120.0" text="课程号"  />
-                <TableColumn fx:id="courseName" prefWidth="140.0" text="课程名" />
-                <TableColumn fx:id="credit" prefWidth="60.0" text="学分" />
-                <TableColumn fx:id="mark" prefWidth="100.0" text="成绩" />
-                <TableColumn fx:id="status" prefWidth="100.0" text="课程状态" />
-                <TableColumn fx:id="editColumn" prefWidth="100.0" text="操作" sortable="false" />
->>>>>>> ddf8d0867769ac4312e31fe4d008303dcee0ba2f
+
             </columns>
         </TableView>
    </center>

@@ -76,11 +76,9 @@ public class FamilyManage implements FamilyMemberEditorOpener {
         try{
             FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("family-member-editor.fxml"));
             WindowsManager.getInstance().openNewWindow(
-<<<<<<< HEAD
+
                     loader, 400, 440, "新增家庭成员",
-=======
-                    loader, 400, 500, "新增家庭成员",
->>>>>>> ddf8d0867769ac4312e31fe4d008303dcee0ba2f
+
                     tableView.getScene().getWindow(), Modality.WINDOW_MODAL,
                     new WindowOpenAction() {
                         @Override
@@ -133,11 +131,9 @@ public class FamilyManage implements FamilyMemberEditorOpener {
         try{
             FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("family-member-editor.fxml"));
             WindowsManager.getInstance().openNewWindow(
-<<<<<<< HEAD
+
                     loader, 400, 440, "编辑: " + fm.getName(),
-=======
-                    loader, 400, 500, "编辑: " + fm.getName(),
->>>>>>> ddf8d0867769ac4312e31fe4d008303dcee0ba2f
+
                     tableView.getScene().getWindow(), Modality.WINDOW_MODAL,
                     new WindowOpenAction() {
                         @Override

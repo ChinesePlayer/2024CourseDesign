@@ -30,11 +30,11 @@ public class CourseCell extends StackPane {
     public CourseCell(){
         super();
         this.textLabel = new Label();
-        textLabel.getStylesheets().add("-fx-font-size:1px;");
         Tooltip tooltip = new Tooltip(textLabel.getText());
         tooltip.setShowDelay(Duration.millis(5));
         Tooltip.install(textLabel, tooltip);
         textLabel.setWrapText(true);
+
         getChildren().add(textLabel);
         BackgroundFill bFill = new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY);
         Background background = new Background(bFill);

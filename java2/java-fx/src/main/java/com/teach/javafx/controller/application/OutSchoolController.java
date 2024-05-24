@@ -152,7 +152,7 @@ public class OutSchoolController {
     public void onCheckDetail(ActionEvent event){
         Application a = (Application) CommonMethod.getRowValue(event,2,tableView);
         try{
-            FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("application/application-detail.fxml"));
+            FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("studentAffair/application-detail.fxml"));
             WindowsManager.getInstance().openNewWindow(
                 loader, 700, 400, "假条详情",
                 tableView.getScene().getWindow(), Modality.WINDOW_MODAL,

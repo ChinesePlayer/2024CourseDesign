@@ -102,7 +102,7 @@ public class StudentApplicationController {
     public void onEditApplication(ActionEvent event){
         Application a = (Application) CommonMethod.getRowValue(event,2,tableView);
         try{
-            FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("application/application-editor.fxml"));
+            FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("studentAffair/application-editor.fxml"));
             WindowsManager.getInstance().openNewWindow(
                     loader, 500, 600, "编辑假条",
                     tableView.getScene().getWindow(), Modality.WINDOW_MODAL,
@@ -125,7 +125,7 @@ public class StudentApplicationController {
     public void onCheckDetail(ActionEvent event){
         Application a = (Application) CommonMethod.getRowValue(event,2,tableView);
         try{
-            FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("application/application-detail.fxml"));
+            FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("studentAffair/application-detail.fxml"));
             WindowsManager.getInstance().openNewWindow(
                     loader, 700, 400, "假条详情",
                     tableView.getScene().getWindow(), Modality.WINDOW_MODAL,
@@ -168,7 +168,7 @@ public class StudentApplicationController {
     //请假
     public void onNewApplication(){
         try{
-            FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("application/application-editor.fxml"));
+            FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("studentAffair/application-editor.fxml"));
             WindowsManager.getInstance().openNewWindow(
                 loader, 700, 400, "请假",
                 tableView.getScene().getWindow(), Modality.WINDOW_MODAL,

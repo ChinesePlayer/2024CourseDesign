@@ -33,7 +33,7 @@
          <columns>
             <TableColumn fx:id="activityNum" text="活动编号" prefWidth="120"/>
             <TableColumn fx:id="activityName" text="活动名称" prefWidth="120" />
-<<<<<<< HEAD
+
             <TableColumn fx:id="directorName" text="负责人姓名" prefWidth="120" />
             <TableColumn fx:id="maxNumber" text="人数上限" prefWidth="120"/>
             <TableColumn fx:id="number" text="参与人数" prefWidth="120"/>
@@ -41,15 +41,7 @@
             <TableColumn fx:id="start" text="开始时间" prefWidth="230" />
             <TableColumn fx:id="end" text="结束时间" prefWidth="230" />
             <TableColumn fx:id="actions" text="操作" sortable="false" prefWidth="324"/>
-=======
-            <TableColumn fx:id="directorName" text="负责人姓名" prefWidth="110" />
-            <TableColumn fx:id="maxNumber" text="人数上限" />
-            <TableColumn fx:id="number" text="参与人数" />
-            <TableColumn fx:id="status" text="审批状态" />
-            <TableColumn fx:id="start" text="开始时间" prefWidth="150" />
-            <TableColumn fx:id="end" text="结束时间" prefWidth="150" />
-            <TableColumn fx:id="actions" text="操作" prefWidth="300" sortable="false" />
->>>>>>> ddf8d0867769ac4312e31fe4d008303dcee0ba2f
+
          </columns>
       </TableView>
    </center>

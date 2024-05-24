@@ -18,11 +18,9 @@
                 <TableColumn fx:id="relation" prefWidth="120.0" text="关系" />
                 <TableColumn fx:id="gender" prefWidth="100.0" text="性别" />
                 <TableColumn fx:id="birth" prefWidth="150.0" text="生日" />
-<<<<<<< HEAD
+
                 <TableColumn fx:id="unit" prefWidth="230.0" text="工作单位" />
-=======
-                <TableColumn fx:id="unit" prefWidth="200.0" text="工作单位" />
->>>>>>> ddf8d0867769ac4312e31fe4d008303dcee0ba2f
+
             </columns>
         </TableView>
     </center>

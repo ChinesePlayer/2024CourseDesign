@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 
 
-<<<<<<< HEAD
+
 <?import javafx.geometry.Insets?>
 <BorderPane prefHeight="400.0" prefWidth="600.0" styleClass="borderpane-container" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teach.javafx.controller.FamilyMemberEditorController">
    <center>
@@ -20,11 +20,7 @@
           <padding>
               <Insets bottom="20.0" left="30.0" right="20.0" top="20.0" />
           </padding>
-=======
-<BorderPane prefHeight="400.0" prefWidth="600.0" styleClass="borderpane-container" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teach.javafx.controller.FamilyMemberEditorController">
-   <center>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
->>>>>>> ddf8d0867769ac4312e31fe4d008303dcee0ba2f
+
          <children>
             <GridPane prefHeight="390.0" prefWidth="600.0">
               <columnConstraints>
@@ -40,7 +36,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-<<<<<<< HEAD
+
                   <Label text="姓名 :       " GridPane.halignment="RIGHT" />
                   <Label text="关系 :       " GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
                   <Label text="工作单位 :       " GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
@@ -51,18 +47,7 @@
                   <MFXTextField fx:id="unitField" floatMode="BORDER" floatingText="Unit" GridPane.columnIndex="1" GridPane.rowIndex="2" prefWidth="200"/>
                   <ComboBox fx:id="genderCombo" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <DatePicker fx:id="birthPicker" GridPane.columnIndex="1" GridPane.rowIndex="4" prefWidth="200"/>
-=======
-                  <Label text="姓名: " GridPane.halignment="RIGHT" />
-                  <Label text="关系: " GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                  <Label text="工作单位: " GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                  <Label text="性别: " GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-                  <Label text="生日: " GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
-                  <MFXTextField fx:id="nameField" floatMode="BORDER" floatingText="Member Name" GridPane.columnIndex="1" />
-                  <MFXTextField fx:id="relationField" floatMode="BORDER" floatingText="Relation" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <MFXTextField fx:id="unitField" floatMode="BORDER" floatingText="Unit" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <ComboBox fx:id="genderCombo" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                  <DatePicker fx:id="birthPicker" GridPane.columnIndex="1" GridPane.rowIndex="4" />
->>>>>>> ddf8d0867769ac4312e31fe4d008303dcee0ba2f
+
                   <Button onAction="#onSave" mnemonicParsing="false" text="保存" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
                </children>
             </GridPane>

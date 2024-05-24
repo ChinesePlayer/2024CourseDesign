@@ -233,11 +233,9 @@ public class TeacherController extends ToolController {
         try{
             FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("teacher-editor.fxml"));
             Stage stage = WindowsManager.getInstance().openNewWindow(
-<<<<<<< HEAD
+
                     loader, 460, 700, "新增教师",
-=======
-                    loader, 500, 800, "新增教师",
->>>>>>> ddf8d0867769ac4312e31fe4d008303dcee0ba2f
+
                     dataTableView.getScene().getWindow(), Modality.WINDOW_MODAL,
                     new WindowOpenAction() {
                         @Override
@@ -265,11 +263,9 @@ public class TeacherController extends ToolController {
         try{
             FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("teacher-editor.fxml"));
              Stage stage = WindowsManager.getInstance().openNewWindow(
-<<<<<<< HEAD
+
                     loader, 460, 700, "编辑: " + t.getPerson().getPersonName(),
-=======
-                    loader, 500, 800, "编辑: " + t.getPerson().getPersonName(),
->>>>>>> ddf8d0867769ac4312e31fe4d008303dcee0ba2f
+
                     dataTableView.getScene().getWindow(), Modality.WINDOW_MODAL,
                     new WindowOpenAction() {
                         @Override
