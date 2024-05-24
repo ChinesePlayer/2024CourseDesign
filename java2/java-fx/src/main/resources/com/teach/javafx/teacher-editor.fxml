@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+
+<BorderPane prefHeight="685.0" prefWidth="608.0" styleClass="borderpane-container" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teach.javafx.controller.TeacherEditorController">
+    <center>
+        <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+            <children>
+                <GridPane prefHeight="658.0" prefWidth="608.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="299.3333740234375" minWidth="10.0" prefWidth="214.6667022705078" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="393.3332977294922" minWidth="10.0" prefWidth="393.3332977294922" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <Label text="工号: " GridPane.halignment="RIGHT" />
+                        <Label text="姓名: " GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                        <Label text="院系: " GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                        <Label text="职称: " GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                        <Label text="学位: " GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
+                        <Label text="证件号码: " GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
+                        <Label text="性别: " GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
+                        <Label text="出生日期: " GridPane.halignment="RIGHT" GridPane.rowIndex="7" />
+                        <Label text="邮箱: " GridPane.halignment="RIGHT" GridPane.rowIndex="8" />
+                        <Label text="电话: " GridPane.halignment="RIGHT" GridPane.rowIndex="9" />
+                        <Label text="地址: " GridPane.halignment="RIGHT" GridPane.rowIndex="10" />
+                        <Button onAction="#onSave" mnemonicParsing="false" text="保存" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="11" />
+                        <MFXTextField fx:id="teacherNumField" floatMode="BORDER" floatingText="Teacher Num" prefHeight="38.0" prefWidth="200.0" GridPane.columnIndex="1" />
+                        <MFXTextField fx:id="teacherNameField" floatMode="BORDER" floatingText="Teacher Name" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <MFXTextField fx:id="deptField" floatMode="BORDER" floatingText="Department" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <MFXTextField fx:id="titleField" floatMode="BORDER" floatingText="Title" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <MFXTextField fx:id="degreeField" floatMode="BORDER" floatingText="Degree" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <MFXTextField fx:id="cardField" floatMode="BORDER" floatingText="Card" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <MFXTextField fx:id="emailField" floatMode="BORDER" floatingText="Email" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                        <MFXTextField fx:id="phoneField" floatMode="BORDER" floatingText="Phone" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                        <MFXTextField fx:id="addressField" floatMode="BORDER" floatingText="Address" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                        <ComboBox fx:id="genderCombo" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                        <DatePicker fx:id="birthPicker" GridPane.columnIndex="1" GridPane.rowIndex="7" prefWidth="200.0"/>
+                    </children>
+                </GridPane>
+            </children>
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+        </VBox>
+    </center>
+</BorderPane>

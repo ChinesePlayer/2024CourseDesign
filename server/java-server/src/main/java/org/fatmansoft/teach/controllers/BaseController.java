@@ -24,7 +24,6 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.*;
-import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.List;
@@ -55,6 +54,7 @@ public class BaseController {
     private UserTypeRepository userTypeRepository;   //用户类型数据操作自动注入
     @Autowired
     private StudentRepository studentRepository;
+    private byte[] data;
 
 
     /**
@@ -177,7 +177,9 @@ public class BaseController {
         Integer id = dataRequest.getInteger("id");
         int count  = menuInfoRepository.countMenuInfoByPid(id);
         if(count > 0) {
-            return CommonMethod.getReturnMessageError("存在子菜单，不能删除！");
+            //删除所有子页面
+            List<MenuInfo> subMenus = menuInfoRepository.findByPid(id);
+            menuInfoRepository.deleteAll(subMenus);
         }
         Optional<MenuInfo> op = menuInfoRepository.findById(id);
         if (op.isPresent())
@@ -362,7 +364,7 @@ public class BaseController {
         }
         Student student = stuOp.get();
         Integer personId = student.getPerson().getPersonId();
-        String avatarCompleteName = attachFolder + "photo/" + personId + ".jpg";
+        String avatarCompleteName = CommonMethod.getAvatar(personId, attachFolder);
         try{
             File file = new File(avatarCompleteName);
             int len = (int) file.length();

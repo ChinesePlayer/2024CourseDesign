@@ -28,7 +28,7 @@
             </padding>
             <VBox alignment="CENTER">
                 <padding>
-                    <Insets top="0" right="10" bottom="0" left="100"/> <!-- 指定顶部、右侧、底部和左侧填充 -->
+                    <Insets top="0" right="10" bottom="0" left="40"/> <!-- 指定顶部、右侧、底部和左侧填充 -->
                 </padding>
                 <CourseTable fx:id="courseTable" prefWidth="600" prefHeight="400"  />
                 <HBox>
@@ -50,17 +50,17 @@
                     </MFXButton>
                 </HBox>
             </VBox>
-            <TableView fx:id="courseTableView" prefWidth="1000" prefHeight="5000">
+            <TableView fx:id="courseTableView" prefWidth="1120" prefHeight="5000">
                 <columns>
-                    <TableColumn fx:id="courseName" text="课程名称" prefWidth="120"/>
-                    <TableColumn fx:id="courseNum" text="课程编号" prefWidth="100"/>
+                    <TableColumn fx:id="courseName" text="课程名称" prefWidth="110"/>
+                    <TableColumn fx:id="courseNum" text="课程编号" prefWidth="90"/>
                     <TableColumn fx:id="credit" text="学分" prefWidth="90"/>
-                    <TableColumn fx:id="days" text="星期" prefWidth="90"/>
-                    <TableColumn fx:id="sections" text="节次" prefWidth="90"/>
+                    <TableColumn fx:id="days" text="星期" prefWidth="80"/>
+                    <TableColumn fx:id="sections" text="节次" prefWidth="80"/>
                     <TableColumn fx:id="teacher" text="教师" prefWidth="90"/>
                     <TableColumn fx:id="loc" text="上课地点" prefWidth="120"/>
                     <TableColumn fx:id="preCourse" text="前序课程" prefWidth="140"/>
-                    <TableColumn fx:id="action" text="操作" prefWidth="100"/>
+                    <TableColumn fx:id="action" text="操作" prefWidth="280" sortable="false"/>
                 </columns>
             </TableView>
 

@@ -118,7 +118,7 @@ public class HonorCheckController {
             gridPane.add(new Label("真棒！ 你现在有 " + numOfHonors + " 个荣誉\n再接再厉吧！"), 3, 0);
         }
         else {
-            gridPane.add(new Label("Wow，你现在有 " + numOfHonors + " 个荣誉\nAmazing！"), 0, row);
+            gridPane.add(new Label("Wow，你现在有 " + numOfHonors + " 个荣誉\nAmazing！"), 3, 0);
         }
     }
 

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+
+<BorderPane prefHeight="400.0" prefWidth="675.0" styleClass="borderpane-container" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teach.javafx.controller.studentActivity.StudentActivityController">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="600.0" spacing="10.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label text="活动名称: " />
+                <MFXTextField fx:id="activityNameField" floatMode="BORDER" floatingText="ActivityName" prefWidth="200"/>
+                <Label text="负责人姓名: " />
+                <MFXTextField fx:id="directorNameField" floatMode="BORDER" floatingText="DirectorName" prefWidth="200"/>
+                <Button mnemonicParsing="false" onAction="#onQueryButtonClick" text="查询" />
+                <Button mnemonicParsing="false" onAction="#onApplyNewActivity" text="申请活动" />
+                <Button mnemonicParsing="false" text="我的报名" onAction="#onViewSignup" />
+                <Button mnemonicParsing="false" text="我的申请" onAction="#onViewMyApplication" />
+            </children>
+            <BorderPane.margin>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </BorderPane.margin>
+        </HBox>
+    </top>
+    <center>
+        <TableView fx:id="tableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <columns>
+                <TableColumn fx:id="activityNum" text="活动编号" prefWidth="104"/>
+                <TableColumn fx:id="activityName" prefWidth="160" text="活动名称" />
+                <TableColumn fx:id="directorName" prefWidth="160" text="负责人姓名" />
+                <TableColumn fx:id="maxNumber" text="人数上限" prefWidth="160"/>
+                <TableColumn fx:id="number" text="参与人数" prefWidth="160"/>
+                <TableColumn fx:id="start" prefWidth="240" text="开始时间" />
+                <TableColumn fx:id="end" prefWidth="240" text="结束时间" />
+                <TableColumn fx:id="actions" sortable="false" text="操作" prefWidth="280"/>
+            </columns>
+        </TableView>
+    </center>
+
+</BorderPane>

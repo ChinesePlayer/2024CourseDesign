@@ -1,5 +1,6 @@
 package com.teach.javafx.controller.base;
 
+import com.teach.javafx.MainApplication;
 import com.teach.javafx.request.HttpRequestUtil;
 import com.teach.javafx.request.MyTreeNode;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -10,14 +11,20 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
@@ -60,6 +67,7 @@ public class MenuControllerV2 {
 
     //上下文菜单的删除按钮
     private MenuItem deleteContextMenu;
+    private MenuItem editContextMenu;
 
     //根节点(只能有一个)
     private TreeItem<MyTreeNode> root;
@@ -69,7 +77,7 @@ public class MenuControllerV2 {
 
     //编辑类型
     //0: 添加了根节点(即菜单)    1: 添加了叶子节点(即新页面)
-    //2: 编辑了某个页面
+    //2: 编辑了某个页面    3: 编辑了某个父菜单
     private Integer editType = 0;
 
     @FXML
@@ -100,6 +108,7 @@ public class MenuControllerV2 {
                     node = (TreeCell<MyTreeNode>) event.getPickResult().getIntersectedNode();
                 }
                 currentItem = menuTreeView.getSelectionModel().getSelectedItem();
+                System.out.println("节点: " + currentItem + " 被选中");
                 //此处的机制：要让用户点击空白处时取消选中已经选中的项，并且将当前选中的currentItem设为空，并将编辑试图设为待命状态
                 //首先要保证node不为空,否则后续调用node相关的方法时会报空指针异常，然后判断node中的文本是否存在，若为空，则可判断
                 //用户点击了空白处
@@ -113,6 +122,7 @@ public class MenuControllerV2 {
                 //currentItem不为空时，说明用户点击了某个节点，这时候将编辑视图设为编辑状态
                 if(currentItem != null)
                 {
+                    System.out.println(currentItem.getValue().getUserTypeIds());
                     setEditStatus();
                 }
                 else {
@@ -121,19 +131,31 @@ public class MenuControllerV2 {
             }
         });
         ContextMenu contextMenu = new ContextMenu();
+        editContextMenu = new MenuItem("编辑");
         deleteContextMenu = new MenuItem("删除");
         deleteContextMenu.setOnAction(this::onDeleteButtonPressed);
+        editContextMenu.setOnAction(this::onEditButtonPressed);
+        contextMenu.getItems().add(editContextMenu);
         contextMenu.getItems().add(deleteContextMenu);
         menuTreeView.setContextMenu(contextMenu);
     }
 
     private void onDeleteButtonPressed(ActionEvent event){
+        int ret = MessageDialog.choiceDialog("你确定要删除此菜单吗?");
+        if(ret != MessageDialog.CHOICE_YES){
+            return;
+        }
         if(currentItem == null || currentItem.getValue() == null){
             MessageDialog.showDialog("删除失败: 未选择任何菜单");
             return;
         }
         if(currentItem.getParent() == null){
             MessageDialog.showDialog("删除失败: 不能删除根节点");
+            return;
+        }
+        //不允许删除仪表盘页面
+        if(currentItem.getValue().getTitle().equals("仪表盘")){
+            MessageDialog.showDialog("不允许删除该页面! ");
             return;
         }
         if(!currentItem.getChildren().isEmpty()){
@@ -156,6 +178,46 @@ public class MenuControllerV2 {
         }
         else {
             MessageDialog.showDialog(res.getMsg());
+        }
+    }
+
+    //编辑上下文菜单被按下
+    private void onEditButtonPressed(ActionEvent event){
+        if(currentItem == null){
+            MessageDialog.showDialog("未选择任何页面");
+            return;
+        }
+        if(currentItem.getValue() == null || !currentItem.getValue().getIsMenu()){
+            MessageDialog.showDialog("请选择菜单文件夹进行编辑!");
+            return;
+        }
+        //不允许编辑仪表盘页面
+        if(currentItem.getValue().getTitle().equals("仪表盘")){
+            MessageDialog.showDialog("不允许编辑该页面! ");
+            return;
+        }
+        FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("base/menu-editor.fxml"));
+        try{
+            Scene scene = new Scene(loader.load(), 700, 400);
+            MenuEditorController controller = loader.getController();
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle("编辑: " + currentItem.getValue().getTitle());
+            stage.initModality(Modality.APPLICATION_MODAL);
+            controller.stage = stage;
+            controller.stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                @Override
+                public void handle(WindowEvent windowEvent) {
+                    controller.stage = null;
+                }
+            });
+            controller.setData(currentItem.getValue());
+            controller.menuControllerV2 = this;
+            stage.show();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+            MessageDialog.showDialog("无法打开编辑页面! ");
         }
     }
 
@@ -221,6 +283,7 @@ public class MenuControllerV2 {
         if(currentItem == null || currentItem.getValue() == null){
             return;
         }
+        System.out.println("当前点击的菜单名: " + currentItem.getValue().getLabel());
         String userTypeStr = currentItem.getValue().getUserTypeIds();
         String[] userTypes = userTypeStr.split(",");
         for(String i : userTypes){
@@ -265,6 +328,12 @@ public class MenuControllerV2 {
         clearEditView();
 
         editNode = new MyTreeNode();
+
+        //不允许用户编辑仪表盘页面
+        if(currentItem.getValue().getTitle().equals("仪表盘")){
+            MessageDialog.showDialog("不允许编辑仪表盘页面");
+            return;
+        }
 
         if(!currentItem.getValue().getIsMenu()){
             editType = 2;
@@ -446,5 +515,32 @@ public class MenuControllerV2 {
         }
         //注意在提交结束后将当前编辑节点设为空，此处直接新建一个对象
         editNode = new MyTreeNode();
+    }
+
+    public boolean onEditMenu(String newName, String newUserTypeIds) {
+        //MyTreeNode node = new MyTreeNode();
+        DataRequest req = new DataRequest();
+
+//        node.setName(null);
+//        node.setTitle(newName);
+//        node.setIsMenu(true);
+//        node.setPid(null);
+//        node.setId(getMaxMenuId()+1);
+//        node.setUserTypeIds(newUserTypeIds);
+
+        currentItem.getValue().setUserTypeIds(newUserTypeIds);
+        currentItem.getValue().setTitle(newName);
+
+        req.add("editType", 3);
+        req.add("node", currentItem.getValue());
+
+        DataResponse res = HttpRequestUtil.request("/api/base/menuSave", req);
+        assert res != null;
+
+        if(res.getCode() == 0){
+            MessageDialog.showDialog("保存成功! ");
+            return true;
+        }
+        return false;
     }
 }

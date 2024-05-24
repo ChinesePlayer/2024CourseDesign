@@ -53,7 +53,7 @@ public class CourseInfoFactory {
             if(teacherOptional.isPresent()){
                 Map tm = new HashMap<>();
                 Teacher teacher = teacherOptional.get();
-                tm.put("name", teacher.getPerson().getName());
+                tm.put("name", teacher.getPerson().getPersonName());
                 tm.put("id", teacher.getTeacherId()+"");
                 m.put("teacher", tm);
             }
@@ -94,6 +94,9 @@ public class CourseInfoFactory {
                 }
                 CompletionStatus cs = optionalCompletionStatus.get();
                 m.put("status", cs.getStatus()+"");
+            }
+            case "teacher":{
+                break;
             }
         }
 

@@ -80,7 +80,7 @@ public class EditCourseController {
             emptyTeacher.setTeacherId(0);
             teacherList.add(emptyTeacher);
             for(Teacher m : res){
-                m.setName(m.getPerson().getName());
+                m.setPersonName(m.getPerson().getPersonName());
                 teacherList.add(m);
             }
         }
@@ -301,6 +301,7 @@ public class EditCourseController {
             checkData();
         }
         catch (RuntimeException e){
+            e.printStackTrace();
             MessageDialog.showDialog(e.getMessage());
             return;
         }

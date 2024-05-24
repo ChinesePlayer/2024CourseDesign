@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+
 /**
  * Score 成绩表实体类  保存成绩的的基本信息信息，
  * Integer scoreId 人员表 score 主键 score_id
@@ -12,6 +14,8 @@ import javax.persistence.*;
  * Integer mark 成绩
  * Integer ranking 排名
  */
+
+//注：特定学生的特定课程的Score实体对象可以有个多个，但是只会有三种状态：1.多个不及格的成绩  2.零个或多个不及格的成绩和一个修读中的成绩  3.一个已及格的成绩
 @Getter
 @Setter
 @Entity
@@ -37,9 +41,14 @@ public class Score {
     //完成状态，0：修读中，1：已及格，2：不及格
     private Integer status;
 
+    //成绩录入时间
+    //由后端管理，前端无修改权限，仅能读取
+    private LocalDateTime dateTime;
+
     public Double calcGpa(){
         if(mark != null){
-            if(mark < 60){
+            //分数小于60或状态不是已及格就不计算绩点
+            if(mark < 60 || status != 1){
                 return null;
             }
             return mark/10.0-5.0;

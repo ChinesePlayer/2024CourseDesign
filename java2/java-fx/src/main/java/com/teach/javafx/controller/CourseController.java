@@ -2,9 +2,9 @@ package com.teach.javafx.controller;
 
 import com.teach.javafx.MainApplication;
 import com.teach.javafx.controller.adminCoursePanel.EditCourseController;
-import com.teach.javafx.controller.courseSelection.CourseAdminActionValueFactory;
-import com.teach.javafx.controller.courseSelection.CourseTimeValueFactory;
-import com.teach.javafx.controller.courseSelection.CourseValueFactory;
+import com.teach.javafx.factories.CourseAdminActionValueFactory;
+import com.teach.javafx.factories.CourseTimeValueFactory;
+import com.teach.javafx.factories.CourseValueFactory;
 import com.teach.javafx.request.HttpRequestUtil;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.collections.FXCollections;
@@ -15,19 +15,19 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 import org.fatmansoft.teach.models.Course;
-import org.fatmansoft.teach.models.CourseLocation;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.util.*;
 
@@ -46,7 +46,7 @@ public class CourseController {
     @FXML
     public TableColumn<Course, String> loc;
     @FXML
-    public TableColumn<Course, MFXButton> action;
+    public TableColumn<Course, HBox> action;
     @FXML
     public MFXButton addNewCourse;
     @FXML
@@ -77,7 +77,9 @@ public class CourseController {
                 Course c = new Course(m);
                 MFXButton button = new MFXButton("编辑");
                 button.setOnAction(this::onEditButtonClick);
-                c.setAction(button);
+                List<Button> buttons = new ArrayList<>();
+                buttons.add(button);
+                c.setAction(buttons);
                 courseList.add(c);
             }
         }
@@ -111,10 +113,10 @@ public class CourseController {
         //设置按钮为居中显示
         action.setCellFactory(new Callback<>() {
             @Override
-            public TableCell<Course, MFXButton> call(TableColumn<Course, MFXButton> courseMFXButtonTableColumn) {
-                TableCell<Course, MFXButton> cell = new TableCell<>() {
+            public TableCell<Course, HBox> call(TableColumn<Course, HBox> courseMFXButtonTableColumn) {
+                TableCell<Course, HBox> cell = new TableCell<>() {
                     @Override
-                    protected void updateItem(MFXButton item, boolean empty) {
+                    protected void updateItem(HBox item, boolean empty) {
                         super.updateItem(item, empty);
                         if (item == null || empty) {
                             setText(null);
@@ -133,7 +135,7 @@ public class CourseController {
     }
 
     public void onEditButtonClick(ActionEvent event){
-        TableCell<Course, MFXButton> cell = (TableCell<Course, MFXButton>) ((MFXButton)event.getTarget()).getParent();
+        TableCell<Course, ?> cell = (TableCell<Course, ?>) ((Button)event.getTarget()).getParent().getParent();
         int rowIndex = cell.getIndex();
         Course c = observableList.get(rowIndex);
         try{
@@ -144,12 +146,16 @@ public class CourseController {
         }
     }
 
+    //保存了课程后的后续工作
+    //重设按钮状态，更新显示数据
     public void onHasSavedCourse(Course c){
         if(!courseList.contains(c)){
             courseList.add(c);
             MFXButton button = new MFXButton("编辑");
             button.setOnAction(this::onEditButtonClick);
-            c.setAction(button);
+            List<Button> buttons = new ArrayList<>();
+            buttons.add(button);
+            c.setAction(buttons);
         }
         setTableViewData();
     }

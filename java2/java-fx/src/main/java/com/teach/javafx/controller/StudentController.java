@@ -1,22 +1,30 @@
 package com.teach.javafx.controller;
 
-import com.teach.javafx.controller.base.LocalDateStringConverter;
+import com.teach.javafx.MainApplication;
 import com.teach.javafx.controller.base.ToolController;
+import com.teach.javafx.factories.StudentValueFactory;
+import com.teach.javafx.managers.WindowOpenAction;
+import com.teach.javafx.managers.WindowsManager;
+import com.teach.javafx.models.Student;
 import com.teach.javafx.request.*;
+import javafx.collections.ListChangeListener;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
-import org.fatmansoft.teach.util.CommonMethod;
 import com.teach.javafx.controller.base.MessageDialog;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.MapValueFactory;
 import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.*;
 
 
@@ -27,72 +35,68 @@ import java.util.*;
  */
 public class StudentController extends ToolController {
     @FXML
-    private TableView<Map> dataTableView;  //学生信息表
+    private TableView<Student> dataTableView;  //学生信息表
     @FXML
-    private TableColumn<Map,String> numColumn;   //学生信息表 编号列
+    private TableColumn<Student,String> numColumn;   //学生信息表 编号列
     @FXML
-    private TableColumn<Map,String> nameColumn; //学生信息表 名称列
+    private TableColumn<Student,String> nameColumn; //学生信息表 名称列
     @FXML
-    private TableColumn<Map,String> deptColumn;  //学生信息表 院系列
+    private TableColumn<Student,String> deptColumn;  //学生信息表 院系列
     @FXML
-    private TableColumn<Map,String> majorColumn; //学生信息表 专业列
+    private TableColumn<Student,String> majorColumn; //学生信息表 专业列
     @FXML
-    private TableColumn<Map,String> classNameColumn; //学生信息表 班级列
+    private TableColumn<Student,String> classNameColumn; //学生信息表 班级列
     @FXML
-    private TableColumn<Map,String> cardColumn; //学生信息表 证件号码列
+    private TableColumn<Student,String> cardColumn; //学生信息表 证件号码列
     @FXML
-    private TableColumn<Map,String> genderColumn; //学生信息表 性别列
+    private TableColumn<Student,String> genderColumn; //学生信息表 性别列
     @FXML
-    private TableColumn<Map,String> birthdayColumn; //学生信息表 出生日期列
+    private TableColumn<Student,String> birthdayColumn; //学生信息表 出生日期列
     @FXML
-    private TableColumn<Map,String> emailColumn; //学生信息表 邮箱列
+    private TableColumn<Student,String> emailColumn; //学生信息表 邮箱列
     @FXML
-    private TableColumn<Map,String> phoneColumn; //学生信息表 电话列
+    private TableColumn<Student,String> phoneColumn; //学生信息表 电话列
     @FXML
-    private TableColumn<Map,String> addressColumn;//学生信息表 地址列
+    private TableColumn<Student,String> addressColumn;//学生信息表 地址列
 
-    @FXML
-    private TextField numField; //学生信息  学号输入域
-    @FXML
-    private TextField nameField;  //学生信息  名称输入域
-    @FXML
-    private TextField deptField; //学生信息  院系输入域
-    @FXML
-    private TextField majorField; //学生信息  专业输入域
-    @FXML
-    private TextField classNameField; //学生信息  班级输入域
-    @FXML
-    private TextField cardField; //学生信息  证件号码输入域
-    @FXML
-    private ComboBox<OptionItem> genderComboBox;  //学生信息  性别输入域
-    @FXML
-    private DatePicker birthdayPick;  //学生信息  出生日期选择域
-    @FXML
-    private TextField emailField;  //学生信息  邮箱输入域
-    @FXML
-    private TextField phoneField;   //学生信息  电话输入域
-    @FXML
-    private TextField addressField;  //学生信息  地址输入域
+//    @FXML
+//    private TextField numField; //学生信息  学号输入域
+//    @FXML
+//    private TextField nameField;  //学生信息  名称输入域
+//    @FXML
+//    private TextField deptField; //学生信息  院系输入域
+//    @FXML
+//    private TextField majorField; //学生信息  专业输入域
+//    @FXML
+//    private TextField classNameField; //学生信息  班级输入域
+//    @FXML
+//    private TextField cardField; //学生信息  证件号码输入域
+//    @FXML
+//    private ComboBox<OptionItem> genderComboBox;  //学生信息  性别输入域
+//    @FXML
+//    private DatePicker birthdayPick;  //学生信息  出生日期选择域
+//    @FXML
+//    private TextField emailField;  //学生信息  邮箱输入域
+//    @FXML
+//    private TextField phoneField;   //学生信息  电话输入域
+//    @FXML
+//    private TextField addressField;  //学生信息  地址输入域
 
     @FXML
     private TextField numNameTextField;  //查询 姓名学号输入域
 
     private Integer studentId = null;  //当前编辑修改的学生的主键
 
-    private ArrayList<Map> studentList = new ArrayList();  // 学生信息列表数据
+    private ArrayList<Student> studentList = new ArrayList();  // 学生信息列表数据
     private List<OptionItem> genderList;   //性别选择列表数据
-    private ObservableList<Map> observableList= FXCollections.observableArrayList();  // TableView渲染列表
 
 
     /**
      * 将学生数据集合设置到面板上显示
      */
     private void setTableViewData() {
-        observableList.clear();
-        for (int j = 0; j < studentList.size(); j++) {
-            observableList.addAll(FXCollections.observableArrayList(studentList.get(j)));
-        }
-        dataTableView.setItems(observableList);
+        dataTableView.getItems().clear();
+        dataTableView.setItems(FXCollections.observableArrayList(studentList));
     }
 
     /**
@@ -101,89 +105,87 @@ public class StudentController extends ToolController {
 
     @FXML
     public void initialize() {
-        DataResponse res;
-        DataRequest req =new DataRequest();
-        req.add("numName","");
-        res = HttpRequestUtil.request("/api/student/getStudentList",req); //从后台获取所有学生信息列表集合
-        if(res != null && res.getCode()== 0) {
-            studentList = (ArrayList<Map>)res.getData();
-        }
-        numColumn.setCellValueFactory(new MapValueFactory<>("num"));  //设置列值工厂属性
-        nameColumn.setCellValueFactory(new MapValueFactory<>("name"));
-        deptColumn.setCellValueFactory(new MapValueFactory<>("dept"));
-        majorColumn.setCellValueFactory(new MapValueFactory<>("major"));
-        classNameColumn.setCellValueFactory(new MapValueFactory<>("className"));
-        cardColumn.setCellValueFactory(new MapValueFactory<>("card"));
-        genderColumn.setCellValueFactory(new MapValueFactory<>("genderName"));
-        birthdayColumn.setCellValueFactory(new MapValueFactory<>("birthday"));
-        emailColumn.setCellValueFactory(new MapValueFactory<>("email"));
-        phoneColumn.setCellValueFactory(new MapValueFactory<>("phone"));
-        addressColumn.setCellValueFactory(new MapValueFactory<>("address"));
+        onQueryButtonClick();
+
+        numColumn.setCellValueFactory(new StudentValueFactory());  //设置列值工厂属性
+        nameColumn.setCellValueFactory(new StudentValueFactory());
+        deptColumn.setCellValueFactory(new StudentValueFactory());
+        majorColumn.setCellValueFactory(new StudentValueFactory());
+        classNameColumn.setCellValueFactory(new StudentValueFactory());
+        cardColumn.setCellValueFactory(new StudentValueFactory());
+        genderColumn.setCellValueFactory(new StudentValueFactory());
+        birthdayColumn.setCellValueFactory(new StudentValueFactory());
+        emailColumn.setCellValueFactory(new StudentValueFactory());
+        phoneColumn.setCellValueFactory(new StudentValueFactory());
+        addressColumn.setCellValueFactory(new StudentValueFactory());
         //这段代码是为了让每一行被点击时，旁边的编辑面板能发生相应的变化，即显示被选中的项的信息
-        TableView.TableViewSelectionModel<Map> tsm = dataTableView.getSelectionModel();
-        ObservableList<Integer> list = tsm.getSelectedIndices();
-        list.addListener(this::onTableRowSelect);
+//        TableView.TableViewSelectionModel<Map> tsm = dataTableView.getSelectionModel();
+//        ObservableList<Integer> list = tsm.getSelectedIndices();
+//        list.addListener(this::onTableRowSelect);
 
         setTableViewData();
         genderList = HttpRequestUtil.getDictionaryOptionItemList("XBM");
 
-        genderComboBox.getItems().addAll(genderList);
-        birthdayPick.setConverter(new LocalDateStringConverter("yyyy-MM-dd"));
+//        genderComboBox.getItems().addAll(genderList);
+//        birthdayPick.setConverter(new LocalDateStringConverter("yyyy-MM-dd"));
     }
+
+    //从后端获取信息
+
 
     /**
      * 清除学生表单中输入信息
      */
-    public void clearPanel(){
-        studentId = null;
-        numField.setText("");
-        nameField.setText("");
-        deptField.setText("");
-        majorField.setText("");
-        classNameField.setText("");
-        cardField.setText("");
-        genderComboBox.getSelectionModel().select(-1);
-        birthdayPick.getEditor().setText("");
-        emailField.setText("");
-        phoneField.setText("");
-        addressField.setText("");
-    }
+//    public void clearPanel(){
+//        studentId = null;
+//        numField.setText("");
+//        nameField.setText("");
+//        deptField.setText("");
+//        majorField.setText("");
+//        classNameField.setText("");
+//        cardField.setText("");
+//        genderComboBox.getSelectionModel().select(-1);
+//        birthdayPick.getEditor().setText("");
+//        emailField.setText("");
+//        phoneField.setText("");
+//        addressField.setText("");
+//    }
 
-    protected void changeStudentInfo() {
-        Map form = dataTableView.getSelectionModel().getSelectedItem();
-        if(form == null) {
-            clearPanel();
-            return;
-        }
-        studentId = CommonMethod.getInteger(form,"studentId");
-        DataRequest req = new DataRequest();
-        req.add("studentId",studentId);
-        DataResponse res = HttpRequestUtil.request("/api/student/getStudentInfo",req);
-        if(res.getCode() != 0){
-            MessageDialog.showDialog(res.getMsg());
-            return;
-        }
-        form = (Map)res.getData();
-        numField.setText(CommonMethod.getString(form, "num"));
-        nameField.setText(CommonMethod.getString(form, "name"));
-        deptField.setText(CommonMethod.getString(form, "dept"));
-        majorField.setText(CommonMethod.getString(form, "major"));
-        classNameField.setText(CommonMethod.getString(form, "className"));
-        cardField.setText(CommonMethod.getString(form, "card"));
-        genderComboBox.getSelectionModel().select(CommonMethod.getOptionItemIndexByValue(genderList, CommonMethod.getString(form, "gender")));
-        birthdayPick.getEditor().setText(CommonMethod.getString(form, "birthday"));
-        emailField.setText(CommonMethod.getString(form, "email"));
-        phoneField.setText(CommonMethod.getString(form, "phone"));
-        addressField.setText(CommonMethod.getString(form, "address"));
-
-    }
+//    protected void changeStudentInfo() {
+//        Map form = dataTableView.getSelectionModel().getSelectedItem();
+//        if(form == null) {
+//            clearPanel();
+//            return;
+//        }
+//        studentId = CommonMethod.getInteger(form,"studentId");
+//        DataRequest req = new DataRequest();
+//        req.add("studentId",studentId);
+//        DataResponse res = HttpRequestUtil.request("/api/student/getStudentInfo",req);
+//        if(res.getCode() != 0){
+//            MessageDialog.showDialog(res.getMsg());
+//            return;
+//        }
+//        form = (Map)res.getData();
+//        numField.setText(CommonMethod.getString(form, "studentNum"));
+//        nameField.setText(CommonMethod.getString(form, "studentName"));
+//        deptField.setText(CommonMethod.getString(form, "dept"));
+//        majorField.setText(CommonMethod.getString(form, "major"));
+//        classNameField.setText(CommonMethod.getString(form, "className"));
+//        cardField.setText(CommonMethod.getString(form, "card"));
+//        genderComboBox.getSelectionModel().select(CommonMethod.getOptionItemIndexByValue(genderList, CommonMethod.getString(form, "gender")));
+//        birthdayPick.getEditor().setText(CommonMethod.getString(form, "birthday"));
+//        emailField.setText(CommonMethod.getString(form, "email"));
+//        phoneField.setText(CommonMethod.getString(form, "phone"));
+//        addressField.setText(CommonMethod.getString(form, "address"));
+//
+//    }
     /**
      * 点击学生列表的某一行，根据studentId ,从后台查询学生的基本信息，切换学生的编辑信息
      */
 
-    public void onTableRowSelect(ListChangeListener.Change<? extends Integer> change){
-        changeStudentInfo();
-    }
+//    public void onTableRowSelect(ListChangeListener.Change<? extends Integer> change){
+//        changeStudentInfo();
+//    }
 
     /**
      * 点击查询按钮，从从后台根据输入的串，查询匹配的学生在学生列表中显示
@@ -195,17 +197,46 @@ public class StudentController extends ToolController {
         req.add("numName",numName);
         DataResponse res = HttpRequestUtil.request("/api/student/getStudentList",req);
         if(res != null && res.getCode()== 0) {
-            studentList = (ArrayList<Map>)res.getData();
+            List<Map> rawData = (ArrayList<Map>)res.getData();
+            studentList.clear();
+            for(Map m : rawData){
+                Student s = new Student(m);
+                studentList.add(s);
+            }
             setTableViewData();
         }
+
     }
 
     /**
      *  添加新学生， 清空输入信息， 输入相关信息，点击保存即可添加新的学生
      */
-    @FXML
-    protected void onAddButtonClick() {
-        clearPanel();
+//    @FXML
+//    protected void onAddButtonClick() {
+//        clearPanel();
+//    }
+
+    public void onAddButtonClick(){
+        try{
+            FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("student-editor.fxml"));
+             Stage stage= WindowsManager.getInstance().openNewWindow(
+                    loader, 460, 700, "新增学生",
+                    dataTableView.getScene().getWindow(), Modality.WINDOW_MODAL,
+                    new WindowOpenAction() {
+                        @Override
+                        public void init(Object controller) {
+                            WindowOpenAction.super.init(controller);
+                            StudentEditorController seCont = (StudentEditorController) controller;
+                            seCont.init(null,StudentController.this);
+                        }
+                    }
+            );
+             stage.setResizable(false);
+        }
+        catch (IOException e){
+            e.printStackTrace();
+            MessageDialog.showDialog("打开新增页面失败");
+        }
     }
 
     /**
@@ -213,8 +244,8 @@ public class StudentController extends ToolController {
       */
     @FXML
     protected void onDeleteButtonClick() {
-        Map form = dataTableView.getSelectionModel().getSelectedItem();
-        if(form == null) {
+        Student student = dataTableView.getSelectionModel().getSelectedItem();
+        if(student == null) {
             MessageDialog.showDialog("没有选择，不能删除");
             return;
         }
@@ -222,12 +253,13 @@ public class StudentController extends ToolController {
         if(ret != MessageDialog.CHOICE_YES) {
             return;
         }
-        studentId = CommonMethod.getInteger(form,"studentId");
+        Integer studentId = student.getStudentId();
         System.out.println("要删除的学生ID: " + studentId);
         DataRequest req = new DataRequest();
         req.add("studentId", studentId);
         DataResponse res = HttpRequestUtil.request("/api/student/studentDelete",req);
         System.out.println("请求状态: " + res.getCode());
+        assert res != null;
         if(res.getCode() == 0) {
             MessageDialog.showDialog("删除成功！");
             onQueryButtonClick();
@@ -236,57 +268,114 @@ public class StudentController extends ToolController {
             MessageDialog.showDialog(res.getMsg());
         }
     }
+
+    public void onEditButtonClick(ActionEvent event){
+        Student s = dataTableView.getSelectionModel().getSelectedItem();
+        if(s == null){
+            MessageDialog.showDialog("请选择学生后再编辑!");
+            return;
+        }
+        FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("student-editor.fxml"));
+        try{
+            Stage stage= WindowsManager.getInstance().openNewWindow(
+                    loader, 460, 700, "编辑: " + s.getStudentName(),
+                    dataTableView.getScene().getWindow(), Modality.WINDOW_MODAL,
+                    new WindowOpenAction() {
+                        @Override
+                        public void init(Object controller) {
+                            WindowOpenAction.super.init(controller);
+                            StudentEditorController seCont = (StudentEditorController) controller;
+                            seCont.init(s, StudentController.this);
+                        }
+                    }
+            );
+            stage.setResizable(false);
+        }
+        catch (IOException e){
+            e.printStackTrace();
+            MessageDialog.showDialog("无法打开编辑页面");
+        }
+    }
+
+    //查看家庭成员
+    public void onViewFamilyMember(){
+        Student s = dataTableView.getSelectionModel().getSelectedItem();
+        if(s == null){
+            MessageDialog.showDialog("请选中学生以查看其家庭成员");
+            return;
+        }
+        try{
+            FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("family-member.fxml"));
+            WindowsManager.getInstance().openNewWindow(
+                    loader, 800, 600, s.getStudentName() + " 的家庭成员",
+                    dataTableView.getScene().getWindow(), Modality.WINDOW_MODAL,
+                    new WindowOpenAction() {
+                        @Override
+                        public void init(Object controller) {
+                            WindowOpenAction.super.init(controller);
+                            FamilyMemberController fmCont = (FamilyMemberController) controller;
+                            fmCont.init(s);
+                        }
+                    }
+            );
+        }
+        catch (IOException e){
+            e.printStackTrace();
+            MessageDialog.showDialog("无法查看家庭成员");
+        }
+    }
+
     /**
      * 点击保存按钮，保存当前编辑的学生信息，如果是新添加的学生，后台添加学生
      */
-    @FXML
-    protected void onSaveButtonClick() {
-        if( numField.getText().equals("")) {
-            MessageDialog.showDialog("学号为空，不能修改");
-            return;
-        }
-
-        //判断邮箱是否合法，不合法就拒绝提交并弹出提示
-        if(!CommonMethod.isValidEmail(emailField.getText()) && (emailField.getText() != null && !emailField.getText().isEmpty())){
-            MessageDialog.showDialog("邮箱格式不合法!");
-            return;
-        }
-        Map form = new HashMap();
-        form.put("num",numField.getText());
-        form.put("name",nameField.getText());
-        form.put("dept",deptField.getText());
-        form.put("major",majorField.getText());
-        form.put("className",classNameField.getText());
-        form.put("card",cardField.getText());
-        if(genderComboBox.getSelectionModel() != null && genderComboBox.getSelectionModel().getSelectedItem() != null)
-           form.put("gender",genderComboBox.getSelectionModel().getSelectedItem().getValue());
-        form.put("birthday",birthdayPick.getEditor().getText());
-        form.put("email",emailField.getText());
-        form.put("phone",phoneField.getText());
-        form.put("address",addressField.getText());
-        DataRequest req = new DataRequest();
-        req.add("studentId", studentId);
-        req.add("form", form);
-        DataResponse res = HttpRequestUtil.request("/api/student/studentEditSave",req);
-        if(res.getCode() == 0) {
-            studentId = CommonMethod.getIntegerFromObject(res.getData());
-            MessageDialog.showDialog("提交成功！");
-            onQueryButtonClick();
-        }
-        else {
-            MessageDialog.showDialog(res.getMsg());
-        }
-    }
-
-    /**
-     * doNew() doSave() doDelete() 重写 ToolController 中的方法， 实现选择 新建，保存，删除 对学生的增，删，改操作
-     */
-    public void doNew(){
-        clearPanel();
-    }
-    public void doSave(){
-        onSaveButtonClick();
-    }
+//    @FXML
+//    protected void onSaveButtonClick() {
+//        if( numField.getText().equals("")) {
+//            MessageDialog.showDialog("学号为空，不能修改");
+//            return;
+//        }
+//
+//        //判断邮箱是否合法，不合法就拒绝提交并弹出提示
+//        if(!CommonMethod.isValidEmail(emailField.getText()) && (emailField.getText() != null && !emailField.getText().isEmpty())){
+//            MessageDialog.showDialog("邮箱格式不合法!");
+//            return;
+//        }
+//        Map form = new HashMap();
+//        form.put("personNum",numField.getText());
+//        form.put("personName",nameField.getText());
+//        form.put("dept",deptField.getText());
+//        form.put("major",majorField.getText());
+//        form.put("className",classNameField.getText());
+//        form.put("card",cardField.getText());
+//        if(genderComboBox.getSelectionModel() != null && genderComboBox.getSelectionModel().getSelectedItem() != null)
+//           form.put("gender",genderComboBox.getSelectionModel().getSelectedItem().getValue());
+//        form.put("birthday",birthdayPick.getEditor().getText());
+//        form.put("email",emailField.getText());
+//        form.put("phone",phoneField.getText());
+//        form.put("address",addressField.getText());
+//        DataRequest req = new DataRequest();
+//        req.add("studentId", studentId);
+//        req.add("form", form);
+//        DataResponse res = HttpRequestUtil.request("/api/student/studentEditSave",req);
+//        if(res.getCode() == 0) {
+//            studentId = CommonMethod.getIntegerFromObject(res.getData());
+//            MessageDialog.showDialog("提交成功！");
+//            onQueryButtonClick();
+//        }
+//        else {
+//            MessageDialog.showDialog(res.getMsg());
+//        }
+//    }
+//
+//    /**
+//     * doNew() doSave() doDelete() 重写 ToolController 中的方法， 实现选择 新建，保存，删除 对学生的增，删，改操作
+//     */
+//    public void doNew(){
+//        clearPanel();
+//    }
+//    public void doSave(){
+//        onSaveButtonClick();
+//    }
     public void doDelete(){
         onDeleteButtonClick();
     }
@@ -322,7 +411,6 @@ public class StudentController extends ToolController {
     protected void onImportButtonClick() {
         FileChooser fileDialog = new FileChooser();
         fileDialog.setTitle("前选择学生数据表");
-        fileDialog.setInitialDirectory(new File("D:/"));
         fileDialog.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("XLSX 文件", "*.xlsx"));
         File file = fileDialog.showOpenDialog(null);
@@ -336,4 +424,7 @@ public class StudentController extends ToolController {
         }
     }
 
+    public void hasSaves() {
+        onQueryButtonClick();
+    }
 }

@@ -1,12 +1,21 @@
 package com.teach.javafx.controller;
 
 import com.teach.javafx.AppStore;
+import com.teach.javafx.MainApplication;
+import com.teach.javafx.controller.base.MessageDialog;
+import com.teach.javafx.controller.shortcuts.ShortcutsEditorController;
+import com.teach.javafx.controller.statistic.FeeStatisticController;
 import com.teach.javafx.customWidget.CourseTable;
 import com.teach.javafx.managers.ShortcutManager;
+import com.teach.javafx.managers.ShortcutsDisplayer;
+import com.teach.javafx.managers.WindowOpenAction;
+import com.teach.javafx.managers.WindowsManager;
+import com.teach.javafx.models.Shortcut;
 import com.teach.javafx.request.HttpRequestUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
@@ -15,19 +24,24 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
+import javafx.stage.Modality;
 import org.fatmansoft.teach.models.Course;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.util.CommonMethod;
 
+import java.awt.*;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 //学生仪表盘页面
-public class StudentDashboardController {
+public class StudentDashboardController implements ShortcutsDisplayer {
     @FXML
     public ImageView avatar;
     @FXML
@@ -82,8 +96,8 @@ public class StudentDashboardController {
 
     //获取学生简要信息
     public void setStudentSimpleInfo(Map rawData){
-        name = (String) rawData.get("name");
-        num = (String) rawData.get("num");
+        name = (String) rawData.get("studentName");
+        num = (String) rawData.get("studentNum");
         dept = (String) rawData.get("dept");
     }
 
@@ -91,6 +105,7 @@ public class StudentDashboardController {
     public void getStudentAvatar(){
         DataRequest req = new DataRequest();
         Integer studentId =  AppStore.getJwt().getRoleId();
+        System.out.println();
         req.add("studentId", studentId);
         byte[] bytes = HttpRequestUtil.requestByteData("/api/base/getStudentAvatar", req);
         if(bytes != null){
@@ -216,5 +231,64 @@ public class StudentDashboardController {
         shortActions.clear();
         shortActions = ShortcutManager.getInstance().getShortcutActions();
         shortcuts.getChildren().addAll(FXCollections.observableArrayList(shortActions));
+    }
+
+    //查看详细消费数据时
+    public void onCheckDetailFee(){
+        try{
+            FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("statistic/fee-statistic.fxml"));
+            WindowsManager.getInstance().openNewWindow(
+                    loader, 800, 700, "生活消费数据",
+                    courseTable.getScene().getWindow(), Modality.WINDOW_MODAL,
+                    null
+            );
+        }
+        catch (IOException e){
+            e.printStackTrace();
+            MessageDialog.showDialog("打开生活消费数据统计页面失败");
+        }
+    }
+
+    //编辑快捷操作
+    //负责和ShortcutManager交互
+    public void onEditShortcuts(){
+        //打开编辑窗口
+        FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("shortcuts-editor.fxml"));
+        try{
+            WindowsManager.getInstance().openNewWindow(
+                    loader, 800, 500, "编辑快捷设置",
+                    shortcuts.getScene().getWindow(), Modality.WINDOW_MODAL,
+                    new WindowOpenAction() {
+                        @Override
+                        public void init(Object controller) {
+                            WindowOpenAction.super.init(controller);
+                            ShortcutsEditorController cont = (ShortcutsEditorController) controller;
+                            cont.init(StudentDashboardController.this);
+                        }
+                    }
+            );
+        }
+        catch (IOException e){
+            e.printStackTrace();
+            MessageDialog.showDialog("打开编辑窗口失败! ");
+        }
+    }
+
+    @Override
+    public void onEdited(List<Shortcut> newShortcuts) {
+        List<Button> actions = ShortcutManager.getInstance().getShortcutActions();
+        shortcuts.getChildren().clear();
+        shortcuts.getChildren().addAll(actions);
+    }
+
+    public void onGoToSDUWebsite(){
+        String url = "https://www.sdu.edu.cn/";
+        try{
+            Desktop.getDesktop().browse(new URI(url));
+        }
+        catch (IOException | URISyntaxException e){
+            e.printStackTrace();
+            MessageDialog.showDialog("打开浏览器失败!");
+        }
     }
 }

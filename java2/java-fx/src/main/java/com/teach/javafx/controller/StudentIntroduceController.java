@@ -1,9 +1,18 @@
 package com.teach.javafx.controller;
 
+import com.teach.javafx.AppStore;
+import com.teach.javafx.MainApplication;
 import com.teach.javafx.controller.base.MessageDialog;
 import com.teach.javafx.controller.base.ToolController;
-import com.teach.javafx.controller.studentScore.StudentScoreValueFactory;
+import com.teach.javafx.controller.studentDraw.StudentDrawController;
+import com.teach.javafx.factories.StudentScoreValueFactory;
+import com.teach.javafx.managers.WindowOpenAction;
+import com.teach.javafx.managers.WindowsManager;
 import com.teach.javafx.request.HttpRequestUtil;
+import javafx.fxml.FXMLLoader;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import org.fatmansoft.teach.models.Score;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
@@ -13,14 +22,13 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.web.HTMLEditor;
 import javafx.stage.FileChooser;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -32,55 +40,55 @@ import java.util.Map;
  *  在简单熟悉HTML的基础上，构建比较美观丰富的个人简历，并生成和下载PDF文件
  */
 public class StudentIntroduceController extends ToolController {
-    private ImageView photoImageView;
-    private ObservableList<Score> observableList= FXCollections.observableArrayList();
-    private List<Score> scoreList = new ArrayList<>();
+    public ImageView photoImageView;
+    public ObservableList<Score> observableList= FXCollections.observableArrayList();
+    public List<Score> scoreList = new ArrayList<>();
+    public List<Map> feeList = new ArrayList<>();
+    public List<Map> markList = new ArrayList<>();
 
     @FXML
-    private HTMLEditor introduceHtml; //个人简历HTML编辑器
+    public Button photoButton;  //照片显示和上传按钮
     @FXML
-    private Button photoButton;  //照片显示和上传按钮
+    public Label num;  //学号标签
     @FXML
-    private Label num;  //学号标签
+    public Label name;//姓名标签
     @FXML
-    private Label name;//姓名标签
+    public Label dept; //学院标签
     @FXML
-    private Label dept; //学院标签
+    public Label major; //专业标签
     @FXML
-    private Label major; //专业标签
+    public Label className; //班级标签
     @FXML
-    private Label className; //班级标签
+    public Label card;  //证件号码标签
     @FXML
-    private Label card;  //证件号码标签
+    public Label gender; //性别标签
     @FXML
-    private Label gender; //性别标签
+    public Label birthday; //出生日期标签
     @FXML
-    private Label birthday; //出生日期标签
+    public Label email; //邮箱标签
     @FXML
-    private Label email; //邮箱标签
+    public Label phone; //电话标签
     @FXML
-    private Label phone; //电话标签
+    public Label address; //地址标签
     @FXML
-    private Label address; //地址标签
+    public TableView<Score> scoreTable;  //成绩表TableView
     @FXML
-    private TableView<Score> scoreTable;  //成绩表TableView
+    public TableColumn<Score,String> courseNum;  //课程号列
     @FXML
-    private TableColumn<Score,String> courseNum;  //课程号列
+    public TableColumn<Score,String> courseName; //课程名列
     @FXML
-    private TableColumn<Score,String> courseName; //课程名列
+    public TableColumn<Score,String> credit; //学分列
     @FXML
-    private TableColumn<Score,String> credit; //学分列
+    public TableColumn<Score,String> mark; //成绩列
     @FXML
-    private TableColumn<Score,String> mark; //成绩列
-    @FXML
-    private TableColumn<Score,String> rank; //排名列
+    public TableColumn<Score,String> rank; //排名列
 
     @FXML
-    private BarChart<String,Number> barChart;  //消费直方图控件
+    public BarChart<String,Number> barChart;  //消费直方图控件
     @FXML
-    private PieChart pieChart;   //成绩分布饼图控件
-    private Integer studentId = null;  //学生主键
-    private Integer personId = null;  //学生关联人员主键
+    public PieChart pieChart;   //成绩分布饼图控件
+    public Integer studentId = null;  //学生主键
+    public Integer personId = null;  //学生关联人员主键
 
     /**
      * 页面加载对象创建完成初始话方法，页面中控件属性的设置，初始数据显示等初始操作都在这里完成，其他代码都事件处理方法里
@@ -128,8 +136,8 @@ public class StudentIntroduceController extends ToolController {
         Map info = (Map)data.get("info");
         studentId = CommonMethod.getInteger(info,"studentId");
         personId = CommonMethod.getInteger(info,"personId");
-        num.setText(CommonMethod.getString(info,"num"));
-        name.setText(CommonMethod.getString(info,"name"));
+        num.setText(CommonMethod.getString(info,"studentNum"));
+        name.setText(CommonMethod.getString(info,"studentName"));
         dept.setText(CommonMethod.getString(info,"dept"));
         major.setText(CommonMethod.getString(info,"major"));
         className.setText(CommonMethod.getString(info,"className"));
@@ -139,19 +147,18 @@ public class StudentIntroduceController extends ToolController {
         email.setText(CommonMethod.getString(info,"email"));
         phone.setText(CommonMethod.getString(info,"phone"));
         address.setText(CommonMethod.getString(info,"address"));
-        introduceHtml.setHtmlText(CommonMethod.getString(info,"introduce"));
 
         initScoreList((List) data.get("scoreList"));
         setScoreTable();
 
-        List<Map> markList = (List)data.get("markList");
+        markList = (List)data.get("markList");
         ObservableList<PieChart.Data> chartData = FXCollections.observableArrayList();
         for(Map m:markList) {
             chartData.add(new PieChart.Data(m.get("title").toString(),Double.parseDouble(m.get("value").toString())));
         }
         pieChart.setData(chartData);  //成绩分类表显示
 
-        List<Map> feeList = (List)data.get("feeList");
+        feeList = (List)data.get("feeList");
         XYChart.Series<String, Number> seriesFee = new XYChart.Series<>();
         seriesFee.setName("日常消费");
         for(Map m:feeList)
@@ -173,31 +180,81 @@ public class StudentIntroduceController extends ToolController {
         }
 
     }
+
+    //按下编辑个人简历按钮时打开编辑页面
+    public void onEditIntroButtonClick(){
+        try{
+            FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("student-intro-editor.fxml"));
+            //以A4纸的宽高比210:297打开页面
+            Stage s = WindowsManager.getInstance().openNewWindow(
+                    loader, 565, 800, "编辑简历",
+                    photoButton.getScene().getWindow(), Modality.WINDOW_MODAL,
+                    new WindowOpenAction() {
+                        @Override
+                        public void init(Object controller, Stage stage) {
+                            WindowOpenAction.super.init(controller, stage);
+                            ((StudentIntroEditorController)controller).setStage(stage);
+                        }
+                    }
+            );
+        }
+        catch (IOException e){
+            e.printStackTrace();
+            MessageDialog.showDialog("打开个人简历编辑页面失败");
+        }
+    }
+
+    //按下查看个人画像的时候，打开个人画像页面
+    public void onCheckDraw(){
+        try{
+            FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("studentDraw/student-draw.fxml"));
+            Stage s = WindowsManager.getInstance().openNewWindow(
+                    loader, 566, 800, "个人画像",
+                    photoButton.getScene().getWindow(), Modality.WINDOW_MODAL,
+                    new WindowOpenAction() {
+                        @Override
+                        public void init(Object controller) {
+                            WindowOpenAction.super.init(controller);
+                            StudentDrawController cont = (StudentDrawController) controller;
+                            cont.init(StudentIntroduceController.this);
+                        }
+                    }
+            );
+            //禁止修改窗口大小
+            s.setResizable(false);
+        }
+        catch (IOException e){
+            e.printStackTrace();
+            MessageDialog.showDialog("打开个人画像页面失败! ");
+        }
+    }
+
+
     /**
      * 点击保存按钮 执行onSubmitButtonClick 调用doSave 实现个人简历保存
      */
-    @FXML
-    public void onSubmitButtonClick(){
-        doSave();
-    }
+//    @FXML
+//    public void onSubmitButtonClick(){
+//        doSave();
+//    }
 
     /**
      * 显示生成的个人简历的PDF， 可以直接将PDF数据存入本地文件参见StudentController 中的doExpert 方法中的本地文件保存
      * 后台修改完善扩展PDF内容的生成方法，可以按照HTML语法生成PDF要展示的数据内容
      */
-    @FXML
-    public void onIntroduceDownloadClick(){
-        DataRequest req = new DataRequest();
-        req.add("studentId",studentId);
-        byte[] bytes = HttpRequestUtil.requestByteData("/api/student/getStudentIntroducePdf", req);
-        if (bytes != null) {
-            try {
-                MessageDialog.pdfViewerDialog(bytes);
-            }catch(Exception e){
-                e.printStackTrace();
-            }
-        }
-    }
+//    @FXML
+//    public void onIntroduceDownloadClick(){
+//        DataRequest req = new DataRequest();
+//        req.add("studentId",studentId);
+//        byte[] bytes = HttpRequestUtil.requestByteData("/api/student/getStudentIntroducePdf", req);
+//        if (bytes != null) {
+//            try {
+//                MessageDialog.pdfViewerDialog(bytes);
+//            }catch(Exception e){
+//                e.printStackTrace();
+//            }
+//        }
+//    }
 
     /**
      *  点击图片位置，可以重现上传图片，可在本地目录选择要上传的张片进行上传
@@ -225,18 +282,18 @@ public class StudentIntroduceController extends ToolController {
      * 保存个人简介数据到数据库里
      */
 
-    public void doSave(){
-        String introduce = introduceHtml.getHtmlText();
-        DataRequest req = new DataRequest();
-        req.add("studentId",studentId);
-        req.add("introduce",introduce);
-        DataResponse res = HttpRequestUtil.request("/api/student/saveStudentIntroduce", req);
-        if(res.getCode() == 0) {
-            MessageDialog.showDialog("提交成功！");
-        }else {
-            MessageDialog.showDialog(res.getMsg());
-        }
-    }
+//    public void doSave(){
+//        String introduce = introduceHtml.getHtmlText();
+//        DataRequest req = new DataRequest();
+//        req.add("studentId",studentId);
+//        req.add("introduce",introduce);
+//        DataResponse res = HttpRequestUtil.request("/api/student/saveStudentIntroduce", req);
+//        if(res.getCode() == 0) {
+//            MessageDialog.showDialog("提交成功！");
+//        }else {
+//            MessageDialog.showDialog(res.getMsg());
+//        }
+//    }
 
     /**
      * 数据导入示例，点击编辑菜单中的导入菜单执行该方法， doImport 重写了 ToolController 中的doImport
@@ -256,6 +313,30 @@ public class StudentIntroduceController extends ToolController {
         }
         else {
             MessageDialog.showDialog(res.getMsg());
+        }
+    }
+
+    @Override
+    public void doExport(){
+        //选择保存路径
+        DirectoryChooser chooser = new DirectoryChooser();
+        chooser.setTitle("请选择保存位置");
+        //文件路径
+        File file = chooser.showDialog(scoreTable.getScene().getWindow());
+        DataRequest req = new DataRequest();
+        req.add("studentId", AppStore.getJwt().getRoleId());
+        byte[] pdfBytes = HttpRequestUtil.requestByteData("/api/student/getIntroducePdf", req);
+        if(pdfBytes == null){
+            MessageDialog.showDialog("获取个人画像失败! ");
+            return;
+        }
+        try{
+            String fileName = name.getText() + " " + num.getText() + "个人简介" + ".pdf";
+            CommonMethod.saveFile(file.getPath(), fileName, pdfBytes);
+        }
+        catch (IOException e){
+            e.printStackTrace();
+            MessageDialog.showDialog("保存个人简介失败! ");
         }
     }
 

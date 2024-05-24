@@ -1,20 +1,22 @@
 package com.teach.javafx.models;
 
-import org.fatmansoft.teach.models.Person;
+import org.fatmansoft.teach.util.CommonMethod;
 
+import java.time.LocalDate;
 import java.util.Map;
+import java.util.Objects;
 
 public class Student {
     private Integer studentId;
     private Integer personId;
-    private String num;
-    private String name;
+    private String studentNum;
+    private String studentName;
     private String type;
     private String dept;
     private String card;
-    private String gender;
+    private Integer gender;
     private String genderName;
-    private String birthday;
+    private LocalDate birthday;
     private String email;
     private String phone;
     private String address;
@@ -24,22 +26,28 @@ public class Student {
     public Student(){
 
     }
-    public Student(String num, String name){
-        this.num = num;
-        this.name = name;
+    public Student(String studentNum, String studentName){
+        this.studentNum = studentNum;
+        this.studentName = studentName;
     }
 
     public Student(Map m){
-        this.studentId = Integer.parseInt((String) m.get("studentId"));
-        if(m.get("personId") != null){
-            this.personId = Integer.parseInt((String) m.get("personId"));
-        }
-        else{
-            this.personId = null;
-        }
-        this.num = (String) m.get("studentNum");
-        this.name = (String) m.get("studentName");
-        this.className = (String) m.get("className");
+        this.studentId = CommonMethod.getInteger(m,"studentId");
+        this.personId = CommonMethod.getInteger(m,"personId");
+        this.studentNum = CommonMethod.getString(m, "studentNum");
+        this.studentName = CommonMethod.getString(m,"studentName");
+        this.className = CommonMethod.getString(m, "className");
+        this.gender = CommonMethod.getInteger(m, "gender");
+        this.genderName = CommonMethod.getString(m, "genderName");
+        this.birthday = CommonMethod.getLocalDateFromString(CommonMethod.getString(m,"birthday"), CommonMethod.DATE_FORMAT);
+        this.email = CommonMethod.getString(m, "email");
+        this.phone = CommonMethod.getString(m, "phone");
+        this.address = CommonMethod.getString(m, "address");
+        this.introduce = CommonMethod.getString(m, "introduce");
+        this.major = CommonMethod.getString(m, "major");
+        this.type = CommonMethod.getString(m, "type");
+        this.dept = CommonMethod.getString(m, "dept");
+        this.card = CommonMethod.getString(m, "card");
     }
 
     @Override
@@ -48,8 +56,20 @@ public class Student {
             return "无";
         }
         else {
-            return num + " - " + name;
+            return studentNum + " - " + studentName;
         }
+    }
+
+    //根据学生ID来判断两个学生对象是否相等
+    @Override
+    public boolean equals(Object o){
+        if(!(o instanceof Student)){
+            return false;
+        }
+        if(o == this){
+            return true;
+        }
+        return Objects.equals(((Student) o).studentId, this.studentId);
     }
 
     //判断当前学生是否为空学生
@@ -91,20 +111,20 @@ public class Student {
         this.personId = personId;
     }
 
-    public String getNum() {
-        return num;
+    public String getStudentNum() {
+        return studentNum;
     }
 
-    public void setNum(String num) {
-        this.num = num;
+    public void setStudentNum(String studentNum) {
+        this.studentNum = studentNum;
     }
 
-    public String getName() {
-        return name;
+    public String getStudentName() {
+        return studentName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
     }
 
     public String getType() {
@@ -131,13 +151,6 @@ public class Student {
         this.card = card;
     }
 
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
 
     public String getGenderName() {
         return genderName;
@@ -147,13 +160,6 @@ public class Student {
         this.genderName = genderName;
     }
 
-    public String getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
-    }
 
     public String getEmail() {
         return email;
@@ -187,4 +193,19 @@ public class Student {
         this.introduce = introduce;
     }
 
+    public Integer getGender() {
+        return gender;
+    }
+
+    public void setGender(Integer gender) {
+        this.gender = gender;
+    }
+
+    public LocalDate getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(LocalDate birthday) {
+        this.birthday = birthday;
+    }
 }

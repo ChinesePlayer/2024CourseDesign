@@ -17,6 +17,7 @@ module com.teach.javafx {
     requires batik.svggen;
     requires javafx.svg;
     requires org.json;
+    requires itextpdf;
 
 
 
@@ -40,10 +41,24 @@ module com.teach.javafx {
     exports com.teach.javafx.mySkin;
     exports com.teach.javafx.managers;
     exports com.teach.javafx.controller.setting;
+    exports com.teach.javafx.controller.teacherCourse;
+    exports com.teach.javafx.controller.studentHomework;
+    exports com.teach.javafx.controller.statistic;
+    exports com.teach.javafx.controller.studentDraw;
+    exports com.teach.javafx.factories;
+    exports com.teach.javafx.controller.adminAttendance;
+    exports com.teach.javafx.controller.studentAttendance;
+    exports com.teach.javafx.controller.teacherAttendance;
+    exports com.teach.javafx.controller.shortcuts;
+    exports com.teach.javafx.controller.studentActivity;
+    exports com.teach.javafx.util;
+    exports com.teach.javafx.controller.application;
+    exports com.teach.javafx.controller.studentFamily;
     opens com.teach.javafx.models to com.google.gson, javafx.base;
     exports com.teach.javafx.controller.honor;
     opens com.teach.javafx.controller.honor to com.google.gson, javafx.fxml;
     exports com.teach.javafx.controller.courseSelection;
     opens com.teach.javafx.controller.courseSelection to com.google.gson, javafx.fxml;
     opens com.teach.javafx.managers to javafx.fxml;
+    opens com.teach.javafx.factories to com.google.gson, javafx.fxml;
 }

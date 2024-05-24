@@ -229,7 +229,11 @@ TabPane样式
 .tab-pane .tab{
     -fx-background-color: #f9d3e3;
     -fx-background-radius: 10;
+<<<<<<<< HEAD:java2/java-fx/src/main/resources/com/teach/javafx/css/green-theme.css
     -fx-effect: innershadow(gaussian, f0c9cf, 10, 0,0,0);
+========
+    -fx-effect: innershadow(gaussian, #f0c9cf, 10, 0,0,0);
+>>>>>>>> b66ab8e73ccef3e13000a6eeb164dd9cb0a70202:java2/java-fx/src/main/resources/com/teach/javafx/css/pink-theme.css
 }
 
 .tab-pane .tab:selected{
@@ -282,7 +286,11 @@ BorderPane样式
 *****************************/
 
 .borderpane-container {
+<<<<<<<< HEAD:java2/java-fx/src/main/resources/com/teach/javafx/css/green-theme.css
     -fx-background-color: #FFCCDC;
+========
+    -fx-background-color: #FAE0DD;
+>>>>>>>> b66ab8e73ccef3e13000a6eeb164dd9cb0a70202:java2/java-fx/src/main/resources/com/teach/javafx/css/pink-theme.css
 }
 
 /***************************
@@ -292,7 +300,11 @@ VBox样式
 *****************************/
 
 VBox {
+<<<<<<<< HEAD:java2/java-fx/src/main/resources/com/teach/javafx/css/green-theme.css
     -fx-background-color: #FFCCDC;
+========
+    -fx-background-color: #FAE0DD;
+>>>>>>>> b66ab8e73ccef3e13000a6eeb164dd9cb0a70202:java2/java-fx/src/main/resources/com/teach/javafx/css/pink-theme.css
 }
 
 /***************************
@@ -302,7 +314,7 @@ AnchorPane样式
 *****************************/
 
 AnchorPane {
-    -fx-background-color: #effdff;
+    -fx-background-color: #FAE0DD;
 }
 
 /***************************
@@ -322,6 +334,7 @@ ImageView样式
 *****************************/
 
 .simple-info .student-dashboard-info{
+    -fx-background-color: #FAE0DD;
     -fx-font-size: 20px;
     -fx-font-weight: bold;
 }
@@ -339,4 +352,8 @@ ImageView样式
     -fx-border-width: 3 3 5 3;
     -fx-border-radius: 10;
     -fx-padding: 20px;
+}
+
+.Label{
+    -fx-background-color: #FAE0DD;
 }

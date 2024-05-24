@@ -1,7 +1,8 @@
 package com.teach.javafx.controller.courseSelection;
 
 import com.teach.javafx.controller.base.MessageDialog;
-import com.teach.javafx.controller.courseSelection.CourseSelectionController;
+import com.teach.javafx.factories.CourseActionValueFactory;
+import com.teach.javafx.factories.CourseValueFactory;
 import com.teach.javafx.request.HttpRequestUtil;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.collections.FXCollections;
@@ -9,19 +10,19 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.MapValueFactory;
+import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 import org.fatmansoft.teach.models.Course;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
+import org.fatmansoft.teach.util.CommonMethod;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class CheckChosenCourseDialogController {
     @FXML
@@ -35,7 +36,7 @@ public class CheckChosenCourseDialogController {
     @FXML
     public TableColumn<Course, String> preCourse;
     @FXML
-    public TableColumn<Course, MFXButton> action;
+    public TableColumn<Course, HBox> action;
     private List<Course> courses = new ArrayList<>();
     private ObservableList<Course> observableList = FXCollections.observableArrayList();
     private CourseSelectionController courseSelectionController;
@@ -54,7 +55,9 @@ public class CheckChosenCourseDialogController {
         for(Course c : courses){
             MFXButton button = new MFXButton("退选");
             button.setOnAction(this::onCancelButtonPressed);
-            c.setAction(button);
+            List<Button> buttons = new ArrayList<>();
+            buttons.add(button);
+            c.setAction(buttons);
         }
         setTableViewData();
     }
@@ -74,10 +77,10 @@ public class CheckChosenCourseDialogController {
         //设置按钮所在单元格为居中显示
         action.setCellFactory(new Callback<>() {
             @Override
-            public TableCell<Course, MFXButton> call(TableColumn<Course, MFXButton> courseMFXButtonTableColumn) {
-                TableCell<Course, MFXButton> cell = new TableCell<>() {
+            public TableCell<Course, HBox> call(TableColumn<Course, HBox> courseMFXButtonTableColumn) {
+                TableCell<Course, HBox> cell = new TableCell<>() {
                     @Override
-                    protected void updateItem(MFXButton item, boolean empty) {
+                    protected void updateItem(HBox item, boolean empty) {
                         super.updateItem(item, empty);
                         if (item == null || empty) {
                             setText(null);
@@ -101,9 +104,9 @@ public class CheckChosenCourseDialogController {
     //退选按钮按下时的回调
     public void onCancelButtonPressed(ActionEvent event){
         MFXButton button = (MFXButton) event.getTarget();
-        TableCell<Course, MFXButton> cell = (TableCell<Course, MFXButton>) button.getParent();
+        TableCell<Course, MFXButton> cell = (TableCell<Course, MFXButton>) button.getParent().getParent();
         int rowIndex = cell.getIndex();
-        Course c = observableList.get(rowIndex);
+        Course c = (Course) CommonMethod.getRowValue(event, 2, courseTableView);
         Integer courseId = c.getCourseId();
         if(courseId == null){
             MessageDialog.showDialog("退选失败: 无法找到该课程! ");

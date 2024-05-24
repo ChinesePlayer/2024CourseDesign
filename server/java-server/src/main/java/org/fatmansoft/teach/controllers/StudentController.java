@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.*;
 import java.net.URLEncoder;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.List;
 
@@ -84,6 +85,9 @@ public class StudentController {
      */
     public List getStudentMapList(String numName) {
         List dataList = new ArrayList();
+        if(numName == null){
+            numName = "";
+        }
         List<Student> sList = studentRepository.findStudentListByNumName(numName);  //数据库查询操作
         if (sList == null || sList.size() == 0)
             return dataList;
@@ -106,8 +110,26 @@ public class StudentController {
     @PreAuthorize("hasRole('ADMIN')")
     public DataResponse getStudentList(@Valid @RequestBody DataRequest dataRequest) {
         String numName = dataRequest.getString("numName");
+        if(numName == null){
+            numName = "";
+        }
         List dataList = getStudentMapList(numName);
         return CommonMethod.getReturnData(dataList);  //按照测试框架规范会送Map的list
+    }
+
+//    //教师端，用于获取所有选了这个教师的课的学生
+//    @PostMapping("/getStudentList")
+//    @PreAuthorize("hasRole('TEACHER')")
+//    public DataResponse getTeacherStudentList(@Valid @RequestBody DataRequest dataRequest) {
+//        String numName = dataRequest.getString("numName");
+//        List dataList = getStudentMapList(numName);
+//        return CommonMethod.getReturnData(dataList);  //按照测试框架规范会送Map的list
+//    }
+
+    //根据课程ID来查询所有选了这门课的学生
+    @PostMapping("/getStudentsListByCourseId")
+    public DataResponse getStudentsListByCourseId(@Valid @RequestBody DataRequest req) {
+        return studentService.getStudentsListByCourseId(req);
     }
 
 
@@ -178,7 +200,7 @@ public class StudentController {
     public DataResponse studentEditSave(@Valid @RequestBody DataRequest dataRequest) {
         Integer studentId = dataRequest.getInteger("studentId");
         Map form = dataRequest.getMap("form"); //参数获取Map对象
-        String num = CommonMethod.getString(form, "num");  //Map 获取属性的值
+        String num = CommonMethod.getString(form, "personNum");  //Map 获取属性的值
         Student s = null;
         Person p;
         User u;
@@ -191,15 +213,15 @@ public class StudentController {
                 s = op.get();
             }
         }
-        Optional<Person> nOp = personRepository.findByNum(num); //查询是否存在num的人员
+        Optional<Person> nOp = personRepository.findByPersonNum(num); //查询是否存在num的人员
         if (nOp.isPresent()) {
-            if (s == null || !s.getPerson().getNum().equals(num)) {
+            if (s == null || !s.getPerson().getPersonNum().equals(num)) {
                 return CommonMethod.getReturnMessageError("新学号已经存在，不能添加或修改！");
             }
         }
         if (s == null) {
             p = new Person();
-            p.setNum(num);
+            p.setPersonNum(num);
             p.setType("1");
             personRepository.saveAndFlush(p);  //插入新的Person记录
             String password = encoder.encode("123456");
@@ -220,16 +242,16 @@ public class StudentController {
             isNew = false;
         }
         personId = p.getPersonId();
-        if (!num.equals(p.getNum())) {   //如果人员编号变化，修改人员编号和登录账号
+        if (!num.equals(p.getPersonNum())) {   //如果人员编号变化，修改人员编号和登录账号
             Optional<User> uOp = userRepository.findByPersonPersonId(personId);
             if (uOp.isPresent()) {
                 u = uOp.get();
                 u.setUserName(num);
                 userRepository.saveAndFlush(u);
             }
-            p.setNum(num);  //设置属性
+            p.setPersonNum(num);  //设置属性
         }
-        p.setName(CommonMethod.getString(form, "name"));
+        p.setPersonName(CommonMethod.getString(form, "personName"));
         p.setDept(CommonMethod.getString(form, "dept"));
         p.setCard(CommonMethod.getString(form, "card"));
         p.setGender(CommonMethod.getString(form, "gender"));
@@ -261,13 +283,14 @@ public class StudentController {
         for (Score s : sList) {
             m = new HashMap();
             c = s.getCourse();
-            m.put("studentNum", s.getStudent().getPerson().getNum());
+            m.put("studentNum", s.getStudent().getPerson().getPersonNum());
             m.put("scoreId", s.getScoreId()+"");
             m.put("courseNum", c.getNum());
             m.put("courseName", c.getName());
             m.put("credit", c.getCredit());
             m.put("mark", s.getMark());
             m.put("rank", s.getRank());
+            m.put("status", s.getStatus());
             list.add(m);
         }
         return list;
@@ -346,7 +369,7 @@ public class StudentController {
     @PreAuthorize("hasRole('ROLE_STUDENT')")
     public DataResponse getStudentIntroduceData(@Valid @RequestBody DataRequest dataRequest) {
         String username = CommonMethod.getUsername();
-        Optional<Student> sOp = studentRepository.findByPersonNum(username);  // 查询获得 Student对象
+        Optional<Student> sOp = studentRepository.findByPersonPersonNum(username);  // 查询获得 Student对象
         if (!sOp.isPresent())
             return CommonMethod.getReturnMessageError("学生不存在！");
         Student s = sOp.get();
@@ -358,6 +381,17 @@ public class StudentController {
         data.put("markList", getStudentMarkList(sList));
         data.put("feeList", getStudentFeeList(s.getStudentId()));
         return CommonMethod.getReturnData(data);//将前端所需数据保留Map对象里，返还前端
+    }
+
+    //获取学生消费记录
+    @PostMapping("/getStudentFeeList")
+    public DataResponse getStudentFeeList(@Valid @RequestBody DataRequest req) {
+        Integer studentId = req.getInteger("studentId");
+        if(studentId == null){
+            return CommonMethod.getReturnMessageError("无法获取学生信息");
+        }
+        List<Map> feeList = getStudentFeeList(studentId);
+        return CommonMethod.getReturnData(feeList);
     }
 
     /**
@@ -570,6 +604,11 @@ public class StudentController {
         return CommonMethod.getReturnData(data);
     }
 
+    @PostMapping("/getStudentIntroHTML")
+    public DataResponse getStudentIntroHTML(@Valid @RequestBody DataRequest req){
+        return studentService.getStudentIntroHTML(req);
+    }
+
 
     public byte[] getStudentIntroduceItextPdfData(Integer studentId) {
         byte data[] = null;
@@ -750,7 +789,7 @@ public class StudentController {
                 m.put("relation", f.getRelation());
                 m.put("name", f.getName());
                 m.put("gender", f.getGender());
-                m.put("age", f.getAge());
+                m.put("birthday", CommonMethod.getStringFromDate(f.getBirthday()));
                 m.put("unit", f.getUnit());
                 dataList.add(m);
             }
@@ -779,7 +818,8 @@ public class StudentController {
         f.setRelation(CommonMethod.getString(form,"relation"));
         f.setName(CommonMethod.getString(form,"name"));
         f.setGender(CommonMethod.getString(form,"gender"));
-        f.setAge(CommonMethod.getInteger(form,"age"));
+        LocalDate birth = CommonMethod.getDateFromString(CommonMethod.getString(form,"birthday"),CommonMethod.DATE_FORMAT);
+        f.setBirthday(birth);
         f.setUnit(CommonMethod.getString(form,"unit"));
         familyMemberRepository.save(f);
         return CommonMethod.getReturnMessageOK();
@@ -789,10 +829,16 @@ public class StudentController {
     @PreAuthorize(" hasRole('ADMIN') or  hasRole('STUDENT')")
     public DataResponse familyMemberDelete(@Valid @RequestBody DataRequest dataRequest) {
         Integer memberId = dataRequest.getInteger("memberId");
+        if(memberId == null){
+            return CommonMethod.getReturnMessageError("无法获取成员信息");
+        }
         Optional<FamilyMember> op;
         op = familyMemberRepository.findById(memberId);
         if(op.isPresent()) {
             familyMemberRepository.delete(op.get());
+        }
+        else{
+            return CommonMethod.getReturnMessageError("无法获取成员信息");
         }
         return CommonMethod.getReturnMessageOK();
     }
@@ -818,6 +864,11 @@ public class StudentController {
     @PreAuthorize("hasRole('ROLE_STUDENT')")
     public DataResponse getStudentDashboardInfo(@Valid @RequestBody DataRequest req){
         return studentService.getStudentDashboardInfo(req);
+    }
+
+    @PostMapping("/getIntroducePdf")
+    public ResponseEntity<StreamingResponseBody> getIntroducePdf(@Valid @RequestBody DataRequest req){
+        return studentService.getIntroducePdf(req);
     }
 
 }

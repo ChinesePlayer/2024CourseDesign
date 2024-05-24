@@ -5,6 +5,7 @@ import org.fatmansoft.teach.models.*;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.repository.*;
+import org.fatmansoft.teach.service.TeacherService;
 import org.fatmansoft.teach.util.ComDataUtil;
 import org.fatmansoft.teach.util.CommonMethod;
 import org.fatmansoft.teach.util.DateTimeTool;
@@ -32,6 +33,8 @@ public class TeacherController {
     private UserTypeRepository userTypeRepository; //用户类型数据操作自动注入
     @Autowired
     private PasswordEncoder encoder;  //密码服务自动注入
+    @Autowired
+    private TeacherService teacherService;
 
     @PostMapping("/getTeacherList")
     @PreAuthorize("hasRole('ADMIN')")
@@ -41,6 +44,7 @@ public class TeacherController {
             numName ="";
         System.out.println("numName is : " + numName);
         List<Teacher> sList = teacherRepository.findTeacherListByNumName(numName);
+        System.out.println("sList的个数: " + sList.size());
         String dataToBeSent = JsonConvertUtil.getDataListJson(sList);
         System.out.println(dataToBeSent);
         return dataToBeSent;
@@ -104,7 +108,7 @@ public class TeacherController {
         Integer teacherId = dataRequest.getInteger("teacherId");
         Map form = dataRequest.getMap("form"); //参数获取Map对象
         Map pForm =  CommonMethod.getMap(form,"person");
-        String num = CommonMethod.getString(pForm, "num");  //Map 获取属性的值
+        String num = CommonMethod.getString(pForm, "personNum");  //Map 获取属性的值
         System.out.println("新添加的工号: " + num);
         Teacher s = null;
         Person p;
@@ -118,15 +122,18 @@ public class TeacherController {
                 s = op.get();
             }
         }
-        Optional<Person> nOp = personRepository.findByNum(num); //查询是否存在num的人员
-        if (nOp.isPresent()) {
-            if (s == null || s.getPerson().getNum().equals(num)) {
-                return CommonMethod.getReturnMessageError("新工号已经存在，不能添加或修改！");
-            }
+        Optional<Person> nOp = personRepository.findByPersonNum(num); //查询是否存在num的人员
+        if(nOp.isPresent() && s == null){
+            return CommonMethod.getReturnMessageError("工号已经存在，不能添加!");
         }
+//        if (nOp.isPresent()) {
+//            if (s == null || s.getPerson().getNum().equals(num)) {
+//                return CommonMethod.getReturnMessageError("新工号已经存在，不能添加或修改！");
+//            }
+//        }
         if (s == null) {
             p = new Person();
-            p.setNum(num);
+            p.setPersonNum(num);
             p.setType("2");
             personRepository.saveAndFlush(p);  //插入新的Person记录
             String password = encoder.encode("123456");
@@ -145,16 +152,16 @@ public class TeacherController {
             p = s.getPerson();
         }
         personId = p.getPersonId();
-        if (!num.equals(p.getNum())) {   //如果人员编号变化，修改人员编号和登录账号
+        if (!num.equals(p.getPersonNum())) {   //如果人员编号变化，修改人员编号和登录账号
             Optional<User> uOp = userRepository.findByPersonPersonId(personId);
             if (uOp.isPresent()) {
                 u = uOp.get();
                 u.setUserName(num);
                 userRepository.saveAndFlush(u);
             }
-            p.setNum(num);  //设置属性
+            p.setPersonNum(num);  //设置属性
         }
-        p.setName(CommonMethod.getString(pForm, "name"));
+        p.setPersonName(CommonMethod.getString(pForm, "personName"));
         p.setDept(CommonMethod.getString(pForm, "dept"));
         p.setCard(CommonMethod.getString(pForm, "card"));
         p.setGender(CommonMethod.getString(pForm, "gender"));
@@ -169,4 +176,21 @@ public class TeacherController {
         return CommonMethod.getReturnData(s.getTeacherId());  // 将studentId返回前端
     }
 
+    //获取选了某门课程的所有学生
+    @PostMapping("/getStudentList")
+    public DataResponse getStudents(@Valid @RequestBody DataRequest req){
+        return teacherService.getStudents(req);
+    }
+
+    //用于教师端修改学生的课程信息
+    @PostMapping("/saveStudentInfo")
+    public DataResponse saveStudentInfo(@Valid @RequestBody DataRequest req){
+        return teacherService.saveStudentInfo(req);
+    }
+
+    //获取该教师开设的所有课程
+    @PostMapping("/getCourseList")
+    public DataResponse getCourseList(@Valid @RequestBody DataRequest req){
+        return teacherService.getCourseList(req);
+    }
 }

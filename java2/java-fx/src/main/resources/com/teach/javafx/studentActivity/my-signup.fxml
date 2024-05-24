@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+
+<!-- 学生端查看自己已报名的活动 -->
+
+<BorderPane prefHeight="400.0" prefWidth="600.0" styleClass="borderpane-container" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teach.javafx.controller.studentActivity.MySignupController">
+    <center>
+        <TableView fx:id="tableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <columns>
+                <TableColumn fx:id="activityNum"  text="活动编号" prefWidth="120"/>
+                <TableColumn fx:id="activityName"  text="活动名称" prefWidth="160"/>
+                <TableColumn fx:id="start" prefWidth="160" text="开始时间" />
+                <TableColumn fx:id="end" prefWidth="160" text="结束时间" />
+                <TableColumn fx:id="actions"  text="操作" sortable="false" prefWidth="200"/>
+            </columns>
+        </TableView>
+    </center>
+    <top>
+        <HBox alignment="CENTER_LEFT" prefHeight="59.0" prefWidth="600.0" spacing="10.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label text="活动状态: " />
+                <ComboBox fx:id="statusCombo" prefWidth="150.0" />
+                <Button mnemonicParsing="false" text="查询" onAction="#onQueryButtonClick" />
+            </children>
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+        </HBox>
+    </top>
+</BorderPane>

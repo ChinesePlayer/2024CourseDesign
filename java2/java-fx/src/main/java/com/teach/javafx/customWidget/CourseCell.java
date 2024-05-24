@@ -22,7 +22,7 @@ public class CourseCell extends StackPane {
     //背景默认颜色为白色
     private Color backgroundColor = Color.WHITE;
     //默认边框样式
-    private BorderStroke borderStroke = new BorderStroke(Color.GREY, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(0.5));
+    private BorderStroke borderStroke = new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT);
     private Border border = new Border(borderStroke);
     private double height = 80.0;
     private double width = 80.0;
@@ -30,6 +30,7 @@ public class CourseCell extends StackPane {
     public CourseCell(){
         super();
         this.textLabel = new Label();
+        textLabel.getStylesheets().add("-fx-font-size:1px;");
         Tooltip tooltip = new Tooltip(textLabel.getText());
         tooltip.setShowDelay(Duration.millis(5));
         Tooltip.install(textLabel, tooltip);
@@ -46,6 +47,7 @@ public class CourseCell extends StackPane {
     public CourseCell(Label label){
         super();
         this.textLabel = label;
+        textLabel.getStylesheets().add("-fx-font-size:1px;");
         Tooltip tooltip = new Tooltip(textLabel.getText());
         tooltip.setShowDelay(Duration.millis(5));
         Tooltip.install(textLabel, tooltip);
@@ -63,7 +65,7 @@ public class CourseCell extends StackPane {
         super();
         this.backgroundColor = color;
         this.courseName = course.getName();
-        this.teacherName = course.getTeacher().getName();
+        this.teacherName = course.getTeacher().getPersonName();
         this.loc = course.getLocation().getValue();
         String labelStr = "";
         if(courseName == null || courseName.isEmpty()){
@@ -85,6 +87,7 @@ public class CourseCell extends StackPane {
             labelStr += teacherName;
         }
         this.textLabel = new Label(labelStr);
+        textLabel.getStylesheets().add("-fx-font-size:1px;");
         Tooltip tooltip = new Tooltip(textLabel.getText());
         tooltip.setShowDelay(Duration.millis(5));
         Tooltip.install(textLabel, tooltip);

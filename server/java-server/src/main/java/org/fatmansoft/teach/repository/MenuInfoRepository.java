@@ -25,4 +25,8 @@ public interface MenuInfoRepository extends JpaRepository<MenuInfo,Integer> {
 
     @Query("select mi.svgImage.svgPath from MenuInfo mi where mi.id=?1")
     Optional<String> findSvgPathByMenuId(Integer menuId);
+
+    //查找所有父ID是传入ID的菜单
+    @Query("select mi from MenuInfo mi where mi.pid=?1")
+    List<MenuInfo> findByPid(Integer pid);
 }

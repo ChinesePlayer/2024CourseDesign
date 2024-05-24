@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TeacherRepository extends JpaRepository<Teacher,Integer> {
-    @Query(value = "from Teacher where ?1='' or person.num like %?1% or person.name like %?1% ")
+    @Query(value = "from Teacher where ?1='' or person.personNum like %?1% or person.personName like %?1% ")
     List<Teacher> findTeacherListByNumName(String numName);
 
     @Query(value="select t from Teacher t, User u where u.person.personId = t.person.personId and u.userId=?1")

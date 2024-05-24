@@ -7,9 +7,11 @@
 **********************************/
 
 /* 取消所有元素被选中时的焦点边框颜色 */
-*{
+.root{
     -fx-focus-color: #8caede;
     /*-fx-font-family: 'AmaticSC-Regular';*/
+    -fx-font-family:"Arial";
+    -fx-font-size:19px;
 }
 
 
@@ -23,7 +25,7 @@
 
 .tree-view .tree-cell{
     -fx-background-color: transparent;
-    -fx-padding: 0.8em;
+    -fx-padding:0.9em 0.7em;
 }
 
 .tree-view {
@@ -50,9 +52,9 @@
 
 .tree-view .tree-cell:selected:expanded, .tree-view .tree-cell:sub-tree-item:selected, .tree-view .tree-cell:expanded{
     -fx-text-fill: #3E3A39;
-    -fx-font-weight: bold;
-    -fx-effect: dropshadow( gaussian , #496995 , 0.5 , 0.5 , 0 , 1 );
-    -fx-font-size: 20px;
+    /*-fx-font-weight: bold;*/
+    -fx-effect: dropshadow( gaussian , #496995 , 0.5 , 0.3 , 0.3 , 0.5 );
+    /*-fx-font-size: 20px;*/
 }
 
 .tree-view .tree-cell:selected{
@@ -64,12 +66,12 @@
 }
 
 .tree-view .tree-cell:hover{
-    -fx-font-size:21px;
+    -fx-font-size:19px;
     -fx-background-color: lightblue;
     -fx-effect: dropshadow(gaussian, #88abda, 20.0, 0,10,10);
     -fx-background-radius: 0.0 8 8 8;
     -fx-opacity: 0.8;
-    -fx-padding: 0.8em;
+    -fx-padding:0，9em 0.7em;
 }
 
 
@@ -95,13 +97,13 @@
 
 .menu-button:hover, .menu-button:focused, .menu-button:showing {
     -fx-font-family: Arial;
-    -fx-padding: 0.5em;
+    /*-fx-padding: 0.5em;*/
     -fx-background-color: linear-gradient(to bottom, #003152, #152F60);
     -fx-opacity: 0.8;
     -fx-text-fill: white;
     -fx-background-radius: 0.0 6.0 6.0 6.0;
     -fx-effect: dropshadow(gaussian, #6f8693, 20.0, 0,10,10);
-    -fx-font-size:  20px ;
+    -fx-font-size:  19px ;
 }
 
 /*******************************
@@ -114,16 +116,16 @@
     -fx-background-color: linear-gradient(to bottom, #93b5d0, lightblue);
     -fx-background-insets: 0.0;
     -fx-background-radius: 0.0 6.0 6.0 6.0;
-    -fx-padding: 0.6em 0.2em 0.6em 0.2em;
-    -fx-font-size:  18px ;
+    /*-fx-padding: 0.6em 0.2em 0.6em 0.2em;*/
+    -fx-font-size:  19px ;
 }
 
 .context-menu .menu-item:hover, .context-menu .menu-item:focused{
     -fx-background-color: #152f60;
     -fx-background-radius: 0.0 6.0 6.0 6.0;
-    -fx-opacity: 0.8;
+    -fx-opacity: 0.6;
     -fx-effect: dropshadow(gaussian, #6f8693, 20.0, 0,10,10);
-    -fx-padding: 0.6em;
+    /*-fx-padding: 0.6em;*/
 }
 
 
@@ -188,7 +190,9 @@
 /* 列头文字颜色 */
 .table-view .column-header .label{
     -fx-text-fill: #ffffff;
-    -fx-font-size:20px;
+    -fx-font-size:19px;
+    -fx-font-family: "Arial";
+    -fx-font-weight: bold;
 }
 
 /* 改变无数据列的列头背景 */
@@ -210,6 +214,7 @@ ComboBox样式
     -fx-background-color: #ffffff;
     -fx-background-radius: 6 6 6 6;
     -fx-border-radius: 5px;
+    -fx-border-color:#9bbcd8;
 }
 
 .combo-box:focused{
@@ -282,19 +287,23 @@ TabPane样式
     -fx-background-color: #c8d1ec;
     -fx-background-radius: 10;
     -fx-effect: innershadow(gaussian, lightblue, 10, 0,0,0);
+    -fx-font-size:15px;
 }
 
 .tab-pane .tab:selected{
     -fx-background-color: #a1aad0;
     -fx-focus-color: #ffffff;
+    -fx-font-size:15px;
 }
 
 .tab-pane .tab:selected .tab-label{
     -fx-text-fill: #ffffff;
+    -fx-font-size:15px;
 }
 
 .tab-pane .tab-header-area .tab-header-background{
     -fx-background-color: #effdff;
+    -fx-font-size:15px;
 }
 
 /***************************
@@ -305,7 +314,7 @@ Button样式
 
 .button {
     -fx-font-family: "Arial"; /* 设置字体系列为 Arial */
-    -fx-font-size: 18px;
+    -fx-font-size: 19px;
     -fx-background-color: linear-gradient(to top, #9fd1ff, lightblue);
     -fx-padding: 5 10 5 10;
     -fx-font-weight: lighter;
@@ -315,7 +324,7 @@ Button样式
 .button:hover{
     -fx-background-color: linear-gradient(to top, lightblue, #d4e5ef);
     -fx-effect: dropshadow(gaussian, #90c7f0, 10,0,0,0);
-    -fx-font-size: 20px;
+    -fx-font-size: 19px;
 }
 
 .login-button{
@@ -368,6 +377,7 @@ ImageView样式
 .image-view{
     -fx-effect: dropshadow(gaussian, black,15,0,0,0);
 }
+
 
 /***************************
 
@@ -460,3 +470,14 @@ ImageView样式
 	-fx-border-color: -mfx-#6a6c70;
 }*/
 
+.mfx-checkbox {
+	-mfx-main: #3c85bc;
+	-mfx-secondary: #424242;
+    -fx-font-size:19px;
+	-fx-font-family: "Arial";
+	-fx-text-fill: -mfx-text-he;
+}
+
+.course-cell {
+    -fx-font-size:1px;
+}

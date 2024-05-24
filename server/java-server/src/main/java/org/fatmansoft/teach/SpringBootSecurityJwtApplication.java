@@ -1,5 +1,6 @@
 package org.fatmansoft.teach;
 
+import org.fatmansoft.teach.util.CommonMethod;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

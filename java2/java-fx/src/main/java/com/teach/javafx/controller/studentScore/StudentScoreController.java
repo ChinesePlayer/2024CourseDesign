@@ -2,6 +2,7 @@ package com.teach.javafx.controller.studentScore;
 
 import com.teach.javafx.AppStore;
 import com.teach.javafx.controller.base.MessageDialog;
+import com.teach.javafx.factories.StudentScoreValueFactory;
 import com.teach.javafx.request.HttpRequestUtil;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.collections.FXCollections;
@@ -53,7 +54,6 @@ public class StudentScoreController {
 
     @FXML
     public void initialize(){
-        //TODO:设置表格工厂
         courseName.setCellValueFactory(new StudentScoreValueFactory());
         courseNum.setCellValueFactory(new StudentScoreValueFactory());
         credit.setCellValueFactory(new StudentScoreValueFactory());
@@ -97,6 +97,7 @@ public class StudentScoreController {
     }
 
     public void setDataView(){
+        observableList.clear();
         observableList.addAll(FXCollections.observableArrayList(scoreList));
         scoreTableView.setItems(observableList);
     }

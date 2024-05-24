@@ -2,17 +2,13 @@ package com.teach.javafx.controller;
 
 import com.teach.javafx.MainApplication;
 import com.teach.javafx.controller.base.MessageDialog;
-import com.teach.javafx.controller.studentScore.StudentScoreValueFactory;
+import com.teach.javafx.factories.StudentScoreValueFactory;
 import com.teach.javafx.models.Student;
 import com.teach.javafx.request.HttpRequestUtil;
-import com.teach.javafx.request.OptionItem;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.chart.PieChart;
 import javafx.util.Callback;
 import org.fatmansoft.teach.models.Course;
 import org.fatmansoft.teach.models.Score;
@@ -25,7 +21,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.MapValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -39,6 +34,8 @@ public class ScoreTableController {
     private TableView<Score> dataTableView;
     @FXML
     private TableColumn<Score,String> studentNum;
+    @FXML
+    public TableColumn<Score, String> status;
     @FXML
     private TableColumn<Score,String> studentName;
     @FXML
@@ -193,6 +190,7 @@ public class ScoreTableController {
         courseName.setCellValueFactory(new StudentScoreValueFactory());
         credit.setCellValueFactory(new StudentScoreValueFactory());
         mark.setCellValueFactory(new StudentScoreValueFactory());
+        status.setCellValueFactory(new StudentScoreValueFactory());
         editColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Score, Button>, ObservableValue<Button>>() {
             @Override
             public ObservableValue<Button> call(TableColumn.CellDataFeatures<Score, Button> data) {
@@ -216,7 +214,7 @@ public class ScoreTableController {
         Scene scene = null;
         try {
             fxmlLoader = new FXMLLoader(MainApplication.class.getResource("score-edit-dialog.fxml"));
-            scene = new Scene(fxmlLoader.load(), 260, 140);
+            scene = new Scene(fxmlLoader.load(), 460, 460);
             stage = new Stage();
             stage.initOwner(MainApplication.getMainStage());
             //设置当前对话框的模态: 即当对话框关闭前，用户无法与其父窗口进行交互
@@ -237,6 +235,7 @@ public class ScoreTableController {
             throw new RuntimeException(e);
         }
     }
+
     public void doClose(String cmd, Map data) {
         MainApplication.setCanClose(true);
         stage.close();
@@ -258,7 +257,8 @@ public class ScoreTableController {
         req.add("courseId",courseId);
         req.add("scoreId",CommonMethod.getInteger(data,"scoreId"));
         req.add("mark",CommonMethod.getInteger(data,"mark"));
-        res = HttpRequestUtil.request("/api/score/scoreSave",req); //从后台获取所有学生信息列表集合
+        req.add("status", CommonMethod.getInteger(data, "status"));
+        res = HttpRequestUtil.request("/api/score/scoreSave",req);
         if(res != null && res.getCode()== 0) {
             onQueryButtonClick();
         }

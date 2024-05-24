@@ -1,50 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
+<?import com.teach.javafx.customWidget.*?>
+<?import io.github.palexdev.materialfx.controls.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.control.Label?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.chart.BarChart?>
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.chart.PieChart?>
-<?import javafx.scene.control.ScrollPane?>
-<?import com.teach.javafx.customWidget.CourseTable?>
-<?import io.github.palexdev.materialfx.controls.MFXButton?>
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.teach.javafx.controller.StudentDashboardController"
-            prefHeight="400.0" prefWidth="600.0"
-            styleClass="borderpane-container">
-
-    <center>
-        <ScrollPane fitToHeight="true" fitToWidth="true">
+<BorderPane prefHeight="400.0" prefWidth="600.0" styleClass="borderpane-container" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teach.javafx.controller.StudentDashboardController">
+   <right>
+        <ScrollPane fitToHeight="false" fitToWidth="true" BorderPane.alignment="CENTER">
             <VBox>
                 <padding>
-                    <Insets top="20" bottom="20" left="20" right="20" />
+                    <Insets bottom="20" left="60" right="60" top="20" />
                 </padding>
-                <HBox alignment="CENTER_LEFT" spacing="50" styleClass="simple-info">
+                <HBox alignment="CENTER_LEFT" spacing="50" styleClass="simple-info" prefHeight="200">
                     <VBox.margin>
-                        <Insets bottom="30"/>
+                        <Insets bottom="30" />
                     </VBox.margin>
-                    <ImageView fx:id="avatar"/>
-                    <VBox spacing="5" alignment="CENTER_LEFT" styleClass="student-dashboard-info">
-                        <Label fx:id="studentName"/>
-                        <Label fx:id="studentNum" />
-                        <Label fx:id="studentDept"/>
+                    <ImageView fx:id="avatar" />
+                    <VBox alignment="CENTER_LEFT" spacing="5" styleClass="student-dashboard-info">
+                        <Label fx:id="studentName"  style="-fx-font-size: 24px"/>
+                        <Label fx:id="studentNum"  style="-fx-font-size: 24px"/>
+                        <Label fx:id="studentDept"  style="-fx-font-size: 24px"/>
                     </VBox>
                     <Label fx:id="greetings" styleClass="greetings-label">
                         <HBox.margin>
-                            <Insets left="100" />
+                            <Insets left="100"  right="100"/>
                         </HBox.margin>
                     </Label>
+                    <Button onAction="#onGoToSDUWebsite" text="跳转到山东大学官网" />
                 </HBox>
                 <HBox spacing="20">
-                    <VBox maxWidth="400" maxHeight="500" styleClass="simple-info">
-                        <Label text="统计数据" style="-fx-font-size: 20px" />
-                        <BarChart fx:id="costBarChart">
+                    <VBox maxHeight="1000" maxWidth="780" prefHeight="1400" prefWidth="6000" spacing="40" styleClass="simple-info">
+                        <VBox alignment="CENTER">
+                            <padding>
+                                <Insets bottom="10.0" left="0.0" right="0.0" top="10.0" />
+                            </padding>
+                            <HBox alignment="CENTER" spacing="28">
+                                <Label style="-fx-font-size: 26px" text="统计数据" />
+                                <Button minHeight="50" onAction="#onCheckDetailFee" text="详细数据" />
+                            </HBox>
+                        </VBox>
+                        <BarChart fx:id="costBarChart" maxHeight="400">
                             <xAxis>
                                 <CategoryAxis label="日期" side="BOTTOM" />
                             </xAxis>
@@ -52,25 +51,50 @@
                                 <NumberAxis label="金额" side="LEFT" />
                             </yAxis>
                         </BarChart>
-                        <PieChart fx:id="markPieChart"/>
+                        <PieChart fx:id="markPieChart" maxHeight="400" />
                     </VBox>
-                    <VBox styleClass="simple-info" alignment="CENTER" spacing="5">
-                        <Label text="本周课表" style="-fx-font-size: 20px"/>
-                        <CourseTable fx:id="courseTable" prefWidth="480" prefHeight="360" />
-                        <MFXButton text="刷新" onAction="#refreshCourseTable"/>
-                    </VBox>
-                    <VBox spacing="5" styleClass="simple-info">
-                        <Label text="快捷操作" style="-fx-font-size: 20px"/>
-                        <FlowPane fx:id="shortcuts" hgap="10" vgap="20"/>
+                    <VBox spacing="40">
+                        <VBox  alignment="TOP_CENTER" maxHeight="356" prefHeight="456" prefWidth="240" spacing="28" styleClass="simple-info">
+                            <HBox alignment="CENTER" spacing="40">
+                                <padding>
+                                    <Insets bottom="60.0" left="0.0" right="0.0" top="10.0" />
+                                </padding>
+                                <Label style="-fx-font-size: 26px" text="快捷操作" />
+                                <Button onAction="#onEditShortcuts" text="编辑快捷操作" />
+                            </HBox >
+                            <FlowPane fx:id="shortcuts" hgap="10" maxHeight="300" prefHeight="100" vgap="20">
+                                <padding>
+                                    <Insets bottom="80.0" left="40.0" right="20.0" top="0.0" />
+                                </padding>
+                            </FlowPane>
+                                <padding>
+                                    <Insets bottom="80.0" left="100.0" right="20.0" top="20.0" />
+                                </padding>
+                        </VBox>
+                        <VBox alignment="CENTER" maxHeight="700" spacing="5" styleClass="simple-info">
+                            <VBox alignment="CENTER">
+                                <padding>
+                                    <Insets bottom="40.0" left="0.0" right="0.0" top="20.0" />
+                                </padding>
+                                <Label style="-fx-font-size: 26px" text="本周课表" />
+                            </VBox>
+                            <CourseTable fx:id="courseTable" prefHeight="360" prefWidth="480" />
+                            <VBox alignment="CENTER">
+                                <padding>
+                                    <Insets bottom="10.0" left="0.0" right="0.0" top="40.0" />
+                                </padding>
+                                <MFXButton onAction="#refreshCourseTable" text="刷新" />
+                            </VBox >
+                            <padding>
+                                <Insets bottom="20" left="20" right="20" top="0" />
+                            </padding>
+                        </VBox>
                     </VBox>
                 </HBox>
 
-
-
             </VBox>
         </ScrollPane>
-
-    </center>
+   </right>
 
 
 </BorderPane>

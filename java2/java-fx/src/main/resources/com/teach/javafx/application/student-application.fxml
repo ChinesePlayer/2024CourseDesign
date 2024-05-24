@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+
+<BorderPane prefHeight="495.0" prefWidth="719.0" styleClass="borderpane-container" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teach.javafx.controller.application.StudentApplicationController">
+    <top>
+        <VBox prefHeight="154.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+            <children>
+                <HBox alignment="CENTER_LEFT" prefHeight="66.0" prefWidth="600.0">
+                    <children>
+                        <Label text="我的假条" style="-fx-font-size: 30px;" />
+                    </children>
+                    <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                    </padding>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" prefHeight="67.0" prefWidth="719.0" spacing="10.0">
+                    <children>
+                        <Label text="假条状态: " />
+                        <ComboBox fx:id="statusCombo" prefWidth="150.0" />
+                        <Button onAction="#onQueryButtonClick" mnemonicParsing="false" text="查询" />
+                        <Button onAction="#onNewApplication" mnemonicParsing="false" text="请假" />
+                    </children>
+                    <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                    </padding>
+                </HBox>
+            </children>
+        </VBox>
+    </top>
+    <center>
+        <TableView fx:id="tableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <columns>
+                <TableColumn fx:id="applicationType" prefWidth="100" text="请假类型" />
+                <TableColumn fx:id="leaveDate" prefWidth="150" text="离校时间" />
+                <TableColumn fx:id="returnDate" prefWidth="150" text="返校时间" />
+                <TableColumn fx:id="status" prefWidth="100" text="假条状态" />
+                <TableColumn fx:id="actions" prefWidth="300" text="操作" />
+            </columns>
+        </TableView>
+    </center>
+</BorderPane>

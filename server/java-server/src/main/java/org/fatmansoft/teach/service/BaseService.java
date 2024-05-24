@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.fatmansoft.teach.models.DictionaryInfo;
 import org.fatmansoft.teach.models.MenuInfo;
 import org.fatmansoft.teach.models.Student;
+import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.payload.response.MyTreeNode;
 import org.fatmansoft.teach.repository.DictionaryInfoRepository;
 import org.fatmansoft.teach.repository.MenuInfoRepository;
@@ -18,14 +19,16 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 /**
  * BaseService 系统菜单、数据字典等处理的功能和方法
@@ -108,6 +111,7 @@ public class BaseService {
         node.setUserTypeIds(d.getUserTypeIds());
         node.setParentTitle(parentTitle);
         node.setPid(pid);
+        //System.out.println("当前菜单的名称: " + node.getLabel());
         List<MyTreeNode> childList = new ArrayList<MyTreeNode>();
         node.setChildren(childList);
         List<MenuInfo> sList = menuInfoRepository.findByUserTypeIds("",d.getId());
@@ -166,6 +170,29 @@ public class BaseService {
             return null;
         }
         return studentOptional.get();
+    }
+
+    public DataResponse uploadMultiFiles(MultipartFile[] files, String remotePath){
+        //将所有文件储存在指定目录
+        List<String> fileNames = Arrays.stream(files)
+            .map(file->{
+                try {
+                    // 生成具有递增数字的唯一文件名
+                    String uniqueFileName = CommonMethod.generateUniqueFileName(file.getOriginalFilename(), remotePath);
+                    // 保存文件
+                    Path path = Paths.get(remotePath + uniqueFileName);
+                    Files.createDirectories(path.getParent());
+                    Files.write(path, file.getBytes());
+                    return uniqueFileName;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return "Failed to upload " + file.getOriginalFilename();
+                }
+        }).toList();
+        if(fileNames.isEmpty()){
+            return CommonMethod.getReturnMessageError("上传文件失败");
+        }
+        return CommonMethod.getReturnData(fileNames);
     }
 
 }

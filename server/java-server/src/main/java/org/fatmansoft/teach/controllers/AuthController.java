@@ -80,6 +80,7 @@ public class AuthController {
      */
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+        System.out.println(CommonMethod.getDefaultAvatar());
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -130,8 +131,8 @@ public class AuthController {
             return CommonMethod.getReturnMessageError("用户已经存在，不能注册！");
         }
         Person p = new Person();
-        p.setNum(username);
-        p.setName(perName);
+        p.setPersonNum(username);
+        p.setPersonName(perName);
         p.setEmail(email);
         if("ADMIN".equals(role)) {
             p.setType("0");

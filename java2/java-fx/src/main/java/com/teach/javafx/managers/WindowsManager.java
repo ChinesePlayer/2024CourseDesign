@@ -2,9 +2,13 @@ package com.teach.javafx.managers;
 
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
+import java.io.IOException;
 import java.util.List;
 
 
@@ -33,9 +37,14 @@ public class WindowsManager {
                     if(change.wasAdded()){
                         List<Window> addedWindows = (List<Window>) change.getAddedSubList();
                         for(Window w : addedWindows){
-                            Stage stage = (Stage) w;
-                            stage.getScene().getStylesheets().clear();
-                            stage.getScene().getStylesheets().add(ThemeManager.getInstance().getCurrentExternForm());
+                            try{
+                                Stage stage = (Stage) w;
+                                stage.getScene().getStylesheets().clear();
+                                stage.getScene().getStylesheets().add(ThemeManager.getInstance().getCurrentExternForm());
+                            }
+                            catch (ClassCastException e){
+                                //该异常并无大碍，直接忽略
+                            }
                         }
                     }
                 }
@@ -58,5 +67,33 @@ public class WindowsManager {
     //获取所有窗口
     public List<Window> getWindows(){
         return windows.stream().toList();
+    }
+
+    //创建一个新窗口
+    //参数含义:
+    //loader: 窗口的FXML资源加载器
+    //width, height: 窗口的宽高
+    //title: 窗口标题
+    //owner: 窗口的父窗口
+    //modality: 窗口的交互模态
+    //action: 在新窗口创建时需要进行的初始化操作
+    public Stage openNewWindow(FXMLLoader loader, int width, int height, String title, Window owner, Modality modality, WindowOpenAction action) throws IOException {
+        Scene scene = new Scene(loader.load(), width, height);
+        Object controller = loader.getController();
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.setTitle(title == null ? "" : title);
+        if(owner != null){
+            stage.initOwner(owner);
+        }
+        if(modality != null){
+            stage.initModality(modality);
+        }
+        if(action != null){
+            action.init(controller);
+            action.init(controller, stage);
+        }
+        stage.show();
+        return stage;
     }
 }

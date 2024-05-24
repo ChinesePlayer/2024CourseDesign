@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.teach.javafx.customWidget.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="489.0" prefWidth="707.0" styleClass="borderpane-container" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teach.javafx.controller.teacherCourse.HomeworkAlignController">
+    <top>
+        <HBox>
+            <padding>
+                <Insets bottom="20.0" left="10.0" right="20.0" top="3000.0" />
+            </padding>
+        </HBox>
+        <GridPane alignment="CENTER" prefHeight="449.0" prefWidth="800.0" vgap="15" BorderPane.alignment="CENTER">
+            <columnConstraints>
+                <ColumnConstraints maxWidth="160" minWidth="35.666668574015304" prefWidth="160" />
+                <ColumnConstraints maxWidth="450" minWidth="10.0" prefWidth="400" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints maxHeight="32.33333333333333" minHeight="20.33333237965902" prefHeight="26.333333333333332" />
+                <RowConstraints maxHeight="100" minHeight="30.0" prefHeight="100" />
+                <RowConstraints maxHeight="100.0" minHeight="30.0" prefHeight="100.0" />
+                <RowConstraints maxHeight="100.0" minHeight="30.0" prefHeight="100.0" />
+                <RowConstraints maxHeight="100.0" minHeight="30.0" prefHeight="100.0" />
+                <RowConstraints maxHeight="50.0" minHeight="30.0" prefHeight="45.0" />
+            </rowConstraints>
+            <children>
+                <Label prefHeight="27.0" prefWidth="120.0" text="作业标题" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                <TextField fx:id="titleField" GridPane.columnIndex="1" />
+                <Label text="作业描述" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" prefWidth="120.0"/>
+                <TextArea fx:id="contentArea" prefHeight="78.0" prefWidth="95.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <Button mnemonicParsing="false" onAction="#onSubmit" text="提交" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+                <Label text="开始时间" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" prefWidth="120.0"/>
+                <Label text="截止时间" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" prefWidth="120.0"/>
+                <HBox alignment="CENTER_LEFT" prefHeight="80.0" prefWidth="422.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                    <children>
+                        <DatePicker fx:id="startPicker" prefWidth="40"/>
+                        <TimePicker fx:id="startTime" prefWidth="450"/>
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" prefHeight="77.0" prefWidth="293.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                    <children>
+                        <DatePicker fx:id="endPicker" prefWidth="450"/>
+                        <TimePicker fx:id="endTime" prefWidth="300"/>
+                    </children>
+                </HBox>
+                <Button mnemonicParsing="false" onAction="#onHomeworkFileClick" text="作业文件" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+            </children>
+            <BorderPane.margin>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </BorderPane.margin></GridPane>
+    </top>
+
+</BorderPane>

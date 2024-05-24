@@ -7,21 +7,32 @@ import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.fatmansoft.teach.models.Student;
+import org.fatmansoft.teach.SpringBootSecurityJwtApplication;
 import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.security.services.UserDetailsImpl;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
  * CommonMethod 公共处理方法实例类
  */
 public class CommonMethod {
+    public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    public static final String DATE_FORMAT = "yyyy-MM-dd";
     private static ObjectMapper mapper = new ObjectMapper();
     public static final MediaType exelType = new MediaType("application", "vnd.openxmlformats-officedocument.spreadsheetml.sheet");
     public static DataResponse getReturnData(Object obj, String msg){
@@ -436,5 +447,100 @@ public class CommonMethod {
         }catch(Exception e){
             return "";
         }
+    }
+
+    //根据该类开头定义的日期格式返回日期字符串
+    public static String getLocalDateTimeString(LocalDateTime dateTime){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);
+        return dateTime.format(formatter);
+    }
+
+    //根据学生ID获取学生头像路径
+    public static String getAvatar(Integer personId, String attachFolder){
+        return attachFolder + "photo/" + personId + ".jpg";
+    }
+
+    //将文件的字节大小转换为合适的单位大小
+    public static String formatFileSize(long sizeInBytes) {
+        if (sizeInBytes <= 0) return "0 B";
+
+        final String[] units = {"B", "KB", "MB", "GB", "TB"};
+        int digitGroups = (int) (Math.log10(sizeInBytes) / Math.log10(1024));
+        return new DecimalFormat("#,##0.#").format(sizeInBytes / Math.pow(1024, digitGroups)) + " " + units[digitGroups];
+    }
+
+    public static String generateUniqueFileName(String originalFileName, String remotePath) {
+        String extension = "";
+        int dotIndex = originalFileName.lastIndexOf(".");
+        if (dotIndex > 0) {
+            extension = originalFileName.substring(dotIndex);
+            originalFileName = originalFileName.substring(0, dotIndex);
+        }
+        String fileName = originalFileName;
+        int count = 0;
+        while (Files.exists(Paths.get( remotePath + fileName + extension))) {
+            count++;
+            fileName = originalFileName + "(" + count + ")";
+        }
+        return fileName + extension;
+    }
+
+    //保存文件, 返回保存成功的文件个数
+    public static int saveMultipartFiles(MultipartFile[] files, String savePath, HasSavedAction hasSavedAction){
+        int count = 0;
+        if(files == null){
+            return count;
+        }
+        for(MultipartFile file : files){
+            if(file == null){
+                continue;
+            }
+            try{
+                String uniqueName = CommonMethod.generateUniqueFileName(file.getOriginalFilename(), savePath);
+                Path path = Paths.get(savePath + uniqueName);
+                Files.createDirectories(path.getParent());
+                Files.write(path, file.getBytes());
+                count++;
+                if(hasSavedAction != null){
+                    hasSavedAction.action(path.toFile());
+                }
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+        return count;
+    }
+
+    //获取默认头像路径
+    public static String getDefaultAvatar(){
+        return SpringBootSecurityJwtApplication.class.getResource("/image/noAvatar.jpg").getPath();
+    }
+
+    //从字符串解析LocalDateTime对象
+    //解析方法使用后端定义的标准格式
+    public static LocalDateTime getDateTimeFromString(String dateTimeStr){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);
+        return LocalDateTime.parse(dateTimeStr, formatter);
+    }
+
+    public static LocalDate getDate(String dateStr){
+        return getDateTimeFromString(dateStr).toLocalDate();
+    }
+
+    public static String getStringFromDate(LocalDate date){
+        if (date == null){
+            return null;
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(CommonMethod.DATE_FORMAT);
+        return date.format(formatter);
+    }
+
+    public static LocalDate getDateFromString(String dateStr, String pattern){
+        if(dateStr == null){
+            return null;
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+        return LocalDate.parse(dateStr, formatter);
     }
 }
