@@ -43,7 +43,6 @@ import java.util.List;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/student")
-
 public class StudentController {
     //Java 对象的注入 我们定义的这下Java的操作对象都不能自己管理是由有Spring框架来管理的， StudentController 中要使用StudentRepository接口的实现类对象，
     // 需要下列方式注入，否则无法使用， studentRepository 相当于StudentRepository接口实现对象的一个引用，由框架完成对这个引用的赋值，
@@ -420,7 +419,7 @@ public class StudentController {
     public String importFeeData(Integer studentId,InputStream in){
         try {
         Student student = studentRepository.findById(studentId).get();
-        XSSFWorkbook workbook = new XSSFWorkbook(in);  //打开Excl数据流
+        XSSFWorkbook workbook = new XSSFWorkbook(in);  //打开Excel数据流
         XSSFSheet sheet = workbook.getSheetAt(0);
         Iterator<Row> rowIterator = sheet.iterator();
         Row row;
@@ -499,7 +498,7 @@ public class StudentController {
         Integer widths[] = {8, 20, 10, 15, 15, 15, 25, 10, 15, 30, 20, 30};
         int i, j, k;
         String titles[] = {"序号", "学号", "姓名", "学院", "专业", "班级", "证件号码", "性别", "出生日期", "邮箱", "电话", "地址"};
-        String outPutSheetName = "student.xlsx";
+        String outPutSheetName = "student";
         XSSFWorkbook wb = new XSSFWorkbook();
         XSSFCellStyle styleTitle = CommonMethod.createCellStyle(wb, 20);
         XSSFSheet sheet = wb.createSheet(outPutSheetName);
@@ -527,8 +526,8 @@ public class StudentController {
                 }
                 m = (Map) list.get(i);
                 cell[0].setCellValue((i + 1) + "");
-                cell[1].setCellValue(CommonMethod.getString(m, "num"));
-                cell[2].setCellValue(CommonMethod.getString(m, "name"));
+                cell[1].setCellValue(CommonMethod.getString(m, "studentNum"));
+                cell[2].setCellValue(CommonMethod.getString(m, "studentName"));
                 cell[3].setCellValue(CommonMethod.getString(m, "dept"));
                 cell[4].setCellValue(CommonMethod.getString(m, "major"));
                 cell[5].setCellValue(CommonMethod.getString(m, "className"));
@@ -552,6 +551,12 @@ public class StudentController {
             return ResponseEntity.internalServerError().build();
         }
 
+    }
+
+    //导入学生的Excel数据
+    @PostMapping("/importStudentExcel")
+    public DataResponse importStudentExcel(@RequestPart(name = "file") MultipartFile[] files, @RequestPart(name = "dataRequest") DataRequest req){
+        return studentService.importStudentExcel(files,req);
     }
 
     /**

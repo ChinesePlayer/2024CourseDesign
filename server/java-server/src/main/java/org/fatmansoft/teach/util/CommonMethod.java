@@ -31,6 +31,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * CommonMethod 公共处理方法实例类
@@ -558,5 +560,27 @@ public class CommonMethod {
         }
         Optional<Student> sOp = studentRepository.findById(studentId);
         return sOp.orElse(null);
+    }
+
+    //使用正则表达式来判断邮箱是否合法
+    public static boolean isValidEmail(String email){
+        //正则表达式的模式字符串
+        //注意：由于正则表达式的元字符有反斜杠，而反斜杠在Java中也有转义作用，所以当使用含有
+        //反斜杠的正则元字符时，需要写两个反斜杠
+        String patternString = "^[a-zA-Z0-9_]+@[a-zA-Z0-9]+(\\.[a-zA-Z]{2,})+$";
+        Pattern pattern = Pattern.compile(patternString);
+        Matcher matcher = pattern.matcher(email);
+
+        return matcher.matches();
+    }
+
+    public static String getGenderCode(String genderName){
+        if(genderName.equals("男")){
+            return "1";
+        }
+        else if(genderName.equals("女")){
+            return "2";
+        }
+        return null;
     }
 }

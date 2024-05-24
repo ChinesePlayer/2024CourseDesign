@@ -5,10 +5,15 @@ import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.fatmansoft.teach.models.*;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.repository.CourseRepository;
+import org.fatmansoft.teach.repository.PersonRepository;
 import org.fatmansoft.teach.repository.ScoreRepository;
 import org.fatmansoft.teach.repository.StudentRepository;
 import org.fatmansoft.teach.util.ComDataUtil;
@@ -19,10 +24,14 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import javax.validation.Valid;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
@@ -35,6 +44,8 @@ public class StudentService {
     private ScoreRepository scoreRepository;
     @Autowired
     private CourseRepository courseRepository;
+    @Autowired
+    private PersonRepository personRepository;
     @Value("${attach.folder}")
     private String attachFolder;
 
@@ -306,6 +317,115 @@ public class StudentService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public DataResponse importStudentExcel(MultipartFile[] files, DataRequest req){
+        int total;
+        int count = 0;
+        if(files == null){
+            return CommonMethod.getReturnMessageError("请选择学生文件! ");
+        }
+        if(files.length != 1){
+            return CommonMethod.getReturnMessageError("一次只能上传一个一个文件! ");
+        }
+        try{
+            byte[] bytesData = files[0].getBytes();
+            ByteArrayInputStream byteInputStream = new ByteArrayInputStream(bytesData);
+            XSSFWorkbook workbook = new XSSFWorkbook(byteInputStream);
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            if(sheet.getLastRowNum() + 1 <= 1){
+                return CommonMethod.getReturnMessageOK();
+            }
+            total = sheet.getLastRowNum() + 1;
+            List<Student> toBeSaved = new ArrayList<>();
+            List<Person> toBeSavedPerson = new ArrayList<>();
+            for(int i = 1; i < total; i++){
+                XSSFRow row = sheet.getRow(i);
+                XSSFCell cell = row.getCell(1);
+                String studentNum = cell.getStringCellValue();
+
+                Student student = null;
+                Person person = null;
+                Optional<Student> sOp = studentRepository.findByPersonPersonNum(studentNum);
+                Optional<Person> pOp = personRepository.findByPersonNum(studentNum);
+                if(sOp.isPresent()){
+                    student = sOp.get();
+                }
+                if(student == null){
+                    student = new Student();
+                }
+                if(pOp.isPresent()){
+                    person = pOp.get();
+                }
+                if(person == null){
+                    person = new Person();
+                }
+
+                person.setPersonNum(studentNum);
+                person.setType("1");
+
+                cell = row.getCell(2);
+                String studentName = cell.getStringCellValue();
+                person.setPersonName(studentName);
+
+                cell = row.getCell(3);
+                String dept = cell.getStringCellValue();
+                person.setDept(dept);
+
+                cell = row.getCell(4);
+                String major = cell.getStringCellValue();
+                student.setMajor(major);
+
+                cell = row.getCell(5);
+                String className = cell.getStringCellValue();
+                student.setClassName(className);
+
+                cell = row.getCell(6);
+                String card = cell.getStringCellValue();
+                person.setCard(card);
+
+                cell = row.getCell(7);
+                String gender = cell.getStringCellValue();
+                person.setGender(CommonMethod.getGenderCode(gender));
+
+                cell = row.getCell(8);
+                String birth = cell.getStringCellValue();
+                person.setBirthday(birth);
+
+                cell = row.getCell(9);
+                String email = cell.getStringCellValue();
+                //检查邮箱是否合法
+                if(!CommonMethod.isValidEmail(email)){
+                    continue;
+                }
+                person.setEmail(email);
+
+                cell = row.getCell(10);
+                String phone = cell.getStringCellValue();
+                person.setPhone(phone);
+
+                cell = row.getCell(11);
+                String address = cell.getStringCellValue();
+                person.setPhone(address);
+
+                student.setPerson(person);
+                toBeSaved.add(student);
+                toBeSavedPerson.add(person);
+                System.out.println(studentName);
+                count++;
+            }
+            personRepository.saveAllAndFlush(toBeSavedPerson);
+            studentRepository.saveAll(toBeSaved);
+        }
+        catch (IOException e){
+            e.printStackTrace();
+            return CommonMethod.getReturnMessageError("无法读取表格文件! ");
+        }
+        Map dataMap = new HashMap<>();
+        dataMap.put("success",count);
+        dataMap.put("total",total);
+        return CommonMethod.getReturnData(dataMap);
+
     }
 
     public List<Honor> getHonorByType(List<Honor> list, EHonorType type){

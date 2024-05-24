@@ -24,6 +24,7 @@ import javafx.stage.FileChooser;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.*;
 
 
@@ -413,14 +414,17 @@ public class StudentController extends ToolController {
     @FXML
     protected void onImportButtonClick() {
         FileChooser fileDialog = new FileChooser();
-        fileDialog.setTitle("前选择学生数据表");
+        fileDialog.setTitle("请选择学生数据表");
         fileDialog.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("XLSX 文件", "*.xlsx"));
         File file = fileDialog.showOpenDialog(null);
-        String paras = "";
-        DataResponse res =HttpRequestUtil.importData("/api/term/importStudentData",file.getPath(),paras);
+        List<Path> pathList = new ArrayList<>();
+        pathList.add(file.toPath());
+        DataRequest req = new DataRequest();
+        DataResponse res = HttpRequestUtil.request("/api/student/importStudentExcel",req,pathList);
         if(res.getCode() == 0) {
             MessageDialog.showDialog("上传成功！");
+            onQueryButtonClick();
         }
         else {
             MessageDialog.showDialog(res.getMsg());
