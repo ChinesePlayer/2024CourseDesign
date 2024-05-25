@@ -3,6 +3,7 @@ package org.fatmansoft.teach.controllers;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.*;
 import org.fatmansoft.teach.models.*;
@@ -523,6 +524,8 @@ public class StudentController {
                 for (j = 0; j < widths.length; j++) {
                     cell[j] = row.createCell(j);
                     cell[j].setCellStyle(style);
+                    //将单元格类型设置为文本类型
+                    cell[j].setCellType(CellType.STRING);
                 }
                 m = (Map) list.get(i);
                 cell[0].setCellValue((i + 1) + "");

@@ -20,6 +20,7 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
+import org.fatmansoft.teach.util.CommonMethod;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -404,10 +405,15 @@ public class StudentController extends ToolController {
                     FileOutputStream out = new FileOutputStream(file);
                     out.write(bytes);
                     out.close();
+                    MessageDialog.showDialog("已保存至: " + file.getPath());
                 }
             }catch(Exception e){
                 e.printStackTrace();
+                MessageDialog.showDialog("保存失败: 请检查文件夹权限!");
             }
+        }
+        else{
+            MessageDialog.showDialog("无法获取学生表! ");
         }
 
     }
@@ -423,7 +429,10 @@ public class StudentController extends ToolController {
         DataRequest req = new DataRequest();
         DataResponse res = HttpRequestUtil.request("/api/student/importStudentExcel",req,pathList);
         if(res.getCode() == 0) {
-            MessageDialog.showDialog("上传成功！");
+            Map rawData = (Map)res.getData();
+            int total = CommonMethod.getInteger(rawData,"total");
+            int success = CommonMethod.getInteger(rawData,"success");
+            MessageDialog.showDialog("上传完成! \n学生总数: " + total + " 个\n成功上传: " + success + " 个");
             onQueryButtonClick();
         }
         else {

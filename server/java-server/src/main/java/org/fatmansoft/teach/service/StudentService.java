@@ -325,8 +325,11 @@ public class StudentService {
         if(files == null){
             return CommonMethod.getReturnMessageError("请选择学生文件! ");
         }
-        if(files.length != 1){
-            return CommonMethod.getReturnMessageError("一次只能上传一个一个文件! ");
+        if(files.length < 1){
+            return CommonMethod.getReturnMessageError("请上传一个文件! ");
+        }
+        else if(files.length > 1){
+            return CommonMethod.getReturnMessageError("一次只能上传一个文件! ");
         }
         try{
             byte[] bytesData = files[0].getBytes();
@@ -336,10 +339,10 @@ public class StudentService {
             if(sheet.getLastRowNum() + 1 <= 1){
                 return CommonMethod.getReturnMessageOK();
             }
-            total = sheet.getLastRowNum() + 1;
+            total = sheet.getLastRowNum();
             List<Student> toBeSaved = new ArrayList<>();
             List<Person> toBeSavedPerson = new ArrayList<>();
-            for(int i = 1; i < total; i++){
+            for(int i = 1; i < total + 1; i++){
                 XSSFRow row = sheet.getRow(i);
                 XSSFCell cell = row.getCell(1);
                 String studentNum = cell.getStringCellValue();
@@ -395,7 +398,8 @@ public class StudentService {
                 cell = row.getCell(9);
                 String email = cell.getStringCellValue();
                 //检查邮箱是否合法
-                if(!CommonMethod.isValidEmail(email)){
+                if(!CommonMethod.isValidEmail(email) && !email.isEmpty()){
+                    System.out.println("该邮箱不合法: " + email);
                     continue;
                 }
                 person.setEmail(email);
@@ -411,9 +415,9 @@ public class StudentService {
                 student.setPerson(person);
                 toBeSaved.add(student);
                 toBeSavedPerson.add(person);
-                System.out.println(studentName);
-                count++;
+                System.out.println("保存的名字: " + studentName);
             }
+            count = toBeSaved.size();
             personRepository.saveAllAndFlush(toBeSavedPerson);
             studentRepository.saveAll(toBeSaved);
         }
