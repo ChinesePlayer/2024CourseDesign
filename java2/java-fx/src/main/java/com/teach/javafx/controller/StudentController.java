@@ -25,8 +25,10 @@ import org.fatmansoft.teach.util.CommonMethod;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.function.BiConsumer;
 
 
 /**
@@ -429,10 +431,18 @@ public class StudentController extends ToolController {
         DataRequest req = new DataRequest();
         DataResponse res = HttpRequestUtil.request("/api/student/importStudentExcel",req,pathList);
         if(res.getCode() == 0) {
-            Map rawData = (Map)res.getData();
-            int total = CommonMethod.getInteger(rawData,"total");
-            int success = CommonMethod.getInteger(rawData,"success");
-            MessageDialog.showDialog("上传完成! \n学生总数: " + total + " 个\n成功上传: " + success + " 个");
+            List<Map> rawData = (ArrayList<Map>)res.getData();
+            int total = CommonMethod.getInteger(rawData.get(0),"total");
+            int success = CommonMethod.getInteger(rawData.get(0),"success");
+            //获取错误提示
+            Map<String,String> errorTip = (Map<String, String>) rawData.get(1);
+            StringBuilder tipBuilder = new StringBuilder();
+            tipBuilder.append("上传完成! \n学生总数: " + total + " 个\n成功上传: " + success + " 个\n");
+            if(total > success){
+                tipBuilder.append("错误详情: \n");
+                errorTip.forEach((numAndName, errorInfo) -> tipBuilder.append(numAndName).append(": ").append(errorInfo).append("\n"));
+            }
+            MessageDialog.showDialog(tipBuilder.toString());
             onQueryButtonClick();
         }
         else {

@@ -322,6 +322,7 @@ public class StudentService {
     public DataResponse importStudentExcel(MultipartFile[] files, DataRequest req){
         int total;
         int count = 0;
+        Map<String,String> errorTipMap = new HashMap<>();
         if(files == null){
             return CommonMethod.getReturnMessageError("请选择学生文件! ");
         }
@@ -336,13 +337,35 @@ public class StudentService {
             ByteArrayInputStream byteInputStream = new ByteArrayInputStream(bytesData);
             XSSFWorkbook workbook = new XSSFWorkbook(byteInputStream);
             XSSFSheet sheet = workbook.getSheetAt(0);
+            //检查Excel表格内的数据格式
             if(sheet.getLastRowNum() + 1 <= 1){
-                return CommonMethod.getReturnMessageOK();
+                return CommonMethod.getReturnMessageError("不合法的Excel表格! ");
             }
+            XSSFRow firstRow = sheet.getRow(0);
+            if(!firstRow.getCell(0).getStringCellValue().equals("序号") ||
+                    !firstRow.getCell(1).getStringCellValue().equals("学号") ||
+                    !firstRow.getCell(2).getStringCellValue().equals("姓名") ||
+                    !firstRow.getCell(3).getStringCellValue().equals("学院") ||
+                    !firstRow.getCell(4).getStringCellValue().equals("专业") ||
+                    !firstRow.getCell(5).getStringCellValue().equals("班级") ||
+                    !firstRow.getCell(6).getStringCellValue().equals("证件号码") ||
+                    !firstRow.getCell(7).getStringCellValue().equals("性别") ||
+                    !firstRow.getCell(8).getStringCellValue().equals("出生日期") ||
+                    !firstRow.getCell(9).getStringCellValue().equals("邮箱") ||
+                    !firstRow.getCell(10).getStringCellValue().equals("电话") ||
+                    !firstRow.getCell(11).getStringCellValue().equals("地址")){
+                return CommonMethod.getReturnMessageError("不合法的Excel表格! ");
+            }
+
+
             total = sheet.getLastRowNum();
             List<Student> toBeSaved = new ArrayList<>();
             List<Person> toBeSavedPerson = new ArrayList<>();
             for(int i = 1; i < total + 1; i++){
+                //当前处理的学生行是否有不合法数据
+                boolean hasError = false;
+                //错误讯息
+                StringBuilder errorMsgBuilder = new StringBuilder();
                 XSSFRow row = sheet.getRow(i);
                 XSSFCell cell = row.getCell(1);
                 String studentNum = cell.getStringCellValue();
@@ -389,7 +412,13 @@ public class StudentService {
 
                 cell = row.getCell(7);
                 String gender = cell.getStringCellValue();
-                person.setGender(CommonMethod.getGenderCode(gender));
+                if(!gender.equals("男") && !gender.equals("女")){
+                    errorMsgBuilder.append("不合法的性别信息; ");
+                    hasError = true;
+                }
+                else{
+                    person.setGender(CommonMethod.getGenderCode(gender));
+                }
 
                 cell = row.getCell(8);
                 String birth = cell.getStringCellValue();
@@ -398,11 +427,15 @@ public class StudentService {
                 cell = row.getCell(9);
                 String email = cell.getStringCellValue();
                 //检查邮箱是否合法
-                if(!CommonMethod.isValidEmail(email) && !email.isEmpty()){
-                    System.out.println("该邮箱不合法: " + email);
-                    continue;
+                System.out.println(CommonMethod.isValidEmail(email));
+                if(!email.isEmpty() && !CommonMethod.isValidEmail(email)){
+                    errorMsgBuilder.append("不合法的邮箱格式 ");
+                    System.out.println("不合法!");
+                    hasError = true;
                 }
-                person.setEmail(email);
+                else{
+                    person.setEmail(email);
+                }
 
                 cell = row.getCell(10);
                 String phone = cell.getStringCellValue();
@@ -412,10 +445,14 @@ public class StudentService {
                 String address = cell.getStringCellValue();
                 person.setPhone(address);
 
+                if(hasError){
+                    errorTipMap.put("学号: " + studentNum + " 姓名: " + studentName,errorMsgBuilder.toString());
+                    continue;
+                }
+
                 student.setPerson(person);
                 toBeSaved.add(student);
                 toBeSavedPerson.add(person);
-                System.out.println("保存的名字: " + studentName);
             }
             count = toBeSaved.size();
             personRepository.saveAllAndFlush(toBeSavedPerson);
@@ -425,10 +462,13 @@ public class StudentService {
             e.printStackTrace();
             return CommonMethod.getReturnMessageError("无法读取表格文件! ");
         }
+        List<Map> dataList = new ArrayList<>();
         Map dataMap = new HashMap<>();
         dataMap.put("success",count);
         dataMap.put("total",total);
-        return CommonMethod.getReturnData(dataMap);
+        dataList.add(dataMap);
+        dataList.add(errorTipMap);
+        return CommonMethod.getReturnData(dataList);
 
     }
 
