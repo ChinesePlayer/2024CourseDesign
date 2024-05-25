@@ -147,7 +147,7 @@ public class HonorPanelController implements HonorEditorOpener {
         try{
             FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("honor/honor-editor.fxml"));
             WindowsManager.getInstance().openNewWindow(
-                    loader, 400, 600, "编辑荣誉信息信息",
+                    loader, 480, 340, "编辑荣誉信息信息",
                     tableView.getScene().getWindow(), Modality.WINDOW_MODAL,
                     new WindowOpenAction() {
                         @Override
@@ -189,7 +189,7 @@ public class HonorPanelController implements HonorEditorOpener {
         try{
             FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("honor/honor-editor.fxml"));
             WindowsManager.getInstance().openNewWindow(
-                    loader, 400, 600, "编辑荣誉信息信息",
+                    loader, 480, 340, "编辑荣誉信息信息",
                     tableView.getScene().getWindow(), Modality.WINDOW_MODAL,
                     new WindowOpenAction() {
                         @Override

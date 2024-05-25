@@ -15,11 +15,11 @@
     <center>
         <TableView fx:id="tableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <columns>
-                <TableColumn fx:id="studentNum" prefWidth="150" text="学号" />
-                <TableColumn fx:id="studentName" prefWidth="115.33332061767578" text="姓名" />
-                <TableColumn fx:id="honorType" prefWidth="121.33329772949219" text="荣誉类型" />
-                <TableColumn fx:id="honorContent" prefWidth="200" text="荣誉内容" />
-                <TableColumn fx:id="actions" prefWidth="140.0" text="操作" />
+                <TableColumn fx:id="studentNum" prefWidth="280" text="学号" />
+                <TableColumn fx:id="studentName" prefWidth="240" text="姓名" />
+                <TableColumn fx:id="honorType" prefWidth="300" text="荣誉类型" />
+                <TableColumn fx:id="honorContent" prefWidth="420" text="荣誉内容" />
+                <TableColumn fx:id="actions" prefWidth="264.0" text="操作" />
             </columns>
         </TableView>
     </center>
@@ -27,9 +27,9 @@
         <HBox alignment="CENTER_LEFT" prefHeight="73.0" prefWidth="600.0" spacing="10.0" BorderPane.alignment="CENTER">
             <children>
                 <Label text="学号姓名: " />
-                <MFXTextField fx:id="numNameField" floatMode="BORDER" floatingText="Name And Num" />
+                <MFXTextField fx:id="numNameField" floatMode="BORDER" floatingText="Name And Num" prefWidth="280"/>
                 <Label text="荣誉类型" />
-                <ComboBox fx:id="typeCombo" prefWidth="150.0" />
+                <ComboBox fx:id="typeCombo" prefWidth="180.0"  prefHeight="46"/>
                 <Button onAction="#onQueryButtonClick" mnemonicParsing="false" text="查询" />
                 <Button onAction="#onNew" mnemonicParsing="false" text="新建荣誉" />
             </children>

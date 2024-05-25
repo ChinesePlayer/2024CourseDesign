@@ -12,7 +12,7 @@ server:
       force: true
 spring:
   datasource:
-    url: jdbc:sqlite:/Project/2024CourseDesign/conflictProj/teach/java2/data.db
+    url: jdbc:sqlite:/Project/2024CourseDesign/teach/java2/data.db
     driver-class-name: org.sqlite.JDBC
     username: admin
     password: admin

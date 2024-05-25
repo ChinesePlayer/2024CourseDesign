@@ -30,13 +30,13 @@ public class TimePicker extends HBox {
         second = new Spinner<>();
         second.setValueFactory(factory);
 
-        hour.setPrefWidth(60);
-        minute.setPrefWidth(60);
-        second.setPrefWidth(60);
+        hour.setPrefWidth(90);
+        minute.setPrefWidth(90);
+        second.setPrefWidth(90);
 
-        hour.setMaxWidth(60);
-        minute.setMaxWidth(60);
-        second.setMaxWidth(60);
+        hour.setMaxWidth(90);
+        minute.setMaxWidth(90);
+        second.setMaxWidth(90);
 
         //将控件加入父组件中
         getChildren().addAll(hour,new Label(":"),minute,new Label(":"),second);
